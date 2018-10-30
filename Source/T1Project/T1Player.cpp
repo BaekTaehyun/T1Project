@@ -2,13 +2,14 @@
 
 #include "T1Player.h"
 #include "T1Project.h"
+#include "T1AnimInstance.h"
 #include "GameFrameWork/SpringArmComponent.h"
 #include "GameFrameWork/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "Camera/CameraComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/InputComponent.h"
-
+#include "Delegate.h"
 #include "ConstructorHelpers.h"
 
 
@@ -32,6 +33,7 @@ AT1Player::AT1Player()
 	SpringArm->SetRelativeRotation(FRotator(-15.0f, 0.0f, 0.0f));
 
 	// 스켈레탈 메쉬세팅(외형) 
+	// ConstructorHelpers 해당계열의 함수를 static으로 선언한것에 유의(생성자임으로 계열 클래스가 인스턴싱될때마다 호출하는것을 방지)
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_HERO(TEXT("/Game/InfinityBladeWarriors/Character/CompleteCharacters/SK_CharM_RaggedElite.SK_CharM_RaggedElite"));
 	//ConstructorHelpers::FObjectFinder (오브젝트 검색)
 	if (SK_HERO.Succeeded())
@@ -42,9 +44,9 @@ AT1Player::AT1Player()
 	// 애니메이션을 플레이할 모드를 설정한다.
 	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 
-	// 애니메이션 블루프린트는 애님 그래프 로지겡 따라 동작하는 케릭터 애니메이션 스템을 구동시키는데 이런한 시스템을 C++에선 애님인스턴드 클래스로 관리된다
+	// 애니메이션 블루프린트는 애님 그래프 로직에 따라 동작하는 케릭터 애니메이션 스템을 구동시키는데 이런한 시스템을 C++에선 애님인스턴드 클래스로 관리된다
 	static ConstructorHelpers::FClassFinder<UAnimInstance> WARR_ANIM(TEXT("/Game/InfinityBladeWarriors/Character/WarriorAnimBP.WarriorAnimBP_C"));
-	//ConstructorHelpers::FClassFinder  *주위 블루프린트 끝에 _C를 붙여서 검색함 (클래스 검색) 
+	//ConstructorHelpers::FClassFinder  *주위 블루프린트 끝에 _C를 붙여서 검색함 (클래스 검색) : WarriorAnimBP_C
 	if (WARR_ANIM.Succeeded())
 	{
 		GetMesh()->SetAnimInstanceClass(WARR_ANIM.Class);
@@ -53,15 +55,21 @@ AT1Player::AT1Player()
 	// 카메라를 어떻게 제어할지 설정함
 	SetCameraControlMode(ECameraControlMode::DIABLO);
 
+	// 카메라 변경간 보간 세팅
 	ArmLengthSpeed = 5.0f;
 	ArmRotationSpeed = 10.0f;
+
+	//점프처리
+	GetCharacterMovement()->JumpZVelocity = 800.0f;
+
+	//몽타주 공격 플레그
+	IsAttacking = false;
 }
 
 // Called when the game starts or when spawned
 void AT1Player::BeginPlay()
 {
-	Super::BeginPlay();
-	
+	Super::BeginPlay();	
 }
 
 // Called every frame
@@ -99,6 +107,9 @@ void AT1Player::SetupPlayerInputComponent(UInputComponent* InputComponent)
 
 	// 키와 액션바인딩
 	InputComponent->BindAction(TEXT("CameraViewChange"), EInputEvent::IE_Pressed, this, &AT1Player::CameraViewChange);	
+
+	InputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &AT1Player::Jump);
+	InputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AT1Player::Attack);
 }
 
 
@@ -107,6 +118,21 @@ void AT1Player::PostInitializeComponents()
 {	
 	Super::PostInitializeComponents();
 	T1LOG_S(Warning);
+
+	T1Anim = Cast<UT1AnimInstance>(GetMesh()->GetAnimInstance());
+	T1CHECK(nullptr != T1Anim);
+
+	/*
+	  OnMontageEnded 델리게이트는 블루프린트와 호환되는 성질외에도 여러개의 함수를 받을수 있어서
+	  행동이 끝나면 등록된 모든함수들에게 모두 알려주는 기능도 제공한다. 이러한 델리게이트를 멀티케스트
+	  델리 게이트(Multicast Delegate)라고 한다.
+
+	  애님 인스턴스 헤더에 선언된 OnMontageEnded가 사용하는 델리게이트를 정희한 코드는 #include "Delegate.h" 에 정의
+	  언리얼 엔진에서 델리게이트의 선언은 언리얼이 제공하는 매크로를 통해서 정의되며, 이렇게 정의된 델리게이트 형식을
+	  시그니처라고 한다.
+	  매크로이기에 인텔리센스가 동작하지 않음
+	*/
+	T1Anim->OnMontageEnded.AddDynamic(this, &AT1Player::OnAttackMontageEnded);
 }
 
 // 콜링 순서를 파악 하기 위한 오버라이딩	
@@ -206,4 +232,20 @@ void AT1Player::SetCameraControlMode(ECameraControlMode inMode)
 
 	}
 }
+
+void AT1Player::Attack()
+{
+	T1LOG_S(Warning);
+
+	if (IsAttacking) return;
+	T1Anim->PlayAttackMontage();
+	IsAttacking = true;
+}	
+
+void AT1Player::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterruped)
+{
+	T1CHECK(IsAttacking);
+	IsAttacking = false;
+}
+
 

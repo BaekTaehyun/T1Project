@@ -9,6 +9,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UT1AnimInstance;
 
 
 UCLASS()
@@ -67,4 +68,22 @@ private:
 
 	void CameraViewChange();
 	void SetCameraControlMode(ECameraControlMode inControlMode);
+
+	void Attack();
+
+	/*
+		언리얼에서 델리게이트는 C++객체에서만 사용하는 델리게이트와 C++, 블루프린트 객체가 모두 사용할수 있는 델리게이트로 나눈다.
+		블루프린트 오브젝트는 맴버 함수에 대한 정보를 저장하고 로딩하는 직렬화(Serialization) 매커니즘이 들어가 있기떄문에
+		일반 C++ 언어가 관리하는 방법으로 맴버함수를 관리 할수 없다. 그래서 블루프린트와 관련ㄷ된 C++함수는 모두 UFUNCTION 매크로를
+		사용해야한다. 이렇게 블루프린트 객체와도 연동되는 델리게이트를 언리얼언진에서는 다이나믹 델리게이트(Dynamic Delegate)라고 한다.
+	*/
+	UFUNCTION()
+	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+
+private:
+	UPROPERTY(VisibleInstanceOnly, BluePrintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
+	bool IsAttacking;
+
+	UPROPERTY()
+	class UT1AnimInstance* T1Anim;
 };

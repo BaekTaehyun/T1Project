@@ -12,3 +12,6 @@ DECLARE_LOG_CATEGORY_EXTERN(T1Project, Log, All);
 #define T1LOG_S(Verbosity)	UE_LOG(T1Project,Verbosity, TEXT("----%s"), *T1LOG_CALLINFO)
 #define T1LOG(Verbosity, Format, ...)	UE_LOG(T1Project, Verbosity, TEXT("----%s ----%s"), *T1LOG_CALLINFO, *FString::Printf(Format, ##__VA_ARGS__))
 
+
+// ºÓÀº»ö ·Î±ë
+#define T1CHECK(Expr, ...) {if(!(Expr)) {T1LOG(Error, TEXT("ASSERTION : %s"), TEXT("'"#Expr"'")); return __VA_ARGS__;}}
