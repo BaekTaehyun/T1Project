@@ -8,6 +8,7 @@
 
 /**
  * 커스터 마이징된 애니메이션 인스턴스 처리예
+   UAnimInstance 클래스는 애니메이션 블루프린트와 매칭되는 언리얼 클래스입니다.
  */
 UCLASS()
 class T1PROJECT_API UT1AnimInstance : public UAnimInstance
@@ -19,6 +20,14 @@ public:
 	virtual void NativeUpdateAnimation(float deltaSecond) override;
 
 	void PlayAttackMontage();
+
+private:
+	/* 
+		몽타주에 정의된 커스텀 노티파이인 경우에는 애님인스턴스 클래스의 'AnimNotify_노티파이명'이라는 이름의 멤버 함수를 찾아서 호출
+		또한 불려지는 함수는 언리얼 런타임이 찾을수 있도록 반드시 UFUNCTION 매크로가 지정되어야 한다.
+	*/
+	UFUNCTION()
+	void AnimNotify_AttackHitCheck();
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))

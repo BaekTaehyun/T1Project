@@ -49,3 +49,8 @@ void UT1AnimInstance::PlayAttackMontage()
 		Montage_Play(AttackMontage, 1.0f);
 	}
 }
+
+void UT1AnimInstance::AnimNotify_AttackHitCheck()
+{
+	T1LOG_S(Warning);
+}
