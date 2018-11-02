@@ -6,6 +6,13 @@
 #include "Animation/AnimInstance.h"
 #include "T1AnimInstance.generated.h"
 
+/*
+  몽타주에 선언된 NextAttackCheck 애니메이션 노티파이가 발생할때마가 T1Character에 전달할 델리게이트 선언
+*/
+DECLARE_MULTICAST_DELEGATE(FOnNextAttackCheckDelegate);
+DECLARE_MULTICAST_DELEGATE(FOnAttackHitCheckDelegate);
+
+
 /**
  * 커스터 마이징된 애니메이션 인스턴스 처리예
    UAnimInstance 클래스는 애니메이션 블루프린트와 매칭되는 언리얼 클래스입니다.
@@ -20,6 +27,11 @@ public:
 	virtual void NativeUpdateAnimation(float deltaSecond) override;
 
 	void PlayAttackMontage();
+	void JumpToAttackMontageSection(int32 newSection);
+
+public:
+	FOnNextAttackCheckDelegate OnNextAttackCheck;
+	FOnAttackHitCheckDelegate OnAttackHitCheck;
 
 private:
 	/* 
@@ -28,6 +40,11 @@ private:
 	*/
 	UFUNCTION()
 	void AnimNotify_AttackHitCheck();
+
+	UFUNCTION()
+	void AnimNotify_NextAttackCheck();
+
+	FName GetAttackMontageSectionName(int section);
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))

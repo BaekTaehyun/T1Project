@@ -5,6 +5,7 @@
 #include "GameFrameWork/CharacterMovementComponent.h"
 #include "ConstructorHelpers.h"
 
+
 UT1AnimInstance::UT1AnimInstance()
 {
 	CurrentPawnSpeed = 0.0f;
@@ -16,12 +17,11 @@ UT1AnimInstance::UT1AnimInstance()
 	*/
 	// ConstructorHelpers 해당계열의 함수를 static으로 선언한것에 유의(생성자임으로 계열 클래스가 인스턴싱될때마다 호출하는것을 방지)
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> ATTACK_MONTAGE(
-		TEXT("/Game/InfinityBladeWarriors/Character/Animation/SK_Mannequin_Skeleton_Montage.SK_Mannequin_Skeleton_Montage"));
+		TEXT("/Game/InfinityBladeWarriors/Character/Animation/SK_WarriorMontage.SK_WarriorMontage"));
 	if (ATTACK_MONTAGE.Succeeded())
 	{
 		AttackMontage = ATTACK_MONTAGE.Object;
 	}
-
 }
 
 void UT1AnimInstance::NativeUpdateAnimation(float deltaSecond)
@@ -42,15 +42,30 @@ void UT1AnimInstance::NativeUpdateAnimation(float deltaSecond)
 
 void UT1AnimInstance::PlayAttackMontage()
 {	
-	// AT1Player 클래스에서 델리게이트 처리를 통해 플레이체크를 하기때문에 주석
-	// Montage_IsPlaying 같은 함수도 있음을 인지하길바라며.
-	//if (false == Montage_IsPlaying(AttackMontage))
-	{
-		Montage_Play(AttackMontage, 1.0f);
-	}
+	Montage_Play(AttackMontage, 1.0f);
+}
+
+void UT1AnimInstance::JumpToAttackMontageSection(int32 newSection)
+{
+	T1CHECK(Montage_IsPlaying(AttackMontage));
+	Montage_JumpToSection(GetAttackMontageSectionName(newSection), AttackMontage);
 }
 
 void UT1AnimInstance::AnimNotify_AttackHitCheck()
 {
-	T1LOG_S(Warning);
+	T1LOG_S(Log);
+	//OnAttackHitCheck.Broadcast();
 }
+
+void UT1AnimInstance::AnimNotify_NextAttackCheck()
+{
+	T1LOG_S(Log);
+	OnNextAttackCheck.Broadcast();
+}
+
+FName UT1AnimInstance::GetAttackMontageSectionName(int32 section)
+{
+	T1CHECK(FMath::IsWithinInclusive<int32>(section, 1, 4), NAME_None);
+	return FName(*FString::Printf(TEXT("Attack%d"), section));
+}
+

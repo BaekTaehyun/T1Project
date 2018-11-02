@@ -70,6 +70,8 @@ private:
 	void SetCameraControlMode(ECameraControlMode inControlMode);
 
 	void Attack();
+	void AttackStartComboState();
+	void AttackEndComboState();
 
 	/*
 		언리얼에서 델리게이트는 C++객체에서만 사용하는 델리게이트와 C++, 블루프린트 객체가 모두 사용할수 있는 델리게이트로 나눈다.
@@ -83,6 +85,18 @@ private:
 private:
 	UPROPERTY(VisibleInstanceOnly, BluePrintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
 	bool IsAttacking;
+
+	UPROPERTY(VisibleInstanceOnly, BluePrintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
+	bool CanNextCombo;
+
+	UPROPERTY(VisibleInstanceOnly, BluePrintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
+	bool IsComboInputOn;
+
+	UPROPERTY(VisibleInstanceOnly, BluePrintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
+	int32 CurrentComboIndex;
+
+	UPROPERTY(VisibleInstanceOnly, BluePrintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
+	int MaxComboCount;
 
 	UPROPERTY()
 	class UT1AnimInstance* T1Anim;

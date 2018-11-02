@@ -64,6 +64,10 @@ AT1Player::AT1Player()
 
 	//몽타주 공격 플레그
 	IsAttacking = false;
+
+	//콤보처리 추가
+	MaxComboCount = 4;
+	AttackEndComboState();
 }
 
 // Called when the game starts or when spawned
@@ -133,6 +137,23 @@ void AT1Player::PostInitializeComponents()
 	  매크로이기에 인텔리센스가 동작하지 않음
 	*/
 	T1Anim->OnMontageEnded.AddDynamic(this, &AT1Player::OnAttackMontageEnded);
+
+	/*
+		UT1AnimInstance에 정의된 델리게이트에 링크(노티파이를 받을 함수등록)
+		해당람다식은 C++ 람다
+	*/
+
+	T1Anim->OnNextAttackCheck.AddLambda([this]()->void
+	{
+		T1LOG(Warning, TEXT("OnNextAttackCheck"));
+		CanNextCombo = false;
+
+		if (IsComboInputOn)
+		{
+			AttackStartComboState();
+			T1Anim->JumpToAttackMontageSection(CurrentComboIndex);
+		}
+	});
 }
 
 // 콜링 순서를 파악 하기 위한 오버라이딩	
@@ -237,15 +258,45 @@ void AT1Player::Attack()
 {
 	T1LOG_S(Warning);
 
-	if (IsAttacking) return;
-	T1Anim->PlayAttackMontage();
-	IsAttacking = true;
-}	
+	if (IsAttacking)
+	{
+		T1CHECK(FMath::IsWithinInclusive<int32>(CurrentComboIndex, 1, MaxComboCount));
+		if (CanNextCombo)
+		{
+			IsComboInputOn = true;
+		}
+	}
+	else
+	{
+		T1CHECK(CurrentComboIndex == 0);
+		AttackStartComboState();
+		T1Anim->PlayAttackMontage();
+		T1Anim->JumpToAttackMontageSection(CurrentComboIndex);
+		IsAttacking = true;
+
+	}	
+}
+
+void AT1Player::AttackStartComboState()
+{
+	CanNextCombo = true;
+	IsComboInputOn = false;
+	T1CHECK(FMath::IsWithinInclusive<int32>(CurrentComboIndex, 0, MaxComboCount - 1));
+	CurrentComboIndex = FMath::Clamp<int32>(CurrentComboIndex + 1, 1, MaxComboCount);
+}
+
+void AT1Player::AttackEndComboState()
+{
+	IsComboInputOn = false;
+	CanNextCombo = false;
+	CurrentComboIndex = 0;
+}
 
 void AT1Player::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterruped)
 {
 	T1CHECK(IsAttacking);
 	IsAttacking = false;
+	AttackEndComboState();
 }
 
 
