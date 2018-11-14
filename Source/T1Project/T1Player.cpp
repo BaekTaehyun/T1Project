@@ -23,6 +23,9 @@ AT1Player::AT1Player()
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
 
+	// 데이터 컴퍼넌트 세팅
+	CharInfoData = CreateDefaultSubobject<UDataActorComponent>(TEXT("CHARINFO"));
+
 	// 컴포넌트 종속관계설정
 	SpringArm->SetupAttachment(RootComponent);
 	Camera->SetupAttachment(SpringArm);

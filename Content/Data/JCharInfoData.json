@@ -1,0 +1,16 @@
+[
+	{
+		"Name": "Row0",
+		"Level": 1,
+		"Name": "BUM",
+		"MaxHP": 20,
+		"MaxMP": 1
+	},
+	{
+		"Name": "Row1",
+		"Level": 10,
+		"Name": "LEE",
+		"MaxHP": 100,
+		"MaxMP": 30
+	}
+]

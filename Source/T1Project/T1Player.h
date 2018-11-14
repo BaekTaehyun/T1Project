@@ -5,6 +5,9 @@
 #include "T1Project.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
+#include "DataActorComponent.h"
+
 #include "T1Player.generated.h"
 
 class USpringArmComponent;
@@ -58,6 +61,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	UCameraComponent* Camera;
+
+	UPROPERTY(VisibleAnywhere, Category = CharInfo)
+	class UDataActorComponent* CharInfoData;
 	
 private:
 	// 프로젝트 옵션에 인풋과 매칭되는 함수
