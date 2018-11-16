@@ -39,17 +39,10 @@ TSharedRef< FSlateStyleSet > FMyExtensionStyle::Create()
 	Style->SetContentRoot(FPaths::EngineContentDir() / TEXT("Editor/Slate"));
 
 	// Menu Icons
-	Style->Set("MyExtensions.Command1", new IMAGE_BRUSH("Icons/icon_file_switch_16px", Icon16x16));
-	Style->Set("MyExtensions.Command2", new IMAGE_BRUSH("Icons/icon_file_savelevels_16px", Icon16x16));
-	Style->Set("MyExtensions.Command3", new IMAGE_BRUSH("Icons/icon_file_ProjectOpen_16x", Icon16x16));
-	Style->Set("MyExtensions.Command4", new IMAGE_BRUSH("Icons/icon_file_ProjectsRecent_16px", Icon16x16));
+	Style->Set("MyExtensions.DataTool", new IMAGE_BRUSH("Icons/icon_file_switch_16px", Icon16x16));	
 
 	// Toolbar Icons
-	Style->Set("MyToolbarIcon.Command1", new IMAGE_BRUSH("Icons/icon_Landscape_Tool_Erosion_40x", Icon40x40));
-	Style->Set("MyToolbarIcon.Command1.Small", new IMAGE_BRUSH("Icons/icon_Landscape_Tool_Erosion_20x", Icon20x20));
-	Style->Set("MyToolbarIcon.Command2", new IMAGE_BRUSH("Icons/icon_Landscape_Tool_Flatten_40x", Icon40x40));
-	Style->Set("MyToolbarIcon.Command3", new IMAGE_BRUSH("Icons/icon_Landscape_Tool_Noise_40x", Icon40x40));
-	Style->Set("MyToolbarIcon.Command4", new IMAGE_BRUSH("Icons/icon_Landscape_Tool_Smooth_40x", Icon40x40));
+	Style->Set("MyToolbarIcon.DataTool", new IMAGE_BRUSH("Icons/icon_Landscape_Tool_Erosion_40x", Icon40x40));	
 
 	return Style;
 }

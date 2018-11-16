@@ -21,7 +21,9 @@ public class T1ProjectEditor : ModuleRules
 				"InputCore",
 				"Engine",
                 "AdvancedPreviewScene",
-                "EditorStyle"			
+                "EditorStyle",
+				"PropertyEditor",
+				"Json"
 			}
 		);
 

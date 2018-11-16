@@ -21,6 +21,7 @@ UDataActorComponent::UDataActorComponent()
 	//FString CharInfoDataPath = TEXT("/Content/Data/CCharInfoData.json");
 	static ConstructorHelpers::FObjectFinder<UDataTable> DT_CHARACTER(*CharInfoDataPath);
 	T1CHECK(DT_CHARACTER.Succeeded());
+	//CharacterTable = DT_CHARACTER;
 	CharacterTable = DT_CHARACTER.Object;
 	T1CHECK(CharacterTable->RowMap.Num() > 0);
 
@@ -88,6 +89,16 @@ void UDataActorComponent::SetNewLevel(int32 NewLevel)
 	{
 		T1LOG(Error, TEXT("Level (%d) data doesn't exist"), NewLevel);
 	}
+}
+
+const UDataTable* UDataActorComponent::GetDataTable() const
+{
+	return CharacterTable;
+}
+
+UDataTable* UDataActorComponent::GetDataTable()
+{
+	return CharacterTable;
 }
 
 void UDataActorComponent::SetInfoData(int32 EditLevel)

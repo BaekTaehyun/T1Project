@@ -12,8 +12,7 @@ public:
 	FMyExtensionCommands()
 		: TCommands<FMyExtensionCommands>(TEXT("MyExtensions"),
 			NSLOCTEXT("MyExtensions", "MyExtensions", "MyExtensions"),
-			NAME_None,
-			//TEXT("Default"))^
+			NAME_None,			
 			FMyExtensionStyle::GetStyleSetName())
 	{
 	}
@@ -21,16 +20,11 @@ public:
 	virtual void RegisterCommands() override;
 
 public:
-	TSharedPtr< FUICommandInfo > Command1;
-	TSharedPtr< FUICommandInfo > Command2;
-	TSharedPtr< FUICommandInfo > Command3;
-	TSharedPtr< FUICommandInfo > Command4;
+	TSharedPtr< FUICommandInfo > Command1;	
 };
 
 class FMyExtensionActions
 {
 public:
-	static void Action1();
-	static void Action2();
-	static void Action3();
+	static void Action1();	
 };

@@ -48,21 +48,23 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	void SetNewLevel(int32 NewLevel);
+	const UDataTable* GetDataTable() const;
+	UDataTable* GetDataTable();
 
 	UFUNCTION(CallInEditor, Category = Info)
-	void SetInfoData(int32 EditLevel);
+	void SetInfoData(int32 EditLevel);	
 
 private:
 	struct FCharInfoData* CurrentCharInfoData = nullptr;
 
 	UPROPERTY(EditInstanceOnly, Category = Info, Meta = (AllowPrivateAccess = true))
-	int32 Level;
+	int32 Level;	
 
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = Info, Meta = (AllowPrivateAccess = true))
 	float CurrentHP;
 
 	UPROPERTY()
-	class UDataTable* CharacterTable;
+	class UDataTable* CharacterTable = nullptr;
 
 	FCharInfoData* GetCharInfoData(int32 Level);
 };
