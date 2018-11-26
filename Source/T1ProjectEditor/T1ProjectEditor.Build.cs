@@ -23,10 +23,13 @@ public class T1ProjectEditor : ModuleRules
                 "AdvancedPreviewScene",
                 "EditorStyle",
 				"PropertyEditor",
-				"Json"
+				"Json",
+				"AppFramework",
+				"T1ContentBrowserEditor"
 			}
 		);
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		
+		//PrivateDependencyModuleNames.AddRange(new string[] { "T1ContentBrowserEditor",  });
 	}
 }

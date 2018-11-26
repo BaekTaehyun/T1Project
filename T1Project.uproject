@@ -13,7 +13,7 @@
 				"Slate",
 				"CoreUObject"
 			]
-		},
+		},		
 		{
 			"Name": "T1ProjectEditor",
 			"Type": "Editor",

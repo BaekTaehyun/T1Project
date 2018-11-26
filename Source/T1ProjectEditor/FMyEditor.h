@@ -138,7 +138,7 @@ private:
 	TArray<FDataTableEditorRowListViewDataPtr> AvailableRows;
 	
 	TSharedPtr<class IDetailsView> DataActorComponentView;
-	TSharedPtr<class IDetailsView> DataTableSelectView;
+	TSharedPtr<SWidget> DataTableSelectView;
 	TSharedPtr<SWidget> DataTableTabWidget;
 	TSharedPtr<SWidget> RowEditorTabWidget;
 

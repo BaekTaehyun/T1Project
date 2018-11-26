@@ -9,6 +9,6 @@ public class T1ProjectEditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 
-		ExtraModuleNames.AddRange( new string[] { "T1Project", "T1ProjectEditor" } );
+		ExtraModuleNames.AddRange( new string[] { "T1Project", "T1ProjectEditor", "T1ContentBrowserEditor" } );
 	}
 }

@@ -5,6 +5,8 @@
 #include "FMyExtensionStyle.h"
 
 #include "PropertyEditorModule.h"
+#include "T1ContentBrowserEditor/Public/T1ContentBrowserEditor.h"
+#include "T1ContentBrowserEditor/Public/IT1ContentBrowserSingleton.h"
 #include "Dom/JsonObject.h"
 #include "Widgets/Text/STextBlock.h"
 #include "Misc/FileHelper.h"
@@ -25,12 +27,6 @@
 #include "IDocumentation.h"
 #include "Widgets/SToolTip.h"
 #include "SMyRowEditor.h"
-//#include "AdvancedPreviewSceneModule.h"
-//#include "Serialization/JsonReader.h"
-//#include "Serialization/JsonSerializer.h"
-//#include "Misc/FileHelper.h"
-//#include "UObject/ConstructorHelpers.h"
-//#include "Widgets/Layout/SScrollBox.h"
 
 #pragma warning(disable:4828)
 
@@ -39,8 +35,6 @@ const FName FMyEditor::DataActorComponentTabId = FName(TEXT("My DataActorCompone
 const FName FMyEditor::DataTableSelectTabId = FName(TEXT("My DataTableSelect"));
 const FName FMyEditor::DataTableTabId = FName(TEXT("My DataTable"));
 const FName FMyEditor::RowNameColumnId("RowName");
-
-//const FName FMyEditor::DataTableTabId("DataTableEditor_DataTable");
 const FName FMyEditor::RowEditorTabId("MY RowEditor");
 
 #define LOCTEXT_NAMESPACE "MyEditor"
@@ -201,7 +195,29 @@ void FMyEditor::InitFMyEditor(const EToolkitMode::Type Mode, const TSharedPtr< c
 	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
 	const FDetailsViewArgs DetailsViewArgs(bIsUpdatable, bIsLockable, true, FDetailsViewArgs::ObjectsUseNameArea, false);
 	DataActorComponentView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
-	DataTableSelectView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
+
+	//IContentBrowserSingleton& ContentBrowserSingleton = FModuleManager::Get().LoadModuleChecked<FContentBrowserModule>("ContentBrowser").Get();;
+	IT1ContentBrowserSingleton& ContentBrowserSingleton = FModuleManager::Get().LoadModuleChecked<T1ContentBrowserEditor>("T1ContentBrowserEditor").Get();;
+	FT1ContentBrowserConfig Config;
+	Config.bCanShowClasses = false;
+	Config.bCanShowRealTimeThumbnails = false;
+	Config.InitialAssetViewType = ET1AssetViewType::Tile;
+	Config.bCanShowDevelopersFolder = false;
+	Config.bCanShowFolders = false;
+	Config.bUseSourcesView = true;
+	Config.bExpandSourcesView = true;
+	Config.ThumbnailLabel = EThumbnailLabel::NoLabel;
+	Config.ThumbnailScale = 0.4f;
+	Config.bCanShowFilters = true;
+	Config.bUsePathPicker = true;
+	Config.bShowAssetPathTree = true;
+	Config.bAlwaysShowCollections = false;
+	Config.bShowBottomToolbar = true;
+	Config.bCanShowLockButton = false;
+
+	DataTableSelectView = ContentBrowserSingleton.CreateContentBrowser("DataTableContentBrowser", nullptr, &Config);
+	//DataTableSelectView->SetOnMouseDoubleClick()
+
 	DataTableTabWidget = CreateContentBox();
 	RowEditorTabWidget = CreateRowEditorBox();
 
