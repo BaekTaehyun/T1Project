@@ -19,6 +19,11 @@
 //#include "Editor/DataTableEditor/Private/DataTableEditor.h"
 DECLARE_DELEGATE_OneParam(FOnRowHighlighted, FName /*Row name*/);
 
+//namespace MyEditor
+//{
+//	void OpenEditorForAsset();
+//}
+
 class FMyEditor : public FAssetEditorToolkit
 	, public FEditorUndoClient
 	, public FStructureEditorUtils::INotifyOnStructChanged
@@ -27,6 +32,18 @@ class FMyEditor : public FAssetEditorToolkit
 	friend class SDataTableListViewRow;
 
 public:
+	/*static inline FMyEditor* GetPtr()
+	{
+		static FName AssetRegistry("MyEditor");
+		auto Module = FModuleManager::GetModulePtr<FMyEditor>(AssetRegistry);
+		if (Module == nullptr)
+		{
+			Module = &FModuleManager::LoadModuleChecked<FMyEditor>(AssetRegistry);
+		}
+		return reinterpret_cast<FMyEditor*>(Module);
+	}*/
+	//static FMyEditor& Get();
+
 	~FMyEditor();
 
 	// 초기화 함수. 	
@@ -66,6 +83,7 @@ private:
 
 	TSharedRef<SVerticalBox> CreateContentBox();
 	TSharedRef<SWidget> CreateRowEditorBox();
+	void ResetRowEditorBox();
 
 	void LoadLayoutData();
 	void SaveLayoutData();
@@ -95,6 +113,8 @@ private:
 	void HandlePostChange();
 	void SetHighlightedRow(FName Name);	
 
+public:
+	virtual void SetDataTable(UDataTable* InDataTable);
 	const UDataTable* GetDataTable() const;
 	UDataTable* GetDataTable();
 
@@ -114,7 +134,7 @@ private:
 	};
 
 	// 편집할 My Obj
-	class UDataActorComponent* MyObj;	
+	class UDataActorComponent* MyObj;
 
 	// My 에디터가 사용할 고유한 앱의 명칭.
 	static const FName MyEditorAppIdentifier;
@@ -129,6 +149,7 @@ private:
 	FName HighlightedRowName;
 	FOnRowHighlighted CallbackOnRowHighlighted;	
 	FSimpleDelegate CallbackOnDataTableUndoRedo;
+	//FSimpleDelegate CallbackOnDataTableAllRemove;
 
 	FText ActiveFilterText;
 	float RowNameColumnWidth;

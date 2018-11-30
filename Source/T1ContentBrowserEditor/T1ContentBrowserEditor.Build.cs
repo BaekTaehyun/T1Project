@@ -8,11 +8,17 @@ public class T1ContentBrowserEditor : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		//PrivateIncludePathModuleNames.AddRange(
-		//	new string[] {
-		//		"T1ContentBrowserEditor",
-		//	}
-		//);
+		PublicIncludePathModuleNames.AddRange(
+			new string[] {
+				"T1ProjectEditor",
+			}
+		);
+		PublicDependencyModuleNames.AddRange(
+			new string[]
+			{
+				"T1ProjectEditor"
+			}
+		);
 
 		PrivateIncludePathModuleNames.AddRange(
 			new string[] {
@@ -24,7 +30,7 @@ public class T1ContentBrowserEditor : ModuleRules
                 "MainFrame",
 				"PackagesDialog",
 				"SourceControl",
-				"SourceControlWindows"
+				"SourceControlWindows",
 			}
 		);
 
@@ -46,7 +52,7 @@ public class T1ContentBrowserEditor : ModuleRules
 				"EditorWidgets",
 				"Projects",
 				"AddContentDialog",
-				"DesktopPlatform",				
+				"DesktopPlatform",
 			}
 		);
 
@@ -58,7 +64,7 @@ public class T1ContentBrowserEditor : ModuleRules
 				"AssetTools",
 				"CollectionManager",
 				"GameProjectGeneration",
-                "MainFrame"
+                "MainFrame",
 			}
 		);
 		

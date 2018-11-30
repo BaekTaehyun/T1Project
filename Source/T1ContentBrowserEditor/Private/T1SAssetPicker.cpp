@@ -144,7 +144,7 @@ void T1SAssetPicker::Construct( const FArguments& InArgs )
 			.IsChecked( this, &T1SAssetPicker::GetShowOtherDevelopersCheckState )
 			[
 				SNew( SImage )
-				.Image( FEditorStyle::GetBrush("T1ContentBrowser.ColumnViewDeveloperFolderIcon") )
+				.Image( FEditorStyle::GetBrush("ContentBrowser.ColumnViewDeveloperFolderIcon") )
 			]
 		];
 
@@ -168,8 +168,8 @@ void T1SAssetPicker::Construct( const FArguments& InArgs )
 				.AutoHeight()
 				[
 					SNew(SButton)
-						.ButtonStyle( FEditorStyle::Get(), "T1ContentBrowser.NoneButton" )
-						.TextStyle( FEditorStyle::Get(), "T1ContentBrowser.NoneButtonText" )
+						.ButtonStyle( FEditorStyle::Get(), "ContentBrowser.NoneButton" )
+						.TextStyle( FEditorStyle::Get(), "ContentBrowser.NoneButtonText" )
 						.Text( LOCTEXT("NoneButtonText", "( None )") )
 						.ToolTipText( LOCTEXT("NoneButtonTooltip", "Clears the asset selection.") )
 						.HAlign(HAlign_Center)

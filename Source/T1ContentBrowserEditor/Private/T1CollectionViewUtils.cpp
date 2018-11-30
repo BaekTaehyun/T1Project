@@ -7,7 +7,7 @@
 #include "ICollectionManager.h"
 #include "CollectionManagerModule.h"
 
-#define LOCTEXT_NAMESPACE "CollectionView"
+#define LOCTEXT_NAMESPACE "T1CollectionView"
 
 namespace CollectionViewUtils
 {

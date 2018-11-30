@@ -498,7 +498,6 @@ private:
 	bool bAlwaysShowCollections;
 
 public: 
-
 	/** The section of EditorPerProjectUserSettings in which to save content browser settings */
 	static const FString SettingsIniSection;
 };

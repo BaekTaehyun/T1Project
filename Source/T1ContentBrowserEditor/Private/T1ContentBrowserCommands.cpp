@@ -3,7 +3,7 @@
 #include "T1ContentBrowserCommands.h"
 
 
-#define LOCTEXT_NAMESPACE "T1ContentBrowser"
+#define LOCTEXT_NAMESPACE "T1ContentBrowserEditor"
 
 
 void FT1ContentBrowserCommands::RegisterCommands()

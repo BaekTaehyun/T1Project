@@ -24,7 +24,7 @@
 #include "IDocumentation.h"
 #include "ClassIconFinder.h"
 
-#define LOCTEXT_NAMESPACE "T1ContentBrowser"
+#define LOCTEXT_NAMESPACE "T1ContentBrowserEditor"
 
 struct FFactoryItem
 {
@@ -264,7 +264,7 @@ void FT1NewAssetOrClassContextMenu::MakeContextMenu(
 			MenuBuilder.AddMenuEntry(
 				LOCTEXT("NewFolderLabel", "New Folder"),
 				NewFolderToolTip,
-				FSlateIcon(FEditorStyle::GetStyleSetName(), "T1ContentBrowser.NewFolderIcon"),
+				FSlateIcon(FEditorStyle::GetStyleSetName(), "ContentBrowser.NewFolderIcon"),
 				FUIAction(
 					FExecuteAction::CreateStatic(&FT1NewAssetOrClassContextMenu::ExecuteNewFolder, FirstSelectedPath, InOnNewFolderRequested),
 					CanExecuteFolderActionsDelegate

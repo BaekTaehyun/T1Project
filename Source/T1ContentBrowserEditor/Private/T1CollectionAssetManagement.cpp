@@ -8,7 +8,7 @@
 #include "Framework/Notifications/NotificationManager.h"
 #include "Widgets/Notifications/SNotificationList.h"
 
-#define LOCTEXT_NAMESPACE "T1ContentBrowser"
+#define LOCTEXT_NAMESPACE "T1ContentBrowserEditor"
 
 FT1CollectionAssetManagement::FT1CollectionAssetManagement()
 {

@@ -560,7 +560,7 @@ TSharedRef<SDockTab> FT1ContentBrowserSingleton::SpawnContentBrowserTab( const F
 	TSharedRef<SDockTab> NewTab = SNew(SDockTab)
 		.TabRole(ETabRole::NomadTab)
 		.Label( Label )
-		.ToolTip( IDocumentation::Get()->CreateToolTip( Label, nullptr, "Shared/T1ContentBrowser", "Tab" ) );
+		.ToolTip( IDocumentation::Get()->CreateToolTip( Label, nullptr, "Shared/ContentBrowser", "Tab" ) );
 
 	TSharedRef<SWidget> NewBrowser = CreateContentBrowser( SpawnTabArgs.GetTabId().TabType, NewTab, nullptr );
 

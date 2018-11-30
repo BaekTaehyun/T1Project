@@ -34,7 +34,7 @@
 #include "ObjectTools.h"
 #include "AssetThumbnail.h"
 
-#define LOCTEXT_NAMESPACE "T1ContentBrowser"
+#define LOCTEXT_NAMESPACE "T1ContentBrowserEditor"
 
 
 ///////////////////////////////
@@ -111,12 +111,12 @@ TSharedRef<SWidget> FT1AssetViewItemHelper::CreateListTileItemContents(T* const 
 		}
 
 		const FSlateBrush* FolderBaseImage = AssetFolderItem->bDeveloperFolder 
-			? FEditorStyle::GetBrush("T1ContentBrowser.ListViewDeveloperFolderIcon.Base") 
-			: FEditorStyle::GetBrush("T1ContentBrowser.ListViewFolderIcon.Base");
+			? FEditorStyle::GetBrush("ContentBrowser.ListViewDeveloperFolderIcon.Base") 
+			: FEditorStyle::GetBrush("ContentBrowser.ListViewFolderIcon.Base");
 
 		const FSlateBrush* FolderTintImage = AssetFolderItem->bDeveloperFolder 
-			? FEditorStyle::GetBrush("T1ContentBrowser.ListViewDeveloperFolderIcon.Mask") 
-			: FEditorStyle::GetBrush("T1ContentBrowser.ListViewFolderIcon.Mask");
+			? FEditorStyle::GetBrush("ContentBrowser.ListViewDeveloperFolderIcon.Mask") 
+			: FEditorStyle::GetBrush("ContentBrowser.ListViewFolderIcon.Mask");
 
 		// Folder base
 		ItemContentsOverlay->AddSlot()
@@ -180,7 +180,7 @@ TSharedRef<SWidget> FT1AssetViewItemHelper::CreateListTileItemContents(T* const 
 	}
 	else
 	{
-		OutItemShadowBorder = FName("T1ContentBrowser.ThumbnailShadow");
+		OutItemShadowBorder = FName("ContentBrowser.ThumbnailShadow");
 
 		// The actual thumbnail
 		ItemContentsOverlay->AddSlot()
@@ -248,7 +248,7 @@ public:
 		SToolTip::Construct(
 			SToolTip::FArguments()
 			.TextMargin(1.0f)
-			.BorderImage(FEditorStyle::GetBrush("T1ContentBrowser.TileViewTooltip.ToolTipBorder"))
+			.BorderImage(FEditorStyle::GetBrush("ContentBrowser.TileViewTooltip.ToolTipBorder"))
 			);
 	}
 
@@ -401,7 +401,7 @@ void ST1AssetViewItem::Construct( const FArguments& InArgs )
 
 	AssetItem->OnAssetDataChanged.AddSP(this, &ST1AssetViewItem::OnAssetDataChanged);
 
-	AssetDirtyBrush = FEditorStyle::GetBrush("T1ContentBrowser.ContentDirty");
+	AssetDirtyBrush = FEditorStyle::GetBrush("ContentBrowser.ContentDirty");
 	SCCStateBrush = nullptr;
 
 	// Set our tooltip - this will refresh each time it's opened to make sure it's up-to-date
@@ -736,7 +736,7 @@ TSharedRef<SWidget> ST1AssetViewItem::CreateToolTipWidget() const
 				[
 					SNew(SBorder)
 					.Padding(6)
-					.BorderImage(FEditorStyle::GetBrush("T1ContentBrowser.TileViewTooltip.ContentBorder"))
+					.BorderImage(FEditorStyle::GetBrush("ContentBrowser.TileViewTooltip.ContentBorder"))
 					[
 						SNew(SVerticalBox)
 
@@ -752,7 +752,7 @@ TSharedRef<SWidget> ST1AssetViewItem::CreateToolTipWidget() const
 							[
 								SNew(STextBlock)
 								.Text(NameText)
-								.Font(FEditorStyle::GetFontStyle("T1ContentBrowser.TileViewTooltip.NameFont"))
+								.Font(FEditorStyle::GetFontStyle("ContentBrowser.TileViewTooltip.NameFont"))
 							]
 
 							+ SHorizontalBox::Slot()
@@ -785,11 +785,11 @@ TSharedRef<SWidget> ST1AssetViewItem::CreateToolTipWidget() const
 					[
 						SNew(SBorder)
 						.Padding(6)
-						.BorderImage(FEditorStyle::GetBrush("T1ContentBrowser.TileViewTooltip.ContentBorder"))
+						.BorderImage(FEditorStyle::GetBrush("ContentBrowser.TileViewTooltip.ContentBorder"))
 						[
 							SNew(STextBlock)
 							.WrapTextAt(300.0f)
-							.Font(FEditorStyle::GetFontStyle("T1ContentBrowser.TileViewTooltip.AssetUserDescriptionFont"))
+							.Font(FEditorStyle::GetFontStyle("ContentBrowser.TileViewTooltip.AssetUserDescriptionFont"))
 							.Text(UserDescription)
 						]
 					];
@@ -801,7 +801,7 @@ TSharedRef<SWidget> ST1AssetViewItem::CreateToolTipWidget() const
 				[
 					SNew(SBorder)
 					.Padding(6)
-					.BorderImage(FEditorStyle::GetBrush("T1ContentBrowser.TileViewTooltip.ContentBorder"))
+					.BorderImage(FEditorStyle::GetBrush("ContentBrowser.TileViewTooltip.ContentBorder"))
 					[
 						InfoBox
 					]
@@ -810,7 +810,7 @@ TSharedRef<SWidget> ST1AssetViewItem::CreateToolTipWidget() const
 
 			return SNew(SBorder)
 				.Padding(6)
-				.BorderImage( FEditorStyle::GetBrush("T1ContentBrowser.TileViewTooltip.NonContentBorder") )
+				.BorderImage( FEditorStyle::GetBrush("ContentBrowser.TileViewTooltip.NonContentBorder") )
 				[
 					OverallTooltipVBox
 				];
@@ -827,7 +827,7 @@ TSharedRef<SWidget> ST1AssetViewItem::CreateToolTipWidget() const
 
 			return SNew(SBorder)
 				.Padding(6)
-				.BorderImage( FEditorStyle::GetBrush("T1ContentBrowser.TileViewTooltip.NonContentBorder") )
+				.BorderImage( FEditorStyle::GetBrush("ContentBrowser.TileViewTooltip.NonContentBorder") )
 				[
 					SNew(SVerticalBox)
 
@@ -837,7 +837,7 @@ TSharedRef<SWidget> ST1AssetViewItem::CreateToolTipWidget() const
 					[
 						SNew(SBorder)
 						.Padding(6)
-						.BorderImage( FEditorStyle::GetBrush("T1ContentBrowser.TileViewTooltip.ContentBorder") )
+						.BorderImage( FEditorStyle::GetBrush("ContentBrowser.TileViewTooltip.ContentBorder") )
 						[
 							SNew(SVerticalBox)
 
@@ -853,7 +853,7 @@ TSharedRef<SWidget> ST1AssetViewItem::CreateToolTipWidget() const
 								[
 									SNew(STextBlock)
 									.Text( FolderName )
-									.Font( FEditorStyle::GetFontStyle("T1ContentBrowser.TileViewTooltip.NameFont") )
+									.Font( FEditorStyle::GetFontStyle("ContentBrowser.TileViewTooltip.NameFont") )
 								]
 
 								+SHorizontalBox::Slot()
@@ -872,7 +872,7 @@ TSharedRef<SWidget> ST1AssetViewItem::CreateToolTipWidget() const
 					[
 						SNew(SBorder)
 						.Padding(6)
-						.BorderImage( FEditorStyle::GetBrush("T1ContentBrowser.TileViewTooltip.ContentBorder") )
+						.BorderImage( FEditorStyle::GetBrush("ContentBrowser.TileViewTooltip.ContentBorder") )
 						[
 							InfoBox
 						]
@@ -1529,7 +1529,7 @@ void ST1AssetListItem::Construct( const FArguments& InArgs )
 				.Padding(0, 1)
 				[
 					SAssignNew(InlineRenameWidget, SInlineEditableTextBlock)
-					.Font(FEditorStyle::GetFontStyle("T1ContentBrowser.AssetTileViewNameFont"))
+					.Font(FEditorStyle::GetFontStyle("ContentBrowser.AssetTileViewNameFont"))
 					.Text( GetNameText() )
 					.OnBeginTextEdit(this, &ST1AssetListItem::HandleBeginNameChange)
 					.OnTextCommitted(this, &ST1AssetListItem::HandleNameCommitted)
@@ -1545,7 +1545,7 @@ void ST1AssetListItem::Construct( const FArguments& InArgs )
 				[
 					// Class
 					SAssignNew(ClassText, STextBlock)
-					.Font(FEditorStyle::GetFontStyle("T1ContentBrowser.AssetListViewClassFont"))
+					.Font(FEditorStyle::GetFontStyle("ContentBrowser.AssetListViewClassFont"))
 					.Text(GetAssetClassText())
 					.HighlightText(InArgs._HighlightText)
 				]
@@ -1727,17 +1727,17 @@ FSlateFontInfo ST1AssetTileItem::GetThumbnailFont() const
 		float Size = ThumbSize.Get();
 		if ( Size < 50 )
 		{
-			const static FName SmallFontName("T1ContentBrowser.AssetTileViewNameFontVerySmall");
+			const static FName SmallFontName("ContentBrowser.AssetTileViewNameFontVerySmall");
 			return FEditorStyle::GetFontStyle(SmallFontName);
 		}
 		else if ( Size < 85 )
 		{
-			const static FName SmallFontName("T1ContentBrowser.AssetTileViewNameFontSmall");
+			const static FName SmallFontName("ContentBrowser.AssetTileViewNameFontSmall");
 			return FEditorStyle::GetFontStyle(SmallFontName);
 		}
 	}
 
-	const static FName RegularFont("T1ContentBrowser.AssetTileViewNameFont");
+	const static FName RegularFont("ContentBrowser.AssetTileViewNameFont");
 	return FEditorStyle::GetFontStyle(RegularFont);
 }
 
@@ -1835,16 +1835,16 @@ TSharedRef<SWidget> ST1AssetColumnItem::GenerateWidgetForColumn( const FName& Co
 		{
 			if(AssetItem.IsValid() && StaticCastSharedPtr<FT1AssetViewFolder>(AssetItem)->bDeveloperFolder)
 			{
-				IconBrush = FEditorStyle::GetBrush("T1ContentBrowser.ColumnViewDeveloperFolderIcon");
+				IconBrush = FEditorStyle::GetBrush("ContentBrowser.ColumnViewDeveloperFolderIcon");
 			}
 			else
 			{
-				IconBrush = FEditorStyle::GetBrush("T1ContentBrowser.ColumnViewFolderIcon");
+				IconBrush = FEditorStyle::GetBrush("ContentBrowser.ColumnViewFolderIcon");
 			}
 		}
 		else
 		{
-			IconBrush = FEditorStyle::GetBrush("T1ContentBrowser.ColumnViewAssetIcon");
+			IconBrush = FEditorStyle::GetBrush("ContentBrowser.ColumnViewAssetIcon");
 		}
 
 		// Make icon overlays (eg, SCC and dirty status) a reasonable size in relation to the icon size (note: it is assumed this icon is square)

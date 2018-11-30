@@ -24,7 +24,7 @@
 #include "T1FrontendFilters.h"
 //#include "T1ContentBrowserFrontEndFilterExtension.h"
 
-#define LOCTEXT_NAMESPACE "T1ContentBrowser"
+#define LOCTEXT_NAMESPACE "T1ContentBrowserEditor"
 
 /** A class for check boxes in the filter list. If you double click a filter checkbox, you will enable it and disable all others */
 class SFilterCheckBox : public SCheckBox
@@ -139,10 +139,10 @@ public:
 			SNew(SBorder)
 			.Padding(0)
 			.BorderBackgroundColor( FLinearColor(0.2f, 0.2f, 0.2f, 0.2f) )
-			.BorderImage(FEditorStyle::GetBrush("T1ContentBrowser.FilterButtonBorder"))
+			.BorderImage(FEditorStyle::GetBrush("ContentBrowser.FilterButtonBorder"))
 			[
 				SAssignNew( ToggleButtonPtr, SFilterCheckBox )
-				.Style(FEditorStyle::Get(), "T1ContentBrowser.FilterButton")
+				.Style(FEditorStyle::Get(), "ContentBrowser.FilterButton")
 				.ToolTipText(FilterToolTip)
 				.Padding(this, &SFilter::GetFilterNamePadding)
 				.IsChecked(this, &SFilter::IsChecked)
@@ -152,7 +152,7 @@ public:
 				[
 					SNew(STextBlock)
 					.ColorAndOpacity(this, &SFilter::GetFilterNameColorAndOpacity)
-					.Font(FEditorStyle::GetFontStyle("T1ContentBrowser.FilterNameFont"))
+					.Font(FEditorStyle::GetFontStyle("ContentBrowser.FilterNameFont"))
 					.ShadowOffset(FVector2D(1.f, 1.f))
 					.Text(this, &SFilter::GetFilterName)
 				]

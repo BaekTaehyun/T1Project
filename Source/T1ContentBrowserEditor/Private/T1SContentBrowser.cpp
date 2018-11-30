@@ -56,6 +56,10 @@
 
 #include "Editor/GameProjectGeneration/Public/GameProjectGenerationModule.h"
 #include "Toolkits/GlobalEditorCommonCommands.h"
+#include "Engine/DataTable.h"
+
+#include "T1ProjectEditor/FMyEditor.h"
+#include "T1ProjectEditor/T1ProjectEditor.h"
 
 #define LOCTEXT_NAMESPACE "T1ContentBrowserEditor"
 
@@ -168,7 +172,7 @@ void ST1ContentBrowser::Construct( const FArguments& InArgs, const FName& InInst
 								.AutoWidth()
 								[
 									SNew(STextBlock)
-									.TextStyle(FEditorStyle::Get(), "T1ContentBrowser.TopBar.Font")
+									.TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
 									.Font(FEditorStyle::Get().GetFontStyle("FontAwesome.11"))
 									.Text(FEditorFontGlyphs::File)
 								]
@@ -180,7 +184,7 @@ void ST1ContentBrowser::Construct( const FArguments& InArgs, const FName& InInst
 								.Padding(4, 0, 0, 0)
 								[
 									SNew( STextBlock )
-									.TextStyle( FEditorStyle::Get(), "T1ContentBrowser.TopBar.Font" )
+									.TextStyle( FEditorStyle::Get(), "ContentBrowser.TopBar.Font" )
 									.Text( LOCTEXT( "NewButton", "Add New" ) )
 								]
 
@@ -191,7 +195,7 @@ void ST1ContentBrowser::Construct( const FArguments& InArgs, const FName& InInst
 								.Padding(4, 0, 0, 0)
 								[
 									SNew(STextBlock)
-									.TextStyle(FEditorStyle::Get(), "T1ContentBrowser.TopBar.Font")
+									.TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
 									.Font(FEditorStyle::Get().GetFontStyle("FontAwesome.10"))
 									.Text(FEditorFontGlyphs::Caret_Down)
 								]
@@ -221,7 +225,7 @@ void ST1ContentBrowser::Construct( const FArguments& InArgs, const FName& InInst
 								.AutoWidth()
 								[
 									SNew(STextBlock)
-									.TextStyle(FEditorStyle::Get(), "T1ContentBrowser.TopBar.Font")
+									.TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
 									.Font(FEditorStyle::Get().GetFontStyle("FontAwesome.11"))
 									.Text(FEditorFontGlyphs::Download)
 								]
@@ -233,7 +237,7 @@ void ST1ContentBrowser::Construct( const FArguments& InArgs, const FName& InInst
 								.Padding(4, 0, 0, 0)
 								[
 									SNew( STextBlock )
-									.TextStyle( FEditorStyle::Get(), "T1ContentBrowser.TopBar.Font" )
+									.TextStyle( FEditorStyle::Get(), "ContentBrowser.TopBar.Font" )
 									.Text( LOCTEXT( "Import", "Import" ) )
 								]
 							]
@@ -260,7 +264,7 @@ void ST1ContentBrowser::Construct( const FArguments& InArgs, const FName& InInst
 								.AutoWidth()
 								[
 									SNew(STextBlock)
-									.TextStyle(FEditorStyle::Get(), "T1ContentBrowser.TopBar.Font")
+									.TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
 									.Font(FEditorStyle::Get().GetFontStyle("FontAwesome.11"))
 									.Text(FEditorFontGlyphs::Floppy_O)
 								]
@@ -272,7 +276,7 @@ void ST1ContentBrowser::Construct( const FArguments& InArgs, const FName& InInst
 								.Padding(4, 0, 0, 0)
 								[
 									SNew( STextBlock )
-									.TextStyle( FEditorStyle::Get(), "T1ContentBrowser.TopBar.Font" )
+									.TextStyle( FEditorStyle::Get(), "ContentBrowser.TopBar.Font" )
 									.Text( LOCTEXT( "SaveAll", "Save All" ) )
 								]
 							]
@@ -310,7 +314,7 @@ void ST1ContentBrowser::Construct( const FArguments& InArgs, const FName& InInst
 							.AddMetaData<FTagMetaData>(FTagMetaData(TEXT("ContentBrowserHistoryBack")))
 							[
 								SNew(STextBlock)
-								.TextStyle(FEditorStyle::Get(), "T1ContentBrowser.TopBar.Font")
+								.TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
 								.Font(FEditorStyle::Get().GetFontStyle("FontAwesome.11"))
 								.Text(FText::FromString(FString(TEXT("\xf060"))) /*fa-arrow-left*/)
 							]
@@ -337,7 +341,7 @@ void ST1ContentBrowser::Construct( const FArguments& InArgs, const FName& InInst
 							.AddMetaData<FTagMetaData>(FTagMetaData(TEXT("ContentBrowserHistoryForward")))
 							[
 								SNew(STextBlock)
-								.TextStyle(FEditorStyle::Get(), "T1ContentBrowser.TopBar.Font")
+								.TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
 								.Font(FEditorStyle::Get().GetFontStyle("FontAwesome.11"))
 								.Text(FText::FromString(FString(TEXT("\xf061"))) /*fa-arrow-right*/)
 							]
@@ -370,7 +374,7 @@ void ST1ContentBrowser::Construct( const FArguments& InArgs, const FName& InInst
 						.ButtonContent()
 						[
 							SNew(STextBlock)
-							.TextStyle(FEditorStyle::Get(), "T1ContentBrowser.TopBar.Font")
+							.TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
 							.Font(FEditorStyle::Get().GetFontStyle("FontAwesome.11"))
 							.Text(FText::FromString(FString(TEXT("\xf07c"))) /*fa-folder-open*/)
 						]
@@ -386,8 +390,8 @@ void ST1ContentBrowser::Construct( const FArguments& InArgs, const FName& InInst
 						SAssignNew(PathBreadcrumbTrail, SBreadcrumbTrail<FString>)
 						.ButtonContentPadding(FMargin(2, 2))
 						.ButtonStyle(FEditorStyle::Get(), "FlatButton")
-						.DelimiterImage(FEditorStyle::GetBrush("T1ContentBrowser.PathDelimiter"))
-						.TextStyle(FEditorStyle::Get(), "T1ContentBrowser.PathText")
+						.DelimiterImage(FEditorStyle::GetBrush("ContentBrowser.PathDelimiter"))
+						.TextStyle(FEditorStyle::Get(), "ContentBrowser.PathText")
 						.ShowLeadingDelimiter(false)
 						.InvertTextColorOnHover(false)
 						.OnCrumbClicked(this, &ST1ContentBrowser::OnPathClicked)
@@ -482,7 +486,7 @@ void ST1ContentBrowser::Construct( const FArguments& InArgs, const FName& InInst
 				.Value(0.8f)
 				[
 					SAssignNew(PathCollectionSplitterPtr, SSplitter)
-					.Style( FEditorStyle::Get(), "T1ContentBrowser.Splitter" )
+					.Style( FEditorStyle::Get(), "ContentBrowser.Splitter" )
 					.Orientation( Orient_Vertical )
 					// Path View
 					+ SSplitter::Slot()
@@ -1804,7 +1808,7 @@ TSharedPtr<SWidget> ST1ContentBrowser::OnGetCrumbDelimiterContent(const FString&
 				MenuBuilder.AddMenuEntry(
 					FText::FromString(PathWithoutParent),
 					FText::GetEmpty(),
-					FSlateIcon(FEditorStyle::GetStyleSetName(), "T1ContentBrowser.BreadcrumbPathPickerFolder"),
+					FSlateIcon(FEditorStyle::GetStyleSetName(), "ContentBrowser.BreadcrumbPathPickerFolder"),
 					FUIAction(FExecuteAction::CreateSP(this, &ST1ContentBrowser::OnPathMenuItemClicked, SubPath))
 					);
 			}
@@ -2063,21 +2067,35 @@ void ST1ContentBrowser::OnAssetsActivated(const TArray<FAssetData>& ActivatedAss
 
 		SlowTask.EnterProgressFrame(75.f/ActivatedAssets.Num(), FText::Format(LoadingTemplate, FText::FromName(AssetData.AssetName)));
 
-		UObject* Asset = (*AssetIt).GetAsset();
+		UObject* Asset = (*AssetIt).GetAsset();		
 
 		if ( Asset != NULL )
 		{
-			FAssetToolsModule& AssetToolsModule = FModuleManager::Get().LoadModuleChecked<FAssetToolsModule>("AssetTools");
-			TWeakPtr<IAssetTypeActions> AssetTypeActions = AssetToolsModule.Get().GetAssetTypeActionsForClass(Asset->GetClass());
-			if ( AssetTypeActions.IsValid() )
+			// DataCenterEditor에서는 DataTable을 바로 DataCenterEditor탭으로 한다.
+			// 차후에 여러타입이 추가되면 구조 및 검색을 변경한다. 현재는 데이터 테이블에만 집중한다.
+			if (Asset->GetClass()->IsChildOf(UDataTable::StaticClass()))
 			{
-				// Add this asset to the list associated with the asset type action object
-				TArray<UObject*>& ObjList = TypeActionsToObjects.FindOrAdd(AssetTypeActions.Pin().ToSharedRef());
-				ObjList.AddUnique(Asset);
+				FT1ProjectEditor* T1ProjectEditorModule = FModuleManager::GetModulePtr<FT1ProjectEditor>(TEXT("T1ProjectEditor"));
+				if (T1ProjectEditorModule != nullptr)
+				{
+					T1ProjectEditorModule->SetDataTable((UDataTable*)Asset);
+				}
 			}
 			else
 			{
-				ObjectsWithoutTypeActions.AddUnique(Asset);
+				FAssetToolsModule& AssetToolsModule = FModuleManager::Get().LoadModuleChecked<FAssetToolsModule>("AssetTools");
+				TWeakPtr<IAssetTypeActions> AssetTypeActions = AssetToolsModule.Get().GetAssetTypeActionsForClass(Asset->GetClass());
+
+				if (AssetTypeActions.IsValid())
+				{
+					// Add this asset to the list associated with the asset type action object
+					TArray<UObject*>& ObjList = TypeActionsToObjects.FindOrAdd(AssetTypeActions.Pin().ToSharedRef());
+					ObjList.AddUnique(Asset);
+				}
+				else
+				{
+					ObjectsWithoutTypeActions.AddUnique(Asset);
+				}
 			}
 		}
 	}
@@ -2123,11 +2141,11 @@ const FSlateBrush* ST1ContentBrowser::GetToggleLockImage() const
 {
 	if ( bIsLocked )
 	{
-		return FEditorStyle::GetBrush("T1ContentBrowser.LockButton_Locked");
+		return FEditorStyle::GetBrush("ContentBrowser.LockButton_Locked");
 	}
 	else
 	{
-		return FEditorStyle::GetBrush("T1ContentBrowser.LockButton_Unlocked");
+		return FEditorStyle::GetBrush("ContentBrowser.LockButton_Unlocked");
 	}
 }
 
@@ -2140,11 +2158,11 @@ const FSlateBrush* ST1ContentBrowser::GetSourcesToggleImage() const
 {
 	if ( bSourcesViewExpanded )
 	{
-		return FEditorStyle::GetBrush("T1ContentBrowser.HideSourcesView");
+		return FEditorStyle::GetBrush("ContentBrowser.HideSourcesView");
 	}
 	else
 	{
-		return FEditorStyle::GetBrush("T1ContentBrowser.ShowSourcesView");
+		return FEditorStyle::GetBrush("ContentBrowser.ShowSourcesView");
 	}
 }
 
@@ -2762,7 +2780,7 @@ TSharedPtr<SWidget> ST1ContentBrowser::GetFolderContextMenu(const TArray<FString
 	MenuBuilder.AddMenuEntry(
 		LOCTEXT("NewFolder", "New Folder"),
 		NewFolderToolTip,
-		FSlateIcon(FEditorStyle::GetStyleSetName(), "T1ContentBrowser.NewFolderIcon"),
+		FSlateIcon(FEditorStyle::GetStyleSetName(), "ContentBrowser.NewFolderIcon"),
 		FUIAction(
 			FExecuteAction::CreateSP( this, &ST1ContentBrowser::CreateNewFolder, SelectedPaths.Num() > 0 ? SelectedPaths[0] : FString(), InOnCreateNewFolder ),
 			FCanExecuteAction::CreateLambda( [bCanCreateNewFolder] { return bCanCreateNewFolder; } )

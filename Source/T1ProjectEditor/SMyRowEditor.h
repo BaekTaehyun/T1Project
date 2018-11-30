@@ -77,9 +77,10 @@ private:
 
 public:
 
+	//void AllRemove();
+
 	void Construct(const FArguments& InArgs, UDataTable* Changed);
-
+	void Construct(UDataTable* Changed);
 	void SelectRow(FName Name);
-
 	void HandleUndoRedo();
 };

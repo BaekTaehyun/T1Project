@@ -4,6 +4,9 @@
 #include "FMyEditor.h"
 #include "DataActorComponent.h"
 
+#include "Modules/ModuleManager.h"
+#include "T1ProjectEditor.h"
+
 #define LOCTEXT_NAMESPACE "MyCommand"
 
 void FMyExtensionCommands::RegisterCommands()
@@ -13,9 +16,10 @@ void FMyExtensionCommands::RegisterCommands()
 
 void FMyExtensionActions::Action1()
 {
-	//FMessageDialog::Open(EAppMsgType::Ok, LOCTEXT("MyCommand", "My Editor Extension Action 1 Message"));	
+	FT1ProjectEditor* T1ProjectEditorModule = FModuleManager::GetModulePtr<FT1ProjectEditor>("T1ProjectEditor");
 	TSharedRef<FMyEditor> NewMyEditor(new FMyEditor());
 	NewMyEditor->InitFMyEditor(EToolkitMode::Standalone, TSharedPtr<IToolkitHost>(), NewObject<UDataActorComponent>());
+	T1ProjectEditorModule->SetMyEditor(NewMyEditor);
 }
 
 #undef LOCTEXT_NAMESPACE

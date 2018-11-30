@@ -13,7 +13,7 @@
 #include "CollectionManagerModule.h"
 #include "T1ContentBrowserLog.h"
 
-#define LOCTEXT_NAMESPACE "T1ContentBrowser"
+#define LOCTEXT_NAMESPACE "T1ContentBrowserEditor"
 
 /** The collection manager doesn't know how to follow redirectors, this class provides it with that knowledge */
 class FCollectionRedirectorFollower : public ICollectionRedirectorFollower

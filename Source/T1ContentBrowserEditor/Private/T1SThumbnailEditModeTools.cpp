@@ -16,7 +16,7 @@
 #include "AssetToolsModule.h"
 #include "AssetThumbnail.h"
 
-#define LOCTEXT_NAMESPACE "T1ContentBrowser"
+#define LOCTEXT_NAMESPACE "T1ContentBrowserEditor"
 
 //////////////////////////////////////////////
 // ST1ThumbnailEditModeTools
@@ -71,7 +71,7 @@ void ST1ThumbnailEditModeTools::Construct( const FArguments& InArgs, const TShar
 			.Content()
 			[
 				SNew(SImage)
-				.Image(FEditorStyle::GetBrush("T1ContentBrowser.ResetPrimitiveToDefault"))
+				.Image(FEditorStyle::GetBrush("ContentBrowser.ResetPrimitiveToDefault"))
 			]
 		]
 	];
@@ -105,10 +105,10 @@ const FSlateBrush* ST1ThumbnailEditModeTools::GetCurrentPrimitiveBrush() const
 		EThumbnailPrimType PrimType = ThumbnailInfo->bUserModifiedShape ? ThumbnailInfo->PrimitiveType.GetValue() : GetDefaultThumbnailType();
 		switch (PrimType)
 		{
-		case TPT_None: return FEditorStyle::GetBrush("T1ContentBrowser.PrimitiveCustom");
-		case TPT_Sphere: return FEditorStyle::GetBrush("T1ContentBrowser.PrimitiveSphere");
-		case TPT_Cube: return FEditorStyle::GetBrush("T1ContentBrowser.PrimitiveCube");
-		case TPT_Cylinder: return FEditorStyle::GetBrush("T1ContentBrowser.PrimitiveCylinder");
+		case TPT_None: return FEditorStyle::GetBrush("ContentBrowser.PrimitiveCustom");
+		case TPT_Sphere: return FEditorStyle::GetBrush("ContentBrowser.PrimitiveSphere");
+		case TPT_Cube: return FEditorStyle::GetBrush("ContentBrowser.PrimitiveCube");
+		case TPT_Cylinder: return FEditorStyle::GetBrush("ContentBrowser.PrimitiveCylinder");
 		case TPT_Plane:
 		default:
 			// Fall through and return a plane
@@ -116,7 +116,7 @@ const FSlateBrush* ST1ThumbnailEditModeTools::GetCurrentPrimitiveBrush() const
 		}
 	}
 
-	return FEditorStyle::GetBrush( "T1ContentBrowser.PrimitivePlane" );
+	return FEditorStyle::GetBrush( "ContentBrowser.PrimitivePlane" );
 }
 
 FReply ST1ThumbnailEditModeTools::ChangePrimitive()

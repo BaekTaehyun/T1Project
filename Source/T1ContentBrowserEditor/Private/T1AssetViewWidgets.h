@@ -668,7 +668,7 @@ public:
 
 		SMultiColumnTableRow< TSharedPtr<FT1AssetViewItem> >::Construct( 
 			FSuperRowType::FArguments()
-				.Style(FEditorStyle::Get(), "T1ContentBrowser.AssetListView.TableRow")
+				.Style(FEditorStyle::Get(), "ContentBrowser.AssetListView.TableRow")
 				.OnDragDetected(InArgs._OnDragDetected), 
 			InOwnerTableView);
 		Content = this->AssetColumnItem;

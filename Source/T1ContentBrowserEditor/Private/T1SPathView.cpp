@@ -24,7 +24,7 @@
 #include "T1NativeClassHierarchy.h"
 #include "T1EmptyFolderVisibilityManager.h"
 
-#define LOCTEXT_NAMESPACE "T1ContentBrowser"
+#define LOCTEXT_NAMESPACE "T1ContentBrowserEditor"
 
 ST1PathView::~ST1PathView()
 {

@@ -56,7 +56,7 @@
 #include "T1SPathView.h"
 #include "T1ContentBrowserLog.h"
 
-#define LOCTEXT_NAMESPACE "T1ContentBrowser"
+#define LOCTEXT_NAMESPACE "T1ContentBrowserEditor"
 
 #define MAX_CLASS_NAME_LENGTH 32 // Enforce a reasonable class name length so the path is not too long for PLATFORM_MAX_FILEPATH_LENGTH
 
@@ -98,7 +98,7 @@ public:
 				.VAlign(VAlign_Center)
 				.Padding(0, 0, 4, 0)
 				[
-					SNew(SImage) .Image( FEditorStyle::GetBrush("T1ContentBrowser.PopupMessageIcon") )
+					SNew(SImage) .Image( FEditorStyle::GetBrush("ContentBrowser.PopupMessageIcon") )
 				]
 
 				+SHorizontalBox::Slot()

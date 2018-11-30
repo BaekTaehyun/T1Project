@@ -14,7 +14,7 @@
 #include "T1CollectionViewUtils.h"
 #include "Widgets/Text/SInlineEditableTextBlock.h"
 
-#define LOCTEXT_NAMESPACE "T1ContentBrowser"
+#define LOCTEXT_NAMESPACE "T1ContentBrowserEditor"
 
 //////////////////////////
 // T1SAssetTreeItem
@@ -30,11 +30,11 @@ void T1SAssetTreeItem::Construct( const FArguments& InArgs )
 	IsItemExpanded = InArgs._IsItemExpanded;
 	bDraggedOver = false;
 
-	FolderOpenBrush = FEditorStyle::GetBrush("T1ContentBrowser.AssetTreeFolderOpen");
-	FolderClosedBrush = FEditorStyle::GetBrush("T1ContentBrowser.AssetTreeFolderClosed");
-	FolderOpenCodeBrush = FEditorStyle::GetBrush("T1ContentBrowser.AssetTreeFolderOpenCode");
-	FolderClosedCodeBrush = FEditorStyle::GetBrush("T1ContentBrowser.AssetTreeFolderClosedCode");
-	FolderDeveloperBrush = FEditorStyle::GetBrush("T1ContentBrowser.AssetTreeFolderDeveloper");
+	FolderOpenBrush = FEditorStyle::GetBrush("ContentBrowser.AssetTreeFolderOpen");
+	FolderClosedBrush = FEditorStyle::GetBrush("ContentBrowser.AssetTreeFolderClosed");
+	FolderOpenCodeBrush = FEditorStyle::GetBrush("ContentBrowser.AssetTreeFolderOpenCode");
+	FolderClosedCodeBrush = FEditorStyle::GetBrush("ContentBrowser.AssetTreeFolderClosedCode");
+	FolderDeveloperBrush = FEditorStyle::GetBrush("ContentBrowser.AssetTreeFolderDeveloper");
 		
 	FolderType = EFolderType::Normal;
 	if( T1ContentBrowserUtils::IsDevelopersFolder(InArgs._TreeItem->FolderPath) )
@@ -74,7 +74,7 @@ void T1SAssetTreeItem::Construct( const FArguments& InArgs )
 				SAssignNew(InlineRenameWidget, SInlineEditableTextBlock)
 					.Text(this, &T1SAssetTreeItem::GetNameText)
 					.ToolTipText(this, &T1SAssetTreeItem::GetToolTipText)
-					.Font( InArgs._FontOverride.IsSet() ? InArgs._FontOverride : FEditorStyle::GetFontStyle(bIsRoot ? "T1ContentBrowser.SourceTreeRootItemFont" : "T1ContentBrowser.SourceTreeItemFont") )
+					.Font( InArgs._FontOverride.IsSet() ? InArgs._FontOverride : FEditorStyle::GetFontStyle(bIsRoot ? "ContentBrowser.SourceTreeRootItemFont" : "ContentBrowser.SourceTreeItemFont") )
 					.HighlightText( InArgs._HighlightText )
 					.OnTextCommitted(this, &T1SAssetTreeItem::HandleNameCommitted)
 					.OnVerifyTextChanged(this, &T1SAssetTreeItem::VerifyNameChanged)
@@ -354,7 +354,7 @@ void T1SCollectionTreeItem::Construct( const FArguments& InArgs )
 				SAssignNew(InlineRenameWidget, SInlineEditableTextBlock)
 				.Text( this, &T1SCollectionTreeItem::GetNameText )
 				.HighlightText( InArgs._HighlightText )
-				.Font( FEditorStyle::GetFontStyle("T1ContentBrowser.SourceListItemFont") )
+				.Font( FEditorStyle::GetFontStyle("ContentBrowser.SourceListItemFont") )
 				.OnBeginTextEdit(this, &T1SCollectionTreeItem::HandleBeginNameChange)
 				.OnTextCommitted(this, &T1SCollectionTreeItem::HandleNameCommitted)
 				.OnVerifyTextChanged(this, &T1SCollectionTreeItem::HandleVerifyNameChanged)
@@ -387,7 +387,7 @@ void T1SCollectionTreeItem::Construct( const FArguments& InArgs )
 			.Padding(2, 0, 2, 0)
 			[
 				SNew(SImage)
-				.Image(FEditorStyle::GetBrush("T1ContentBrowser.CollectionStatus"))
+				.Image(FEditorStyle::GetBrush("ContentBrowser.CollectionStatus"))
 				.ColorAndOpacity(this, &T1SCollectionTreeItem::GetCollectionStatusColor)
 				.ToolTipText(this, &T1SCollectionTreeItem::GetCollectionStatusToolTipText)
 			]

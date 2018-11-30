@@ -47,9 +47,10 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
-	void SetNewLevel(int32 NewLevel);
+	//void SetNewLevel(int32 NewLevel);
 	const UDataTable* GetDataTable() const;
 	UDataTable* GetDataTable();
+	void SetDataTable(UDataTable* InDataTable);
 
 	UFUNCTION(CallInEditor, Category = Info)
 	void SetInfoData(int32 EditLevel);	
@@ -57,11 +58,14 @@ public:
 private:
 	struct FCharInfoData* CurrentCharInfoData = nullptr;
 
-	UPROPERTY(EditInstanceOnly, Category = Info, Meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, AdvancedDisplay, Instanced, Category = Info)
+	TArray<UDataTable*> DataTables;
+
+	/*UPROPERTY(EditInstanceOnly, Category = Info, Meta = (AllowPrivateAccess = true))
 	int32 Level;	
 
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = Info, Meta = (AllowPrivateAccess = true))
-	float CurrentHP;
+	float CurrentHP;*/
 
 	UPROPERTY()
 	class UDataTable* CharacterTable = nullptr;

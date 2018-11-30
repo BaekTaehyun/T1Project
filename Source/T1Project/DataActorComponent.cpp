@@ -14,7 +14,7 @@ UDataActorComponent::UDataActorComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 	bWantsInitializeComponent = true;
 
-	Level = 1;
+	//Level = 1;
 
 	// ...
 	FString CharInfoDataPath = TEXT("/Game/Data/CCharInfoData.CCharInfoData");
@@ -48,18 +48,18 @@ void UDataActorComponent::InitializeComponent()
 	//CharacterTable = DT_CHARACTER.Object;
 	//T1CHECK(CharacterTable->RowMap.Num() > 0);
 
-	SetNewLevel(Level);
+	//SetNewLevel(Level);
 	//T1LOG(Warning, TEXT("MaxHP of Level 1 Character : %d"), GetCharInfoData(1)->MaxHP);
 }
 
 void UDataActorComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
-	FName PropertyName = (PropertyChangedEvent.Property != NULL) ? PropertyChangedEvent.Property->GetFName() : NAME_None;
-	if (PropertyName == GET_MEMBER_NAME_CHECKED(UDataActorComponent, Level))
-	{
-		//various uproperty tricks, see link
-		SetNewLevel(Level);
-	}
+	//FName PropertyName = (PropertyChangedEvent.Property != NULL) ? PropertyChangedEvent.Property->GetFName() : NAME_None;
+	//if (PropertyName == GET_MEMBER_NAME_CHECKED(UDataActorComponent, Level))
+	//{
+	//	//various uproperty tricks, see link
+	//	SetNewLevel(Level);
+	//}
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 }
 
@@ -77,19 +77,19 @@ FCharInfoData* UDataActorComponent::GetCharInfoData(int32 Level)
 	return CharacterTable->FindRow<FCharInfoData>(*FString::FromInt(Level), TEXT(""));
 }
 
-void UDataActorComponent::SetNewLevel(int32 NewLevel)
-{
-	CurrentCharInfoData = GetCharInfoData(NewLevel);
-	if(CurrentCharInfoData != nullptr)
-	{
-		Level = NewLevel;
-		CurrentHP = CurrentCharInfoData->MaxHP;
-	}
-	else
-	{
-		T1LOG(Error, TEXT("Level (%d) data doesn't exist"), NewLevel);
-	}
-}
+//void UDataActorComponent::SetNewLevel(int32 NewLevel)
+//{
+//	CurrentCharInfoData = GetCharInfoData(NewLevel);
+//	if(CurrentCharInfoData != nullptr)
+//	{
+//		Level = NewLevel;
+//		CurrentHP = CurrentCharInfoData->MaxHP;
+//	}
+//	else
+//	{
+//		T1LOG(Error, TEXT("Level (%d) data doesn't exist"), NewLevel);
+//	}
+//}
 
 const UDataTable* UDataActorComponent::GetDataTable() const
 {
@@ -99,6 +99,11 @@ const UDataTable* UDataActorComponent::GetDataTable() const
 UDataTable* UDataActorComponent::GetDataTable()
 {
 	return CharacterTable;
+}
+
+void UDataActorComponent::SetDataTable(UDataTable* InDataTable)
+{
+	CharacterTable = InDataTable;
 }
 
 void UDataActorComponent::SetInfoData(int32 EditLevel)

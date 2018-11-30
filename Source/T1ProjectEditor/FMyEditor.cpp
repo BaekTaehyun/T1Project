@@ -233,6 +233,15 @@ void FMyEditor::InitFMyEditor(const EToolkitMode::Type Mode, const TSharedPtr< c
 	}
 }
 
+//FMyEditor& FMyEditor::Get()
+//{
+//	static const FName ModuleName = "MyEditor";
+//	FMyEditor& Module = FModuleManager::GetModuleChecked<FMyEditor>(ModuleName);
+//
+//	return Module;
+//	//return static_cast<FMyEditor&>(Module.Get());
+//}
+
 void FMyEditor::PostUndo(bool bSuccess)
 {
 	HandleUndoRedo();
@@ -294,6 +303,17 @@ void FMyEditor::PostChange(const UDataTable* Changed, FDataTableEditorUtils::EDa
 	}
 }
 
+void FMyEditor::ResetRowEditorBox()
+{
+	TSharedPtr<SMyRowEditor> teeae = StaticCastSharedPtr<SMyRowEditor>(RowEditorTabWidget);
+
+	//SUserWidget::FArguments InArgs;
+	UDataTable* Table = GetDataTable();
+	teeae->Construct(Table);
+	//RowEditorTabWidget.
+	//SMyRowEditor* teeae = (SMyRowEditor)RowEditorTabWidget.Get();
+}
+
 TSharedRef<SWidget> FMyEditor::CreateRowEditorBox()
 {
 	//UDataTable* Table = Cast<UDataTable>(GetDataTable());//Cast<UDataTable>(GetEditingObject());
@@ -307,10 +327,13 @@ TSharedRef<SWidget> FMyEditor::CreateRowEditorBox()
 		Table->SetFlags(RF_Transactional);
 	}
 
+	//delete RowEditor;
+
 	auto RowEditor = SNew(SMyRowEditor, Table);
 	RowEditor->RowSelectedCallback.BindSP(this, &FMyEditor::SetHighlightedRow);
 	CallbackOnRowHighlighted.BindSP(RowEditor, &SMyRowEditor::SelectRow);
 	CallbackOnDataTableUndoRedo.BindSP(RowEditor, &SMyRowEditor::HandleUndoRedo);
+	//CallbackOnDataTableAllRemove.BindSP(RowEditor, &SMyRowEditor::AllRemove);
 	return RowEditor;
 }
 
@@ -420,16 +443,66 @@ UDataTable* FMyEditor::GetDataTable()
 
 const UDataTable* FMyEditor::GetDataTable() const
 {
-	//FString CharInfoDataPath = TEXT("/Game/Data/CCharInfoData.CCharInfoData");
-	//FString CharInfoDataPath = TEXT("/Content/Data/CCharInfoData.json");
-	//static ConstructorHelpers::FObjectFinder<UDataTable> DT_CHARACTER(*CharInfoDataPath);
 	return MyObj->GetDataTable();
-	/*T1CHECK(DT_CHARACTER.Succeeded());
-	CharacterTable = DT_CHARACTER.Object;
-	T1CHECK(CharacterTable->RowMap.Num() > 0);*/
+}
 
-	//return MyObj->CharacterTable;
-	//return Cast<const UDataTable>(GetEditingObject());
+void FMyEditor::SetDataTable(UDataTable* InDataTable)
+{
+	//TabManager->UnregisterTabSpawner(DataTableTabId);
+	//TabManager->UnregisterTabSpawner(RowEditorTabId);^
+
+	//DataTableTabWidget.Reset();
+	//RowEditorTabWidget.Reset();
+
+	//ColumnNamesHeaderRow->ClearColumns();
+	//RowNamesListView->Cle
+
+	//RefreshCachedDataTable();
+
+	MyObj->SetDataTable(InDataTable);
+
+	ResetRowEditorBox();
+	RefreshCachedDataTable();
+	//DataTableTabWidget = CreateContentBox();
+	//RowEditorTabWidget = CreateRowEditorBox();
+
+	//SetHighlightedRow(NAME_None);
+
+	/*RowNamesListView->ClearSelection();
+	CellsListView->ClearSelection();*/
+
+	//delete(DataTableTabWidget);
+	//delete RowEditorTabWidget.Get();
+
+	//DataTableTabWidget.^
+
+	//delete DataTableTabWidget;
+
+	//RowEditorTabWidget->AddMetadata
+
+	//CallbackOnDataTableAllRemove.Execute();
+
+	/*SMyRowEditor* Editor = Cast<SMyRowEditor>(&RowEditorTabWidget);
+	Editor->AllRemove();*/
+
+	//RowEditorTabWidget
+
+	//DataTableTabWidget	
+
+	//AvailableColumns.Empty();
+	//AvailableRows.Empty();
+
+	//RefreshCachedDataTable();
+	//AvailableColumns->
+	//ColumnNamesHeaderRow->ClearColumns();
+	//RowNamesListView->ClearSelection();
+	//CellsListView->ClearSelection();
+
+	//RefreshCachedDataTable();
+
+
+	//DataTableTabWidget = CreateContentBox();
+	//RowEditorTabWidget = CreateRowEditorBox();
 }
 
 void FMyEditor::RegisterTabSpawners(const TSharedRef<class FTabManager>& TabManager)
@@ -470,23 +543,6 @@ void FMyEditor::UnregisterTabSpawners(const TSharedRef<class FTabManager>& TabMa
 	DataTableTabWidget.Reset();
 	RowEditorTabWidget.Reset();
 }
-
-//TSharedRef<SWidget> FMyEditor::CreateRowEditorBox()
-//{
-//	UDataTable* Table = Cast<UDataTable>(GetEditingObject());
-//
-//	// Support undo/redo
-//	if (Table)
-//	{
-//		Table->SetFlags(RF_Transactional);
-//	}
-//
-//	auto RowEditor = SNew(SRowEditor, Table);
-//	RowEditor->RowSelectedCallback.BindSP(this, &FDataTableEditor::SetHighlightedRow);
-//	CallbackOnRowHighlighted.BindSP(RowEditor, &SRowEditor::SelectRow);
-//	CallbackOnDataTableUndoRedo.BindSP(RowEditor, &SRowEditor::HandleUndoRedo);
-//	return RowEditor;
-//}
 
 TSharedRef<SVerticalBox> FMyEditor::CreateContentBox()
 {
@@ -839,7 +895,7 @@ void FMyEditor::UpdateVisibleRows(const FName InCachedSelection, const bool bUpd
 	if (RowNamesListView->GetSelectedItems() == CellsListView->GetSelectedItems())
 	{
 		RowNamesListView->RequestListRefresh();
-		CellsListView->RequestListRefresh();
+		CellsListView->RequestListRefresh();		
 
 		RestoreCachedSelection(InCachedSelection, bUpdateEvenIfValid);
 	}

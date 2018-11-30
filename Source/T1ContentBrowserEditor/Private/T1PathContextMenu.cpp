@@ -40,7 +40,7 @@
 #include "T1ContentBrowserCommands.h"
 
 
-#define LOCTEXT_NAMESPACE "T1ContentBrowser"
+#define LOCTEXT_NAMESPACE "T1ContentBrowserEditor"
 
 
 FT1PathContextMenu::FT1PathContextMenu(const TWeakPtr<SWidget>& InParentContent)

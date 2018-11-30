@@ -29,7 +29,7 @@
 #include "Widgets/Layout/SExpandableArea.h"
 #include "Widgets/Input/SSearchBox.h"
 
-#define LOCTEXT_NAMESPACE "T1ContentBrowser"
+#define LOCTEXT_NAMESPACE "T1ContentBrowserEditor"
 
 namespace CollectionViewFilter
 {
@@ -131,7 +131,7 @@ void SCollectionView::Construct( const FArguments& InArgs )
 				+ SHorizontalBox::Slot()
 				[
 					SNew(STextBlock)
-					.Font( FEditorStyle::GetFontStyle("T1ContentBrowser.SourceTitleFont") )
+					.Font( FEditorStyle::GetFontStyle("ContentBrowser.SourceTitleFont") )
 					.Text( LOCTEXT("CollectionsListTitle", "Collections") )
 					.Visibility( this, &SCollectionView::GetCollectionsTitleTextVisibility )
 				]
@@ -157,7 +157,7 @@ void SCollectionView::Construct( const FArguments& InArgs )
 				.ContentPadding( FMargin(2, 2) )
 				.Visibility(this, &SCollectionView::GetAddCollectionButtonVisibility)
 				[
-					SNew(SImage) .Image( FEditorStyle::GetBrush("T1ContentBrowser.AddCollectionButtonIcon") )
+					SNew(SImage) .Image( FEditorStyle::GetBrush("ContentBrowser.AddCollectionButtonIcon") )
 				]
 			];
 
@@ -1088,7 +1088,7 @@ EVisibility SCollectionView::GetCollectionTreeVisibility() const
 
 const FSlateBrush* SCollectionView::GetCollectionViewDropTargetBorder() const
 {
-	return bDraggedOver ? FEditorStyle::GetBrush("T1ContentBrowser.CollectionTreeDragDropBorder") : FEditorStyle::GetBrush("NoBorder");
+	return bDraggedOver ? FEditorStyle::GetBrush("ContentBrowser.CollectionTreeDragDropBorder") : FEditorStyle::GetBrush("NoBorder");
 }
 
 TSharedRef<ITableRow> SCollectionView::GenerateCollectionRow( TSharedPtr<FT1CollectionItem> CollectionItem, const TSharedRef<STableViewBase>& OwnerTable )

@@ -772,7 +772,7 @@ bool FT1FrontendFilter_ReplicatedBlueprint::PassesFilter(FT1AssetFilterType InIt
 // FT1FrontendFilter_ArbitraryComparisonOperation
 /////////////////////////////////////////
 
-#define LOCTEXT_NAMESPACE "T1ContentBrowser"
+#define LOCTEXT_NAMESPACE "T1ContentBrowserEditor"
 
 FT1FrontendFilter_ArbitraryComparisonOperation::FT1FrontendFilter_ArbitraryComparisonOperation(TSharedPtr<FT1FrontendFilterCategory> InCategory)
 	: FT1FrontendFilter(InCategory)

@@ -361,7 +361,7 @@ void ST1AssetView::Construct( const FArguments& InArgs )
 	[
 		SNew(SBorder)
 		.Visibility( this, &ST1AssetView::GetEditModeLabelVisibility )
-		.BorderImage( FEditorStyle::GetBrush("T1ContentBrowser.EditModeLabelBorder") )
+		.BorderImage( FEditorStyle::GetBrush("ContentBrowser.EditModeLabelBorder") )
 		.Content()
 		[
 			SNew( SHorizontalBox )
@@ -3555,7 +3555,7 @@ TSharedRef<ITableRow> ST1AssetView::MakeListViewWidget(TSharedPtr<FT1AssetViewIt
 
 		TSharedPtr< STableRow<TSharedPtr<FT1AssetViewItem>> > TableRowWidget;
 		SAssignNew( TableRowWidget, STableRow<TSharedPtr<FT1AssetViewItem>>, OwnerTable )
-		.Style(FEditorStyle::Get(), "T1ContentBrowser.AssetListView.TableRow")
+		.Style(FEditorStyle::Get(), "ContentBrowser.AssetListView.TableRow")
 		.Cursor( bAllowDragging ? EMouseCursor::GrabHand : EMouseCursor::Default )
 		.OnDragDetected( this, &ST1AssetView::OnDraggingAssetItem );
 
@@ -3601,7 +3601,7 @@ TSharedRef<ITableRow> ST1AssetView::MakeTileViewWidget(TSharedPtr<FT1AssetViewIt
 	{
 		TSharedPtr< STableRow<TSharedPtr<FT1AssetViewItem>> > TableRowWidget;
 		SAssignNew( TableRowWidget, STableRow<TSharedPtr<FT1AssetViewItem>>, OwnerTable )
-			.Style( FEditorStyle::Get(), "T1ContentBrowser.AssetListView.TableRow" )
+			.Style( FEditorStyle::Get(), "ContentBrowser.AssetListView.TableRow" )
 			.Cursor( bAllowDragging ? EMouseCursor::GrabHand : EMouseCursor::Default )
 			.OnDragDetected( this, &ST1AssetView::OnDraggingAssetItem );
 
@@ -3643,7 +3643,7 @@ TSharedRef<ITableRow> ST1AssetView::MakeTileViewWidget(TSharedPtr<FT1AssetViewIt
 
 		TSharedPtr< STableRow<TSharedPtr<FT1AssetViewItem>> > TableRowWidget;
 		SAssignNew( TableRowWidget, STableRow<TSharedPtr<FT1AssetViewItem>>, OwnerTable )
-		.Style(FEditorStyle::Get(), "T1ContentBrowser.AssetListView.TableRow")
+		.Style(FEditorStyle::Get(), "ContentBrowser.AssetListView.TableRow")
 		.Cursor( bAllowDragging ? EMouseCursor::GrabHand : EMouseCursor::Default )
 		.OnDragDetected( this, &ST1AssetView::OnDraggingAssetItem );
 
@@ -3680,7 +3680,7 @@ TSharedRef<ITableRow> ST1AssetView::MakeColumnViewWidget(TSharedPtr<FT1AssetView
 	if ( !ensure(AssetItem.IsValid()) )
 	{
 		return SNew( STableRow<TSharedPtr<FT1AssetViewItem>>, OwnerTable )
-			.Style(FEditorStyle::Get(), "T1ContentBrowser.AssetListView.TableRow");
+			.Style(FEditorStyle::Get(), "ContentBrowser.AssetListView.TableRow");
 	}
 
 	// Update the cached custom data

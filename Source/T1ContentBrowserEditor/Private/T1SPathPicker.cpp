@@ -9,7 +9,7 @@
 #include "T1ContentBrowserUtils.h"
 #include "T1SPathView.h"
 
-#define LOCTEXT_NAMESPACE "T1ContentBrowser"
+#define LOCTEXT_NAMESPACE "T1ContentBrowserEditor"
 
 
 void ST1PathPicker::Construct( const FArguments& InArgs )
