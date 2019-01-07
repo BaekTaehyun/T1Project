@@ -10,6 +10,7 @@ UT1AnimInstance::UT1AnimInstance()
 {
 	CurrentPawnSpeed = 0.0f;
 	IsAir = false;
+	IsDead = false;
 
 	//애니메이션 몽타주로드
 	/*
@@ -29,7 +30,11 @@ void UT1AnimInstance::NativeUpdateAnimation(float deltaSecond)
 	Super::NativeUpdateAnimation(deltaSecond);
 
 	auto Pawn = TryGetPawnOwner();
-	if (::IsValid(Pawn))
+
+	if (false == ::IsValid(Pawn)) return;
+
+
+	if (false == IsDead)
 	{
 		CurrentPawnSpeed = Pawn->GetVelocity().Size();
 		auto Character = Cast<AT1Player>(Pawn);
@@ -42,11 +47,13 @@ void UT1AnimInstance::NativeUpdateAnimation(float deltaSecond)
 
 void UT1AnimInstance::PlayAttackMontage()
 {	
+	T1CHECK(!IsDead);
 	Montage_Play(AttackMontage, 1.0f);
 }
 
 void UT1AnimInstance::JumpToAttackMontageSection(int32 newSection)
 {
+	T1CHECK(!IsDead);
 	T1CHECK(Montage_IsPlaying(AttackMontage));
 	Montage_JumpToSection(GetAttackMontageSectionName(newSection), AttackMontage);
 }
@@ -54,7 +61,7 @@ void UT1AnimInstance::JumpToAttackMontageSection(int32 newSection)
 void UT1AnimInstance::AnimNotify_AttackHitCheck()
 {
 	T1LOG_S(Log);
-	//OnAttackHitCheck.Broadcast();
+	OnAttackHitCheck.Broadcast();
 }
 
 void UT1AnimInstance::AnimNotify_NextAttackCheck()

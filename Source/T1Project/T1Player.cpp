@@ -9,8 +9,10 @@
 #include "Camera/CameraComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/InputComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Delegate.h"
 #include "ConstructorHelpers.h"
+#include "DrawDebugHelpers.h"
 
 
 // Sets default values
@@ -71,6 +73,13 @@ AT1Player::AT1Player()
 	//콤보처리 추가
 	MaxComboCount = 4;
 	AttackEndComboState();
+
+	//콜리전 프로파일 커스텀 설정
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("T1Character"));
+
+	//공격거리 디버깅 랜더러
+	AttackRadius = 50.0f;
+	AttackRange = 200.0f;
 }
 
 // Called when the game starts or when spawned
@@ -157,6 +166,9 @@ void AT1Player::PostInitializeComponents()
 			T1Anim->JumpToAttackMontageSection(CurrentComboIndex);
 		}
 	});
+
+	//미리선언한 델리게이트에 충돌 처리 이벤트 등록
+	T1Anim->OnAttackHitCheck.AddUObject(this, &AT1Player::AttackCheck);
 }
 
 // 콜링 순서를 파악 하기 위한 오버라이딩	
@@ -287,7 +299,7 @@ void AT1Player::AttackStartComboState()
 	T1CHECK(FMath::IsWithinInclusive<int32>(CurrentComboIndex, 0, MaxComboCount - 1));
 	CurrentComboIndex = FMath::Clamp<int32>(CurrentComboIndex + 1, 1, MaxComboCount);
 }
-
+ 
 void AT1Player::AttackEndComboState()
 {
 	IsComboInputOn = false;
@@ -300,6 +312,55 @@ void AT1Player::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterruped)
 	T1CHECK(IsAttacking);
 	IsAttacking = false;
 	AttackEndComboState();
+}
+
+void AT1Player::AttackCheck()
+{
+	FHitResult HitResult;
+	FCollisionQueryParams Params(NAME_None, false, this);
+
+	FVector TraceVec = GetActorForwardVector() * AttackRange;;
+
+	bool bResult = GetWorld()->SweepSingleByChannel(HitResult, 
+		GetActorLocation(),
+		GetActorLocation() + TraceVec,
+		FQuat::Identity, 
+		ECollisionChannel::ECC_EngineTraceChannel2,
+		FCollisionShape::MakeSphere(AttackRadius),
+		Params);
+
+	// 디버그용 렌더링 메소드 예제
+#if ENABLE_DRAW_DEBUG
+	FVector Center = GetActorLocation() + TraceVec * 0.5f;
+	float HalfHeight = AttackRange * 0.5f + AttackRadius;
+	FQuat CapsuleRot = FRotationMatrix::MakeFromZ(TraceVec).ToQuat();
+	FColor DrawColor = bResult ? FColor::Red : FColor::Green;
+	float DrawLifeTime = 5.0f;
+
+	DrawDebugCapsule(GetWorld(), Center, HalfHeight, AttackRadius, CapsuleRot, DrawColor, false, DrawLifeTime);
+#endif
+
+	if (bResult == false) { return; }
+	if (HitResult.Actor.IsValid() == false) { return; }
+
+	T1LOG(Warning, TEXT("Hit Actor Name : %s"), *HitResult.Actor->GetName());
+
+	FDamageEvent damageEvent;
+	HitResult.Actor->TakeDamage(50.0f, damageEvent, GetController(), this);
+
+}
+
+float AT1Player::TakeDamage(float DamageAmout, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	float FinalDamage = Super::TakeDamage(DamageAmout, DamageEvent, EventInstigator, DamageCauser);
+	T1LOG(Warning, TEXT("Actor : %s took Damage : %f"), *GetName(), FinalDamage);
+
+	if (FinalDamage > 0.0f)
+	{
+		T1Anim->SetDeadAnim();
+		SetActorEnableCollision(false);
+	}
+	return FinalDamage;
 }
 
 

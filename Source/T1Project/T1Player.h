@@ -55,6 +55,9 @@ public:
 	virtual void PostInitializeComponents() override;
 	virtual void PossessedBy(AController* NewController) override;
 
+	// 언리얼 내부 데이지 처리예
+	virtual float TakeDamage(float DamageAmout, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
 
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	USpringArmComponent* SpringArm;
@@ -64,6 +67,13 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = CharInfo)
 	class UDataActorComponent* CharInfoData;
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
+	float AttackRange;
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
+	float AttackRadius;
+
 	
 private:
 	// 프로젝트 옵션에 인풋과 매칭되는 함수
@@ -78,6 +88,9 @@ private:
 	void Attack();
 	void AttackStartComboState();
 	void AttackEndComboState();
+
+	// 피직스 충돌설정을 확인하기위한함수
+	void AttackCheck();
 
 	/*
 		언리얼에서 델리게이트는 C++객체에서만 사용하는 델리게이트와 C++, 블루프린트 객체가 모두 사용할수 있는 델리게이트로 나눈다.

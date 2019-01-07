@@ -28,6 +28,7 @@ public:
 
 	void PlayAttackMontage();
 	void JumpToAttackMontageSection(int32 newSection);
+	void SetDeadAnim() { IsDead = true; }
 
 public:
 	FOnNextAttackCheckDelegate OnNextAttackCheck;
@@ -60,6 +61,9 @@ private:
 	*/
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
 	UAnimMontage* AttackMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
+	bool IsDead;
 };
 
 /* p.239 率 曼绊(府鸥百 规过) 
