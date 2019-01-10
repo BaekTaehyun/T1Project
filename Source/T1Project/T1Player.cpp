@@ -13,6 +13,7 @@
 #include "Delegate.h"
 #include "ConstructorHelpers.h"
 #include "DrawDebugHelpers.h"
+#include "T1AWeapon.h"
 
 
 // Sets default values
@@ -100,6 +101,13 @@ AT1Player::AT1Player()
 void AT1Player::BeginPlay()
 {
 	Super::BeginPlay();	
+
+	FName WeaponSocket(TEXT("hand_rSocket"));
+	auto CurWeapon = GetWorld()->SpawnActor<AT1AWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
+	if (nullptr != CurWeapon)
+	{
+		CurWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, WeaponSocket);
+	}
 }
 
 // Called every frame
