@@ -58,6 +58,8 @@ public:
 	// 언리얼 내부 데이지 처리예
 	virtual float TakeDamage(float DamageAmout, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	USkeletalMeshComponent* Weapon;
 
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	USpringArmComponent* SpringArm;

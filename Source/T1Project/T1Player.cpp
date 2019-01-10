@@ -80,6 +80,20 @@ AT1Player::AT1Player()
 	//공격거리 디버깅 랜더러
 	AttackRadius = 50.0f;
 	AttackRange = 200.0f;
+
+	// 무기 소켓에 붙이기
+	FName WeaponSocket(TEXT("hand_rSocket"));
+	if (GetMesh()->DoesSocketExist(WeaponSocket))
+	{
+		Weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WEAPON"));
+		static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_WEAPON(
+			TEXT("/Game/InfinityBladeWeapons/Weapons/Blade/Swords/Blade_DragonSword/SK_Blade_DragonSword.SK_Blade_DragonSword"));
+		if (SK_WEAPON.Succeeded())
+		{
+			Weapon->SetSkeletalMesh(SK_WEAPON.Object);
+		}
+		Weapon->SetupAttachment(GetMesh(), WeaponSocket);
+	}
 }
 
 // Called when the game starts or when spawned
