@@ -102,12 +102,31 @@ void AT1Player::BeginPlay()
 {
 	Super::BeginPlay();	
 
-	FName WeaponSocket(TEXT("hand_rSocket"));
+	//bak1210 소켓에 기본클래스 할당하는 코드
+	/*FName WeaponSocket(TEXT("hand_rSocket"));
 	auto CurWeapon = GetWorld()->SpawnActor<AT1AWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
 	if (nullptr != CurWeapon)
 	{
 		CurWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, WeaponSocket);
+	}*/
+}
+
+bool AT1Player::CanSetWeapon()
+{
+	return (nullptr == CurrentWeapon);
+}
+
+void AT1Player::SetWeapon(AT1AWeapon* NewWeapon)
+{
+	T1CHECK(nullptr != NewWeapon && nullptr == CurrentWeapon);
+	FName WeaponSocket(TEXT("hand_rSocket"));
+	if (nullptr != NewWeapon)
+	{
+		NewWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+		NewWeapon->SetOwner(this);
+		CurrentWeapon = NewWeapon;
 	}
+
 }
 
 // Called every frame

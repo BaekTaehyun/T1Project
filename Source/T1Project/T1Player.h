@@ -58,6 +58,11 @@ public:
 	// 언리얼 내부 데이지 처리예
 	virtual float TakeDamage(float DamageAmout, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	bool CanSetWeapon();
+	void SetWeapon(class AT1AWeapon* NewWeapon);
+	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	class AT1AWeapon* CurrentWeapon;
+
 	UPROPERTY(VisibleAnywhere, Category = Weapon)
 	USkeletalMeshComponent* Weapon;
 
