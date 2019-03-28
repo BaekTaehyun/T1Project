@@ -68,6 +68,7 @@ void AABPlayerState::SavePlayerData()
 
 float AABPlayerState::GetExpRatio() const
 {
+	T1CHECK(nullptr != CurrentStatData, 0.0f);
 	if (CurrentStatData->NextExp <= KINDA_SMALL_NUMBER)
 		return 0.0f;
 

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "T1Project.h"
 #include "Engine/DataTable.h"
 #include "FT1PlayerData.generated.h"
