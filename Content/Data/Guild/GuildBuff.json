@@ -1,0 +1,962 @@
+[
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 1,
+		"purchaseCost": 2000,
+		"unlockLevel": 1
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 2,
+		"purchaseCost": 2000,
+		"unlockLevel": 2
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 3,
+		"purchaseCost": 2000,
+		"unlockLevel": 3
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 4,
+		"purchaseCost": 2000,
+		"unlockLevel": 4
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 5,
+		"purchaseCost": 2000,
+		"unlockLevel": 5
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 6,
+		"purchaseCost": 2000,
+		"unlockLevel": 6
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 7,
+		"purchaseCost": 2000,
+		"unlockLevel": 7
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 8,
+		"purchaseCost": 2000,
+		"unlockLevel": 8
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 9,
+		"purchaseCost": 2000,
+		"unlockLevel": 9
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 10,
+		"purchaseCost": 2000,
+		"unlockLevel": 10
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 11,
+		"purchaseCost": 2000,
+		"unlockLevel": 11
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 12,
+		"purchaseCost": 2000,
+		"unlockLevel": 12
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 13,
+		"purchaseCost": 2000,
+		"unlockLevel": 13
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 14,
+		"purchaseCost": 2000,
+		"unlockLevel": 14
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 15,
+		"purchaseCost": 2000,
+		"unlockLevel": 15
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 16,
+		"purchaseCost": 2000,
+		"unlockLevel": 16
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 17,
+		"purchaseCost": 2000,
+		"unlockLevel": 17
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 18,
+		"purchaseCost": 2000,
+		"unlockLevel": 18
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 19,
+		"purchaseCost": 2000,
+		"unlockLevel": 19
+	},
+	{
+		"Name": "60246 ",
+		"guildBuffLevel": 20,
+		"purchaseCost": 2000,
+		"unlockLevel": 20
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 1,
+		"purchaseCost": 1500,
+		"unlockLevel": 1
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 2,
+		"purchaseCost": 1500,
+		"unlockLevel": 2
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 3,
+		"purchaseCost": 1500,
+		"unlockLevel": 3
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 4,
+		"purchaseCost": 1500,
+		"unlockLevel": 4
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 5,
+		"purchaseCost": 1500,
+		"unlockLevel": 5
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 6,
+		"purchaseCost": 1500,
+		"unlockLevel": 6
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 7,
+		"purchaseCost": 1500,
+		"unlockLevel": 7
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 8,
+		"purchaseCost": 1500,
+		"unlockLevel": 8
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 9,
+		"purchaseCost": 1500,
+		"unlockLevel": 9
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 10,
+		"purchaseCost": 1500,
+		"unlockLevel": 10
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 11,
+		"purchaseCost": 1500,
+		"unlockLevel": 11
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 12,
+		"purchaseCost": 1500,
+		"unlockLevel": 12
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 13,
+		"purchaseCost": 1500,
+		"unlockLevel": 13
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 14,
+		"purchaseCost": 1500,
+		"unlockLevel": 14
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 15,
+		"purchaseCost": 1500,
+		"unlockLevel": 15
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 16,
+		"purchaseCost": 1500,
+		"unlockLevel": 16
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 17,
+		"purchaseCost": 1500,
+		"unlockLevel": 17
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 18,
+		"purchaseCost": 1500,
+		"unlockLevel": 18
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 19,
+		"purchaseCost": 1500,
+		"unlockLevel": 19
+	},
+	{
+		"Name": "60247 ",
+		"guildBuffLevel": 20,
+		"purchaseCost": 1500,
+		"unlockLevel": 20
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 1,
+		"purchaseCost": 1000,
+		"unlockLevel": 1
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 2,
+		"purchaseCost": 1000,
+		"unlockLevel": 2
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 3,
+		"purchaseCost": 1000,
+		"unlockLevel": 3
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 4,
+		"purchaseCost": 1000,
+		"unlockLevel": 4
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 5,
+		"purchaseCost": 1000,
+		"unlockLevel": 5
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 6,
+		"purchaseCost": 1000,
+		"unlockLevel": 6
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 7,
+		"purchaseCost": 1000,
+		"unlockLevel": 7
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 8,
+		"purchaseCost": 1000,
+		"unlockLevel": 8
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 9,
+		"purchaseCost": 1000,
+		"unlockLevel": 9
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 10,
+		"purchaseCost": 1000,
+		"unlockLevel": 10
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 11,
+		"purchaseCost": 1000,
+		"unlockLevel": 11
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 12,
+		"purchaseCost": 1000,
+		"unlockLevel": 12
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 13,
+		"purchaseCost": 1000,
+		"unlockLevel": 13
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 14,
+		"purchaseCost": 1000,
+		"unlockLevel": 14
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 15,
+		"purchaseCost": 1000,
+		"unlockLevel": 15
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 16,
+		"purchaseCost": 1000,
+		"unlockLevel": 16
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 17,
+		"purchaseCost": 1000,
+		"unlockLevel": 17
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 18,
+		"purchaseCost": 1000,
+		"unlockLevel": 18
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 19,
+		"purchaseCost": 1000,
+		"unlockLevel": 19
+	},
+	{
+		"Name": "60248 ",
+		"guildBuffLevel": 20,
+		"purchaseCost": 1000,
+		"unlockLevel": 20
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 1,
+		"purchaseCost": 1500,
+		"unlockLevel": 1
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 2,
+		"purchaseCost": 1500,
+		"unlockLevel": 2
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 3,
+		"purchaseCost": 1500,
+		"unlockLevel": 3
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 4,
+		"purchaseCost": 1500,
+		"unlockLevel": 4
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 5,
+		"purchaseCost": 1500,
+		"unlockLevel": 5
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 6,
+		"purchaseCost": 1500,
+		"unlockLevel": 6
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 7,
+		"purchaseCost": 1500,
+		"unlockLevel": 7
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 8,
+		"purchaseCost": 1500,
+		"unlockLevel": 8
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 9,
+		"purchaseCost": 1500,
+		"unlockLevel": 9
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 10,
+		"purchaseCost": 1500,
+		"unlockLevel": 10
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 11,
+		"purchaseCost": 1500,
+		"unlockLevel": 11
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 12,
+		"purchaseCost": 1500,
+		"unlockLevel": 12
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 13,
+		"purchaseCost": 1500,
+		"unlockLevel": 13
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 14,
+		"purchaseCost": 1500,
+		"unlockLevel": 14
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 15,
+		"purchaseCost": 1500,
+		"unlockLevel": 15
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 16,
+		"purchaseCost": 1500,
+		"unlockLevel": 16
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 17,
+		"purchaseCost": 1500,
+		"unlockLevel": 17
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 18,
+		"purchaseCost": 1500,
+		"unlockLevel": 18
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 19,
+		"purchaseCost": 1500,
+		"unlockLevel": 19
+	},
+	{
+		"Name": "60249 ",
+		"guildBuffLevel": 20,
+		"purchaseCost": 1500,
+		"unlockLevel": 20
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 1,
+		"purchaseCost": 1250,
+		"unlockLevel": 1
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 2,
+		"purchaseCost": 1250,
+		"unlockLevel": 2
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 3,
+		"purchaseCost": 1250,
+		"unlockLevel": 3
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 4,
+		"purchaseCost": 1250,
+		"unlockLevel": 4
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 5,
+		"purchaseCost": 1250,
+		"unlockLevel": 5
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 6,
+		"purchaseCost": 1250,
+		"unlockLevel": 6
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 7,
+		"purchaseCost": 1250,
+		"unlockLevel": 7
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 8,
+		"purchaseCost": 1250,
+		"unlockLevel": 8
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 9,
+		"purchaseCost": 1250,
+		"unlockLevel": 9
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 10,
+		"purchaseCost": 1250,
+		"unlockLevel": 10
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 11,
+		"purchaseCost": 1250,
+		"unlockLevel": 11
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 12,
+		"purchaseCost": 1250,
+		"unlockLevel": 12
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 13,
+		"purchaseCost": 1250,
+		"unlockLevel": 13
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 14,
+		"purchaseCost": 1250,
+		"unlockLevel": 14
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 15,
+		"purchaseCost": 1250,
+		"unlockLevel": 15
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 16,
+		"purchaseCost": 1250,
+		"unlockLevel": 16
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 17,
+		"purchaseCost": 1250,
+		"unlockLevel": 17
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 18,
+		"purchaseCost": 1250,
+		"unlockLevel": 18
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 19,
+		"purchaseCost": 1250,
+		"unlockLevel": 19
+	},
+	{
+		"Name": "60250 ",
+		"guildBuffLevel": 20,
+		"purchaseCost": 1250,
+		"unlockLevel": 20
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 1,
+		"purchaseCost": 1750,
+		"unlockLevel": 1
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 2,
+		"purchaseCost": 1750,
+		"unlockLevel": 2
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 3,
+		"purchaseCost": 1750,
+		"unlockLevel": 3
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 4,
+		"purchaseCost": 1750,
+		"unlockLevel": 4
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 5,
+		"purchaseCost": 1750,
+		"unlockLevel": 5
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 6,
+		"purchaseCost": 1750,
+		"unlockLevel": 6
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 7,
+		"purchaseCost": 1750,
+		"unlockLevel": 7
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 8,
+		"purchaseCost": 1750,
+		"unlockLevel": 8
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 9,
+		"purchaseCost": 1750,
+		"unlockLevel": 9
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 10,
+		"purchaseCost": 1750,
+		"unlockLevel": 10
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 11,
+		"purchaseCost": 1750,
+		"unlockLevel": 11
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 12,
+		"purchaseCost": 1750,
+		"unlockLevel": 12
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 13,
+		"purchaseCost": 1750,
+		"unlockLevel": 13
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 14,
+		"purchaseCost": 1750,
+		"unlockLevel": 14
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 15,
+		"purchaseCost": 1750,
+		"unlockLevel": 15
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 16,
+		"purchaseCost": 1750,
+		"unlockLevel": 16
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 17,
+		"purchaseCost": 1750,
+		"unlockLevel": 17
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 18,
+		"purchaseCost": 1750,
+		"unlockLevel": 18
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 19,
+		"purchaseCost": 1750,
+		"unlockLevel": 19
+	},
+	{
+		"Name": "60251 ",
+		"guildBuffLevel": 20,
+		"purchaseCost": 1750,
+		"unlockLevel": 20
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 1,
+		"purchaseCost": 1500,
+		"unlockLevel": 1
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 2,
+		"purchaseCost": 1500,
+		"unlockLevel": 2
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 3,
+		"purchaseCost": 1500,
+		"unlockLevel": 3
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 4,
+		"purchaseCost": 1500,
+		"unlockLevel": 4
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 5,
+		"purchaseCost": 1500,
+		"unlockLevel": 5
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 6,
+		"purchaseCost": 1500,
+		"unlockLevel": 6
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 7,
+		"purchaseCost": 1500,
+		"unlockLevel": 7
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 8,
+		"purchaseCost": 1500,
+		"unlockLevel": 8
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 9,
+		"purchaseCost": 1500,
+		"unlockLevel": 9
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 10,
+		"purchaseCost": 1500,
+		"unlockLevel": 10
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 11,
+		"purchaseCost": 1500,
+		"unlockLevel": 11
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 12,
+		"purchaseCost": 1500,
+		"unlockLevel": 12
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 13,
+		"purchaseCost": 1500,
+		"unlockLevel": 13
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 14,
+		"purchaseCost": 1500,
+		"unlockLevel": 14
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 15,
+		"purchaseCost": 1500,
+		"unlockLevel": 15
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 16,
+		"purchaseCost": 1500,
+		"unlockLevel": 16
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 17,
+		"purchaseCost": 1500,
+		"unlockLevel": 17
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 18,
+		"purchaseCost": 1500,
+		"unlockLevel": 18
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 19,
+		"purchaseCost": 1500,
+		"unlockLevel": 19
+	},
+	{
+		"Name": "60252 ",
+		"guildBuffLevel": 20,
+		"purchaseCost": 1500,
+		"unlockLevel": 20
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 1,
+		"purchaseCost": 1750,
+		"unlockLevel": 1
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 2,
+		"purchaseCost": 1750,
+		"unlockLevel": 2
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 3,
+		"purchaseCost": 1750,
+		"unlockLevel": 3
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 4,
+		"purchaseCost": 1750,
+		"unlockLevel": 4
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 5,
+		"purchaseCost": 1750,
+		"unlockLevel": 5
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 6,
+		"purchaseCost": 1750,
+		"unlockLevel": 6
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 7,
+		"purchaseCost": 1750,
+		"unlockLevel": 7
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 8,
+		"purchaseCost": 1750,
+		"unlockLevel": 8
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 9,
+		"purchaseCost": 1750,
+		"unlockLevel": 9
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 10,
+		"purchaseCost": 1750,
+		"unlockLevel": 10
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 11,
+		"purchaseCost": 1750,
+		"unlockLevel": 11
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 12,
+		"purchaseCost": 1750,
+		"unlockLevel": 12
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 13,
+		"purchaseCost": 1750,
+		"unlockLevel": 13
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 14,
+		"purchaseCost": 1750,
+		"unlockLevel": 14
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 15,
+		"purchaseCost": 1750,
+		"unlockLevel": 15
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 16,
+		"purchaseCost": 1750,
+		"unlockLevel": 16
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 17,
+		"purchaseCost": 1750,
+		"unlockLevel": 17
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 18,
+		"purchaseCost": 1750,
+		"unlockLevel": 18
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 19,
+		"purchaseCost": 1750,
+		"unlockLevel": 19
+	},
+	{
+		"Name": "60253 ",
+		"guildBuffLevel": 20,
+		"purchaseCost": 1750,
+		"unlockLevel": 20
+	}
+]

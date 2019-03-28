@@ -63,7 +63,7 @@ public:
 
 	virtual void PostUndo(bool bSuccess) override;
 	virtual void PostRedo(bool bSuccess) override;
-	void HandleUndoRedo();
+	virtual bool CloseWindow() override;	
 
 	// INotifyOnStructChanged
 	virtual void PreChange(const class UUserDefinedStruct* Struct, FStructureEditorUtils::EStructureEditorChangeInfo Info) override;
@@ -84,6 +84,7 @@ private:
 	TSharedRef<SVerticalBox> CreateContentBox();
 	TSharedRef<SWidget> CreateRowEditorBox();
 	void ResetRowEditorBox();
+	void HandleUndoRedo();
 
 	void LoadLayoutData();
 	void SaveLayoutData();

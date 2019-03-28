@@ -5,20 +5,31 @@
 	"Description": "",
 	"Modules": [
 		{
+			"Name": "T1ProjectSetting",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault",
+			"AdditionalDependencies": [
+				"CoreUObject"
+			]
+		},
+		{
 			"Name": "T1Project",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"Engine",
 				"Slate",
-				"CoreUObject"
+				"CoreUObject",
+				"UMG",
+				"AIModule",
+				"T1ProjectSetting"
 			]
 		},
-    {
-      "Name": "T1ProjectEditor",
-      "Type": "Editor",
-      "LoadingPhase": "Default"
-    }
+		{
+			"Name": "T1ProjectEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
 	],
 	"Plugins": [
 		{

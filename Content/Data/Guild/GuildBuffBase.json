@@ -1,0 +1,42 @@
+[
+	{
+		"Name": "1 ",
+		"guildBuffId": 60246,
+		"guildBuffIcon": "GuildBuff_01"
+	},
+	{
+		"Name": "2 ",
+		"guildBuffId": 60247,
+		"guildBuffIcon": "GuildBuff_02"
+	},
+	{
+		"Name": "3 ",
+		"guildBuffId": 60248,
+		"guildBuffIcon": "GuildBuff_03"
+	},
+	{
+		"Name": "4 ",
+		"guildBuffId": 60249,
+		"guildBuffIcon": "GuildBuff_10"
+	},
+	{
+		"Name": "5 ",
+		"guildBuffId": 60250,
+		"guildBuffIcon": "GuildBuff_09"
+	},
+	{
+		"Name": "6 ",
+		"guildBuffId": 60251,
+		"guildBuffIcon": "GuildBuff_12"
+	},
+	{
+		"Name": "7 ",
+		"guildBuffId": 60252,
+		"guildBuffIcon": "GuildBuff_11"
+	},
+	{
+		"Name": "8 ",
+		"guildBuffId": 60253,
+		"guildBuffIcon": "GuildBuff_08"
+	}
+]

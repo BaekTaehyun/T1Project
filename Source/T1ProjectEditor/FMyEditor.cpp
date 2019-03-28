@@ -252,6 +252,16 @@ void FMyEditor::PostRedo(bool bSuccess)
 	HandleUndoRedo();
 }
 
+bool FMyEditor::CloseWindow()
+{
+	DataActorComponentView.Reset();
+	DataTableSelectView.Reset();
+	DataTableTabWidget.Reset();
+	RowEditorTabWidget.Reset();
+
+	return true;
+}
+
 void FMyEditor::HandleUndoRedo()
 {
 	const UDataTable* Table = GetDataTable();

@@ -1,0 +1,50 @@
+[
+	{
+		"Name": "1 ",
+		"frameId": 1,
+		"symbolId": 1,
+		"colorId": 1
+	},
+	{
+		"Name": "2 ",
+		"frameId": 2,
+		"symbolId": 2,
+		"colorId": 2
+	},
+	{
+		"Name": "3 ",
+		"frameId": 3,
+		"symbolId": 3,
+		"colorId": 3
+	},
+	{
+		"Name": "4 ",
+		"frameId": 4,
+		"symbolId": 4,
+		"colorId": 4
+	},
+	{
+		"Name": "5 ",
+		"frameId": 5,
+		"symbolId": 5,
+		"colorId": 5
+	},
+	{
+		"Name": "6 ",
+		"frameId": 6,
+		"symbolId": 6,
+		"colorId": 6
+	},
+	{
+		"Name": "7 ",
+		"frameId": 7,
+		"symbolId": 7,
+		"colorId": 7
+	},
+	{
+		"Name": "8 ",
+		"frameId": 8,
+		"symbolId": 8,
+		"colorId": 8
+	}
+]

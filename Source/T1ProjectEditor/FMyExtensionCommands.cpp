@@ -16,10 +16,12 @@ void FMyExtensionCommands::RegisterCommands()
 
 void FMyExtensionActions::Action1()
 {
-	FT1ProjectEditor* T1ProjectEditorModule = FModuleManager::GetModulePtr<FT1ProjectEditor>("T1ProjectEditor");
-	TSharedRef<FMyEditor> NewMyEditor(new FMyEditor());
+	FT1ProjectEditor* T1ProjectEditorModule = FT1ProjectEditor::GetPtr();
+	T1ProjectEditorModule->Create();
+	T1ProjectEditorModule->GetMyEditor()->InitFMyEditor(EToolkitMode::Standalone, TSharedPtr<IToolkitHost>(), NewObject<UDataActorComponent>());
+	/*TSharedRef<FMyEditor> NewMyEditor(new FMyEditor());
 	NewMyEditor->InitFMyEditor(EToolkitMode::Standalone, TSharedPtr<IToolkitHost>(), NewObject<UDataActorComponent>());
-	T1ProjectEditorModule->SetMyEditor(NewMyEditor);
+	T1ProjectEditorModule->SetMyEditor(NewMyEditor);*/
 }
 
 #undef LOCTEXT_NAMESPACE

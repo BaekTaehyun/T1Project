@@ -1,0 +1,473 @@
+[
+	{
+		"Name": "1 ",
+		"requiredAttendence": 2150,
+		"totalCapacity": 20,
+		"sergeantCapacity": 5,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603665,
+			131603663,
+			131603664
+		],
+		"goodsId": [
+			11020003,
+			11020004,
+			11020005,
+			11020006,
+			11020007,
+			11030004,
+			11030005,
+			11040003,
+			11040004,
+			11040005
+		]
+	},
+	{
+		"Name": "2 ",
+		"requiredAttendence": 6773,
+		"totalCapacity": 21,
+		"sergeantCapacity": 5,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603666
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "3 ",
+		"requiredAttendence": 7095,
+		"totalCapacity": 22,
+		"sergeantCapacity": 5,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603667,
+			131602900
+		],
+		"goodsId": [
+			11010003,
+			11010004,
+			11010005,
+			11020001,
+			11020002,
+			11020003
+		]
+	},
+	{
+		"Name": "4 ",
+		"requiredAttendence": 12363,
+		"totalCapacity": 23,
+		"sergeantCapacity": 6,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603668
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "5 ",
+		"requiredAttendence": 12900,
+		"totalCapacity": 24,
+		"sergeantCapacity": 6,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603669
+		],
+		"goodsId": [
+			11010002,
+			11030001,
+			11040001
+		]
+	},
+	{
+		"Name": "6 ",
+		"requiredAttendence": 18813,
+		"totalCapacity": 25,
+		"sergeantCapacity": 6,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603670
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "7 ",
+		"requiredAttendence": 19565,
+		"totalCapacity": 26,
+		"sergeantCapacity": 6,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603671
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "8 ",
+		"requiredAttendence": 29025,
+		"totalCapacity": 27,
+		"sergeantCapacity": 7,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603672
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "9 ",
+		"requiredAttendence": 30100,
+		"totalCapacity": 28,
+		"sergeantCapacity": 7,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603673
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "10 ",
+		"requiredAttendence": 31175,
+		"totalCapacity": 29,
+		"sergeantCapacity": 7,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603674
+		],
+		"goodsId": [
+			11010020
+		]
+	},
+	{
+		"Name": "11 ",
+		"requiredAttendence": 64500,
+		"totalCapacity": 30,
+		"sergeantCapacity": 7,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603675
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "12 ",
+		"requiredAttendence": 66650,
+		"totalCapacity": 31,
+		"sergeantCapacity": 8,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603676
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "13 ",
+		"requiredAttendence": 103200,
+		"totalCapacity": 32,
+		"sergeantCapacity": 8,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603677
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "14 ",
+		"requiredAttendence": 106425,
+		"totalCapacity": 33,
+		"sergeantCapacity": 8,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603678
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "15 ",
+		"requiredAttendence": 146200,
+		"totalCapacity": 34,
+		"sergeantCapacity": 8,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603679
+		],
+		"goodsId": [
+			11010021,
+			11010022,
+			11010023
+		]
+	},
+	{
+		"Name": "16 ",
+		"requiredAttendence": 150500,
+		"totalCapacity": 35,
+		"sergeantCapacity": 9,
+		"captainCapacity": 3,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603680
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "17 ",
+		"requiredAttendence": 193500,
+		"totalCapacity": 36,
+		"sergeantCapacity": 9,
+		"captainCapacity": 4,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603681
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "18 ",
+		"requiredAttendence": 198875,
+		"totalCapacity": 37,
+		"sergeantCapacity": 9,
+		"captainCapacity": 4,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603682
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "19 ",
+		"requiredAttendence": 245100,
+		"totalCapacity": 38,
+		"sergeantCapacity": 9,
+		"captainCapacity": 4,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603683
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "20 ",
+		"requiredAttendence": 251550,
+		"totalCapacity": 39,
+		"sergeantCapacity": 10,
+		"captainCapacity": 4,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			131603684
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "21 ",
+		"requiredAttendence": 301000,
+		"totalCapacity": 40,
+		"sergeantCapacity": 10,
+		"captainCapacity": 4,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			0
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "22 ",
+		"requiredAttendence": 352600,
+		"totalCapacity": 41,
+		"sergeantCapacity": 10,
+		"captainCapacity": 4,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			0
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "23 ",
+		"requiredAttendence": 406350,
+		"totalCapacity": 42,
+		"sergeantCapacity": 10,
+		"captainCapacity": 4,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			0
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "24 ",
+		"requiredAttendence": 462250,
+		"totalCapacity": 43,
+		"sergeantCapacity": 11,
+		"captainCapacity": 4,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			0
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "25 ",
+		"requiredAttendence": 520300,
+		"totalCapacity": 44,
+		"sergeantCapacity": 11,
+		"captainCapacity": 4,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			0
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "26 ",
+		"requiredAttendence": 628875,
+		"totalCapacity": 45,
+		"sergeantCapacity": 11,
+		"captainCapacity": 4,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			0
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "27 ",
+		"requiredAttendence": 741750,
+		"totalCapacity": 46,
+		"sergeantCapacity": 11,
+		"captainCapacity": 5,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			0
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "28 ",
+		"requiredAttendence": 858925,
+		"totalCapacity": 47,
+		"sergeantCapacity": 12,
+		"captainCapacity": 5,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			0
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "29 ",
+		"requiredAttendence": 980400,
+		"totalCapacity": 48,
+		"sergeantCapacity": 12,
+		"captainCapacity": 5,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			0
+		],
+		"goodsId": [
+			0
+		]
+	},
+	{
+		"Name": "30 ",
+		"requiredAttendence": 0,
+		"totalCapacity": 50,
+		"sergeantCapacity": 12,
+		"captainCapacity": 5,
+		"colonelCapacity": 2,
+		"leaderCapacity": 1,
+		"GuildContentsOpen": [
+			0
+		],
+		"goodsId": [
+			0
+		]
+	}
+]

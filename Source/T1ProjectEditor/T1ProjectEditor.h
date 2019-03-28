@@ -23,10 +23,33 @@ public:
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 
-	inline void SetMyEditor(TSharedPtr<class FMyEditor> InDataTable)
+	inline TSharedPtr<class FMyEditor> Create()
+	{
+		//TSharedRef<FMyEditor> NewMyEditor(new FMyEditor());
+		return MyEditor = TSharedRef<FMyEditor>(new FMyEditor());
+		//MyEditor->InitFMyEditor(EToolkitMode::Standalone, TSharedPtr<IToolkitHost>(), NewObject<UDataActorComponent>());
+		//T1ProjectEditorModule->SetMyEditor(NewMyEditor);
+	}
+
+	inline TSharedPtr<class FMyEditor> GetMyEditor()
+	{
+		if (MyEditor.IsValid())
+		{
+			return MyEditor;
+		}
+
+		return Create();
+	}
+
+	/*inline void SetMyEditor(TSharedPtr<class FMyEditor> InDataTable)
 	{
 		MyEditor = InDataTable;
-	}
+	}*/
+
+	/*inline void SetMyEditor(TSharedPtr<class FMyEditor> InDataTable)
+	{
+		MyEditor = InDataTable;
+	}*/
 
 	inline void SetDataTable(UDataTable* InDataTable)
 	{

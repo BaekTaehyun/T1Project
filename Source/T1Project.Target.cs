@@ -9,6 +9,6 @@ public class T1ProjectTarget : TargetRules
 	{
 		Type = TargetType.Game;
 
-		ExtraModuleNames.AddRange( new string[] { "T1Project" } );
+		ExtraModuleNames.AddRange( new string[] { "T1Project", "T1ProjectSetting" } );
 	}
 }
