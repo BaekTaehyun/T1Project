@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "T1PlayerStatComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnHPIsZeroDelegate);
+DECLARE_MULTICAST_DELEGATE(FOnHPIsChangedDelegate);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class T1PROJECT_API UT1PlayerStatComponent : public UActorComponent
@@ -23,6 +25,13 @@ protected:
 
 public:
 	void SetNewLevel(int32 NewLevel);
+	void SetDamage(float NewDamage);
+	void SetHp(float NewHp);
+	float GetAttack();
+	float GetHpRatio();
+
+	FOnHPIsZeroDelegate	OnHPIsZero;
+	FOnHPIsChangedDelegate OnHPIsChanged;
 
 private:
 	struct FT1PlayerData* CurrentStatData = nullptr;

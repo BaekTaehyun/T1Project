@@ -11,14 +11,15 @@
 			"AdditionalDependencies": [
 				"Engine",
 				"Slate",
-				"CoreUObject"
+				"CoreUObject",
+				"AIModule"
 			]
 		},
-    {
-      "Name": "T1ProjectEditor",
-      "Type": "Editor",
-      "LoadingPhase": "Default"
-    }
+		{
+			"Name": "T1ProjectEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
 	],
 	"Plugins": [
 		{

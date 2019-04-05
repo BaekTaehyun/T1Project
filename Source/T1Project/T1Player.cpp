@@ -10,11 +10,14 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/InputComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Delegate.h"
 #include "ConstructorHelpers.h"
 #include "DrawDebugHelpers.h"
 #include "T1AWeapon.h"
 #include "T1PlayerStatComponent.h"
+#include "T1PlayerWidget.h"
+#include "T1AIController.h"
 
 
 // Sets default values
@@ -33,9 +36,13 @@ AT1Player::AT1Player()
 	// 플레이어 스텟 컴포넌트
 	PlayerStat = CreateDefaultSubobject<UT1PlayerStatComponent>(TEXT("PLAYERSTAT"));
 
+	// HP 위젯 붙이기
+	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBARWIDGET"));
+
 	// 컴포넌트 종속관계설정
 	SpringArm->SetupAttachment(RootComponent);
 	Camera->SetupAttachment(SpringArm);
+	HPBarWidget->SetupAttachment(GetMesh());
 	
 	// 좌표세팅(상대좌표로 초기값을 지정합니다.)
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -88.0f), FRotator(0.0f, -90.0f, 0.0f));
@@ -99,6 +106,21 @@ AT1Player::AT1Player()
 		}
 		Weapon->SetupAttachment(GetMesh(), WeaponSocket);
 	}
+
+	// 위젯 데이터 로딩
+	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
+	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(
+		TEXT("/Game/UI/UI_HPBar.UI_HPBar_C"));
+	if (UI_HUD.Succeeded())
+	{
+		HPBarWidget->SetWidgetClass(UI_HUD.Class);
+		HPBarWidget->SetDrawSize(FVector2D(150.0f, 50.0f));
+	}
+
+	AIControllerClass = AT1AIController::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
 }
 
 // Called when the game starts or when spawned
@@ -214,6 +236,18 @@ void AT1Player::PostInitializeComponents()
 
 	//미리선언한 델리게이트에 충돌 처리 이벤트 등록
 	T1Anim->OnAttackHitCheck.AddUObject(this, &AT1Player::AttackCheck);
+
+	PlayerStat->OnHPIsZero.AddLambda([this]()-> void {
+		T1LOG(Warning, TEXT("OnHpIsZero"));
+		T1Anim->SetDeadAnim();
+		SetActorEnableCollision(false);
+	});
+
+	auto PlayerWidget = Cast<UT1PlayerWidget>(HPBarWidget->GetUserWidgetObject());
+	if (nullptr != PlayerWidget)
+	{
+		PlayerWidget->BindPlayerStat(PlayerStat);
+	}
 }
 
 // 콜링 순서를 파악 하기 위한 오버라이딩	
@@ -391,7 +425,7 @@ void AT1Player::AttackCheck()
 	T1LOG(Warning, TEXT("Hit Actor Name : %s"), *HitResult.Actor->GetName());
 
 	FDamageEvent damageEvent;
-	HitResult.Actor->TakeDamage(50.0f, damageEvent, GetController(), this);
+	HitResult.Actor->TakeDamage(PlayerStat->GetAttack(), damageEvent, GetController(), this);
 
 }
 
@@ -400,11 +434,7 @@ float AT1Player::TakeDamage(float DamageAmout, struct FDamageEvent const& Damage
 	float FinalDamage = Super::TakeDamage(DamageAmout, DamageEvent, EventInstigator, DamageCauser);
 	T1LOG(Warning, TEXT("Actor : %s took Damage : %f"), *GetName(), FinalDamage);
 
-	if (FinalDamage > 0.0f)
-	{
-		T1Anim->SetDeadAnim();
-		SetActorEnableCollision(false);
-	}
+	PlayerStat->SetDamage(FinalDamage);
 	return FinalDamage;
 }
 

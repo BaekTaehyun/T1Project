@@ -48,7 +48,9 @@ void UT1PlayerStatComponent::SetNewLevel(int32 NewLevel)
 	if (nullptr != CurrentStatData)
 	{
 		Level = NewLevel;
-		CurrentHP = CurrentStatData->MaxHP;
+		//CurrentHP = CurrentStatData->MaxHP;
+		SetHp(CurrentStatData->MaxHP);
+
 	}
 	else
 	{
@@ -63,5 +65,40 @@ void UT1PlayerStatComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UT1PlayerStatComponent::SetDamage(float NewDamage)
+{
+	T1CHECK(nullptr != CurrentStatData);
+	SetHp(FMath::Clamp<float>(CurrentHP - NewDamage, 0.0f, CurrentStatData->MaxHP));
+	if (CurrentHP <= 0.0f)
+	{
+		OnHPIsZero.Broadcast();
+	}
+}
+
+// 언리얼 엔진에서는 무시가능한 오차를 측정할때 KINDA_SMALL_NUMBER라는 매크로를 제공한다.
+void UT1PlayerStatComponent::SetHp(float NewHp)
+{
+	CurrentHP = NewHp;
+	OnHPIsChanged.Broadcast();
+	if (CurrentHP < KINDA_SMALL_NUMBER)
+	{
+		CurrentHP = 0.0f;
+		OnHPIsZero.Broadcast();
+	}
+}
+
+float UT1PlayerStatComponent::GetAttack()
+{
+	T1CHECK(nullptr != CurrentStatData, 0.0f);
+	return CurrentStatData->Attack;
+}
+
+float UT1PlayerStatComponent::GetHpRatio()
+{
+	T1CHECK(nullptr != CurrentStatData, 0.0f);
+
+	return (CurrentStatData->MaxHP < KINDA_SMALL_NUMBER) ? 0.0f : (CurrentHP / CurrentStatData->MaxHP);
 }
 
