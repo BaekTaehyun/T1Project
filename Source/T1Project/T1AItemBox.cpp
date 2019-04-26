@@ -8,6 +8,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Engine/StaticMesh.h"
 #include "Engine/World.h"
 
 // Sets default values

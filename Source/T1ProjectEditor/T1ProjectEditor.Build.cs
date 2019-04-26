@@ -25,7 +25,8 @@ public class T1ProjectEditor : ModuleRules
 				"PropertyEditor",
 				"Json",
 				"AppFramework",
-				"T1ContentBrowserEditor"
+				//"T1ContentBrowserEditor",
+                "GameService"
 			}
 		);
 

@@ -353,7 +353,7 @@ FReply SMyRowEditor::OnMoveToExtentClicked(FDataTableEditorUtils::ERowMoveDirect
 	{
 		// We move by the row map size, as FDataTableEditorUtils::MoveRow will automatically clamp this as appropriate
 		const FName RowToMove = GetCurrentName();
-		FDataTableEditorUtils::MoveRow(DataTable.Get(), RowToMove, MoveDirection, DataTable->RowMap.Num());
+		FDataTableEditorUtils::MoveRow(DataTable.Get(), RowToMove, MoveDirection, DataTable->GetRowMap().Num());
 	}
 	return FReply::Handled();
 }

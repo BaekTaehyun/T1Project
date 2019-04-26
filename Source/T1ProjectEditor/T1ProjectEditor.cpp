@@ -13,7 +13,7 @@
 #include "Framework/MultiBox/MultiBoxBuilder.h"
 #include "LevelEditor.h"
 
-IMPLEMENT_MODULE(FT1ProjectEditor, "T1ProjectEditor");
+IMPLEMENT_MODULE(FT1ProjectEditor, T1ProjectEditor);
 
 #define LOCTEXT_NAMESPACE "MyMenu"
 

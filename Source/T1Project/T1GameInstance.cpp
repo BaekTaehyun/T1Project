@@ -14,7 +14,7 @@ UT1GameInstance::UT1GameInstance()
 
 	T1CHECK(DT_PLAYER_DT.Succeeded());
 	T1PlayerTable = DT_PLAYER_DT.Object;
-	T1CHECK(T1PlayerTable->RowMap.Num() > 0);
+	T1CHECK(T1PlayerTable->GetRowMap().Num() > 0);
 
 }
 void UT1GameInstance::Init()

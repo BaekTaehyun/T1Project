@@ -176,9 +176,9 @@ void AT1Player::Tick(float DeltaTime)
 }
 
 // Called to bind functionality to input
-void AT1Player::SetupPlayerInputComponent(UInputComponent* InputComponent)
+void AT1Player::SetupPlayerInputComponent(UInputComponent* inputComponent)
 {
-	Super::SetupPlayerInputComponent(InputComponent);
+	Super::SetupPlayerInputComponent(inputComponent);
 
 	T1LOG_S(Warning);
 

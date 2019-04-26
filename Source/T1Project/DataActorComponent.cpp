@@ -23,7 +23,7 @@ UDataActorComponent::UDataActorComponent()
 	T1CHECK(DT_CHARACTER.Succeeded());
 	//CharacterTable = DT_CHARACTER;
 	CharacterTable = DT_CHARACTER.Object;
-	T1CHECK(CharacterTable->RowMap.Num() > 0);
+	T1CHECK(CharacterTable->GetRowMap().Num() > 0);
 
 	//SetNewLevel(Level);
 }
@@ -51,7 +51,7 @@ void UDataActorComponent::InitializeComponent()
 	//SetNewLevel(Level);
 	//T1LOG(Warning, TEXT("MaxHP of Level 1 Character : %d"), GetCharInfoData(1)->MaxHP);
 }
-
+#if WITH_EDITOR
 void UDataActorComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	//FName PropertyName = (PropertyChangedEvent.Property != NULL) ? PropertyChangedEvent.Property->GetFName() : NAME_None;
@@ -62,7 +62,7 @@ void UDataActorComponent::PostEditChangeProperty(FPropertyChangedEvent& Property
 	//}
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 }
-
+#endif
 // Called every frame
 void UDataActorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -108,5 +108,4 @@ void UDataActorComponent::SetDataTable(UDataTable* InDataTable)
 
 void UDataActorComponent::SetInfoData(int32 EditLevel)
 {
-	EditLevel;
 }

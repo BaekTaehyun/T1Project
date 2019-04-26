@@ -5,8 +5,11 @@
 #include "FMyExtensionStyle.h"
 
 #include "PropertyEditorModule.h"
-#include "T1ContentBrowserEditor/Public/T1ContentBrowserEditor.h"
-#include "T1ContentBrowserEditor/Public/IT1ContentBrowserSingleton.h"
+//#include "T1ContentBrowserEditor/Public/T1ContentBrowserEditor.h"
+//#include "T1ContentBrowserEditor/Public/IT1ContentBrowserSingleton.h"
+#include "IContentBrowserSingleton.h"
+#include "ContentBrowserModule.h"
+//#include "ContentBrowserEditor"
 #include "Dom/JsonObject.h"
 #include "Widgets/Text/STextBlock.h"
 #include "Misc/FileHelper.h"
@@ -196,26 +199,26 @@ void FMyEditor::InitFMyEditor(const EToolkitMode::Type Mode, const TSharedPtr< c
 	const FDetailsViewArgs DetailsViewArgs(bIsUpdatable, bIsLockable, true, FDetailsViewArgs::ObjectsUseNameArea, false);
 	DataActorComponentView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
 
-	//IContentBrowserSingleton& ContentBrowserSingleton = FModuleManager::Get().LoadModuleChecked<FContentBrowserModule>("ContentBrowser").Get();;
-	IT1ContentBrowserSingleton& ContentBrowserSingleton = FModuleManager::Get().LoadModuleChecked<T1ContentBrowserEditor>("T1ContentBrowserEditor").Get();;
-	FT1ContentBrowserConfig Config;
-	Config.bCanShowClasses = false;
-	Config.bCanShowRealTimeThumbnails = false;
-	Config.InitialAssetViewType = ET1AssetViewType::Tile;
-	Config.bCanShowDevelopersFolder = false;
-	Config.bCanShowFolders = false;
-	Config.bUseSourcesView = true;
-	Config.bExpandSourcesView = true;
-	Config.ThumbnailLabel = EThumbnailLabel::NoLabel;
-	Config.ThumbnailScale = 0.4f;
-	Config.bCanShowFilters = true;
-	Config.bUsePathPicker = true;
-	Config.bShowAssetPathTree = true;
-	Config.bAlwaysShowCollections = false;
-	Config.bShowBottomToolbar = true;
-	Config.bCanShowLockButton = false;
+	//auto ContentBrowserSingleton = FModuleManager::GetModuleChecked<FContentBrowserModule>("ContentBrowser");
+	//////IT1ContentBrowserSingleton& ContentBrowserSingleton = FModuleManager::Get().LoadModuleChecked<T1ContentBrowserEditor>("T1ContentBrowserEditor").Get();;
+	//FContentBrowserConfig Config;
+	//Config.bCanShowClasses = false;
+	//Config.bCanShowRealTimeThumbnails = false;
+	//Config.InitialAssetViewType = EAssetViewType::Type::Tile;
+	//Config.bCanShowDevelopersFolder = false;
+	//Config.bCanShowFolders = false;
+	//Config.bUseSourcesView = true;
+	//Config.bExpandSourcesView = true;
+	//Config.ThumbnailLabel = EThumbnailLabel::NoLabel;
+	//Config.ThumbnailScale = 0.4f;
+	//Config.bCanShowFilters = true;
+	//Config.bUsePathPicker = true;
+	//Config.bShowAssetPathTree = true;
+	//Config.bAlwaysShowCollections = false;
+	//Config.bShowBottomToolbar = true;
+	//Config.bCanShowLockButton = false;
 
-	DataTableSelectView = ContentBrowserSingleton.CreateContentBrowser("DataTableContentBrowser", nullptr, &Config);
+	//DataTableSelectView = ContentBrowserSingleton.CreateContentBrowser("DataTableContentBrowser", nullptr, &Config);
 	//DataTableSelectView->SetOnMouseDoubleClick()
 
 	DataTableTabWidget = CreateContentBox();
@@ -505,38 +508,38 @@ void FMyEditor::SetDataTable(UDataTable* InDataTable)
 	//RowEditorTabWidget = CreateRowEditorBox();
 }
 
-void FMyEditor::RegisterTabSpawners(const TSharedRef<class FTabManager>& TabManager)
+void FMyEditor::RegisterTabSpawners(const TSharedRef<class FTabManager>& tabManager)
 {
-	WorkspaceMenuCategory = TabManager->AddLocalWorkspaceMenuCategory(LOCTEXT("WorkspaceMenu_MyAssetEditor", "My Asset Editor"));
+	WorkspaceMenuCategory = tabManager->AddLocalWorkspaceMenuCategory(LOCTEXT("WorkspaceMenu_MyAssetEditor", "My Asset Editor"));
 	auto WorkspaceMenuCategoryRef = WorkspaceMenuCategory.ToSharedRef();
 
-	FAssetEditorToolkit::RegisterTabSpawners(TabManager);
+	FAssetEditorToolkit::RegisterTabSpawners(tabManager);
 
-	TabManager->RegisterTabSpawner(DataActorComponentTabId, FOnSpawnTab::CreateSP(this, &FMyEditor::SpawnTab_DataActorComponent))
+	tabManager->RegisterTabSpawner(DataActorComponentTabId, FOnSpawnTab::CreateSP(this, &FMyEditor::SpawnTab_DataActorComponent))
 		.SetGroup(WorkspaceMenuCategoryRef)
 		.SetIcon(FSlateIcon(FMyExtensionStyle::GetStyleSetName(), "MyExtensions.DataTool"));
 
-	TabManager->RegisterTabSpawner(DataTableSelectTabId, FOnSpawnTab::CreateSP(this, &FMyEditor::SpawnTab_DataTableSelect))
+	tabManager->RegisterTabSpawner(DataTableSelectTabId, FOnSpawnTab::CreateSP(this, &FMyEditor::SpawnTab_DataTableSelect))
 		.SetGroup(WorkspaceMenuCategoryRef)
 		.SetIcon(FSlateIcon(FMyExtensionStyle::GetStyleSetName(), "MyExtensions.DataTool"));
 
-	TabManager->RegisterTabSpawner(DataTableTabId, FOnSpawnTab::CreateSP(this, &FMyEditor::SpawnTab_DataTable))		
+	tabManager->RegisterTabSpawner(DataTableTabId, FOnSpawnTab::CreateSP(this, &FMyEditor::SpawnTab_DataTable))
 		.SetGroup(WorkspaceMenuCategoryRef)
 		.SetIcon(FSlateIcon(FMyExtensionStyle::GetStyleSetName(), "MyExtensions.DataTool"));	
 
-	TabManager->RegisterTabSpawner(RowEditorTabId, FOnSpawnTab::CreateSP(this, &FMyEditor::SpawnTab_RowEditor))
+	tabManager->RegisterTabSpawner(RowEditorTabId, FOnSpawnTab::CreateSP(this, &FMyEditor::SpawnTab_RowEditor))
 		.SetGroup(WorkspaceMenuCategoryRef)
 		.SetIcon(FSlateIcon(FMyExtensionStyle::GetStyleSetName(), "MyExtensions.DataTool"));		
 }
 
-void FMyEditor::UnregisterTabSpawners(const TSharedRef<class FTabManager>& TabManager)
+void FMyEditor::UnregisterTabSpawners(const TSharedRef<class FTabManager>& tabManager)
 {
-	FAssetEditorToolkit::UnregisterTabSpawners(TabManager);
+	FAssetEditorToolkit::UnregisterTabSpawners(tabManager);
 
-	TabManager->UnregisterTabSpawner(DataActorComponentTabId);
-	TabManager->UnregisterTabSpawner(DataTableSelectTabId);
-	TabManager->UnregisterTabSpawner(DataTableTabId);
-	TabManager->UnregisterTabSpawner(RowEditorTabId);
+	tabManager->UnregisterTabSpawner(DataActorComponentTabId);
+	tabManager->UnregisterTabSpawner(DataTableSelectTabId);
+	tabManager->UnregisterTabSpawner(DataTableTabId);
+	tabManager->UnregisterTabSpawner(RowEditorTabId);
 
 	DataActorComponentView.Reset();
 	DataTableSelectView.Reset();

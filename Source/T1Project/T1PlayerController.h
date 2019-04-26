@@ -17,7 +17,8 @@ class T1PROJECT_API AT1PlayerController : public APlayerController
 
 public:
 	virtual void PostInitializeComponents() override;
-	virtual void Possess(APawn* pawn) override;
+	//DEPRECATED(4.22,
+	//virtual void Possess(APawn* pawn) override;
 protected:
 	virtual void BeginPlay() override;
 };

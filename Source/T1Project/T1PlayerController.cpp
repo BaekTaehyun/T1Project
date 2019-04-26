@@ -9,11 +9,11 @@ void AT1PlayerController::PostInitializeComponents()
 	Super::PostInitializeComponents();
 }
 
-void AT1PlayerController::Possess(APawn* pawn)
-{
-	T1LOG_S(Warning);
-	Super::Possess(pawn);
-}
+//void AT1PlayerController::Possess(APawn* pawn)
+//{
+//	T1LOG_S(Warning);
+//	Super::Possess(pawn);
+//}
 
 void AT1PlayerController::BeginPlay()
 {
