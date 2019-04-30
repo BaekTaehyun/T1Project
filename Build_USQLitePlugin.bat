@@ -17,7 +17,7 @@ echo Rebuild Plugin...
 echo UE4_Install=%UE4_Install%
 echo UAT=%UE4_Install%\%UE4_UAT%
 
-if not exist %UE4_Install%\%UE4_UAT% goto Error_BatchFileInWrongLocation
+if not exist "%UE4_Install%\%UE4_UAT%" goto Error_BatchFileInWrongLocation
 
 call "%UE4_Install%\%UE4_UAT%" BuildPlugin -plugin=%TARGET_FOLDER%\%TARGET_NAME% -package=%OUTPUT_FOLDER%
 

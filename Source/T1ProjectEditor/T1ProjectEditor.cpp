@@ -23,8 +23,8 @@ void FT1ProjectEditor::StartupModule()
 	FPropertyEditorModule& PropertyModule = 
 		FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
 
-	PropertyModule.RegisterCustomClassLayout(AMyActor::StaticClass()->GetFName(),
-		FOnGetDetailCustomizationInstance::CreateStatic(&FMyDetailsCustomization::MakeInstance));	
+	/*PropertyModule.RegisterCustomClassLayout(AMyActor::StaticClass()->GetFName(),
+		FOnGetDetailCustomizationInstance::CreateStatic(&FMyDetailsCustomization::MakeInstance));	*/
 
 	PropertyModule.NotifyCustomizationModuleChanged();
 

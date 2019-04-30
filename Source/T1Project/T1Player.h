@@ -6,7 +6,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 
-#include "DataActorComponent.h"
+//#include "DataActorComponent.h"
 
 #include "T1Player.generated.h"
 
@@ -78,8 +78,8 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	class UWidgetComponent* HPBarWidget;
 
-	UPROPERTY(VisibleAnywhere, Category = CharInfo)
-	class UDataActorComponent* CharInfoData;
+	/*UPROPERTY(VisibleAnywhere, Category = CharInfo)
+	class UDataActorComponent* CharInfoData;*/
 
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
 	float AttackRange;

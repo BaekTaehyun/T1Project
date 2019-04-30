@@ -20,6 +20,8 @@ class T1PROJECT_API AT1GameModeBase : public AGameModeBase
 
 public:
 
+	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
+
 	// 플레이어가 게임에 입장하는 순간(로그인), Editor에서 Play
 	virtual void PostLogin(APlayerController* newPlayer) override;
 };

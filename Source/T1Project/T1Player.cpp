@@ -31,7 +31,7 @@ AT1Player::AT1Player()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
 
 	// 데이터 컴퍼넌트 세팅
-	CharInfoData = CreateDefaultSubobject<UDataActorComponent>(TEXT("CHARINFO"));
+	//CharInfoData = CreateDefaultSubobject<UDataActorComponent>(TEXT("CHARINFO"));
 
 	// 플레이어 스텟 컴포넌트
 	PlayerStat = CreateDefaultSubobject<UT1PlayerStatComponent>(TEXT("PLAYERSTAT"));

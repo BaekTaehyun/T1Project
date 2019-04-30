@@ -4,7 +4,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FMyEditor.h"
+//#include "FMyEditor.h"
 
 class FT1ProjectEditor : public IModuleInterface
 {
@@ -23,17 +23,17 @@ public:
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 
-	inline void SetMyEditor(TSharedPtr<class FMyEditor> InDataTable)
-	{
-		MyEditor = InDataTable;
-	}
+	//inline void SetMyEditor(TSharedPtr<class FMyEditor> InDataTable)
+	//{
+	//	MyEditor = InDataTable;
+	//}
 
-	inline void SetDataTable(UDataTable* InDataTable)
-	{
-		MyEditor->SetDataTable(InDataTable);
-	}
+	//inline void SetDataTable(UDataTable* InDataTable)
+	//{
+	//	//MyEditor->SetDataTable(InDataTable);
+	//}
 
 private:
 	TSharedPtr<class FUICommandList> MyCommandList;	
-	TSharedPtr<class FMyEditor> MyEditor;
+	//TSharedPtr<class FMyEditor> MyEditor;
 };

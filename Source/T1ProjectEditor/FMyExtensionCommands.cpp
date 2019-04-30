@@ -2,7 +2,7 @@
 
 #include "FMyExtensionCommands.h"
 #include "FMyEditor.h"
-#include "DataActorComponent.h"
+//#include "DataActorComponent.h"
 
 #include "Modules/ModuleManager.h"
 #include "T1ProjectEditor.h"
@@ -17,9 +17,9 @@ void FMyExtensionCommands::RegisterCommands()
 void FMyExtensionActions::Action1()
 {
 	FT1ProjectEditor* T1ProjectEditorModule = FModuleManager::GetModulePtr<FT1ProjectEditor>("T1ProjectEditor");
-	TSharedRef<FMyEditor> NewMyEditor(new FMyEditor());
-	NewMyEditor->InitFMyEditor(EToolkitMode::Standalone, TSharedPtr<IToolkitHost>(), NewObject<UDataActorComponent>());
-	T1ProjectEditorModule->SetMyEditor(NewMyEditor);
+	//TSharedRef<FMyEditor> NewMyEditor(new FMyEditor());
+	/*NewMyEditor->InitFMyEditor(EToolkitMode::Standalone, TSharedPtr<IToolkitHost>(), NewObject<UDataActorComponent>());*/
+	//T1ProjectEditorModule->SetMyEditor(NewMyEditor);
 }
 
 #undef LOCTEXT_NAMESPACE

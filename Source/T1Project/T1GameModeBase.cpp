@@ -27,6 +27,12 @@ AT1GameModeBase::AT1GameModeBase()
 
 }
 
+void AT1GameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+	T1LOG(Warning, TEXT("InitGame Call"));
+}
+
 //------------------------------------------------------------------
 // 플레이어가 게임에 입장하는 순간(로그인), Editor에서 Play
 //------------------------------------------------------------------
