@@ -5,8 +5,9 @@
 #include "GSFGameMode.h"
 #include "GSFGameModeLobby.h"
 
-
-
+//------------------------------------------------------------------------------
+// 게임모드를 관리할때 필요한 메모리 할당관리자(상속구조도 지원하기 위함)
+//------------------------------------------------------------------------------
 class GSFGameModeAllocator : GSTMapAllocator<GSFGameMode::Mode, GSFGameModeBase>
 {
 public:
@@ -26,7 +27,9 @@ public:
 	}
 };
 
-
+//------------------------------------------------------------------------------
+// 게임모드를 관리
+//------------------------------------------------------------------------------
 class GSGameModeManager : public GSTStateMng<GSFGameMode::Mode, GSFGameModeBase, GSFGameModeAllocator>
 {
 public:
