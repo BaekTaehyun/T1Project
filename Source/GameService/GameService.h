@@ -14,4 +14,4 @@ DECLARE_LOG_CATEGORY_EXTERN(GameService, Log, All);
 
 
 // ºÓÀº»ö ·Î±ë
-#define GSCHECK(Expr, ...) {if(!(Expr)) {T1LOG(Error, TEXT("ASSERTION : %s"), TEXT("'"#Expr"'")); return __VA_ARGS__;}}
+#define GSCHECK(Expr, ...) {if(!(Expr)) {GSLOG(Error, TEXT("ASSERTION : %s"), TEXT("'"#Expr"'")); return __VA_ARGS__;}}

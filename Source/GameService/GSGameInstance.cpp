@@ -23,6 +23,20 @@ void UGSGameInstance::Init()
 {
 	GSLOG_S(Warning);
 	Super::Init();
+
+	_gameMode = TUniquePtr<GSGameModeManager>(new GSGameModeManager());
+	_gameMode.Get()->InitState();
+}
+
+void UGSGameInstance::Shutdown()
+{
+	Super::Shutdown();
+	if (_gameMode.IsValid())
+	{
+		_gameMode->RemoveAll();
+		_gameMode = NULL;
+	}
+	
 }
 
 

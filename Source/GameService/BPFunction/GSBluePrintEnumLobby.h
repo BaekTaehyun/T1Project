@@ -1,6 +1,6 @@
 #pragma once
 
-
+// 로비 UI에서 C++쪽으로 타이밍등 이벤트 전달용
 UENUM(BluePrintType)
 enum class EGS_LOBBY_Enum : uint8
 {

@@ -9,4 +9,6 @@
 void UGSBlueprintFunctionLibraryLobby::SendEventGSLobby(EGS_LOBBY_Enum inMessage)
 {
 	GSLOG(Warning, *EnumToString(EGS_LOBBY_Enum, inMessage));
+
+	
 }
