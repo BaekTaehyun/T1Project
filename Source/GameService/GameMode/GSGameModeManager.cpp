@@ -1,9 +1,5 @@
 #include "GSGameModeManager.h"
 
-GSGameModeManager::~GSGameModeManager()
-{
-
-}
 
 void GSGameModeManager::RemoveAll()
 {

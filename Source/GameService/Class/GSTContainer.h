@@ -133,9 +133,9 @@ public:
 	virtual void Remove(T1 inKey)
 	{
 		auto instance = _container.FindAndRemoveChecked(inKey);
-		if (instance.IsUnique())
+		if (instance.IsUnique() && instance.IsValid())
 		{
-			instance.Reset();
+			instance = NULL;
 		}
 		else
 		{

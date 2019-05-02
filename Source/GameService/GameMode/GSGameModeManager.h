@@ -33,7 +33,7 @@ public:
 class GSGameModeManager : public GSTStateMng<GSFGameMode::Mode, GSFGameModeBase, GSFGameModeAllocator>
 {
 public:
-	virtual ~GSGameModeManager();
+	virtual ~GSGameModeManager() {};
 	virtual void RemoveAll() override;
 	virtual void InitState();
 };
