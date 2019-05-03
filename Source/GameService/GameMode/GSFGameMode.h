@@ -1,6 +1,5 @@
 #pragma once
 
-
 class GSFGameMode
 {
 public:
@@ -10,4 +9,11 @@ public:
 		GAME,
 		MAX,
 	};
+
+	enum ModeMessage
+	{
+		ENTER_MODE,
+		LEAVE_MODE,
+	};
 };
+

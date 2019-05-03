@@ -12,13 +12,28 @@ template<typename T1, class  GSTState, class GSFGameModeAllocator>
 class GSTStateMng : public GSMap<T1, GSTState, GSFGameModeAllocator>
 {
 	TSharedPtr<GSTState>	_currentState = NULL;
+
+	DECLARE_EVENT(GSTStateMng, MainEvent)
+	DECLARE_EVENT_OneParam(GSTStateMng, StateEvent, T1)
+
+	MainEvent				_onInit;
+	MainEvent				_onRemoveAll;
+
+	StateEvent				_onEnterState;
+	StateEvent				_onLeaveState;
 public:
 	GSTStateMng<T1, GSTState, GSFGameModeAllocator>() : GSMap<T1, GSTState, GSFGameModeAllocator>() {};
 	virtual ~GSTStateMng<T1, GSTState, GSFGameModeAllocator>() {};
 
+	MainEvent&	OnInit() const {	return _onInit;	}
+	MainEvent&	OnRemoveAll() const { return _onRemoveAll; }
+	StateEvent& OnEnterState() const { return _onEnterState; }
+	StateEvent& OnLeaveState() const { return _onLeaveState; }
 	//------------------------------------------------------------------------------
 	virtual void RemoveAll()
 	{ 
+		_onRemoveAll.Broadcast();
+
 		if (_currentState.IsValid())
 		{
 			_currentState = NULL;
@@ -29,7 +44,10 @@ public:
 
 	//------------------------------------------------------------------------------
 	// 추가(어떤상태가 있는지 상속에서 정의해서 추가해준다.)
-	virtual void InitState() = 0;
+	virtual void InitState()
+	{
+		_onInit.Broadcast();
+	}
 
 	//------------------------------------------------------------------------------
 	void ChangeState(T1 inState)
@@ -39,6 +57,7 @@ public:
 		if (_currentState.IsValid())
 		{
 			_currentState.Get()->Exit();
+			_onLeaveState.Broadcast(_currentState.Get()->GetType());
 			GSLOG(Warning, TEXT("GSTStateMng : ChangeState [%d] Exit"), _currentState.Get()->GetType());
 		}
 
@@ -47,6 +66,7 @@ public:
 		if (_currentState.IsValid())
 		{
 			_currentState.Get()->Enter();
+			_onEnterState.Broadcast(_currentState.Get()->GetType());
 			GSLOG(Warning, TEXT("`GSTStateMng : ChangeState [%d] Enter"), _currentState.Get()->GetType());
 		}
 	}

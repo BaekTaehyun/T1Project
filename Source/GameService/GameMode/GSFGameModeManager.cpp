@@ -1,4 +1,4 @@
-#include "GSGameModeManager.h"
+#include "GSFGameModeManager.h"
 
 #include "GSFGameModeLobby.h"
 #include "GSFGameModeGame.h"
@@ -20,11 +20,11 @@ GSFGameModeBase* GSFGameModeAllocator::Alloc(GSFGameMode::Mode inMode)
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-void GSGameModeManager::RemoveAll()
+void GSFGameModeManager::RemoveAll()
 {
 	GSTStateMng<GSFGameMode::Mode, GSFGameModeBase, GSFGameModeAllocator>::RemoveAll();
 }
-void GSGameModeManager::InitState()
+void GSFGameModeManager::InitState()
 {
 	constexpr std::initializer_list<GSFGameMode::Mode> allMode = { GSFGameMode::Mode::LOBBY, GSFGameMode::Mode::GAME };
 	for (auto& e : allMode)
@@ -33,4 +33,6 @@ void GSGameModeManager::InitState()
 	}
 
 	ChangeState(GSFGameMode::Mode::LOBBY);
+
+	GSTStateMng<GSFGameMode::Mode, GSFGameModeBase, GSFGameModeAllocator>::InitState();
 }

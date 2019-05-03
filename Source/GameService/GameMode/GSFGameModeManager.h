@@ -6,7 +6,7 @@
 #include "GSFGameModeBase.h"
 
 //------------------------------------------------------------------------------
-// 게임모드를 관리할때 필요한 메모리 할당관리자(상속구조도 지원하기 위함)
+// 게임모드를 관리할때 필요한 인스턴스 할당관리자(동일 인스턴스가 아닌 상속구조도 지원하기 위함)
 //------------------------------------------------------------------------------
 class GSFGameModeAllocator : GSTMapAllocator<GSFGameMode::Mode, GSFGameModeBase>
 {
@@ -19,10 +19,10 @@ public:
 //------------------------------------------------------------------------------
 // 게임모드를 관리
 //------------------------------------------------------------------------------
-class GSGameModeManager : public GSTStateMng<GSFGameMode::Mode, GSFGameModeBase, GSFGameModeAllocator>
+class GSFGameModeManager : public GSTStateMng<GSFGameMode::Mode, GSFGameModeBase, GSFGameModeAllocator>
 {
 public:
-	virtual ~GSGameModeManager() {};
+	virtual ~GSFGameModeManager() {};
 	virtual void RemoveAll() override;
-	virtual void InitState();
+	virtual void InitState() override;
 };

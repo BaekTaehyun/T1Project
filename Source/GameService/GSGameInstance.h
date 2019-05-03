@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintPlatformLibrary.h"
-#include "GameMode/GSGameModeManager.h"
+#include "GameMode/GSFGameModeManager.h"
 #include "GSGameInstance.generated.h"
 
 //-------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ class GAMESERVICE_API UGSGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 	
-	TUniquePtr<GSGameModeManager>	_gameMode;
+	TUniquePtr<GSFGameModeManager>	_gameMode;
 	
 public:
 	UGSGameInstance();

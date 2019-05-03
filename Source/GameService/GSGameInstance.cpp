@@ -24,7 +24,7 @@ void UGSGameInstance::Init()
 	GSLOG_S(Warning);
 	Super::Init();
 
-	_gameMode = TUniquePtr<GSGameModeManager>(new GSGameModeManager());
+	_gameMode = TUniquePtr<GSFGameModeManager>(new GSFGameModeManager());
 	_gameMode.Get()->InitState();
 }
 
