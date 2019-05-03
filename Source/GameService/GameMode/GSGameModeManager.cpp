@@ -1,6 +1,25 @@
 #include "GSGameModeManager.h"
 
+#include "GSFGameModeLobby.h"
+#include "GSFGameModeGame.h"
+//------------------------------------------------------------------------------
 
+//------------------------------------------------------------------------------
+GSFGameModeBase* GSFGameModeAllocator::Alloc(GSFGameMode::Mode inMode)
+{
+	if (inMode == GSFGameMode::Mode::LOBBY)
+	{
+		return new GSFGameModeLobby();
+	}
+	else if (inMode == GSFGameMode::Mode::GAME)
+	{
+		return new GSFGameModeGame();
+	}
+	return NULL;
+}
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
 void GSGameModeManager::RemoveAll()
 {
 	GSTStateMng<GSFGameMode::Mode, GSFGameModeBase, GSFGameModeAllocator>::RemoveAll();

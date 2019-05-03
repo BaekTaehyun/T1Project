@@ -119,7 +119,7 @@ public:
 			T2* instance = _allocator.Get()->Alloc(inKey);
 			if (nullptr == instance)
 			{
-				GSLOG(Error, TEXT("GSTMap : _allocator MakeInstance NULL, Reset Call Key[%s] Value[%s]"), typeid(T1).name(), typeid(T2).name());
+				GSLOG(Error, TEXT("GSTMap : _allocator MakeInstance NULL, Call Key[%s] Value[%s]"), typeid(T1).name(), typeid(T2).name());
 				return TSharedRef<T2>();
 			}
 			TSharedPtr<T2> shard_instance = MakeShareable(instance);
