@@ -1,14 +1,10 @@
 #pragma once
 class MessageLobby
 {
-	enum System
-	{
-		GVS_DOWNLOAD_COMPLETE,
-		RECONNECT_START,
-		RECONNECT_END,
-	};
+public:
 	enum Hive
 	{
+		GVS_DOWNLOAD_COMPLETE,
 		HIVE_LOGIN_COMPLETE,
 	};
 	enum Stage

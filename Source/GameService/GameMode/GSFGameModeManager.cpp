@@ -36,4 +36,21 @@ void GSFGameModeManager::InitState()
 
 	// super::InitState() 동일코드
 	GSTStateMng<GSFGameMode::Mode, GSFGameModeBase, GSFGameModeAllocator>::InitState();
+
+
+	// 메시지 등록
+	GSTMessageHandler<MessageSystem::ID, GTSMessageNone>::MessageType delFunc;
+	delFunc.AddRaw(this, &GSFGameModeManager::OnReconnectionStart);
+	_messagehandler.GetDeliveryAddress().Add(MessageSystem::ID::RECONNECT_START, delFunc);
+
+}
+
+void GSFGameModeManager::OnReconnectionStart(const GTSMessageNone& message)
+{
+
+}
+
+void GSFGameModeManager::OnReconnectionEnd(const GTSMessageNone& message)
+{
+
 }

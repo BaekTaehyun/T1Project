@@ -7,17 +7,25 @@
 // GSTMessage 와 같이 쓰인다.
 //------------------------------------------------------------------------------
 template<typename T1, typename T2>
-class GSTMessageHandler<T1, T2>
+class GSTMessageHandler
 {
-	DECLARE_DELEGATE_OneParam(MessageType, T2&)
+public:
+	virtual ~GSTMessageHandler() {}
+	DECLARE_EVENT_OneParam(GSTMessageHandler, MessageType, const T2&)
+private:
 	TMap<T1, MessageType>	_delieveryAddr;
 public:
-	virtual void InsertMessage() = 0;
+	void RemoveAll() { _delieveryAddr.Empty(); }
+	//-------------------------------------------------------------------------
+	// 메세지 등록
+	virtual void InsertMessage() {};
+	TMap<T1, MessageType>& GetDeliveryAddress() { return _delieveryAddr; }
+
+	//-------------------------------------------------------------------------
+	// 메세지 전송
 	virtual void SendMessage(GSTMessage<T1, T2>& inMessage)
 	{
-		auto delegateFunc = _delieveryAddr.Find(inMessage.GetId());
-		delegateFunc->(inMessage.GetData());
-	}
-	TMap<T1, MessageType>& GetDeliveryAddress() { return _delieveryAddr; }
-	void RemoveAll() { _delieveryAddr.Clear(); }
+		auto delegateFunc = _delieveryAddr.FindRef(inMessage.GetId());
+		delegateFunc.Broadcast(inMessage.GetData());
+	}		
 };
