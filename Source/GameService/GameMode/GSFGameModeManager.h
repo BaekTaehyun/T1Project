@@ -2,6 +2,7 @@
 
 #include "../Class/GSTState.h"
 #include "../Class/GSTStateMng.h"
+#include "../Class/GSTMessageHandler.h"
 #include "GSFGameMode.h"
 #include "GSFGameModeBase.h"
 

@@ -36,6 +36,7 @@ public:
 
 		if (_currentState.IsValid())
 		{
+			_currentState.Get()->Exit();
 			_currentState = NULL;
 		}
 		
