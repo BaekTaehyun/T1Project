@@ -1,17 +1,14 @@
 #pragma once
-
-#include "GSFGameModeBase.h"
-#include "./Stage/StageLobby/GSFStageManagerLobby.h"
+#include "GSFStageLobbyBase.h"
 
 //------------------------------------------------------------------------------
 // 게임모드를 관리할때 필요한 메모리 할당관리자(상속구조도 지원하기 위함)
 //------------------------------------------------------------------------------
-class GSFGameModeLobby : public GSFGameModeBase
+class GSFStageLobby_CharecterPreview: public GSFStageLobbyBase
 {
-	TUniquePtr<GSStageManagerLobby>	_stageManager;
 public:
-	GSFGameModeLobby();
-	virtual ~GSFGameModeLobby();
+	GSFStageLobby_CharecterPreview();
+	virtual ~GSFStageLobby_CharecterPreview();
 	virtual void Enter() override;
 	virtual void Exit() override;
 	virtual void Update() override;

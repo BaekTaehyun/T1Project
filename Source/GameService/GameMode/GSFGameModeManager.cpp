@@ -34,5 +34,6 @@ void GSFGameModeManager::InitState()
 
 	ChangeState(GSFGameMode::Mode::LOBBY);
 
+	// super::InitState() 동일코드
 	GSTStateMng<GSFGameMode::Mode, GSFGameModeBase, GSFGameModeAllocator>::InitState();
 }

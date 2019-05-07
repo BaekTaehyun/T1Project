@@ -13,10 +13,21 @@ GSFGameModeGame::~GSFGameModeGame()
 void GSFGameModeGame::Enter()
 {
 	GSLOG(Warning, TEXT("GSFGameModeGame : Enter"));
+	_stageManager = TUniquePtr<GSStageManagerGame>(new GSStageManagerGame());
+	if (_stageManager.IsValid())
+	{
+		_stageManager.Get()->InitState();
+	}
+
 }
 
 void GSFGameModeGame::Exit()
 {
+	if (_stageManager.IsValid())
+	{
+		_stageManager.Get()->RemoveAll();
+	}
+
 	GSLOG(Warning, TEXT("GSFGameModeGame : Exit"));
 }
 
