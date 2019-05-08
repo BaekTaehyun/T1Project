@@ -13,9 +13,9 @@ GSFStageGameBase* GSFStageGameAllocator::Alloc(GSFStageMode::Game inMode)
 //------------------------------------------------------------------------------
 void GSStageManagerGame::RemoveAll()
 {
-
+	Super::RemoveAll();
 }
 void GSStageManagerGame::InitState()
 {
-
+	Super::InitState();
 }

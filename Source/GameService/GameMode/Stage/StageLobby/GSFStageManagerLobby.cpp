@@ -37,7 +37,7 @@ GSFStageLobbyBase* GSFStageLobbyAllocator::Alloc(GSFStageMode::Lobby inMode)
 //------------------------------------------------------------------------------
 void GSStageManagerLobby::RemoveAll()
 {
-	GSTStateMng<GSFStageMode::Lobby, GSFStageLobbyBase, GSFStageLobbyAllocator>::RemoveAll();
+	Super::RemoveAll();
 }
 void GSStageManagerLobby::InitState()
 {
@@ -58,5 +58,5 @@ void GSStageManagerLobby::InitState()
 
 	ChangeState(GSFStageMode::Lobby::INTRO);
 
-	GSTStateMng<GSFStageMode::Lobby, GSFStageLobbyBase, GSFStageLobbyAllocator>::InitState();
+	Super::InitState();
 }

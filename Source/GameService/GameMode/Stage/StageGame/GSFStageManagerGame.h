@@ -22,6 +22,7 @@ public:
 //------------------------------------------------------------------------------
 class GSStageManagerGame : public GSTStateMng<GSFStageMode::Game, GSFStageGameBase, GSFStageGameAllocator>
 {
+	typedef GSTStateMng<GSFStageMode::Game, GSFStageGameBase, GSFStageGameAllocator> Super;
 public:
 	virtual ~GSStageManagerGame() {};
 	virtual void RemoveAll() override;

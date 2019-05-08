@@ -21,6 +21,7 @@ public:
 //------------------------------------------------------------------------------
 class GSFGameModeManager : public GSTStateMng<GSFGameMode::Mode, GSFGameModeBase, GSFGameModeAllocator>
 {
+	typedef GSTStateMng<GSFGameMode::Mode, GSFGameModeBase, GSFGameModeAllocator> Super;
 	GSFMessageHandlerSystem		_messagehandler;
 public:
 	virtual ~GSFGameModeManager() {};

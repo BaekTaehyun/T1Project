@@ -21,6 +21,7 @@ public:
 //------------------------------------------------------------------------------
 class GSStageManagerLobby : public GSTStateMng<GSFStageMode::Lobby, GSFStageLobbyBase, GSFStageLobbyAllocator>
 {
+	typedef GSTStateMng<GSFStageMode::Lobby, GSFStageLobbyBase, GSFStageLobbyAllocator> Super;
 public:
 	virtual ~GSStageManagerLobby() {};
 	virtual void RemoveAll() override;
