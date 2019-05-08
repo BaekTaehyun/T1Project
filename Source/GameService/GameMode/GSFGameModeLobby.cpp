@@ -34,3 +34,13 @@ void GSFGameModeLobby::Update()
 {
 	GSLOG(Warning, TEXT("GSFGameModeLobby : Update"));
 }
+
+void GSFGameModeLobby::OnReconnectionStart()
+{
+	GSLOG(Warning, TEXT("GSFGameModeLobby : OnReconectionStart"));
+}
+
+void GSFGameModeLobby::OnReconnectionEnd()
+{
+	GSLOG(Warning, TEXT("GSFGameModeLobby : OnReconectionEnd"));
+}

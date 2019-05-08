@@ -21,6 +21,12 @@ class GSTStateMng : public GSMap<T1, GSTState, GSFGameModeAllocator>
 
 	StateEvent				_onEnterState;
 	StateEvent				_onLeaveState;
+
+protected:
+	TSharedRef<GSTState>	GetState()
+	{
+		return _currentState.ToSharedRef();
+	}
 public:
 	GSTStateMng<T1, GSTState, GSFGameModeAllocator>() : GSMap<T1, GSTState, GSFGameModeAllocator>() {};
 	virtual ~GSTStateMng<T1, GSTState, GSFGameModeAllocator>() {};
