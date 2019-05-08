@@ -1,6 +1,6 @@
 #pragma once
 #include "../Class/GSTMessageHandler.h"
-#include "MessageSystem.h"
+#include "GSFMessageSystem.h"
 
 class GSFMessageHandlerSystem : public GSTMessageHandler<MessageSystem::ID, GTSMessageNone>
 {

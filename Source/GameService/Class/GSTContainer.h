@@ -145,7 +145,7 @@ public:
 		}
 		return TSharedRef<T2>();
 	}
-
+		
 	//----------------------------------------------------------------
 	virtual void Remove(T1 inKey)
 	{

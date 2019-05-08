@@ -24,6 +24,7 @@ public:
 	TMap<T1, MessageType>& GetDeliveryAddress() { return _delieveryAddr; }
 
 	// 메시지 외부등록
+	// ex) _messagehandler.AddRaw(MessageSystem::ID::RECONNECT_END, this, &GSFGameModeManager::OnReconnectionEnd);
 	template <typename UserClass, typename... VarTypes>
 	FDelegateHandle AddRaw(T1 Message, UserClass* InUserObject, 
 		typename TMemFunPtrType<false, UserClass, void(const T2&, VarTypes...)>::Type InFunc, VarTypes... Vars)
