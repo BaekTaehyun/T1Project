@@ -22,7 +22,15 @@ public:
 		//https://ljh131.tistory.com/16
 		Clear();
 	}
+	// ----------------------------------------------------------------
+	// 접근자 추가
+	TSharedRef<T> operator[](int index)
+	{
+		return _container.GetData()[i].ToSharedRef();
+	}
+
 	//----------------------------------------------------------------
+	// 소멸시 전체 소멸 
 	void Clear()
 	{
 		for (auto& a : _container)
@@ -39,6 +47,7 @@ public:
 		_container.Empty();
 	}
 	//----------------------------------------------------------------
+	// 내부 인스턴스 생성
 	virtual TSharedRef<T> MakeInstance()
 	{
 		T* instance = new T();
@@ -46,6 +55,14 @@ public:
 		_container.Add(MakeShareable(instance));
 		return _container.Last().ToSharedRef();
 	}
+	//----------------------------------------------------------------
+	// 외부 인스턴스 입력
+	virtual void InsertInstance(const T* instance)
+	{
+		GSCHECK(instance);
+		_container.Add(MakeShareable(instance));
+	}
+
 	//----------------------------------------------------------------
 	virtual void Remove(TSharedPtr<T>)
 	{

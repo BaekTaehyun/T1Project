@@ -25,7 +25,8 @@ public:
 
 	// 메시지 외부등록
 	template <typename UserClass, typename... VarTypes>
-	FDelegateHandle AddRaw(T1 Message, UserClass* InUserObject, typename TMemFunPtrType<false, UserClass, void(const T2&, VarTypes...)>::Type InFunc, VarTypes... Vars)
+	FDelegateHandle AddRaw(T1 Message, UserClass* InUserObject, 
+		typename TMemFunPtrType<false, UserClass, void(const T2&, VarTypes...)>::Type InFunc, VarTypes... Vars)
 	{
 		GSTMessageHandler<T1, T2>::MessageType delFunc;
 		auto Result = delFunc.AddRaw(InUserObject, InFunc);

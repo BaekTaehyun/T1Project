@@ -58,11 +58,11 @@ void GSFGameModeManager::OnReconnectionStart(const GTSMessageNone& message)
 {
 	GSLOG(Warning, TEXT("GSFGameModeManager : OnReconnectionStart"));
 
-	GetState().Get().OnReconnectionStart();
+	GetState()->OnReconnectionStart();
 }
 
 void GSFGameModeManager::OnReconnectionEnd(const GTSMessageNone& message)
 {
 	GSLOG(Warning, TEXT("GSFGameModeManager : OnReconnectionStart"));
-	GetState().Get().OnReconnectionEnd();
+	GetState()->OnReconnectionEnd();
 }
