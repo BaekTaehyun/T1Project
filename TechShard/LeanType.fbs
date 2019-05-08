@@ -1,0 +1,646 @@
+
+namespace LeanType;
+
+///- MoveType -----
+enum MoveType : int
+{
+	MT_NONE = 0,
+	MT_WALKING,
+	MT_WALKING_STRAIGHT,
+	MT_STOP,
+	MT_ANGLE,
+	MT_EVENT_WALKING,
+	MT_EVENT_WALKING_STRAIGHT,
+	MT_EVENT_STOP,
+	MT_EVENT_ANGLE,
+	MT_MAX,
+}
+
+enum ReactionType : int
+{
+	RT_NONE = 0,
+	RT_HIT,
+	RT_KNOCK_BACK,
+	RT_KNOCK_DOWN,
+	RT_STUNNED,
+	RT_AIRBONE,
+	RT_BE_DRAGGED,
+	RT_GROGGY,
+}
+
+enum SkillSlotCode : int
+{
+	SSC_NONE = 0,
+	SSC_A,
+	SSC_B,
+	SSC_C,
+	SSC_D,
+	SSC_E,
+	SSC_F,
+	SSC_G,
+	SSC_H,
+	SSC_I,
+	SSC_MAX,
+}
+
+enum SkillSlotIndex : int
+{
+	SSI_NORMAL_1 = 0,
+	SSI_NORMAL_2 = 1,
+	SSI_JOB_F = 2,
+	SSI_SPECIAL_F_1 = 3,
+	SSI_SPECIAL_F_2 = 4,
+	SSI_JOB_B = 7,
+	SSI_SPECIAL_B_1 = 8,
+	SSI_SPECIAL_B_2 = 9,
+}
+
+enum BuffCondition : int
+{
+	BF_COND_NONE = 0,
+	BF_COND_NORMAL,
+	BF_COND_SKILL,
+}
+
+
+enum PresetType : int
+{
+	PRESET_TYPE_0 = 0,
+	PRESET_TYPE_1 = 1,
+	PRESET_TYPE_2 = 2,
+	PRESET_TYPE_3 = 3,
+}
+
+///- 이벤트 기여도 측정 타입
+enum EventContributionType : int
+{
+	EVENT_CONTRIBUTION_TYPE_NONE,		// 없음(없으면 안댐)	
+	EVENT_CONTRIBUTION_TYPE_GATHERING,	// 수집
+	EVENT_CONTRIBUTION_TYPE_BATTLE,		// 전투
+}
+
+///- 이벤트 체크 시스템 -----
+// 이벤트 체크 함수 타입
+enum EventCheckType : int
+{
+	EVENT_CHECK_TYPE_ALWAYS_TRUE = 1,                 // 항상 참 (폴링형)
+	EVENT_CHECK_TYPE_IN_EVENT_AREA = 2,               // 이벤트 에어리어 진입 (트리거형)
+	EVENT_CHECK_TYPE_GATHERING_COUNT = 3,             // 채집 카운트(ITEM ID)
+	EVENT_CHECK_TYPE_TASK_ELAPSED_START_TIME,	  		// 이벤트 Task 시작의 경과 시간 지났나?
+	EVENT_CHECK_TYPE_KILL_NPC_COUNT = 5,              // 킬 카운트 (개별)
+	EVENT_CHECK_TYPE_ALL_KILL_NPC = 6,                // 킬 카운트 (전멸)
+	EVENT_CHECK_TYPE_EVENT_ELAPSED_START_TIME,	  // 이벤트 인스턴스 시작의 경과 시간 지났나?
+	EVENT_CHECK_TYPE_PHASE_ELAPSED_START_TIME,	  // 이벤트 페이즈 시작의 경과 시간 지났나?
+	EVENT_CHECK_TYPE_EXPIRED_EVENT,                   // 이벤트 만료 메시지 수신
+	EVENT_CHECK_TYPE_READY_EVENT,                     // 이벤트 준비 메시지 수신
+	EVENT_CHECK_TYPE_START_EVENT,                     // 이벤트 시작 메시지 수신
+	EVENT_CHECK_TYPE_EVENTSTATE_SUCCESS,		  // 이벤트 상태가 성공인가? (폴링형)
+	EVENT_CHECK_TYPE_EVENTSTATE_FAIL,		  // 이벤트 상태가 실패인가? (폴링형)
+	EVENT_CHECK_TYPE_EVENTSTATE_RUNNING,		  // 이벤트 상태가 동작중인가? (폴링형)
+	EVENT_CHECK_TYPE_RECV_FINISH_DIRECTION,           // 이벤트 연출 종료
+	EVENT_CHECK_TYPE_GATHERING_TEMP4,                 // 채집 예약2
+	EVENT_CHECK_TYPE_SPAWN1,                 		  // 스폰예약1
+	EVENT_CHECK_TYPE_SPAWN2,                 		  // 스폰예약2
+	EVENT_CHECK_TYPE_PARTICIPATED_IN_EVENT,           // 이벤트에 참여.
+	EVENT_CHECK_TYPE_LIFE_OF_TARGET,         		  // 목적 대상의 생명력 (폴링형)
+	EVENT_CHECK_TYPE_NUMBERS_OF_TARGETS,         	  // 목적 대상들의 수   (폴링형)
+	EVENT_CHECK_TYPE_INVESTIGATE_PC_CLASS,            // PC의 클래스를 조사.
+	EVENT_CHECK_TYPE_CHANGED_INTERACTEE_STATE,        // 인터랙션 대상의 상태가 변경되었나?
+	EVENT_CHECK_TYPE_FINISHED_DEFAULT_PATROL,		  // Default 패트롤이 종료했는가?
+	EVENT_CHECK_TYPE_INTERACTION_ACTION_COMPLETE,	  // 인터랙션 행동을 완료했는가?
+	EVENT_CHECK_TYPE_ALL_DEAD_PC,	  				  // PC가 죽었거나, 다운 상태인가?
+	EVENT_CHECK_TYPE_INFINITE_TOWER_ALL_KILL_NPC,     // [무한의 탑]킬 카운트 (전멸)
+	EVENT_CHECK_TYPE_EXPIRED_EVENT_BY_FLAG,   // [배틀렐름] 이벤트 만료 체크 플래그형
+	EVENT_CHECK_TYPE_DEAD_AND_LIVE, // [배틀렐름] A가 죽고, B가 살았거나
+	EVENT_CHECK_TYPE_MAX
+}
+
+// 이벤트 리액션 타입
+enum EventReactionType : int
+{
+	EVENT_REACTION_TYPE_DEBUG_MESSAGE = 1,           // 메시지 공지
+	EVENT_REACTION_TYPE_CHANGE_PHASE,                // 페이즈를 변경	
+	EVENT_REACTION_TYPE_SPAWN_NPC,					 // 스폰 NPC
+	EVENT_REACTION_TYPE_SPAWN_GATHERING,             // 스폰 NPC 테리토리
+	EVENT_REACTION_TYPE_SPAWN_NPC_TERRITORY,         // 스폰 채집물
+	EVENT_REACTION_TYPE_SPAWN_GATHERING_TERRITORY,   // 스폰 채집물 테리토리
+	EVENT_REACTION_TYPE_DESPAWN_NPC,                 // 디스폰 NPC
+	EVENT_REACTION_TYPE_DESPAWN_GATHERING,           // 디스폰 채집물
+	EVENT_REACTION_TYPE_DESPAWN_NPC_TERRITORY,       // 디스폰 NPC 테리토리
+	EVENT_REACTION_TYPE_DESPAWN_GATHERING_TERRITORY, // 디스폰 채집물 테리토리
+	EVENT_REACTION_TYPE_ADD_BUFF,	          	     // 버프를 적용한다
+	EVENT_REACTION_TYPE_REMOVE_BUFF, 	             // 버프를 해제한다
+	EVENT_REACTION_TYPE_DEMAND_PC_INFO,     	     // PC 정보를 요청
+	EVENT_REACTION_TYPE_UPDATE_STATE,                // 상태 갱신 - 이벤트
+	EVENT_REACTION_TYPE_KILL_NPC,					 // 킬 NPC
+	EVENT_REACTION_TYPE_KILL_NPC_TERRITORY,			 // 킬 NPC 테리토리
+	EVENT_REACTION_TYPE_DIRECTION_TYPE4,             // 연출 NPC Trace
+	EVENT_REACTION_TYPE_USE_NPC_SKILL,				 // Npc가 스킬 사용
+	EVENT_REACTION_TYPE_DEACTIVATE_FIELD_TERRITORY, 		// 이벤트 시작전, 테리토리를 이벤트 환경으로 세팅
+	EVENT_REACTION_TYPE_ACTIVATE_FIELD_TERRITORY, 			// 이벤트 끝, 테리토리를 필드 환경으로 세팅
+	EVENT_REACTION_TYPE_DEACTIVATE_FIELD_TERRITORY_GROUP, 	// 이벤트 시작전, 테리토리그룹을 이벤트 환경으로 세팅
+	EVENT_REACTION_TYPE_ACTIVATE_FIELD_TERRITORY_GROUP, 	// 이벤트 끝, 테리토리그룹을 필드 환경으로 세팅
+	EVENT_REACTION_TYPE_CHANGE_WORK_OBJECT_STATE,    // 워크오브젝트 상태변경
+	EVENT_REACTION_TYPE_CHANGE_INTERACTION_STATE,    // 인터랙션 상태변경
+	EVENT_REACTION_TYPE_USE_PORTAL,						// 이벤트 참여한 PC들을 모두 텔레포트
+	EVENT_REACTION_TYPE_ACTIVE_ARTIFACT,		 		// 아티팩트 활성화 개인용
+	EVENT_REACTION_TYPE_INFINITE_TOWER_SPAWN,			// [무한의 탑] 무한의 탑 엑셀에 설정된 정보에 따라 스폰
+	EVENT_REACTION_TYPE_INFINITE_TOWER_DESPAWN,			// [무한의 탑] 무한의 탑 엑셀에 설정된 정보에 따라 디스폰
+	EVENT_REACTION_TYPE_ORDER_START_PATROL,		 	// 패트롤 명령
+	EVENT_REACTION_TYPE_START_SPAWN_NEST_TERRITORY,		// Nest : npc 스폰 시작
+	EVENT_REACTION_TYPE_END_SPAWN_NEST_TERRITORY,		// Nest : npc 스폰 중지
+	EVENT_REACTION_TYPE_DESPAWN_NEST_TERRITORY,			// Nest : nest로 스폰된 npc들 디스폰
+	EVENT_REACTION_TYPE_GIVE_REWARD,					// 보상 지급
+	EVENT_REACTION_TYPE_SET_CLEAR_TIME,					// [특수던전] 이벤트 클리어 타임을 설정
+	EVENT_REACTION_TYPE_RESET_SKILL_COOLTIME, // [튜토리얼 전용] 스킬 쿨타임을 리셋
+	EVENT_REACTION_TYPE_SPAWN_UPC,         // [튜토리얼 전용] 스폰 UPC
+	EVENT_REACTION_TYPE_DESPAWN_UPC,       // [튜토리얼 전용] 디스폰 UPC
+	EVENT_REACTION_TYPE_ACTIVE_CONTRIBUTE, // [튜토리얼 전용] 기여도 활성화
+	EVENT_REACTION_TYPE_ACTIVE_END_PROCESS,// [튜토리얼 전용] 종료 과정 처리 활성화 (포즈, 칭찬, 보상)
+	EVENT_REACTION_TYPE_ACTIVE_VS_HUD,   // [튜토리얼 전용] 배틀필드의 VS HUD를 활성화
+	EVENT_REACTION_TYPE_DEACTIVE_VS_HUD, // [튜토리얼 전용] 배틀필드의 VS HUD를 비활성화
+	EVENT_REACTION_TYPE_MAX
+}
+
+// 이벤트 타겟 타입
+enum EventTargetType : int
+{
+	EVENT_TARGET_TYPE_EVENT_AREA_ID = 1,      // 이벤트 테리토리 ID
+	EVENT_TARGET_TYPE_SPAWN_AREA_ID = 2,      // 스폰 테리토리 ID
+	EVENT_TARGET_TYPE_EVNET_ID = 3,           // 이벤트(객체) ID
+	EVENT_TARGET_TYPE_EVNET_SET_ID = 4,       // 이벤트SET(객체) ID
+	EVENT_TARGET_TYPE_PC = 5,                 // PC - PC는 ID를 입력 단계에서 알 수 없음.
+	EVENT_TARGET_TYPE_NPC_SPAWN_ID = 6,       // NPC 스폰 ID
+	EVENT_TARGET_TYPE_NPC_CREATURE_ID = 7,    // 크리처 ID
+	EVENT_TARGET_TYPE_PHASE_ID = 8,           // 페이즈 ID
+	EVENT_TARGET_TYPE_EVENT_TASK_ID = 9,      // 이벤트 TASK ID
+	EVENT_TARGET_TYPE_EVENT_PARTICIPANT = 10, // 이벤트 참여자  (TODO: 분리대상1)
+	EVENT_TARGET_TYPE_SCENE_PARTICIPANT = 11, // 해당씬 참여자  (TODO: 분리대상2)
+	EVENT_TARGET_TYPE_PC_VIEW_RANGE = 12,     // PC의 시야 범위 (TODO: 분리대상3)
+	EVENT_TARGET_TYPE_ITEM = 13,   		  	  // 아이템
+	EVENT_TARGET_TYPE_SPEECH_ID = 14,   	  // 스피치 ID
+	EVENT_TARGET_TYPE_NPC_SQUAD_ID = 15,      // NPC 분대 ID
+	EVENT_TARGET_TYPE_MAX
+}
+
+// 이벤트 연산자 타입
+enum EventOperationType : int
+{
+  EVENT_OPERATION_TYPE_AND,
+  EVENT_OPERATION_TYPE_OR,
+  EVENT_OPERATION_TYPE_MAX
+}
+
+// 이벤트 순서
+enum EventOrderingType : int
+{
+  EVENT_ORDER_FIRST = 1,
+  EVENT_ORDER_SECOND,
+  EVENT_ORDER_THIRD,
+  EVENT_ORDER_FOURTH,
+  EVENT_ORDER_FITTH, 
+  EVENT_ORDER_SIXTH,
+  EVENT_ORDER_SEVENTH,
+  EVENT_ORDER_EIGHTH,
+  EVENT_ORDER_NINTH,
+  EVENT_ORDER_TENTH,
+  EVENT_ORDER_ELEVENTH,
+  EVENT_ORDER_TWELFH, 
+  EVENT_ORDER_GLOBAL,
+  EVENT_ORDER_MAX
+}
+
+// 낮밤 유형
+enum EventSetDayType : int
+{
+  EVENTSET_DAY_TYPE_NONE,
+  EVENTSET_DAY_TYPE_DAY,
+  EVENTSET_DAY_TYPE_NIGH,
+  EVENTSET_DAY_TYPE_MAX
+}
+
+// 스케쥴 타입
+enum EventSetScheduleType: int
+{
+  EVENTSET_SCHEDULE_TYPE_NONE,
+  EVENTSET_SCHEDULE_TYPE_DAILY_KEEP,
+  EVENTSET_SCHEDULE_TYPE_DAILY_INTERVAL,
+  EVENTSET_SCHEDULE_TYPE_WEEKLY_KEEP,
+  EVENTSET_SCHEDULE_TYPE_WEEKLY_INTERVAL,
+}
+
+// 반복 주 단위
+enum EventSetRepeatWeekType: int
+{
+  EVENTSET_REPEAT_WEEK_TYPE_DAILY,
+  EVENTSET_REPEAT_WEEK_TYPE_SUN,
+  EVENTSET_REPEAT_WEEK_TYPE_MON,
+  EVENTSET_REPEAT_WEEK_TYPE_THU,
+  EVENTSET_REPEAT_WEEK_TYPE_WED,
+  EVENTSET_REPEAT_WEEK_TYPE_THR,
+  EVENTSET_REPEAT_WEEK_TYPE_FRI,
+  EVENTSET_REPEAT_WEEK_TYPE_SAT,
+}
+
+// 패트롤 타입(=PT)
+enum PatrolType : int
+{
+   PT_DFAULT = 1,
+   PT_FORWARD_REVERSE,
+   PT_ROUND_TRIP,
+   PT_MAX
+}
+
+// 패트롤 리턴 타입(=PRT)
+enum PatrolReturnType : int
+{
+   PRT_GOTO_SRC,
+   PRT_MAX
+}
+
+// 패트롤 액션 타입 (=PAT)
+enum PatrolActionType : int
+{
+   PAT_SPEAK_BUBBLE,
+   PAT_USING_SKILL,
+   PAT_MAX
+}
+
+/// 아이템 동작 유효성 채크 타입
+enum ItemValidationType : int
+{
+	/// 착,탈,포,처분(판매),거래
+	IVT_EQUIP,
+	IVT_UNEQUIP,
+	IVT_INSERT,
+	IVT_DELETE,
+	IVT_SELL,
+	IVT_TRADE,
+
+	/// 분해,강화,승급
+	IVT_DISENCHANT,
+	IVT_ENCHANT,
+	IVT_UPGRADE,
+
+	/// 성장
+	/// - progression(성장)
+	///   (1) promotion(진급)
+	///   (2) advancement(전직)
+	IVT_PROGRESSION
+}
+
+enum CreatureScaleType : short
+{
+	CST_NONE,
+	CST_NORMAL,
+	CST_BOSS,
+	CST_PLAYER,
+}
+
+enum AbnormalType : short
+{
+	ABNORMAL_MOVE,				// 이동 제어 불가
+	ABNORMAL_NORMAL_ATTACK,		// 평타 사용 불가
+	ABNORMAL_SKILL,				// 스킬 사용 불가
+	ABNORMAL_ITEM,				// 아이템 사용 불가
+	ABNORMAL_MAX,
+}
+
+enum EventCounterShowUIStartType : int
+{
+	SHOW_UI_START_EVENT,		// 이벤트 시작할때
+	SHOW_UI_START_PHASE,		// 페이즈 시작할때
+	SHOW_UI_START_EVENT_ORDER,	// 이벤트 오더 시작할때
+	SHOW_UI_START_MAX,
+}
+
+enum EventCounterShowUIEndType : int
+{
+	SHOW_UI_END_EVENT,			// 이벤트 종료할때
+	SHOW_UI_END_PHASE,			// 현재 페이즈 종료할때
+	SHOW_UI_END_EVENT_ORDER,	// 이벤트 오더 종료할때
+	SHOW_UI_END_MAX,
+}
+
+enum EventCounterStateType : int
+{
+	EVENT_COUNTER_STATE_TYPE_ACTIVE,
+	EVENT_COUNTER_STATE_TYPE_FINISH,
+	EVENT_COUNTER_STATE_TYPE_TERMINATE,	
+	EVENT_COUNTER_STATE_TYPE_MAX,
+}
+
+enum ChangedEventContextType : int
+{
+	CHANGED_EVENT_PHASE_ID,
+	CHANGED_EVENT_TASK_ID,
+	CHANGED_EVENT_ORDER,
+}
+
+// 아이템 및 재화 변경 사유
+// MakeCode
+enum CostReasonType : short
+{
+	CRT_UNKNOWN,
+	CRT_CREATE_PC,				// PC 생성
+	CRT_DISENCHANT,				// 분해
+	CRT_ENCHANT,				// 강화
+	CRT_UPGRADE,				// 승급
+	CRT_ADMIN_COMMAND,			// 운영자 명령어
+	CRT_SELL,					// 판매
+	CRT_MOVE,					// 창고 <-> 인벤
+	CRT_PRISM,					// 프리즘 변환
+	CRT_REWARD,					// 보상
+	CRT_MAIL,					// 우편
+	CRT_CRAFT,					// 제작
+	CRT_SHOP,					// 상점 구매
+	CRT_USE,					// 사용
+	CRT_TRADE,					// 거래소
+	CRT_DAILY_RECHARGE,			// 일일충전
+	CRT_TRADE_CANCEL,			// 거래소 취소
+	CRT_ELIXIR_ENCHANT,			// 영약 강화
+	CRT_TERRASTONE_ENCHANT,		// 테라스톤 강화
+	CRT_RESEARCH_ENCHANT,		// 몬스터 연구 강화
+	CRT_GUARDIAN_STAR_ENCHANT,	// 수호성 강화
+	CRT_PASSIVE_SKILL_ENCHANT,	// 패시브 스킬 강화
+	CRT_MAINSTREAM,				// 메인 스트림
+	CRT_DIMENSION_CRYSTAL_EXCHANGE,	// 차원 결정 교환
+	CRT_FUSION,						// 합성
+	CRT_GUILD_CREST,			// 길드 문장
+	CRT_SKILL_GROWTH_UP,		// 스킬 성장
+	CRT_DIMENSION_CRYSTAL_INSERT,	// 차원 결정 추가
+	CRT_DIMENSION_CRYSTAL_REMOVE,	// 차원 결정 제거
+	CRT_ENTER_FIELD,			// 필드 입장
+	CRT_GUILD_ATTEND,			// 길드 출석
+	CRT_GUILD_CREATE,			// 길드 생성
+	CRT_GUILD_DONATE,			// 길드 기부
+	CRT_REVIVE,					// 부활
+	CRT_BUY_GUILD_BUFF,			// 길드 버프 구매
+	CRT_EFFECT,					// 이펙트 효과
+	CRT_SKILL_POINT_RESET,		// 스킬 포인트 초기화
+	CRT_FISHING_SHOP,			// 낚시 상점
+	CRT_MONSTER_KILL,			// 몬스터 사냥
+	CRT_INTERACTION,			// 상호작용
+	CRT_RESURRECTION,			// 타 유저 부활 시키기
+	CRT_BATTLE_FIELD_PLAYER_KILL,	// 전쟁필드 PK
+	CRT_TIER_SHOP,				// 티어 상점
+	CRT_REFUND,					// 입장권 환불
+	CRT_LIVE_EVENT_NPC_DROP,	// 라이브 이벤트 NPC 드랍
+	CRT_LIVE_EVENT,				// 라이브 이벤트
+	CRT_LIVE_EVENT_TRADE,		// 라이브 이벤트 재화 교환 상점
+	CRT_LIVE_EVENT_LIMIT_SELL_SHOP,	// 라이브 이벤트 한정 상점
+	CRT_LIVE_EVENT_DIA_BUY,			// 라이브 이벤트 다이아 충전
+	CRT_LIVE_EVENT_DIA_SPENT,		// 라이브 이벤트 다이아 소비
+	CRT_LIVE_EVENT_ATTENTION,		// 라이브 이벤트 특별출석부
+	CRT_STORAGE_EXPANSION,			// 슬롯 확장
+	CRT_BRAWL_ENHANCE,				// 난투장 스탯강화
+	CRT_BRAWL_PLAYER_KILL, 			// 난투장 PK
+	CRT_BRAWL_INTERACTION,			// 난투장 상호작용
+	CRT_TRANSCEND,					// 초월
+	CRT_PET_MAKE_FROM_ITEM,			// 아이템 사용으로 인한 펫 생성
+	CRT_PET_FEED,					// 펫 먹이
+	CRT_PET_FUSION,					// 펫 합성
+	CRT_PET_SUMMON,					// 펫 소환
+	CRT_PET_SUMMON_CANCEL,			// 펫 소환취소
+	CRT_PET_SUPPORT,				// 펫 지원
+	CRT_PET_SUPPORT_CANCEL,			// 펫 지원취소
+	CRT_PET_STATE_SAVE,				// 펫 상태 저장	
+	CRT_PET_HATCHERY_SUMMON,		// 펫 부화소 부화시작
+	CRT_PET_HATCHERY_HATCH,			// 펫 부화소 부화완료(펫 수령단계)
+	CRT_PET_ALTAR_DOMINATE,			// 펫 라피의 제단 기부
+	CRT_PET_ALTAR_ACTIVE_SKILL_LEVEL_UP, // 펫 라피의 제단 액티브스킬 레벨업
+	CRT_FOLLOWER_MISSION_COMPLETE,	// 가신 임무 즉시 완료
+	CRT_LIVE_EVENT_LEVELUP,			// 라이브 이벤트 레벨달성
+	CRT_COSTUME_INHERIT,			// 외형 장비
+	CRT_CRYSTAL_CHANGE,				// 천상석 변환
+	CRT_PLAYER_KILL,				// PC 킬
+	CRT_PLAYER_ASSIST,				// PC 어시스트
+	CRT_PLAYER_REVIVAL,				// PC 부활 도와줬을 때
+}
+
+/// END_SKILL REASON TYPE
+enum EndSkillReasonType : short
+{
+	NORMAL = 0,
+	CANCEL = 1,
+}
+
+/// Reaction BASE Position type
+enum ReactionPosType : short
+{
+	CASTER_CASTING_DIRECTION = 0,				// 리액션 당할 오브젝트의 위치 사용 
+	STRIKEN_POS = 1,							// 피격발생지점
+	CASTER_AND_STRIKEN_POS_CALC_DIRECTION = 2, 	//  피격자가 바라보는 시전자의 방향 반대로 리액션
+	OFFSET_MOVED_SKILL_POSITION = 3				// 스킬시전자의 위치에서부터가 아닌 스킬이펙트의 오프셋값이 먹힌 위치로부터 리액션
+}
+
+/// 채팅 타입
+enum ChatType : byte
+{
+	CHAT_CHANNEL = 0,
+	CHAT_REALM,
+	CHAT_GUILD,
+	CHAT_MAX,
+}
+
+
+/// 재연결 계정 상태
+enum ReconnectAccountState : byte
+{
+	RAS_LOBBY = 0,		// 로비
+	RAS_GAME,			// 게임
+	RAS_GAME_DISCONNECT,// 게임 중 연결종료
+
+	MAX,				// 단순 경계값, 클라이언트에게 전송되지 않는다.
+}
+
+enum ItemOptionType : short
+{
+	IOT_NONE = 0,
+	IOT_REWARD_CHANCE_ALL, // s 등급 확률
+	IOT_REWARD_CHANCE_S, // s 등급 확률
+	IOT_REWARD_CHANCE_A, // a 등급 확률
+	IOT_REWARD_CHANCE_B, // b 등급 확률
+}
+
+enum KeepAlive : short
+{
+	KEEP_ALIVE_TERM = 2000,	// 단위 : 밀리세컨드
+}
+
+enum ContributeType : byte
+{
+	CONT_DEAL = 0,
+	CONT_TANKING,
+	CONT_BUFF,
+	CONT_SUPER_ARMOR,
+	CONT_DEBUFF,
+	CONT_REACTION,
+	CONT_RESURRECTION,
+	/// 여기까지 전투 기여도
+	
+	// 여기부터 비전투 기여도 타입
+	CONT_GATHERING,
+	CONT_INTERACTION,
+	CONT_DESTRUCTION_OBJECT,
+
+	CONT_PK,
+	CONT_DEAL_TOWER,
+
+	CONT_MAX,
+}
+
+enum ShopRewardState : byte
+{
+	SRS_DISABLED = 0,		// 해금조건 불만족
+	SRS_ACTIVATE,			// 해금조건 만족 (보상 신청 가능)
+	SRS_DONE,				// 보상 완료
+
+	SRS_MAX,				// 단순 경계 (이 값이면 비정상적인 값)
+}
+
+enum InfluenceRenewalType : byte
+{
+	IRT_NONE = 0,			// 갱신 안됨
+	IRT_SAME,				// 동일
+	IRT_UP,					// 상승
+	IRT_DOWN,				// 하강
+}
+enum MailOwnerType : byte
+{
+	MOT_ACCOUNT = 0,		// 계정 (인게임에서 전송하지 않는다. 운영툴 등에서 전송한다.)
+	MOT_PC,					// PC
+
+	MOT_MAX,
+}
+
+
+// IRT 로 진행하고자 했으나 enum class 를 사용하지 않는 상황에서 ItemReasonType 과 겹치는 부분이 있어서 네이밍 변경
+enum InfluenceReasonType : byte
+{
+	IFRT_CHEAT = 0,					// 치트
+	IFRT_QUEST,						// 퀘스트 완료
+	IFRT_DAILY_DUNGEON,				// 요일 던전 완료
+	IFRT_SOLO_DUNGEON,				// 솔로 던전 완료
+	IFRT_GOLD_DUNGEON,				// 골드 던전 완료
+	IFRT_RAID,						// 레이드 완료
+	IFRT_INFINITE_TOWER,			// 무한의 탑 완료
+	IFRT_FIELD_EVENT,				// 필드 이벤트 완료
+	IFRT_MAIN_MISSION,				// 메인 미션 완료
+	IFRT_RESURRECTION,				// 부활
+	IFRT_INFINITE_TOWER_SWEEP,		// 무한의 탑 소탕
+	IFRT_BE_PRAISED,				// 칭찬받기
+	IFRT_PRAISE,					// 칭찬하기
+	IFRT_FISHING,					// 낚시
+	IFRT_MINING,					// 채광
+	IFRT_COLLECTING,				// 수집
+	IFRT_SOLO_SWEEP,				// 솔로 던전 소탕
+	IFRT_GUILD_ATTEND,				// 길드 출석
+	IFRT_GUILD_DUNGEON,				// 길드던전
+
+	IFRT_MAX,						// 단순 경계
+
+}
+
+// 친구 소환하기/이동하기에서 출발지로 설정가능한 채널컨텐츠타입
+enum DepartureChannelContentsType : byte
+{
+	DEPARTURE_CONTENTS_TYPE_TOWN,
+	DEPARTURE_CONTENTS_TYPE_FIELD,
+	DEPARTURE_CONTENTS_TYPE_MAX,
+}
+
+// 친구 소환하기/이동하기에서 도착지로 설정가능한 채널컨텐츠타입
+enum DestinationChannelContentsType : byte
+{
+	DESTINATION_CONTENTS_TYPE_TOWN,
+	DESTINATION_CONTENTS_TYPE_FIELD,
+	DESTINATION_CONTENTS_TYPE_MISSION,
+	DESTINATION_CONTENTS_TYPE_RAID,
+	DESTINATION_CONTENTS_TYPE_GOLD_DUNGEON,
+	DESTINATION_CONTENTS_TYPE_GUILD_DUNGEON,
+	DESTINATION_CONTENTS_TYPE_MAX,
+}
+
+enum Const : int
+{
+	RESERVED_NICK_NAME_CODE_LENGTH = 16,	// 사전 예약 코드 길이 (클라이언트 전송시점 UTF8 기준)
+}
+
+enum EventCounterSendType : int
+{
+   EVENT_COUNTER_SEND_TYPE_NONE,
+   EVENT_COUNTER_SEND_TYPE_ASLAN,
+   EVENT_COUNTER_SEND_TYPE_HARMION,
+   EVENT_COUNTER_SEND_TYPE_ALL,
+}
+
+enum FollowerSoulStoneSpentReasonType : int
+{
+	FOLLOWER_SPENT_NONE,
+	FOLLOWER_SPENT_ENCHANT,
+}
+
+enum ContentConfigType : short
+{
+	CCT_RESERVED_NICK_NAME = 0, // 닉네임 사전 예약
+	CCT_BATTLE_FIELD_AID = 1,   // 전쟁필드 약소 진영 지원
+	CCT_BRAWL_BLOCK = 2,        // 난투장 블럭
+	CCT_MAX,                    // 단순 경계
+}
+
+enum LiveEventDiaMissionState : short
+{
+	LEMS_PROGRESS = 0,					// 진행
+	LEMS_ARCHIEVEMENT,					// 달성 (보상 받을 수 있는 상태)
+	LEMS_DONE,							// 완료
+	LEMS_MAX,							// 단순 경계
+}
+
+enum LiveEventAttentionReceiveState : short
+{
+	LEAS_UNRECEIVABLE = 0,				// 받을 수 없다
+	LEAS_RECEIVABLE,					// 받을 수 있다
+	LEAS_RECEIVED,						// 받았다
+	LEAS_MAX,							// 단순 경계
+}
+
+enum LiveEventReceiveState : short
+{
+	LERS_UNRECEIVABLE = 0,	// 받을 수 없다
+	LERS_RECEIVABLE,		// 받을 수 있다
+	LERS_RECEIVED,			// 받았다
+	LERS_MAX,				// 단순 경계
+}
+
+enum LiveEventItemDropContentsType : int
+{
+	LEIDCT_NONE				= 0,		// None
+	LEIDCT_SOLO_DUNGEON		= 1,		// 토벌던전
+	LEIDCT_DAILY_DUNGEON	= 2,		// 일일던전
+	LEIDCT_RAID				= 3,		// 레이드
+	LEIDCT_GOLD_DUNGEON		= 4,		// 골드던전
+	LEIDCT_GUILD_DUNGEON	= 5,		// 길드던전
+	LEIDCT_MISSION			= 6,		// 필수임무
+	LEIDCT_FIELD_EVENT		= 7,		// 돌발임무
+	LEIDCT_ARENA			= 8,		// 아레나
+
+	LEIDCT_NORMAL_FIELD		= 11,		// 일반필드
+	LEIDCT_BATTLE_FIELD		= 12,		// 전쟁필드
+	LEIDCT_BRAWL			= 13,		// 난투장
+	LEIDCT_24HOUR_FIELD		= 14,		// 24시간필드
+}
+
+enum LiveEventItemDropEventType : int
+{
+	LEIDET_NONE = 0,					// None
+	LEIDET_MONSTER_DROP,				// 몬스터 드랍
+	LEIDET_CONTENTS_CLEAR,				// 컨텐츠 완료
+}
+
+enum BattleFieldRealmType : short
+{
+	BATTLE_FIELD_REALM_NONE = 0,
+	BATTLE_FIELD_REALM_ASLAN,
+	BATTLE_FIELD_REALM_HARMION
+}
