@@ -34,23 +34,23 @@ void GSFGameModeManager::InitState()
 
 	ChangeState(GSFGameMode::Mode::LOBBY);
 
-	// super::InitState() 동일코드
 	Super::InitState();
 
 
-	// 메시지 등록
+	// 메시지 등록예 1)
 	GSTMessageHandler<MessageSystem::ID, GTSMessageNone>::MessageType delFunc;
 	auto handle = delFunc.AddRaw(this, &GSFGameModeManager::OnReconnectionStart);
 	_messagehandler.GetDeliveryAddress().Add(MessageSystem::ID::RECONNECT_START, delFunc);
 
-
+	// 메시지 등록 2)
 	_messagehandler.AddRaw(MessageSystem::ID::RECONNECT_END, this, &GSFGameModeManager::OnReconnectionEnd);
-	//essagehandler.GetDeliveryAddress().Add(, delFunc);
 
+	// 메시지 호출 1)
 	GSTMessage<MessageSystem::ID, GTSMessageNone> Reconect_Start(MessageSystem::ID::RECONNECT_START, GTSMessageNone());
 	_messagehandler.SendMessage(Reconect_Start);
 	_messagehandler.SendMessageC(GSTMessage<MessageSystem::ID, GTSMessageNone>(MessageSystem::ID::RECONNECT_END, GTSMessageNone()));
 
+	// 메시지 호출 2)
 	_messagehandler.SendMessage(MessageSystem::ID::RECONNECT_END, GTSMessageNone());
 }
 
