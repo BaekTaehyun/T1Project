@@ -24,28 +24,25 @@ void UGSGameInstance::Init()
 	GSLOG_S(Warning);
 	Super::Init();
 
-	_message = TUniquePtr<GSFMessageManager>(new GSFMessageManager());
-	_message->Init();
+	_manage.InsertInstance(new GSFMessageManager());
+	_manage.InsertInstance(new GSFGameModeManager());
 
-	_gameMode = TUniquePtr<GSFGameModeManager>(new GSFGameModeManager());
-	_gameMode->InitState();
-	
+	for(auto& mng : _manage.Get())
+	{
+		mng->Initialize();
+	}
 }
 
 void UGSGameInstance::Shutdown()
 {
-	if (_gameMode.IsValid())
+	for(auto& mng : _manage.Get())
 	{
-		_gameMode->RemoveAll();
-		_gameMode = NULL;
+		if (mng.IsValid())
+		{
+			mng->Finalize();
+		}
 	}
-
-	if (_message.IsValid())
-	{
-		_message->RemoveAll();
-		_message = NULL;
-	}
-	
+	_manage.Clear();
 
 	Super::Shutdown();
 }

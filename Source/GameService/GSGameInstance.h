@@ -6,7 +6,9 @@
 #include "Kismet/BlueprintPlatformLibrary.h"
 #include "GameMode/GSFGameModeManager.h"
 #include "Message/GSFMessageManager.h"
+#include "Class/GSIManager.h"
 #include "GSGameInstance.generated.h"
+
 
 //-------------------------------------------------------------------------------
 // 게임초기화 순서
@@ -22,10 +24,7 @@ class GAMESERVICE_API UGSGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 	
-	TUniquePtr<GSFGameModeManager>	_gameMode;
-	
-	TUniquePtr<GSFMessageManager>	_message;
-
+	GSTArray<GSIManager> _manage;	
 public:
 	UGSGameInstance();
 	virtual void Init() override;

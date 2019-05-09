@@ -11,12 +11,12 @@
 //----------------------------------------------------------------
 
 template< typename T >
-class GSArray
+class GSTArray
 {
 	TArray<TSharedPtr<T>>	_container;
 public:
 	//소멸처리
-	virtual ~GSArray()
+	virtual ~GSTArray()
 	{
 		// 소멸자에서는 절대 버추얼 함수를 불려서는 안됩니다
 		//https://ljh131.tistory.com/16
@@ -28,7 +28,11 @@ public:
 	{
 		return _container.GetData()[i].ToSharedRef();
 	}
-
+	//----------------------------------------------------------------
+	const TArray<TSharedPtr<T>>& Get()
+	{
+		return _container;
+	}
 	//----------------------------------------------------------------
 	// 소멸시 전체 소멸 
 	void Clear()
@@ -51,23 +55,23 @@ public:
 	virtual TSharedRef<T> MakeInstance()
 	{
 		T* instance = new T();
-		GSCHECK(instance);
+		//GSCHECK(instance);
 		_container.Add(MakeShareable(instance));
 		return _container.Last().ToSharedRef();
 	}
 	//----------------------------------------------------------------
 	// 외부 인스턴스 입력
-	virtual void InsertInstance(const T* instance)
+	virtual void InsertInstance(T* instance)
 	{
 		GSCHECK(instance);
 		_container.Add(MakeShareable(instance));
 	}
 
 	//----------------------------------------------------------------
-	virtual void Remove(TSharedPtr<T>)
+	virtual void Remove(TSharedPtr<T> instance)
 	{
 		_container.Remove(instance);
-		if (instance.IsUnique() && a.IsValid())
+		if (instance.IsUnique() && instance.IsValid())
 		{
 			instance = NULL;
 		}
@@ -98,14 +102,14 @@ public:
 // 매니징 클래스 기본형(Map)
 //----------------------------------------------------------------
 template< typename T1, typename T2, class Alloc = GSTMapAllocator<T1, T2>>
-class GSMap
+class GSTMap
 {
 	TSharedPtr<Alloc>	_allocator;
 	TMap<T1, TSharedPtr<T2>> _container;
 public:
 
-	GSMap() { _allocator = TSharedPtr<Alloc>(new Alloc()); }
-	virtual ~GSMap() { Clear(); }
+	GSTMap() { _allocator = TSharedPtr<Alloc>(new Alloc()); }
+	virtual ~GSTMap() { Clear(); }
 	//----------------------------------------------------------------
 	void Clear()
 	{

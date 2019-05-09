@@ -2,12 +2,17 @@
 
 GSFMessageManager* GSFMessageSingle::Instance = NULL;
 
-void GSFMessageManager::Init()
+GSFMessageManager::~GSFMessageManager()
+{
+	int an = 0;
+}
+
+void GSFMessageManager::Initialize()
 {
 	GSTSingleton::InitInstance(this);
 }
 
-void GSFMessageManager::RemoveAll()
+void GSFMessageManager::Finalize()
 {
 	GSTSingleton::RemoveInstance();
 }

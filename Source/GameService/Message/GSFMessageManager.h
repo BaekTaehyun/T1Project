@@ -3,6 +3,7 @@
 #include "../Class/GSTMessage.h"
 #include "../Class/GSTMessageHandler.h"
 #include "../Class/GSTSingleton.h"
+#include "../Class/GSIManager.h"
 
 #include "GSFMessageNet.h"
 #include "GSFMessageSystem.h"
@@ -10,7 +11,7 @@
 #include "GSFMessageGame.h"
 
 
-class GSFMessageManager : GSTSingleton<GSFMessageManager>
+class GSFMessageManager : GSTSingleton<GSFMessageManager>, public GSIManager
 {
 	typedef GSTMessageHandler<MessageSystem::ID, GTSMessageNone>	MSystem;
 	typedef GSTMessageHandler<MessageNet::ID, GTSMessageNone>		MNet;
@@ -24,10 +25,10 @@ class GSFMessageManager : GSTSingleton<GSFMessageManager>
 
 public:
 	GSFMessageManager() {};
-	virtual ~GSFMessageManager() {};
+	virtual ~GSFMessageManager();
 
-	void Init();
-	void RemoveAll();
+	virtual void Initialize() override;
+	virtual void Finalize() override;
 
 	MSystem& GetSystem() { return _system; }
 	MNet& GetNet() { return _net; }

@@ -3,6 +3,7 @@
 #include "../Class/GSTState.h"
 #include "../Class/GSTStateMng.h"
 #include "../Class/GSTSingleton.h"
+#include "../Class/GSIManager.h"
 #include "GSFGameMode.h"
 #include "GSFGameModeBase.h"
 //------------------------------------------------------------------------------
@@ -19,14 +20,18 @@ public:
 //------------------------------------------------------------------------------
 // 게임모드를 관리
 //------------------------------------------------------------------------------
-class GSFGameModeManager : public GSTStateMng<GSFGameMode::Mode, GSFGameModeBase, GSFGameModeAllocator>, public GSTSingleton<GSFGameModeManager>
+class GSFGameModeManager : 
+	public GSTStateMng<GSFGameMode::Mode, GSFGameModeBase, GSFGameModeAllocator>,
+	public GSTSingleton<GSFGameModeManager>,
+	public GSIManager
 {
 	typedef GSTStateMng<GSFGameMode::Mode, GSFGameModeBase, GSFGameModeAllocator> Super;
-	//GSFMessageHandlerSystem		_messagehandler;
 public:
-	virtual ~GSFGameModeManager() {};
-	virtual void RemoveAll() override;
-	virtual void InitState() override;
+	virtual ~GSFGameModeManager();
+
+	//GSIManager
+	virtual void Initialize() override;
+	virtual void Finalize() override;
 
 	void OnReconnectionStart(const GTSMessageNone& message);
 	void OnReconnectionEnd(const GTSMessageNone& message);

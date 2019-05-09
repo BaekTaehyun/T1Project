@@ -1,6 +1,7 @@
 #include "GSFNetBase.h"
 #include "./flatbuffers/flatbuffers.h"
 #include "../UTIL/Text.h"
+
 // connection 처리를 한다.
 void GSFNetModeBase::Enter()
 {

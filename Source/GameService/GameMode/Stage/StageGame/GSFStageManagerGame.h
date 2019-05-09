@@ -18,7 +18,7 @@ public:
 };
 
 //------------------------------------------------------------------------------
-// 게임모드를 관리
+// 인게임 스테이지들을 관리한다.
 //------------------------------------------------------------------------------
 class GSStageManagerGame : public GSTStateMng<GSFStageMode::Game, GSFStageGameBase, GSFStageGameAllocator>
 {

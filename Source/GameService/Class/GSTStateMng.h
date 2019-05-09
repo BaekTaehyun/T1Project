@@ -9,7 +9,7 @@
 //----------------------------------------------------------------
 
 template<typename T1, class  GSTState, class GSFGameModeAllocator>
-class GSTStateMng : public GSMap<T1, GSTState, GSFGameModeAllocator>
+class GSTStateMng : public GSTMap<T1, GSTState, GSFGameModeAllocator>
 {
 	TSharedPtr<GSTState>	_currentState = NULL;
 
@@ -28,7 +28,7 @@ protected:
 		return _currentState.ToSharedRef();
 	}
 public:
-	GSTStateMng<T1, GSTState, GSFGameModeAllocator>() : GSMap<T1, GSTState, GSFGameModeAllocator>() {};
+	GSTStateMng<T1, GSTState, GSFGameModeAllocator>() : GSTMap<T1, GSTState, GSFGameModeAllocator>() {};
 	virtual ~GSTStateMng<T1, GSTState, GSFGameModeAllocator>() {};
 
 	MainEvent&	OnInit() const {	return _onInit;	}

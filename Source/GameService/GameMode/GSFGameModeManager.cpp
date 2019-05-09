@@ -22,12 +22,12 @@ GSFGameModeBase* GSFGameModeAllocator::Alloc(GSFGameMode::Mode inMode)
 //------------------------------------------------------------------------------
 GSFGameModeManager* GSFGameModeSingle::Instance = NULL;
 
-void GSFGameModeManager::RemoveAll()
+GSFGameModeManager::~GSFGameModeManager()
 {
-	Super::RemoveAll();
-	GSTSingleton::RemoveInstance();
+	int a = 0;
 }
-void GSFGameModeManager::InitState()
+
+void GSFGameModeManager::Initialize()
 {
 	GSTSingleton::InitInstance(this);
 
@@ -60,6 +60,14 @@ void GSFGameModeManager::InitState()
 	//// 메시지 호출 2)
 	GSFMessageSingle::Instance->GetSystem().SendMessage(MessageSystem::ID::RECONNECT_END, GTSMessageNone());
 }
+
+void GSFGameModeManager::Finalize()
+{
+	Super::RemoveAll();
+	GSTSingleton::RemoveInstance();
+}
+
+
 
 void GSFGameModeManager::OnReconnectionStart(const GTSMessageNone& message)
 {
