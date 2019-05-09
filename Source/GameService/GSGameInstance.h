@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintPlatformLibrary.h"
 #include "GameMode/GSFGameModeManager.h"
+#include "Message/GSFMessageManager.h"
 #include "GSGameInstance.generated.h"
 
 //-------------------------------------------------------------------------------
@@ -23,6 +24,8 @@ class GAMESERVICE_API UGSGameInstance : public UGameInstance
 	
 	TUniquePtr<GSFGameModeManager>	_gameMode;
 	
+	TUniquePtr<GSFMessageManager>	_message;
+
 public:
 	UGSGameInstance();
 	virtual void Init() override;

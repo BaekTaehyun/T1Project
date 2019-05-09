@@ -30,5 +30,5 @@ public:
 };
 
 #define EnumToString(EnumClassName, ValueOfEnum) UTextUtil::GetEnumValueAsString<EnumClassName>(FString(TEXT(#EnumClassName)), (ValueOfEnum))
-#define TOstring(Fstring) UTextUtil::FString_TO_string(Fstring);
-#define TOFString(STDstring) UTextUtil::string_TO_FString(STDstring);
+#define TOstring(Fstring) UTextUtil::FString_TO_string(Fstring)
+#define TOFString(STDstring) UTextUtil::string_TO_FString(STDstring)

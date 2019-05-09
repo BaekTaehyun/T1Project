@@ -24,8 +24,8 @@ enum MoveType {
   MoveType_MAX = MoveType_MT_MAX
 };
 
-inline MoveType (&EnumValuesMoveType())[10] {
-  static MoveType values[] = {
+inline const MoveType (&EnumValuesMoveType())[10] {
+  static const MoveType values[] = {
     MoveType_MT_NONE,
     MoveType_MT_WALKING,
     MoveType_MT_WALKING_STRAIGHT,
@@ -40,8 +40,8 @@ inline MoveType (&EnumValuesMoveType())[10] {
   return values;
 }
 
-inline const char **EnumNamesMoveType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesMoveType() {
+  static const char * const names[] = {
     "MT_NONE",
     "MT_WALKING",
     "MT_WALKING_STRAIGHT",
@@ -75,8 +75,8 @@ enum ReactionType {
   ReactionType_MAX = ReactionType_RT_GROGGY
 };
 
-inline ReactionType (&EnumValuesReactionType())[8] {
-  static ReactionType values[] = {
+inline const ReactionType (&EnumValuesReactionType())[8] {
+  static const ReactionType values[] = {
     ReactionType_RT_NONE,
     ReactionType_RT_HIT,
     ReactionType_RT_KNOCK_BACK,
@@ -89,8 +89,8 @@ inline ReactionType (&EnumValuesReactionType())[8] {
   return values;
 }
 
-inline const char **EnumNamesReactionType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesReactionType() {
+  static const char * const names[] = {
     "RT_NONE",
     "RT_HIT",
     "RT_KNOCK_BACK",
@@ -125,8 +125,8 @@ enum SkillSlotCode {
   SkillSlotCode_MAX = SkillSlotCode_SSC_MAX
 };
 
-inline SkillSlotCode (&EnumValuesSkillSlotCode())[11] {
-  static SkillSlotCode values[] = {
+inline const SkillSlotCode (&EnumValuesSkillSlotCode())[11] {
+  static const SkillSlotCode values[] = {
     SkillSlotCode_SSC_NONE,
     SkillSlotCode_SSC_A,
     SkillSlotCode_SSC_B,
@@ -142,8 +142,8 @@ inline SkillSlotCode (&EnumValuesSkillSlotCode())[11] {
   return values;
 }
 
-inline const char **EnumNamesSkillSlotCode() {
-  static const char *names[] = {
+inline const char * const *EnumNamesSkillSlotCode() {
+  static const char * const names[] = {
     "SSC_NONE",
     "SSC_A",
     "SSC_B",
@@ -178,8 +178,8 @@ enum SkillSlotIndex {
   SkillSlotIndex_MAX = SkillSlotIndex_SSI_SPECIAL_B_2
 };
 
-inline SkillSlotIndex (&EnumValuesSkillSlotIndex())[8] {
-  static SkillSlotIndex values[] = {
+inline const SkillSlotIndex (&EnumValuesSkillSlotIndex())[8] {
+  static const SkillSlotIndex values[] = {
     SkillSlotIndex_SSI_NORMAL_1,
     SkillSlotIndex_SSI_NORMAL_2,
     SkillSlotIndex_SSI_JOB_F,
@@ -192,8 +192,8 @@ inline SkillSlotIndex (&EnumValuesSkillSlotIndex())[8] {
   return values;
 }
 
-inline const char **EnumNamesSkillSlotIndex() {
-  static const char *names[] = {
+inline const char * const *EnumNamesSkillSlotIndex() {
+  static const char * const names[] = {
     "SSI_NORMAL_1",
     "SSI_NORMAL_2",
     "SSI_JOB_F",
@@ -222,8 +222,8 @@ enum BuffCondition {
   BuffCondition_MAX = BuffCondition_BF_COND_SKILL
 };
 
-inline BuffCondition (&EnumValuesBuffCondition())[3] {
-  static BuffCondition values[] = {
+inline const BuffCondition (&EnumValuesBuffCondition())[3] {
+  static const BuffCondition values[] = {
     BuffCondition_BF_COND_NONE,
     BuffCondition_BF_COND_NORMAL,
     BuffCondition_BF_COND_SKILL
@@ -231,8 +231,8 @@ inline BuffCondition (&EnumValuesBuffCondition())[3] {
   return values;
 }
 
-inline const char **EnumNamesBuffCondition() {
-  static const char *names[] = {
+inline const char * const *EnumNamesBuffCondition() {
+  static const char * const names[] = {
     "BF_COND_NONE",
     "BF_COND_NORMAL",
     "BF_COND_SKILL",
@@ -255,8 +255,8 @@ enum PresetType {
   PresetType_MAX = PresetType_PRESET_TYPE_3
 };
 
-inline PresetType (&EnumValuesPresetType())[4] {
-  static PresetType values[] = {
+inline const PresetType (&EnumValuesPresetType())[4] {
+  static const PresetType values[] = {
     PresetType_PRESET_TYPE_0,
     PresetType_PRESET_TYPE_1,
     PresetType_PRESET_TYPE_2,
@@ -265,8 +265,8 @@ inline PresetType (&EnumValuesPresetType())[4] {
   return values;
 }
 
-inline const char **EnumNamesPresetType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesPresetType() {
+  static const char * const names[] = {
     "PRESET_TYPE_0",
     "PRESET_TYPE_1",
     "PRESET_TYPE_2",
@@ -290,8 +290,8 @@ enum EventContributionType {
   EventContributionType_MAX = EventContributionType_EVENT_CONTRIBUTION_TYPE_BATTLE
 };
 
-inline EventContributionType (&EnumValuesEventContributionType())[3] {
-  static EventContributionType values[] = {
+inline const EventContributionType (&EnumValuesEventContributionType())[3] {
+  static const EventContributionType values[] = {
     EventContributionType_EVENT_CONTRIBUTION_TYPE_NONE,
     EventContributionType_EVENT_CONTRIBUTION_TYPE_GATHERING,
     EventContributionType_EVENT_CONTRIBUTION_TYPE_BATTLE
@@ -299,8 +299,8 @@ inline EventContributionType (&EnumValuesEventContributionType())[3] {
   return values;
 }
 
-inline const char **EnumNamesEventContributionType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesEventContributionType() {
+  static const char * const names[] = {
     "EVENT_CONTRIBUTION_TYPE_NONE",
     "EVENT_CONTRIBUTION_TYPE_GATHERING",
     "EVENT_CONTRIBUTION_TYPE_BATTLE",
@@ -350,8 +350,8 @@ enum EventCheckType {
   EventCheckType_MAX = EventCheckType_EVENT_CHECK_TYPE_MAX
 };
 
-inline EventCheckType (&EnumValuesEventCheckType())[30] {
-  static EventCheckType values[] = {
+inline const EventCheckType (&EnumValuesEventCheckType())[30] {
+  static const EventCheckType values[] = {
     EventCheckType_EVENT_CHECK_TYPE_ALWAYS_TRUE,
     EventCheckType_EVENT_CHECK_TYPE_IN_EVENT_AREA,
     EventCheckType_EVENT_CHECK_TYPE_GATHERING_COUNT,
@@ -386,8 +386,8 @@ inline EventCheckType (&EnumValuesEventCheckType())[30] {
   return values;
 }
 
-inline const char **EnumNamesEventCheckType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesEventCheckType() {
+  static const char * const names[] = {
     "EVENT_CHECK_TYPE_ALWAYS_TRUE",
     "EVENT_CHECK_TYPE_IN_EVENT_AREA",
     "EVENT_CHECK_TYPE_GATHERING_COUNT",
@@ -475,8 +475,8 @@ enum EventReactionType {
   EventReactionType_MAX = EventReactionType_EVENT_REACTION_TYPE_MAX
 };
 
-inline EventReactionType (&EnumValuesEventReactionType())[42] {
-  static EventReactionType values[] = {
+inline const EventReactionType (&EnumValuesEventReactionType())[42] {
+  static const EventReactionType values[] = {
     EventReactionType_EVENT_REACTION_TYPE_DEBUG_MESSAGE,
     EventReactionType_EVENT_REACTION_TYPE_CHANGE_PHASE,
     EventReactionType_EVENT_REACTION_TYPE_SPAWN_NPC,
@@ -523,8 +523,8 @@ inline EventReactionType (&EnumValuesEventReactionType())[42] {
   return values;
 }
 
-inline const char **EnumNamesEventReactionType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesEventReactionType() {
+  static const char * const names[] = {
     "EVENT_REACTION_TYPE_DEBUG_MESSAGE",
     "EVENT_REACTION_TYPE_CHANGE_PHASE",
     "EVENT_REACTION_TYPE_SPAWN_NPC",
@@ -598,8 +598,8 @@ enum EventTargetType {
   EventTargetType_MAX = EventTargetType_EVENT_TARGET_TYPE_MAX
 };
 
-inline EventTargetType (&EnumValuesEventTargetType())[16] {
-  static EventTargetType values[] = {
+inline const EventTargetType (&EnumValuesEventTargetType())[16] {
+  static const EventTargetType values[] = {
     EventTargetType_EVENT_TARGET_TYPE_EVENT_AREA_ID,
     EventTargetType_EVENT_TARGET_TYPE_SPAWN_AREA_ID,
     EventTargetType_EVENT_TARGET_TYPE_EVNET_ID,
@@ -620,8 +620,8 @@ inline EventTargetType (&EnumValuesEventTargetType())[16] {
   return values;
 }
 
-inline const char **EnumNamesEventTargetType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesEventTargetType() {
+  static const char * const names[] = {
     "EVENT_TARGET_TYPE_EVENT_AREA_ID",
     "EVENT_TARGET_TYPE_SPAWN_AREA_ID",
     "EVENT_TARGET_TYPE_EVNET_ID",
@@ -656,8 +656,8 @@ enum EventOperationType {
   EventOperationType_MAX = EventOperationType_EVENT_OPERATION_TYPE_MAX
 };
 
-inline EventOperationType (&EnumValuesEventOperationType())[3] {
-  static EventOperationType values[] = {
+inline const EventOperationType (&EnumValuesEventOperationType())[3] {
+  static const EventOperationType values[] = {
     EventOperationType_EVENT_OPERATION_TYPE_AND,
     EventOperationType_EVENT_OPERATION_TYPE_OR,
     EventOperationType_EVENT_OPERATION_TYPE_MAX
@@ -665,8 +665,8 @@ inline EventOperationType (&EnumValuesEventOperationType())[3] {
   return values;
 }
 
-inline const char **EnumNamesEventOperationType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesEventOperationType() {
+  static const char * const names[] = {
     "EVENT_OPERATION_TYPE_AND",
     "EVENT_OPERATION_TYPE_OR",
     "EVENT_OPERATION_TYPE_MAX",
@@ -699,8 +699,8 @@ enum EventOrderingType {
   EventOrderingType_MAX = EventOrderingType_EVENT_ORDER_MAX
 };
 
-inline EventOrderingType (&EnumValuesEventOrderingType())[14] {
-  static EventOrderingType values[] = {
+inline const EventOrderingType (&EnumValuesEventOrderingType())[14] {
+  static const EventOrderingType values[] = {
     EventOrderingType_EVENT_ORDER_FIRST,
     EventOrderingType_EVENT_ORDER_SECOND,
     EventOrderingType_EVENT_ORDER_THIRD,
@@ -719,8 +719,8 @@ inline EventOrderingType (&EnumValuesEventOrderingType())[14] {
   return values;
 }
 
-inline const char **EnumNamesEventOrderingType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesEventOrderingType() {
+  static const char * const names[] = {
     "EVENT_ORDER_FIRST",
     "EVENT_ORDER_SECOND",
     "EVENT_ORDER_THIRD",
@@ -754,8 +754,8 @@ enum EventSetDayType {
   EventSetDayType_MAX = EventSetDayType_EVENTSET_DAY_TYPE_MAX
 };
 
-inline EventSetDayType (&EnumValuesEventSetDayType())[4] {
-  static EventSetDayType values[] = {
+inline const EventSetDayType (&EnumValuesEventSetDayType())[4] {
+  static const EventSetDayType values[] = {
     EventSetDayType_EVENTSET_DAY_TYPE_NONE,
     EventSetDayType_EVENTSET_DAY_TYPE_DAY,
     EventSetDayType_EVENTSET_DAY_TYPE_NIGH,
@@ -764,8 +764,8 @@ inline EventSetDayType (&EnumValuesEventSetDayType())[4] {
   return values;
 }
 
-inline const char **EnumNamesEventSetDayType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesEventSetDayType() {
+  static const char * const names[] = {
     "EVENTSET_DAY_TYPE_NONE",
     "EVENTSET_DAY_TYPE_DAY",
     "EVENTSET_DAY_TYPE_NIGH",
@@ -790,8 +790,8 @@ enum EventSetScheduleType {
   EventSetScheduleType_MAX = EventSetScheduleType_EVENTSET_SCHEDULE_TYPE_WEEKLY_INTERVAL
 };
 
-inline EventSetScheduleType (&EnumValuesEventSetScheduleType())[5] {
-  static EventSetScheduleType values[] = {
+inline const EventSetScheduleType (&EnumValuesEventSetScheduleType())[5] {
+  static const EventSetScheduleType values[] = {
     EventSetScheduleType_EVENTSET_SCHEDULE_TYPE_NONE,
     EventSetScheduleType_EVENTSET_SCHEDULE_TYPE_DAILY_KEEP,
     EventSetScheduleType_EVENTSET_SCHEDULE_TYPE_DAILY_INTERVAL,
@@ -801,8 +801,8 @@ inline EventSetScheduleType (&EnumValuesEventSetScheduleType())[5] {
   return values;
 }
 
-inline const char **EnumNamesEventSetScheduleType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesEventSetScheduleType() {
+  static const char * const names[] = {
     "EVENTSET_SCHEDULE_TYPE_NONE",
     "EVENTSET_SCHEDULE_TYPE_DAILY_KEEP",
     "EVENTSET_SCHEDULE_TYPE_DAILY_INTERVAL",
@@ -831,8 +831,8 @@ enum EventSetRepeatWeekType {
   EventSetRepeatWeekType_MAX = EventSetRepeatWeekType_EVENTSET_REPEAT_WEEK_TYPE_SAT
 };
 
-inline EventSetRepeatWeekType (&EnumValuesEventSetRepeatWeekType())[8] {
-  static EventSetRepeatWeekType values[] = {
+inline const EventSetRepeatWeekType (&EnumValuesEventSetRepeatWeekType())[8] {
+  static const EventSetRepeatWeekType values[] = {
     EventSetRepeatWeekType_EVENTSET_REPEAT_WEEK_TYPE_DAILY,
     EventSetRepeatWeekType_EVENTSET_REPEAT_WEEK_TYPE_SUN,
     EventSetRepeatWeekType_EVENTSET_REPEAT_WEEK_TYPE_MON,
@@ -845,8 +845,8 @@ inline EventSetRepeatWeekType (&EnumValuesEventSetRepeatWeekType())[8] {
   return values;
 }
 
-inline const char **EnumNamesEventSetRepeatWeekType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesEventSetRepeatWeekType() {
+  static const char * const names[] = {
     "EVENTSET_REPEAT_WEEK_TYPE_DAILY",
     "EVENTSET_REPEAT_WEEK_TYPE_SUN",
     "EVENTSET_REPEAT_WEEK_TYPE_MON",
@@ -874,8 +874,8 @@ enum PatrolType {
   PatrolType_MAX = PatrolType_PT_MAX
 };
 
-inline PatrolType (&EnumValuesPatrolType())[4] {
-  static PatrolType values[] = {
+inline const PatrolType (&EnumValuesPatrolType())[4] {
+  static const PatrolType values[] = {
     PatrolType_PT_DFAULT,
     PatrolType_PT_FORWARD_REVERSE,
     PatrolType_PT_ROUND_TRIP,
@@ -884,8 +884,8 @@ inline PatrolType (&EnumValuesPatrolType())[4] {
   return values;
 }
 
-inline const char **EnumNamesPatrolType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesPatrolType() {
+  static const char * const names[] = {
     "PT_DFAULT",
     "PT_FORWARD_REVERSE",
     "PT_ROUND_TRIP",
@@ -907,16 +907,16 @@ enum PatrolReturnType {
   PatrolReturnType_MAX = PatrolReturnType_PRT_MAX
 };
 
-inline PatrolReturnType (&EnumValuesPatrolReturnType())[2] {
-  static PatrolReturnType values[] = {
+inline const PatrolReturnType (&EnumValuesPatrolReturnType())[2] {
+  static const PatrolReturnType values[] = {
     PatrolReturnType_PRT_GOTO_SRC,
     PatrolReturnType_PRT_MAX
   };
   return values;
 }
 
-inline const char **EnumNamesPatrolReturnType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesPatrolReturnType() {
+  static const char * const names[] = {
     "PRT_GOTO_SRC",
     "PRT_MAX",
     nullptr
@@ -937,8 +937,8 @@ enum PatrolActionType {
   PatrolActionType_MAX = PatrolActionType_PAT_MAX
 };
 
-inline PatrolActionType (&EnumValuesPatrolActionType())[3] {
-  static PatrolActionType values[] = {
+inline const PatrolActionType (&EnumValuesPatrolActionType())[3] {
+  static const PatrolActionType values[] = {
     PatrolActionType_PAT_SPEAK_BUBBLE,
     PatrolActionType_PAT_USING_SKILL,
     PatrolActionType_PAT_MAX
@@ -946,8 +946,8 @@ inline PatrolActionType (&EnumValuesPatrolActionType())[3] {
   return values;
 }
 
-inline const char **EnumNamesPatrolActionType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesPatrolActionType() {
+  static const char * const names[] = {
     "PAT_SPEAK_BUBBLE",
     "PAT_USING_SKILL",
     "PAT_MAX",
@@ -983,8 +983,8 @@ enum ItemValidationType {
   ItemValidationType_MAX = ItemValidationType_IVT_PROGRESSION
 };
 
-inline ItemValidationType (&EnumValuesItemValidationType())[10] {
-  static ItemValidationType values[] = {
+inline const ItemValidationType (&EnumValuesItemValidationType())[10] {
+  static const ItemValidationType values[] = {
     ItemValidationType_IVT_EQUIP,
     ItemValidationType_IVT_UNEQUIP,
     ItemValidationType_IVT_INSERT,
@@ -999,8 +999,8 @@ inline ItemValidationType (&EnumValuesItemValidationType())[10] {
   return values;
 }
 
-inline const char **EnumNamesItemValidationType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesItemValidationType() {
+  static const char * const names[] = {
     "IVT_EQUIP",
     "IVT_UNEQUIP",
     "IVT_INSERT",
@@ -1030,8 +1030,8 @@ enum CreatureScaleType {
   CreatureScaleType_MAX = CreatureScaleType_CST_PLAYER
 };
 
-inline CreatureScaleType (&EnumValuesCreatureScaleType())[4] {
-  static CreatureScaleType values[] = {
+inline const CreatureScaleType (&EnumValuesCreatureScaleType())[4] {
+  static const CreatureScaleType values[] = {
     CreatureScaleType_CST_NONE,
     CreatureScaleType_CST_NORMAL,
     CreatureScaleType_CST_BOSS,
@@ -1040,8 +1040,8 @@ inline CreatureScaleType (&EnumValuesCreatureScaleType())[4] {
   return values;
 }
 
-inline const char **EnumNamesCreatureScaleType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesCreatureScaleType() {
+  static const char * const names[] = {
     "CST_NONE",
     "CST_NORMAL",
     "CST_BOSS",
@@ -1066,8 +1066,8 @@ enum AbnormalType {
   AbnormalType_MAX = AbnormalType_ABNORMAL_MAX
 };
 
-inline AbnormalType (&EnumValuesAbnormalType())[5] {
-  static AbnormalType values[] = {
+inline const AbnormalType (&EnumValuesAbnormalType())[5] {
+  static const AbnormalType values[] = {
     AbnormalType_ABNORMAL_MOVE,
     AbnormalType_ABNORMAL_NORMAL_ATTACK,
     AbnormalType_ABNORMAL_SKILL,
@@ -1077,8 +1077,8 @@ inline AbnormalType (&EnumValuesAbnormalType())[5] {
   return values;
 }
 
-inline const char **EnumNamesAbnormalType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesAbnormalType() {
+  static const char * const names[] = {
     "ABNORMAL_MOVE",
     "ABNORMAL_NORMAL_ATTACK",
     "ABNORMAL_SKILL",
@@ -1103,8 +1103,8 @@ enum EventCounterShowUIStartType {
   EventCounterShowUIStartType_MAX = EventCounterShowUIStartType_SHOW_UI_START_MAX
 };
 
-inline EventCounterShowUIStartType (&EnumValuesEventCounterShowUIStartType())[4] {
-  static EventCounterShowUIStartType values[] = {
+inline const EventCounterShowUIStartType (&EnumValuesEventCounterShowUIStartType())[4] {
+  static const EventCounterShowUIStartType values[] = {
     EventCounterShowUIStartType_SHOW_UI_START_EVENT,
     EventCounterShowUIStartType_SHOW_UI_START_PHASE,
     EventCounterShowUIStartType_SHOW_UI_START_EVENT_ORDER,
@@ -1113,8 +1113,8 @@ inline EventCounterShowUIStartType (&EnumValuesEventCounterShowUIStartType())[4]
   return values;
 }
 
-inline const char **EnumNamesEventCounterShowUIStartType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesEventCounterShowUIStartType() {
+  static const char * const names[] = {
     "SHOW_UI_START_EVENT",
     "SHOW_UI_START_PHASE",
     "SHOW_UI_START_EVENT_ORDER",
@@ -1138,8 +1138,8 @@ enum EventCounterShowUIEndType {
   EventCounterShowUIEndType_MAX = EventCounterShowUIEndType_SHOW_UI_END_MAX
 };
 
-inline EventCounterShowUIEndType (&EnumValuesEventCounterShowUIEndType())[4] {
-  static EventCounterShowUIEndType values[] = {
+inline const EventCounterShowUIEndType (&EnumValuesEventCounterShowUIEndType())[4] {
+  static const EventCounterShowUIEndType values[] = {
     EventCounterShowUIEndType_SHOW_UI_END_EVENT,
     EventCounterShowUIEndType_SHOW_UI_END_PHASE,
     EventCounterShowUIEndType_SHOW_UI_END_EVENT_ORDER,
@@ -1148,8 +1148,8 @@ inline EventCounterShowUIEndType (&EnumValuesEventCounterShowUIEndType())[4] {
   return values;
 }
 
-inline const char **EnumNamesEventCounterShowUIEndType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesEventCounterShowUIEndType() {
+  static const char * const names[] = {
     "SHOW_UI_END_EVENT",
     "SHOW_UI_END_PHASE",
     "SHOW_UI_END_EVENT_ORDER",
@@ -1173,8 +1173,8 @@ enum EventCounterStateType {
   EventCounterStateType_MAX = EventCounterStateType_EVENT_COUNTER_STATE_TYPE_MAX
 };
 
-inline EventCounterStateType (&EnumValuesEventCounterStateType())[4] {
-  static EventCounterStateType values[] = {
+inline const EventCounterStateType (&EnumValuesEventCounterStateType())[4] {
+  static const EventCounterStateType values[] = {
     EventCounterStateType_EVENT_COUNTER_STATE_TYPE_ACTIVE,
     EventCounterStateType_EVENT_COUNTER_STATE_TYPE_FINISH,
     EventCounterStateType_EVENT_COUNTER_STATE_TYPE_TERMINATE,
@@ -1183,8 +1183,8 @@ inline EventCounterStateType (&EnumValuesEventCounterStateType())[4] {
   return values;
 }
 
-inline const char **EnumNamesEventCounterStateType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesEventCounterStateType() {
+  static const char * const names[] = {
     "EVENT_COUNTER_STATE_TYPE_ACTIVE",
     "EVENT_COUNTER_STATE_TYPE_FINISH",
     "EVENT_COUNTER_STATE_TYPE_TERMINATE",
@@ -1207,8 +1207,8 @@ enum ChangedEventContextType {
   ChangedEventContextType_MAX = ChangedEventContextType_CHANGED_EVENT_ORDER
 };
 
-inline ChangedEventContextType (&EnumValuesChangedEventContextType())[3] {
-  static ChangedEventContextType values[] = {
+inline const ChangedEventContextType (&EnumValuesChangedEventContextType())[3] {
+  static const ChangedEventContextType values[] = {
     ChangedEventContextType_CHANGED_EVENT_PHASE_ID,
     ChangedEventContextType_CHANGED_EVENT_TASK_ID,
     ChangedEventContextType_CHANGED_EVENT_ORDER
@@ -1216,8 +1216,8 @@ inline ChangedEventContextType (&EnumValuesChangedEventContextType())[3] {
   return values;
 }
 
-inline const char **EnumNamesChangedEventContextType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesChangedEventContextType() {
+  static const char * const names[] = {
     "CHANGED_EVENT_PHASE_ID",
     "CHANGED_EVENT_TASK_ID",
     "CHANGED_EVENT_ORDER",
@@ -1311,8 +1311,8 @@ enum CostReasonType {
   CostReasonType_MAX = CostReasonType_CRT_PLAYER_REVIVAL
 };
 
-inline CostReasonType (&EnumValuesCostReasonType())[75] {
-  static CostReasonType values[] = {
+inline const CostReasonType (&EnumValuesCostReasonType())[75] {
+  static const CostReasonType values[] = {
     CostReasonType_CRT_UNKNOWN,
     CostReasonType_CRT_CREATE_PC,
     CostReasonType_CRT_DISENCHANT,
@@ -1392,8 +1392,8 @@ inline CostReasonType (&EnumValuesCostReasonType())[75] {
   return values;
 }
 
-inline const char **EnumNamesCostReasonType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesCostReasonType() {
+  static const char * const names[] = {
     "CRT_UNKNOWN",
     "CRT_CREATE_PC",
     "CRT_DISENCHANT",
@@ -1487,16 +1487,16 @@ enum EndSkillReasonType {
   EndSkillReasonType_MAX = EndSkillReasonType_CANCEL
 };
 
-inline EndSkillReasonType (&EnumValuesEndSkillReasonType())[2] {
-  static EndSkillReasonType values[] = {
+inline const EndSkillReasonType (&EnumValuesEndSkillReasonType())[2] {
+  static const EndSkillReasonType values[] = {
     EndSkillReasonType_NORMAL,
     EndSkillReasonType_CANCEL
   };
   return values;
 }
 
-inline const char **EnumNamesEndSkillReasonType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesEndSkillReasonType() {
+  static const char * const names[] = {
     "NORMAL",
     "CANCEL",
     nullptr
@@ -1519,8 +1519,8 @@ enum ReactionPosType {
   ReactionPosType_MAX = ReactionPosType_OFFSET_MOVED_SKILL_POSITION
 };
 
-inline ReactionPosType (&EnumValuesReactionPosType())[4] {
-  static ReactionPosType values[] = {
+inline const ReactionPosType (&EnumValuesReactionPosType())[4] {
+  static const ReactionPosType values[] = {
     ReactionPosType_CASTER_CASTING_DIRECTION,
     ReactionPosType_STRIKEN_POS,
     ReactionPosType_CASTER_AND_STRIKEN_POS_CALC_DIRECTION,
@@ -1529,8 +1529,8 @@ inline ReactionPosType (&EnumValuesReactionPosType())[4] {
   return values;
 }
 
-inline const char **EnumNamesReactionPosType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesReactionPosType() {
+  static const char * const names[] = {
     "CASTER_CASTING_DIRECTION",
     "STRIKEN_POS",
     "CASTER_AND_STRIKEN_POS_CALC_DIRECTION",
@@ -1555,8 +1555,8 @@ enum ChatType {
   ChatType_MAX = ChatType_CHAT_MAX
 };
 
-inline ChatType (&EnumValuesChatType())[4] {
-  static ChatType values[] = {
+inline const ChatType (&EnumValuesChatType())[4] {
+  static const ChatType values[] = {
     ChatType_CHAT_CHANNEL,
     ChatType_CHAT_REALM,
     ChatType_CHAT_GUILD,
@@ -1565,8 +1565,8 @@ inline ChatType (&EnumValuesChatType())[4] {
   return values;
 }
 
-inline const char **EnumNamesChatType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesChatType() {
+  static const char * const names[] = {
     "CHAT_CHANNEL",
     "CHAT_REALM",
     "CHAT_GUILD",
@@ -1588,11 +1588,10 @@ enum ReconnectAccountState {
   ReconnectAccountState_RAS_GAME_DISCONNECT = 2,
   ReconnectAccountState_MAX = 3,
   ReconnectAccountState_MIN = ReconnectAccountState_RAS_LOBBY,
-  ReconnectAccountState_MAX = ReconnectAccountState_MAX
 };
 
-inline ReconnectAccountState (&EnumValuesReconnectAccountState())[4] {
-  static ReconnectAccountState values[] = {
+inline const ReconnectAccountState (&EnumValuesReconnectAccountState())[4] {
+  static const ReconnectAccountState values[] = {
     ReconnectAccountState_RAS_LOBBY,
     ReconnectAccountState_RAS_GAME,
     ReconnectAccountState_RAS_GAME_DISCONNECT,
@@ -1601,8 +1600,8 @@ inline ReconnectAccountState (&EnumValuesReconnectAccountState())[4] {
   return values;
 }
 
-inline const char **EnumNamesReconnectAccountState() {
-  static const char *names[] = {
+inline const char * const *EnumNamesReconnectAccountState() {
+  static const char * const names[] = {
     "RAS_LOBBY",
     "RAS_GAME",
     "RAS_GAME_DISCONNECT",
@@ -1627,8 +1626,8 @@ enum ItemOptionType {
   ItemOptionType_MAX = ItemOptionType_IOT_REWARD_CHANCE_B
 };
 
-inline ItemOptionType (&EnumValuesItemOptionType())[5] {
-  static ItemOptionType values[] = {
+inline const ItemOptionType (&EnumValuesItemOptionType())[5] {
+  static const ItemOptionType values[] = {
     ItemOptionType_IOT_NONE,
     ItemOptionType_IOT_REWARD_CHANCE_ALL,
     ItemOptionType_IOT_REWARD_CHANCE_S,
@@ -1638,8 +1637,8 @@ inline ItemOptionType (&EnumValuesItemOptionType())[5] {
   return values;
 }
 
-inline const char **EnumNamesItemOptionType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesItemOptionType() {
+  static const char * const names[] = {
     "IOT_NONE",
     "IOT_REWARD_CHANCE_ALL",
     "IOT_REWARD_CHANCE_S",
@@ -1661,15 +1660,15 @@ enum KeepAlive {
   KeepAlive_MAX = KeepAlive_KEEP_ALIVE_TERM
 };
 
-inline KeepAlive (&EnumValuesKeepAlive())[1] {
-  static KeepAlive values[] = {
+inline const KeepAlive (&EnumValuesKeepAlive())[1] {
+  static const KeepAlive values[] = {
     KeepAlive_KEEP_ALIVE_TERM
   };
   return values;
 }
 
-inline const char **EnumNamesKeepAlive() {
-  static const char *names[] = {
+inline const char * const *EnumNamesKeepAlive() {
+  static const char * const names[] = {
     "KEEP_ALIVE_TERM",
     nullptr
   };
@@ -1700,8 +1699,8 @@ enum ContributeType {
   ContributeType_MAX = ContributeType_CONT_MAX
 };
 
-inline ContributeType (&EnumValuesContributeType())[13] {
-  static ContributeType values[] = {
+inline const ContributeType (&EnumValuesContributeType())[13] {
+  static const ContributeType values[] = {
     ContributeType_CONT_DEAL,
     ContributeType_CONT_TANKING,
     ContributeType_CONT_BUFF,
@@ -1719,8 +1718,8 @@ inline ContributeType (&EnumValuesContributeType())[13] {
   return values;
 }
 
-inline const char **EnumNamesContributeType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesContributeType() {
+  static const char * const names[] = {
     "CONT_DEAL",
     "CONT_TANKING",
     "CONT_BUFF",
@@ -1753,8 +1752,8 @@ enum ShopRewardState {
   ShopRewardState_MAX = ShopRewardState_SRS_MAX
 };
 
-inline ShopRewardState (&EnumValuesShopRewardState())[4] {
-  static ShopRewardState values[] = {
+inline const ShopRewardState (&EnumValuesShopRewardState())[4] {
+  static const ShopRewardState values[] = {
     ShopRewardState_SRS_DISABLED,
     ShopRewardState_SRS_ACTIVATE,
     ShopRewardState_SRS_DONE,
@@ -1763,8 +1762,8 @@ inline ShopRewardState (&EnumValuesShopRewardState())[4] {
   return values;
 }
 
-inline const char **EnumNamesShopRewardState() {
-  static const char *names[] = {
+inline const char * const *EnumNamesShopRewardState() {
+  static const char * const names[] = {
     "SRS_DISABLED",
     "SRS_ACTIVATE",
     "SRS_DONE",
@@ -1788,8 +1787,8 @@ enum InfluenceRenewalType {
   InfluenceRenewalType_MAX = InfluenceRenewalType_IRT_DOWN
 };
 
-inline InfluenceRenewalType (&EnumValuesInfluenceRenewalType())[4] {
-  static InfluenceRenewalType values[] = {
+inline const InfluenceRenewalType (&EnumValuesInfluenceRenewalType())[4] {
+  static const InfluenceRenewalType values[] = {
     InfluenceRenewalType_IRT_NONE,
     InfluenceRenewalType_IRT_SAME,
     InfluenceRenewalType_IRT_UP,
@@ -1798,8 +1797,8 @@ inline InfluenceRenewalType (&EnumValuesInfluenceRenewalType())[4] {
   return values;
 }
 
-inline const char **EnumNamesInfluenceRenewalType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesInfluenceRenewalType() {
+  static const char * const names[] = {
     "IRT_NONE",
     "IRT_SAME",
     "IRT_UP",
@@ -1822,8 +1821,8 @@ enum MailOwnerType {
   MailOwnerType_MAX = MailOwnerType_MOT_MAX
 };
 
-inline MailOwnerType (&EnumValuesMailOwnerType())[3] {
-  static MailOwnerType values[] = {
+inline const MailOwnerType (&EnumValuesMailOwnerType())[3] {
+  static const MailOwnerType values[] = {
     MailOwnerType_MOT_ACCOUNT,
     MailOwnerType_MOT_PC,
     MailOwnerType_MOT_MAX
@@ -1831,8 +1830,8 @@ inline MailOwnerType (&EnumValuesMailOwnerType())[3] {
   return values;
 }
 
-inline const char **EnumNamesMailOwnerType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesMailOwnerType() {
+  static const char * const names[] = {
     "MOT_ACCOUNT",
     "MOT_PC",
     "MOT_MAX",
@@ -1871,8 +1870,8 @@ enum InfluenceReasonType {
   InfluenceReasonType_MAX = InfluenceReasonType_IFRT_MAX
 };
 
-inline InfluenceReasonType (&EnumValuesInfluenceReasonType())[20] {
-  static InfluenceReasonType values[] = {
+inline const InfluenceReasonType (&EnumValuesInfluenceReasonType())[20] {
+  static const InfluenceReasonType values[] = {
     InfluenceReasonType_IFRT_CHEAT,
     InfluenceReasonType_IFRT_QUEST,
     InfluenceReasonType_IFRT_DAILY_DUNGEON,
@@ -1897,8 +1896,8 @@ inline InfluenceReasonType (&EnumValuesInfluenceReasonType())[20] {
   return values;
 }
 
-inline const char **EnumNamesInfluenceReasonType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesInfluenceReasonType() {
+  static const char * const names[] = {
     "IFRT_CHEAT",
     "IFRT_QUEST",
     "IFRT_DAILY_DUNGEON",
@@ -1937,8 +1936,8 @@ enum DepartureChannelContentsType {
   DepartureChannelContentsType_MAX = DepartureChannelContentsType_DEPARTURE_CONTENTS_TYPE_MAX
 };
 
-inline DepartureChannelContentsType (&EnumValuesDepartureChannelContentsType())[3] {
-  static DepartureChannelContentsType values[] = {
+inline const DepartureChannelContentsType (&EnumValuesDepartureChannelContentsType())[3] {
+  static const DepartureChannelContentsType values[] = {
     DepartureChannelContentsType_DEPARTURE_CONTENTS_TYPE_TOWN,
     DepartureChannelContentsType_DEPARTURE_CONTENTS_TYPE_FIELD,
     DepartureChannelContentsType_DEPARTURE_CONTENTS_TYPE_MAX
@@ -1946,8 +1945,8 @@ inline DepartureChannelContentsType (&EnumValuesDepartureChannelContentsType())[
   return values;
 }
 
-inline const char **EnumNamesDepartureChannelContentsType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesDepartureChannelContentsType() {
+  static const char * const names[] = {
     "DEPARTURE_CONTENTS_TYPE_TOWN",
     "DEPARTURE_CONTENTS_TYPE_FIELD",
     "DEPARTURE_CONTENTS_TYPE_MAX",
@@ -1973,8 +1972,8 @@ enum DestinationChannelContentsType {
   DestinationChannelContentsType_MAX = DestinationChannelContentsType_DESTINATION_CONTENTS_TYPE_MAX
 };
 
-inline DestinationChannelContentsType (&EnumValuesDestinationChannelContentsType())[7] {
-  static DestinationChannelContentsType values[] = {
+inline const DestinationChannelContentsType (&EnumValuesDestinationChannelContentsType())[7] {
+  static const DestinationChannelContentsType values[] = {
     DestinationChannelContentsType_DESTINATION_CONTENTS_TYPE_TOWN,
     DestinationChannelContentsType_DESTINATION_CONTENTS_TYPE_FIELD,
     DestinationChannelContentsType_DESTINATION_CONTENTS_TYPE_MISSION,
@@ -1986,8 +1985,8 @@ inline DestinationChannelContentsType (&EnumValuesDestinationChannelContentsType
   return values;
 }
 
-inline const char **EnumNamesDestinationChannelContentsType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesDestinationChannelContentsType() {
+  static const char * const names[] = {
     "DESTINATION_CONTENTS_TYPE_TOWN",
     "DESTINATION_CONTENTS_TYPE_FIELD",
     "DESTINATION_CONTENTS_TYPE_MISSION",
@@ -2011,15 +2010,15 @@ enum Const {
   Const_MAX = Const_RESERVED_NICK_NAME_CODE_LENGTH
 };
 
-inline Const (&EnumValuesConst())[1] {
-  static Const values[] = {
+inline const Const (&EnumValuesConst())[1] {
+  static const Const values[] = {
     Const_RESERVED_NICK_NAME_CODE_LENGTH
   };
   return values;
 }
 
-inline const char **EnumNamesConst() {
-  static const char *names[] = {
+inline const char * const *EnumNamesConst() {
+  static const char * const names[] = {
     "RESERVED_NICK_NAME_CODE_LENGTH",
     nullptr
   };
@@ -2040,8 +2039,8 @@ enum EventCounterSendType {
   EventCounterSendType_MAX = EventCounterSendType_EVENT_COUNTER_SEND_TYPE_ALL
 };
 
-inline EventCounterSendType (&EnumValuesEventCounterSendType())[4] {
-  static EventCounterSendType values[] = {
+inline const EventCounterSendType (&EnumValuesEventCounterSendType())[4] {
+  static const EventCounterSendType values[] = {
     EventCounterSendType_EVENT_COUNTER_SEND_TYPE_NONE,
     EventCounterSendType_EVENT_COUNTER_SEND_TYPE_ASLAN,
     EventCounterSendType_EVENT_COUNTER_SEND_TYPE_HARMION,
@@ -2050,8 +2049,8 @@ inline EventCounterSendType (&EnumValuesEventCounterSendType())[4] {
   return values;
 }
 
-inline const char **EnumNamesEventCounterSendType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesEventCounterSendType() {
+  static const char * const names[] = {
     "EVENT_COUNTER_SEND_TYPE_NONE",
     "EVENT_COUNTER_SEND_TYPE_ASLAN",
     "EVENT_COUNTER_SEND_TYPE_HARMION",
@@ -2073,16 +2072,16 @@ enum FollowerSoulStoneSpentReasonType {
   FollowerSoulStoneSpentReasonType_MAX = FollowerSoulStoneSpentReasonType_FOLLOWER_SPENT_ENCHANT
 };
 
-inline FollowerSoulStoneSpentReasonType (&EnumValuesFollowerSoulStoneSpentReasonType())[2] {
-  static FollowerSoulStoneSpentReasonType values[] = {
+inline const FollowerSoulStoneSpentReasonType (&EnumValuesFollowerSoulStoneSpentReasonType())[2] {
+  static const FollowerSoulStoneSpentReasonType values[] = {
     FollowerSoulStoneSpentReasonType_FOLLOWER_SPENT_NONE,
     FollowerSoulStoneSpentReasonType_FOLLOWER_SPENT_ENCHANT
   };
   return values;
 }
 
-inline const char **EnumNamesFollowerSoulStoneSpentReasonType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesFollowerSoulStoneSpentReasonType() {
+  static const char * const names[] = {
     "FOLLOWER_SPENT_NONE",
     "FOLLOWER_SPENT_ENCHANT",
     nullptr
@@ -2104,8 +2103,8 @@ enum ContentConfigType {
   ContentConfigType_MAX = ContentConfigType_CCT_MAX
 };
 
-inline ContentConfigType (&EnumValuesContentConfigType())[4] {
-  static ContentConfigType values[] = {
+inline const ContentConfigType (&EnumValuesContentConfigType())[4] {
+  static const ContentConfigType values[] = {
     ContentConfigType_CCT_RESERVED_NICK_NAME,
     ContentConfigType_CCT_BATTLE_FIELD_AID,
     ContentConfigType_CCT_BRAWL_BLOCK,
@@ -2114,8 +2113,8 @@ inline ContentConfigType (&EnumValuesContentConfigType())[4] {
   return values;
 }
 
-inline const char **EnumNamesContentConfigType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesContentConfigType() {
+  static const char * const names[] = {
     "CCT_RESERVED_NICK_NAME",
     "CCT_BATTLE_FIELD_AID",
     "CCT_BRAWL_BLOCK",
@@ -2139,8 +2138,8 @@ enum LiveEventDiaMissionState {
   LiveEventDiaMissionState_MAX = LiveEventDiaMissionState_LEMS_MAX
 };
 
-inline LiveEventDiaMissionState (&EnumValuesLiveEventDiaMissionState())[4] {
-  static LiveEventDiaMissionState values[] = {
+inline const LiveEventDiaMissionState (&EnumValuesLiveEventDiaMissionState())[4] {
+  static const LiveEventDiaMissionState values[] = {
     LiveEventDiaMissionState_LEMS_PROGRESS,
     LiveEventDiaMissionState_LEMS_ARCHIEVEMENT,
     LiveEventDiaMissionState_LEMS_DONE,
@@ -2149,8 +2148,8 @@ inline LiveEventDiaMissionState (&EnumValuesLiveEventDiaMissionState())[4] {
   return values;
 }
 
-inline const char **EnumNamesLiveEventDiaMissionState() {
-  static const char *names[] = {
+inline const char * const *EnumNamesLiveEventDiaMissionState() {
+  static const char * const names[] = {
     "LEMS_PROGRESS",
     "LEMS_ARCHIEVEMENT",
     "LEMS_DONE",
@@ -2174,8 +2173,8 @@ enum LiveEventAttentionReceiveState {
   LiveEventAttentionReceiveState_MAX = LiveEventAttentionReceiveState_LEAS_MAX
 };
 
-inline LiveEventAttentionReceiveState (&EnumValuesLiveEventAttentionReceiveState())[4] {
-  static LiveEventAttentionReceiveState values[] = {
+inline const LiveEventAttentionReceiveState (&EnumValuesLiveEventAttentionReceiveState())[4] {
+  static const LiveEventAttentionReceiveState values[] = {
     LiveEventAttentionReceiveState_LEAS_UNRECEIVABLE,
     LiveEventAttentionReceiveState_LEAS_RECEIVABLE,
     LiveEventAttentionReceiveState_LEAS_RECEIVED,
@@ -2184,8 +2183,8 @@ inline LiveEventAttentionReceiveState (&EnumValuesLiveEventAttentionReceiveState
   return values;
 }
 
-inline const char **EnumNamesLiveEventAttentionReceiveState() {
-  static const char *names[] = {
+inline const char * const *EnumNamesLiveEventAttentionReceiveState() {
+  static const char * const names[] = {
     "LEAS_UNRECEIVABLE",
     "LEAS_RECEIVABLE",
     "LEAS_RECEIVED",
@@ -2209,8 +2208,8 @@ enum LiveEventReceiveState {
   LiveEventReceiveState_MAX = LiveEventReceiveState_LERS_MAX
 };
 
-inline LiveEventReceiveState (&EnumValuesLiveEventReceiveState())[4] {
-  static LiveEventReceiveState values[] = {
+inline const LiveEventReceiveState (&EnumValuesLiveEventReceiveState())[4] {
+  static const LiveEventReceiveState values[] = {
     LiveEventReceiveState_LERS_UNRECEIVABLE,
     LiveEventReceiveState_LERS_RECEIVABLE,
     LiveEventReceiveState_LERS_RECEIVED,
@@ -2219,8 +2218,8 @@ inline LiveEventReceiveState (&EnumValuesLiveEventReceiveState())[4] {
   return values;
 }
 
-inline const char **EnumNamesLiveEventReceiveState() {
-  static const char *names[] = {
+inline const char * const *EnumNamesLiveEventReceiveState() {
+  static const char * const names[] = {
     "LERS_UNRECEIVABLE",
     "LERS_RECEIVABLE",
     "LERS_RECEIVED",
@@ -2253,8 +2252,8 @@ enum LiveEventItemDropContentsType {
   LiveEventItemDropContentsType_MAX = LiveEventItemDropContentsType_LEIDCT_24HOUR_FIELD
 };
 
-inline LiveEventItemDropContentsType (&EnumValuesLiveEventItemDropContentsType())[13] {
-  static LiveEventItemDropContentsType values[] = {
+inline const LiveEventItemDropContentsType (&EnumValuesLiveEventItemDropContentsType())[13] {
+  static const LiveEventItemDropContentsType values[] = {
     LiveEventItemDropContentsType_LEIDCT_NONE,
     LiveEventItemDropContentsType_LEIDCT_SOLO_DUNGEON,
     LiveEventItemDropContentsType_LEIDCT_DAILY_DUNGEON,
@@ -2272,8 +2271,8 @@ inline LiveEventItemDropContentsType (&EnumValuesLiveEventItemDropContentsType()
   return values;
 }
 
-inline const char **EnumNamesLiveEventItemDropContentsType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesLiveEventItemDropContentsType() {
+  static const char * const names[] = {
     "LEIDCT_NONE",
     "LEIDCT_SOLO_DUNGEON",
     "LEIDCT_DAILY_DUNGEON",
@@ -2307,8 +2306,8 @@ enum LiveEventItemDropEventType {
   LiveEventItemDropEventType_MAX = LiveEventItemDropEventType_LEIDET_CONTENTS_CLEAR
 };
 
-inline LiveEventItemDropEventType (&EnumValuesLiveEventItemDropEventType())[3] {
-  static LiveEventItemDropEventType values[] = {
+inline const LiveEventItemDropEventType (&EnumValuesLiveEventItemDropEventType())[3] {
+  static const LiveEventItemDropEventType values[] = {
     LiveEventItemDropEventType_LEIDET_NONE,
     LiveEventItemDropEventType_LEIDET_MONSTER_DROP,
     LiveEventItemDropEventType_LEIDET_CONTENTS_CLEAR
@@ -2316,8 +2315,8 @@ inline LiveEventItemDropEventType (&EnumValuesLiveEventItemDropEventType())[3] {
   return values;
 }
 
-inline const char **EnumNamesLiveEventItemDropEventType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesLiveEventItemDropEventType() {
+  static const char * const names[] = {
     "LEIDET_NONE",
     "LEIDET_MONSTER_DROP",
     "LEIDET_CONTENTS_CLEAR",
@@ -2339,8 +2338,8 @@ enum BattleFieldRealmType {
   BattleFieldRealmType_MAX = BattleFieldRealmType_BATTLE_FIELD_REALM_HARMION
 };
 
-inline BattleFieldRealmType (&EnumValuesBattleFieldRealmType())[3] {
-  static BattleFieldRealmType values[] = {
+inline const BattleFieldRealmType (&EnumValuesBattleFieldRealmType())[3] {
+  static const BattleFieldRealmType values[] = {
     BattleFieldRealmType_BATTLE_FIELD_REALM_NONE,
     BattleFieldRealmType_BATTLE_FIELD_REALM_ASLAN,
     BattleFieldRealmType_BATTLE_FIELD_REALM_HARMION
@@ -2348,8 +2347,8 @@ inline BattleFieldRealmType (&EnumValuesBattleFieldRealmType())[3] {
   return values;
 }
 
-inline const char **EnumNamesBattleFieldRealmType() {
-  static const char *names[] = {
+inline const char * const *EnumNamesBattleFieldRealmType() {
+  static const char * const names[] = {
     "BATTLE_FIELD_REALM_NONE",
     "BATTLE_FIELD_REALM_ASLAN",
     "BATTLE_FIELD_REALM_HARMION",

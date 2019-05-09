@@ -11,7 +11,7 @@ template<typename T1, typename T2>
 class GSTMessageHandler
 {
 public:
-	virtual ~GSTMessageHandler() {}
+	virtual ~GSTMessageHandler() { RemoveAll(); }
 	DECLARE_EVENT_OneParam(GSTMessageHandler, MessageType, const T2&)
 
 private:
@@ -26,7 +26,7 @@ public:
 	// 메시지 외부등록
 	// ex) _messagehandler.AddRaw(MessageSystem::ID::RECONNECT_END, this, &GSFGameModeManager::OnReconnectionEnd);
 	template <typename UserClass, typename... VarTypes>
-	FDelegateHandle AddRaw(T1 Message, UserClass* InUserObject, 
+	FDelegateHandle AddRaw(T1 Message, UserClass* InUserObject,
 		typename TMemFunPtrType<false, UserClass, void(const T2&, VarTypes...)>::Type InFunc, VarTypes... Vars)
 	{
 		GSTMessageHandler<T1, T2>::MessageType delFunc;
