@@ -43,7 +43,7 @@ void GSFGameModeManager::Initialize()
 
 
 	//// 메시지 등록예 1)
-	//GSTMessageHandler<MessageSystem::ID, GTSMessageNone>::MessageType delFunc;
+	//GSTMessageHandler<MessageSystem::ID, GSFMessageNone>::MessageType delFunc;
 	//auto handle = delFunc.AddRaw(this, &GSFGameModeManager::OnReconnectionStart);
 	//_messagehandler.GetDeliveryAddress().Add(MessageSystem::ID::RECONNECT_START, delFunc);
 
@@ -53,12 +53,12 @@ void GSFGameModeManager::Initialize()
 	//_messagehandler.
 
 	//// 메시지 호출 1)
-	//GSTMessage<MessageSystem::ID, GTSMessageNone> Reconect_Start(MessageSystem::ID::RECONNECT_START, GTSMessageNone());
+	//GSTMessage<MessageSystem::ID, GSFMessageNone> Reconect_Start(MessageSystem::ID::RECONNECT_START, GTSMessageNone());
 	//_messagehandler.SendMessage(Reconect_Start);
-	//_messagehandler.SendMessageC(GSTMessage<MessageSystem::ID, GTSMessageNone>(MessageSystem::ID::RECONNECT_END, GTSMessageNone()));
+	//_messagehandler.SendMessageC(GSTMessage<MessageSystem::ID, GSFMessageNone>(MessageSystem::ID::RECONNECT_END, GTSMessageNone()));
 
 	//// 메시지 호출 2)
-	GSFMessageSingle::Instance->GetSystem().SendMessage(MessageSystem::ID::RECONNECT_END, GTSMessageNone());
+	GSFMessageSingle::Instance->GetSystem().SendMessage(MessageSystem::ID::RECONNECT_END, GSFMessageNone());
 }
 
 void GSFGameModeManager::Finalize()
@@ -69,14 +69,14 @@ void GSFGameModeManager::Finalize()
 
 
 
-void GSFGameModeManager::OnReconnectionStart(const GTSMessageNone& message)
+void GSFGameModeManager::OnReconnectionStart(const GSFMessageNone& message)
 {
 	GSLOG(Warning, TEXT("GSFGameModeManager : OnReconnectionStart"));
 
 	GetState()->OnReconnectionStart();
 }
 
-void GSFGameModeManager::OnReconnectionEnd(const GTSMessageNone& message)
+void GSFGameModeManager::OnReconnectionEnd(const GSFMessageNone& message)
 {
 	GSLOG(Warning, TEXT("GSFGameModeManager : OnReconnectionStart"));
 	GetState()->OnReconnectionEnd();

@@ -33,8 +33,8 @@ public:
 	virtual void Initialize() override;
 	virtual void Finalize() override;
 
-	void OnReconnectionStart(const GTSMessageNone& message);
-	void OnReconnectionEnd(const GTSMessageNone& message);
+	void OnReconnectionStart(const GSFMessageNone& message);
+	void OnReconnectionEnd(const GSFMessageNone& message);
 };
 
 typedef GSTSingleton<GSFGameModeManager> GSFGameModeSingle;

@@ -10666,12 +10666,6 @@ declare class GSGameInstance extends GameInstance {
 	static C(Other: UObject | any): GSGameInstance;
 }
 
-declare class GSGameModeLobby extends GameModeBase { 
-	static GetDefaultObject(): GSGameModeLobby;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GSGameModeLobby;
-	static C(Other: UObject | any): GSGameModeLobby;
-}
-
 declare type EMeshPaintColorViewMode = 'Normal' | 'RGB' | 'Alpha' | 'Red' | 'Green' | 'Blue' | 'EMeshPaintColorViewMode_MAX';
 declare var EMeshPaintColorViewMode : { Normal:'Normal',RGB:'RGB',Alpha:'Alpha',Red:'Red',Green:'Green',Blue:'Blue',EMeshPaintColorViewMode_MAX:'EMeshPaintColorViewMode_MAX', };
 declare class PaintBrushSettings extends UObject { 

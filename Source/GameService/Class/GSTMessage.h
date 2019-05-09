@@ -48,29 +48,29 @@ public:
 //------------------------------------------------------------------------------
 // 메세지 온리 처리를 위한 클래스
 //------------------------------------------------------------------------------
-class GTSMessageNone
+class GSFMessageNone
 {
 public:
-	GTSMessageNone()
+	GSFMessageNone()
 	{
-		GSLOG(Warning, TEXT("GTSMessageNone"));
+		GSLOG(Warning, TEXT("GSFMessageNone"));
 	};
-	GTSMessageNone(GTSMessageNone& other)
+	GSFMessageNone(GSFMessageNone& other)
 	{
-		GSLOG(Warning, TEXT("GTSMessageNone(GTSMessageNone& other)"));
+		GSLOG(Warning, TEXT("GSFMessageNone(GSFMessageNone& other)"));
 	}
-	GTSMessageNone(GTSMessageNone&& other)
+	GSFMessageNone(GSFMessageNone&& other)
 	{
-		GSLOG(Warning, TEXT("GTSMessageNone(GTSMessageNone&& other)"));
+		GSLOG(Warning, TEXT("GSFMessageNone(GSFMessageNone&& other)"));
 	}
-	GTSMessageNone& operator = (GTSMessageNone&& other)
+	GSFMessageNone& operator = (GSFMessageNone&& other)
 	{
-		GSLOG(Warning, TEXT("GTSMessageNone& operator = (GTSMessageNone&& other)"));
+		GSLOG(Warning, TEXT("GSFMessageNone& operator = (GSFMessageNone&& other)"));
 		return *this;
 	}
-	GTSMessageNone& operator = (GTSMessageNone& other)
+	GSFMessageNone& operator = (GSFMessageNone& other)
 	{
-		GSLOG(Warning, TEXT("GTSMessageNone& operator = (GTSMessageNone& other)"));
+		GSLOG(Warning, TEXT("GSFMessageNone& operator = (GSFMessageNone& other)"));
 		return *this;
 	}
 };

@@ -13,10 +13,10 @@
 
 class GSFMessageManager : GSTSingleton<GSFMessageManager>, public GSIManager
 {
-	typedef GSTMessageHandler<MessageSystem::ID, GTSMessageNone>	MSystem;
-	typedef GSTMessageHandler<MessageNet::ID, GTSMessageNone>		MNet;
-	typedef GSTMessageHandler<MessageLobby::Hive, GTSMessageNone>	MHive;
-	typedef GSTMessageHandler<MessageLobby::Stage, GTSMessageNone>	MStage;
+	typedef GSTMessageHandler<MessageSystem::ID, GSFMessageNone>	MSystem;
+	typedef GSTMessageHandler<MessageNet::ID, GSFMessageNone>		MNet;
+	typedef GSTMessageHandler<MessageLobby::Hive, GSFMessageNone>	MHive;
+	typedef GSTMessageHandler<MessageLobby::Stage, GSFMessageNone>	MStage;
 	
 	MSystem	_system;
 	MNet	_net;
