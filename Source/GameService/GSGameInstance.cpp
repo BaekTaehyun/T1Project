@@ -3,6 +3,7 @@
 #include "GSGameInstance.h"
 #include "GameService.h"
 
+
 //-------------------------------------------------------------------------------
 // 게임초기화 순서
 //-------------------------------------------------------------------------------
@@ -26,6 +27,7 @@ void UGSGameInstance::Init()
 
 	_manage.InsertInstance(new GSFMessageManager());
 	_manage.InsertInstance(new GSFGameModeManager());
+	_manage.InsertInstance(new GSFNetManager());
 
 	for(auto& mng : _manage.Get())
 	{

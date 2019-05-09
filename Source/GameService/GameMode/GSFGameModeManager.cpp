@@ -2,6 +2,7 @@
 #include "GSFGameModeLobby.h"
 #include "GSFGameModeGame.h"
 #include "../Message/GSFMessageManager.h"
+
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -66,8 +67,6 @@ void GSFGameModeManager::Finalize()
 	Super::RemoveAll();
 	GSTSingleton::RemoveInstance();
 }
-
-
 
 void GSFGameModeManager::OnReconnectionStart(const GSFMessageNone& message)
 {

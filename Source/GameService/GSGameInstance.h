@@ -4,11 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintPlatformLibrary.h"
+#include "Class/GSTContainer.h"
 #include "GameMode/GSFGameModeManager.h"
 #include "Message/GSFMessageManager.h"
-#include "Class/GSIManager.h"
+#include "Net/GSFNetManager.h"
+
 #include "GSGameInstance.generated.h"
 
+class GSIManager;
 
 //-------------------------------------------------------------------------------
 // 게임초기화 순서

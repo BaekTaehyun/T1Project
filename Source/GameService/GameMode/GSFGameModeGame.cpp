@@ -1,5 +1,6 @@
 #include "GSFGameModeGame.h"
 #include "GameService.h"
+#include "./Stage/StageGame/GSFStageManagerGame.h"
 
 GSFGameModeGame::GSFGameModeGame() : GSFGameModeBase(GSFGameMode::Mode::GAME)
 {

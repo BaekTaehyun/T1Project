@@ -27,6 +27,7 @@ public:
 	GSFMessageManager() {};
 	virtual ~GSFMessageManager();
 
+	//GSIManager
 	virtual void Initialize() override;
 	virtual void Finalize() override;
 

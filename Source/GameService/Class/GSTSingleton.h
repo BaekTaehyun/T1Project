@@ -7,6 +7,7 @@ class GSTSingleton
 public:
 	virtual ~GSTSingleton() {}
 	static T* Instance;
+protected:
 	static void InitInstance(T* inThis)
 	{
 		Instance = inThis;

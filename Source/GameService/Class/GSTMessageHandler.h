@@ -37,17 +37,6 @@ public:
 
 	//-------------------------------------------------------------------------
 	// 메세지 전송
-	virtual void SendMessage(GSTMessage<T1, T2>& inMessage)
-	{
-		auto delegateFunc = _delieveryAddr.FindRef(inMessage.GetId());
-		delegateFunc.Broadcast(inMessage.GetData());
-	}
-	virtual void SendMessageC(GSTMessage<T1, T2> inMessage)
-	{
-		auto delegateFunc = _delieveryAddr.FindRef(inMessage.GetId());
-		delegateFunc.Broadcast(inMessage.GetData());
-	}
-
 	virtual void SendMessage(T1& id, T2& inData)
 	{
 		auto delegateFunc = _delieveryAddr.FindRef(id);

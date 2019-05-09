@@ -1,6 +1,6 @@
 #include "GSFGameModeLobby.h"
 #include "GameService.h"
-	
+#include "./Stage/StageLobby/GSFStageManagerLobby.h"
 GSFGameModeLobby::GSFGameModeLobby() : GSFGameModeBase(GSFGameMode::Mode::LOBBY)
 {
 }

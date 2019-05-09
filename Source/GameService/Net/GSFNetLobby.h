@@ -1,7 +1,7 @@
 #pragma once
 #include "GSFNetBase.h"
 
-class GSFNetLobby : public GSFNetModeBase
+class GSFNetLobby : public GSFNetBase, SessionEventHandler
 {
 public:
 	GSFNetLobby() {};

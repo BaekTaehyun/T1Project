@@ -1,8 +1,8 @@
 #pragma once
 
 #include "GSFGameModeBase.h"
-#include "./Stage/StageLobby/GSFStageManagerLobby.h"
 
+class GSStageManagerLobby;
 //------------------------------------------------------------------------------
 // 게임모드를 관리할때 필요한 메모리 할당관리자(상속구조도 지원하기 위함)
 //------------------------------------------------------------------------------
