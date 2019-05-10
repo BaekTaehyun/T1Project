@@ -29,3 +29,6 @@ public:
 	virtual void Initialize() override;
 	virtual void Finalize() override;
 };
+
+typedef GSTSingleton<GSFNetManager>	GSFNetSingle;
+#define GNet()	GSFNetSingle::Instance

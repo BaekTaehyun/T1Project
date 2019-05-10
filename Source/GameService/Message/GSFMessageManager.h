@@ -38,3 +38,4 @@ public:
 };
 
 typedef GSTSingleton<GSFMessageManager>	GSFMessageSingle;
+#define GMessage() GSFMessageSingle::Instance

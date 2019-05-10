@@ -40,3 +40,4 @@ public:
 };
 
 typedef GSTSingleton<GSFGameModeManager> GSFGameModeSingle;
+#define GMode() GSFGameModeSingle::Instance
