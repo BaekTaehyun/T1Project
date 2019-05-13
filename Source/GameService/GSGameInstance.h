@@ -4,14 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintPlatformLibrary.h"
-#include "Class/GSTContainer.h"
-#include "GameMode/GSFGameModeManager.h"
-#include "Message/GSFMessageManager.h"
-#include "Net/GSFNetManager.h"
+#include "Class/GsContainer.h"
+#include "GameMode/GsGameModeManager.h"
+#include "Message/GsMessageManager.h"
+#include "Net/GsNetManager.h"
 
-#include "GSGameInstance.generated.h"
+#include "GsGameInstance.generated.h"
 
-class GSIManager;
+class IGsManager;
 
 //-------------------------------------------------------------------------------
 // 게임초기화 순서
@@ -23,13 +23,13 @@ class GSIManager;
 //-------------------------------------------------------------------------------
 
 UCLASS()
-class GAMESERVICE_API UGSGameInstance : public UGameInstance
+class GAMESERVICE_API UGsGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 	
-	GSTArray<GSIManager> _manage;	
+	TGsArray<IGsManager> _manage;
 public:
-	UGSGameInstance();
+	UGsGameInstance();
 	virtual void Init() override;
 	virtual void Shutdown() override;
 };

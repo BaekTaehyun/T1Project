@@ -1,0 +1,20 @@
+#pragma once
+
+// 동적생성 싱글톤을 쓰지 않는다.
+template<typename T>
+class TGsSingleton
+{
+public:
+	virtual ~TGsSingleton() {}
+	static T* Instance;
+protected:
+	static void InitInstance(T* inThis)
+	{
+		Instance = inThis;
+	}
+	static void RemoveInstance()
+	{
+		Instance = NULL;
+	}
+};
+
