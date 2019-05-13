@@ -75,7 +75,7 @@ public:
 			_AsyncMessage.Empty();
 		}
 
-		for (auto&message : copyQue)
+		for (auto & message : copyQue)
 		{
 			SendMessage(message.GetId(), message.GetData());
 		}

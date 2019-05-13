@@ -30,6 +30,7 @@ public:
 	//IGsManager
 	virtual void Initialize() override;
 	virtual void Finalize() override;
+	virtual void Update() override;
 
 	MSystem& GetSystem() { return _system; }
 	MNet& GetNet() { return _net; }
