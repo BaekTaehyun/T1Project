@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintPlatformLibrary.h"
 #include "Class/GsContainer.h"
-#include "GameMode/GsGameModeManager.h"
+#include "GameFlow/GsGameFlowManager.h"
 #include "Message/GsMessageManager.h"
 #include "Net/GsNetManager.h"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-class FGsGameMode
+class FGsGameFlow
 {
 public:
 	enum Mode

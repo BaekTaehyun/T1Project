@@ -26,7 +26,7 @@ void UGsGameInstance::Init()
 	Super::Init();
 
 	_manage.InsertInstance(new FGsMessageManager());
-	_manage.InsertInstance(new FGsGameModeManager());
+	_manage.InsertInstance(new FGsGameFlowManager());
 	_manage.InsertInstance(new FGsNetManager());
 
 	for(auto& mng : _manage.Get())

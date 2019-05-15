@@ -1,44 +1,44 @@
-#include "GsGameModeManager.h"
-#include "GsGameModeLobby.h"
-#include "GsGameModeGame.h"
+#include "GsGameFlowManager.h"
+#include "GsGameFlowLobby.h"
+#include "GsGameFlowGame.h"
 #include "../Message/GsMessageManager.h"
 
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-FGsGameModeBase* FGsGameModeAllocator::Alloc(FGsGameMode::Mode inMode)
+FGsGameFlowBase* FGsGameFlowAllocator::Alloc(FGsGameFlow::Mode inMode)
 {
-	if (inMode == FGsGameMode::Mode::LOBBY)
+	if (inMode == FGsGameFlow::Mode::LOBBY)
 	{
-		return new FGsGameModeLobby();
+		return new FGsGameFlowLobby();
 	}
-	else if (inMode == FGsGameMode::Mode::GAME)
+	else if (inMode == FGsGameFlow::Mode::GAME)
 	{
-		return new FGsGameModeGame();
+		return new FGsGameFlowGame();
 	}
 	return NULL;
 }
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-FGsGameModeManager* FGsGameModeSingle::Instance = NULL;
+FGsGameFlowManager* FGsGameFlowSingle::Instance = NULL;
 
-FGsGameModeManager::~FGsGameModeManager()
+FGsGameFlowManager::~FGsGameFlowManager()
 {
 	int a = 0;
 }
 
-void FGsGameModeManager::Initialize()
+void FGsGameFlowManager::Initialize()
 {
 	TGsSingleton::InitInstance(this);
 
-	constexpr std::initializer_list<FGsGameMode::Mode> allMode = { FGsGameMode::Mode::LOBBY, FGsGameMode::Mode::GAME };
+	constexpr std::initializer_list<FGsGameFlow::Mode> allMode = { FGsGameFlow::Mode::LOBBY, FGsGameFlow::Mode::GAME };
 	for (auto& e : allMode)
 	{
 		MakeInstance(e);
 	}
 
-	ChangeState(FGsGameMode::Mode::LOBBY);
+	ChangeState(FGsGameFlow::Mode::LOBBY);
 
 	Super::InitState();
 
@@ -50,7 +50,7 @@ void FGsGameModeManager::Initialize()
 
 	//// 메시지 등록 2)
 	GSCHECK(GSFMessageSingle::Instance);
-	GSFMessageSingle::Instance->GetSystem().AddRaw(MessageSystem::ID::RECONNECT_END, this, &FGsGameModeManager::OnReconnectionEnd);
+	GSFMessageSingle::Instance->GetSystem().AddRaw(MessageSystem::ID::RECONNECT_END, this, &FGsGameFlowManager::OnReconnectionEnd);
 	//_messagehandler.
 
 	//// 메시지 호출 1)
@@ -62,21 +62,21 @@ void FGsGameModeManager::Initialize()
 	GSFMessageSingle::Instance->GetSystem().SendMessage(MessageSystem::ID::RECONNECT_END);
 }
 
-void FGsGameModeManager::Finalize()
+void FGsGameFlowManager::Finalize()
 {
 	Super::RemoveAll();
 	TGsSingleton::RemoveInstance();
 }
 
-void FGsGameModeManager::OnReconnectionStart()
+void FGsGameFlowManager::OnReconnectionStart()
 {
-	GSLOG(Warning, TEXT("FGsGameModeManager : OnReconnectionStart"));
+	GSLOG(Warning, TEXT("FGsGameFlowManager : OnReconnectionStart"));
 
 	GetState()->OnReconnectionStart();
 }
 
-void FGsGameModeManager::OnReconnectionEnd()
+void FGsGameFlowManager::OnReconnectionEnd()
 {
-	GSLOG(Warning, TEXT("FGsGameModeManager : OnReconnectionStart"));
+	GSLOG(Warning, TEXT("FGsGameFlowManager : OnReconnectionStart"));
 	GetState()->OnReconnectionEnd();
 }

@@ -5,6 +5,7 @@
 
 //------------------------------------------------------------------------------
 // 이벤트를 전달하기위한 기본객체클래스
+// 가변인자를 지원하는듯 보이지만 델리게이트의 인자분기를 중첩구성할수 없음
 //------------------------------------------------------------------------------
 template<typename T1, typename... ParamTypes>
 class TGsMessageHandler
@@ -26,7 +27,7 @@ public:
 	TMap<T1, MessageType>& GetDeliveryAddress() { return _delieveryAddr; }
 
 	// 메시지 외부등록
-	// ex) _messagehandler.AddRaw(MessageSystem::ID::RECONNECT_END, this, &GSFGameModeManager::OnReconnectionEnd);
+	// ex) GSFMessageSingle::Instance->GetSystem().AddRaw(MessageSystem::ID::RECONNECT_END, this, &FGsGameModeManager::OnReconnectionEnd);
 	template <typename UserClass, typename... VarTypes>
 	FDelegateHandle AddRaw(T1 Message, UserClass* InUserObject,
 		typename TMemFunPtrType<false, UserClass, void(ParamTypes..., VarTypes...)>::Type InFunc, VarTypes... Vars)
