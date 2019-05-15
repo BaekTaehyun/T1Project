@@ -1,0 +1,83 @@
+﻿// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "GsMovementLocal.h"
+#include "GameObject/ActorExtend/GsLocalCharacter.h"
+#include "GameObject/ObjectClass/GsGameObjectLocal.h"
+#include "GameObject/State/GsFSMManager.h"
+#include "GameObject/State/GsStateLocal.h"
+
+void FGsMovementLocal::Initialize(UGsGameObjectBase* owner)
+{
+	Super::Initialize(owner);
+
+    Local = Cast<UGsGameObjectLocal>(owner);
+    if (Local)
+    {
+        CharMovement = Local->GetLocal()->GetCharacterMovement();
+    }
+}
+
+void FGsMovementLocal::DeInitialize()
+{
+	Super::DeInitialize();
+}
+
+void FGsMovementLocal::Update(float Delta)
+{
+	Super::Update(Delta);
+
+    if (false == IsStop())
+    {
+        //임시 이동 구현 코드들...
+        //내캐릭터 이동방향은 컨트롤러의 회전에 따라 동적 변경
+        Direction = FRotationMatrix(Local->GetLocal()->Controller->GetControlRotation()).GetScaledAxis(MoveDirType == EGsGameObjectMoveDirType::SideStep ? EAxis::Y : EAxis::X);
+        Local->GetLocal()->AddMovementInput(Direction, MoveSpeed);
+
+        if (MoveDirType == EGsGameObjectMoveDirType::Forward && CHECK_FLAG_TYPE(MoveType, EGsGameObjectMoveType::Walk))
+        {
+            //전방 뛰기시 임시 가속 처리
+            MoveSpeed += 3.f * Delta;
+
+            float walkSpeed = FVector::DotProduct(CharMovement->Velocity, Local->GetLocal()->GetActorRotation().Vector());
+            if (walkSpeed > CharMovement->MaxWalkSpeed)
+            {
+                SetMoveType(EGsGameObjectMoveType::Run);
+                Local->GetBaseFSM()->ChangeState<FGsStateRun>();
+            }
+        }
+    }
+}
+
+void FGsMovementLocal::OnStop()
+{
+	Super::OnStop();
+
+    SetMoveType(EGsGameObjectMoveType::None);
+    CharMovement->SetMovementMode(MOVE_None);
+
+    Local->GetBaseFSM()->ChangeState<FGsStateIdle>();
+}
+
+void FGsMovementLocal::OnMove()
+{
+	Super::OnMove();
+
+    SetMoveType(EGsGameObjectMoveType::Walk);
+    CharMovement->SetMovementMode(MOVE_Walking);
+
+    //상태 전환
+    FGsFSMManager* fsm = Local->GetBaseFSM();
+    switch (MoveDirType)
+    {
+    case EGsGameObjectMoveDirType::Forward:
+        fsm->ChangeState<FGsStateForwardWalk>();
+        break;
+    case EGsGameObjectMoveDirType::SideStep:
+        fsm->ChangeState<FGsStateSideWalk>();
+        break;
+    case EGsGameObjectMoveDirType::Backward:
+        fsm->ChangeState<FGsStateBackwardWalk>();
+        break;
+    }
+}
