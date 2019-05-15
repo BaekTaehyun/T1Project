@@ -59,7 +59,7 @@ void FGsGameModeManager::Initialize()
 	//_messagehandler.SendMessageC(GSTMessage<MessageSystem::ID, GSFMessageNone>(MessageSystem::ID::RECONNECT_END, GTSMessageNone()));
 
 	//// 메시지 호출 2)
-	GSFMessageSingle::Instance->GetSystem().SendMessage(MessageSystem::ID::RECONNECT_END, FGsMessageNone());
+	GSFMessageSingle::Instance->GetSystem().SendMessage(MessageSystem::ID::RECONNECT_END);
 }
 
 void FGsGameModeManager::Finalize()
@@ -68,14 +68,14 @@ void FGsGameModeManager::Finalize()
 	TGsSingleton::RemoveInstance();
 }
 
-void FGsGameModeManager::OnReconnectionStart(const FGsMessageNone& message)
+void FGsGameModeManager::OnReconnectionStart()
 {
 	GSLOG(Warning, TEXT("FGsGameModeManager : OnReconnectionStart"));
 
 	GetState()->OnReconnectionStart();
 }
 
-void FGsGameModeManager::OnReconnectionEnd(const FGsMessageNone& message)
+void FGsGameModeManager::OnReconnectionEnd()
 {
 	GSLOG(Warning, TEXT("FGsGameModeManager : OnReconnectionStart"));
 	GetState()->OnReconnectionEnd();

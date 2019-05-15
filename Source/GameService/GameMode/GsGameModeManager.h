@@ -35,8 +35,8 @@ public:
 	virtual void Initialize() override;
 	virtual void Finalize() override;
 
-	void OnReconnectionStart(const FGsMessageNone& message);
-	void OnReconnectionEnd(const FGsMessageNone& message);
+	void OnReconnectionStart();
+	void OnReconnectionEnd();
 };
 
 typedef TGsSingleton<FGsGameModeManager> FGsGameModeSingle;

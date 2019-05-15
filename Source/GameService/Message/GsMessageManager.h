@@ -13,10 +13,10 @@
 
 class FGsMessageManager : TGsSingleton<FGsMessageManager>, public IGsManager
 {
-	typedef TGsMessageHandler<MessageSystem::ID, FGsMessageNone>	MSystem;
-	typedef TGsMessageHandler<MessageNet::ID, FGsMessageNone>		MNet;
-	typedef TGsMessageHandler<MessageLobby::Hive, FGsMessageNone>	MHive;
-	typedef TGsMessageHandler<MessageLobby::Stage, FGsMessageNone>	MStage;
+	typedef TGsMessageHandler<MessageSystem::ID>	MSystem;
+	typedef TGsMessageHandler<MessageNet::ID>		MNet;
+	typedef TGsMessageHandler<MessageLobby::Hive>	MHive;
+	typedef TGsMessageHandler<MessageLobby::Stage>	MStage;
 	
 	MSystem	_system;
 	MNet	_net;
