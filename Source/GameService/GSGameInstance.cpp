@@ -2,7 +2,7 @@
 
 #include "GsGameInstance.h"
 #include "GameService.h"
-
+#include "Runtime/Engine/Classes/Engine/World.h"
 
 //-------------------------------------------------------------------------------
 // 게임초기화 순서
@@ -29,14 +29,20 @@ void UGsGameInstance::Init()
 	_manage.InsertInstance(new FGsGameFlowManager());
 	_manage.InsertInstance(new FGsNetManager());
 
+	
+
 	for(auto& mng : _manage.Get())
 	{
 		mng->Initialize();
 	}
+
+	GetTimerManager().SetTimer(_manageTickHandle, this, &UGsGameInstance::Update, 0.5f, true, 0.0f);
 }
 
 void UGsGameInstance::Shutdown()
 {
+	GetTimerManager().ClearTimer(_manageTickHandle);
+
 	for(auto& mng : _manage.Get())
 	{
 		if (mng.IsValid())
@@ -47,6 +53,11 @@ void UGsGameInstance::Shutdown()
 	_manage.Clear();
 
 	Super::Shutdown();
+}
+
+void UGsGameInstance::Update()
+{
+	GSLOG_S(Warning);
 }
 
 

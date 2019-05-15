@@ -28,8 +28,10 @@ class GAMESERVICE_API UGsGameInstance : public UGameInstance
 	GENERATED_BODY()
 	
 	TGsArray<IGsManager> _manage;
+	FTimerHandle		 _manageTickHandle;
 public:
 	UGsGameInstance();
 	virtual void Init() override;
 	virtual void Shutdown() override;
+	void Update();
 };
