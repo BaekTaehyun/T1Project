@@ -106,7 +106,9 @@ private:
 	// 피직스 충돌설정을 확인하기위한함수
 	void AttackCheck();
 
-	void TestMet();
+	void CreateUI();
+	void DisplayObj();
+	TSubclassOf<UUserWidget> m_UserWidget;
 
 	/*
 		언리얼에서 델리게이트는 C++객체에서만 사용하는 델리게이트와 C++, 블루프린트 객체가 모두 사용할수 있는 델리게이트로 나눈다.
