@@ -18,6 +18,8 @@
 #include "T1PlayerStatComponent.h"
 #include "T1PlayerWidget.h"
 #include "T1AIController.h"
+#include "UserWidget.h"
+#include "MyUserWidget.h"
 
 
 // Sets default values
@@ -121,13 +123,15 @@ AT1Player::AT1Player()
 	AIControllerClass = AT1AIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
+	
+	TestMet();
 }
 
 // Called when the game starts or when spawned
 void AT1Player::BeginPlay()
 {
 	Super::BeginPlay();	
-
+	
 	//bak1210 소켓에 기본클래스 할당하는 코드
 	/*FName WeaponSocket(TEXT("hand_rSocket"));
 	auto CurWeapon = GetWorld()->SpawnActor<AT1AWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
@@ -136,6 +140,42 @@ void AT1Player::BeginPlay()
 		CurWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, WeaponSocket);
 	}*/
 }
+
+void AT1Player::TestMet()
+{
+	//TSharedPtr<int> _sharedPtr;
+	//UBlueprintGeneratedClass* _loadBP = LoadObject<UBlueprintGeneratedClass>(NULL, TEXT("/Game/Blueprint/Test_BluePrint.Test_BluePrint_C"));
+
+		// Test Code
+	static ConstructorHelpers::FClassFinder<UUserWidget> _myUserWidget(TEXT("/Game/Blueprint/Test_BluePrint.Test_BluePrint_C"));
+	if (_myUserWidget.Succeeded())
+	{
+		UE_LOG(LogTemp, Log, TEXT("_myUserWidget.Succeeded()  true"));
+		if (nullptr == GetWorld())
+		{
+			UE_LOG(LogTemp, Log, TEXT("GetWorld() is null"));
+		}
+		if (nullptr != GetWorld())
+		{
+			UUserWidget* _createWidget = CreateWidget(GetWorld()->GetFirstPlayerController(), _myUserWidget.Class);
+			UMyUserWidget* _cast = Cast<UMyUserWidget>(_createWidget);
+			if (nullptr != _cast)
+			{
+				_cast->TestUI();
+				UE_LOG(LogTemp, Log, TEXT("In _cast !!"));
+			}
+			else
+			{
+				UE_LOG(LogTemp, Log, TEXT("_cast is null"));
+			}
+		}
+
+		//_cast->TestUI();
+	}
+
+	
+}
+
 
 bool AT1Player::CanSetWeapon()
 {
