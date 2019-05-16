@@ -14,19 +14,19 @@ class GAMESERVICE_API AGsWorldGameMode : public AGsGameMode
 {
 	GENERATED_BODY()
 
-private:
-	bool _bCheckWorldComponentLoad;
+private:	
+	UPROPERTY()
+		FTimerHandle _loadCompleteTimer;
 	
 public:
-	AGsWorldGameMode();
-	virtual void Tick(float in_delta) override;
+	AGsWorldGameMode();	
 	virtual void StartToLeaveMap();
 	
 	virtual void TeleportPlayer(FString in_tag);
 
 private:	
 	bool IsWorldCompositionLoadComplete();
-	void WorldCompositionTick();
+	void OnCheckLevelsLoadComplete();
 	void SetPlayerUnspawnedState();
 	void SetPlayerSpawendState();
 };

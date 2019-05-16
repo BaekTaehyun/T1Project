@@ -11,11 +11,16 @@ void UGsCheatManager::TeleportPlayer(FString in_tag)
 
 	if (world)
 	{		
-		AGsGameMode* mode = world->GetAuthGameMode();
+		AGameModeBase* mode = world->GetAuthGameMode();
 
 		if (mode)
-		{			
-			mode->TeleportPlayer(in_tag);
-		}
+		{
+			AGsGameMode* gameMode = Cast<AGsGameMode>(mode);
+			
+			if (gameMode)
+			{
+				gameMode->TeleportPlayer(in_tag);
+			}
+		}		
 	}	
 }

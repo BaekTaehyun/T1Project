@@ -7,33 +7,61 @@
 #include "Runtime/Engine/Classes/Engine/WorldComposition.h"
 #include "Runtime/Engine/Classes/GameFramework/Character.h"
 #include "Runtime/Engine/Classes/Engine/LevelStreaming.h"
+#include "Runtime/Engine/Classes/Engine/LevelScriptActor.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "Runtime/Engine/Public/TimerManager.h"
+#include "GameService/Level/TargetPoint/PlayerSpawnPoint.h"
+#include "GameService/Level/LevelScriptActor/GsLevelScriptActor.h"
 #include "GameService/Character/GsPlayer.h"
 
 AGsWorldGameMode::AGsWorldGameMode()
 {
-	PrimaryActorTick.bCanEverTick = true;
-}
-
-void AGsWorldGameMode::Tick(float in_delta)
-{
-	Super::Tick(in_delta);
-
-	if (_bCheckWorldComponentLoad)
-	{
-		WorldCompositionTick();
-	}
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 void AGsWorldGameMode::StartToLeaveMap()
 {
-	_bCheckWorldComponentLoad = false;
+	UWorld* world = GetWorld();
+
+	if (world)
+	{
+		world->GetTimerManager().ClearTimer(_loadCompleteTimer);
+	}
 }
 
 void AGsWorldGameMode::TeleportPlayer(FString in_tag)
 {
-	_bCheckWorldComponentLoad = true;
+	UWorld* world = GetWorld();
 
-	SetPlayerUnspawnedState();
+	if (world)
+	{
+		ACharacter* character = UGameplayStatics::GetPlayerCharacter(world, 0);
+
+		if (character)
+		{
+			ALevelScriptActor* level =	world->GetLevelScriptActor();
+
+			if (level)
+			{
+				AGsLevelScriptActor* baseLevel = Cast<AGsLevelScriptActor>(level);
+
+				if (baseLevel)
+				{
+					APlayerSpawnPoint* point = nullptr;
+
+					if (baseLevel->TryGetPlayerSpawnPoint(in_tag, point))
+					{						
+						SetPlayerUnspawnedState();
+						character->SetActorLocation(point->GetActorLocation());																		
+						world->UpdateLevelStreaming();						
+						
+						world->GetTimerManager().ClearTimer(_loadCompleteTimer);
+						world->GetTimerManager().SetTimer(_loadCompleteTimer, this, &AGsWorldGameMode::OnCheckLevelsLoadComplete, 0.1f, true, 0);
+					}											
+				}
+			}		
+		}		
+	}
 }
 
 bool AGsWorldGameMode::IsWorldCompositionLoadComplete()
@@ -71,13 +99,18 @@ bool AGsWorldGameMode::IsWorldCompositionLoadComplete()
 	return false;
 }
 
-void AGsWorldGameMode::WorldCompositionTick()
+void AGsWorldGameMode::OnCheckLevelsLoadComplete()
 {
 	if (IsWorldCompositionLoadComplete())
 	{
 		SetPlayerSpawendState();
 
-		_bCheckWorldComponentLoad = false;
+		UWorld* world = GetWorld();
+
+		if (world)
+		{
+			world->GetTimerManager().ClearTimer(_loadCompleteTimer);
+		}		
 	}
 }
 
