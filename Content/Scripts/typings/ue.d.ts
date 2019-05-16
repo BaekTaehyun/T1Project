@@ -10649,21 +10649,27 @@ declare class T1WorldSetting extends WorldSettings {
 
 declare type EGS_LOBBY_Enum = 'GS_LOBBY_START_INTRO' | 'GS_LOBBY_END_INTRO' | 'GS_LOBBY_MAX';
 declare var EGS_LOBBY_Enum : { GS_LOBBY_START_INTRO:'GS_LOBBY_START_INTRO',GS_LOBBY_END_INTRO:'GS_LOBBY_END_INTRO',GS_LOBBY_MAX:'GS_LOBBY_MAX', };
-declare class GSBlueprintFunctionLibraryLobby extends BlueprintFunctionLibrary { 
-	static Load(ResourceName: string): GSBlueprintFunctionLibraryLobby;
-	static Find(Outer: UObject, ResourceName: string): GSBlueprintFunctionLibraryLobby;
-	static GetDefaultObject(): GSBlueprintFunctionLibraryLobby;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GSBlueprintFunctionLibraryLobby;
+declare class GsBlueprintFunctionLibraryLobby extends BlueprintFunctionLibrary { 
+	static Load(ResourceName: string): GsBlueprintFunctionLibraryLobby;
+	static Find(Outer: UObject, ResourceName: string): GsBlueprintFunctionLibraryLobby;
+	static GetDefaultObject(): GsBlueprintFunctionLibraryLobby;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsBlueprintFunctionLibraryLobby;
 	static SendEventGSLobby(inMessage: EGS_LOBBY_Enum): void;
-	static C(Other: UObject | any): GSBlueprintFunctionLibraryLobby;
+	static C(Other: UObject | any): GsBlueprintFunctionLibraryLobby;
 }
 
-declare class GSGameInstance extends GameInstance { 
-	static Load(ResourceName: string): GSGameInstance;
-	static Find(Outer: UObject, ResourceName: string): GSGameInstance;
-	static GetDefaultObject(): GSGameInstance;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GSGameInstance;
-	static C(Other: UObject | any): GSGameInstance;
+declare class GsGameInstance extends GameInstance { 
+	static Load(ResourceName: string): GsGameInstance;
+	static Find(Outer: UObject, ResourceName: string): GsGameInstance;
+	static GetDefaultObject(): GsGameInstance;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameInstance;
+	static C(Other: UObject | any): GsGameInstance;
+}
+
+declare class GsGameModeBase extends GameModeBase { 
+	static GetDefaultObject(): GsGameModeBase;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameModeBase;
+	static C(Other: UObject | any): GsGameModeBase;
 }
 
 declare type EMeshPaintColorViewMode = 'Normal' | 'RGB' | 'Alpha' | 'Red' | 'Green' | 'Blue' | 'EMeshPaintColorViewMode_MAX';

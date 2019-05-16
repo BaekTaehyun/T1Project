@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "GSBluePrintEnumLobby.h"
-#include "GSBlueprintFunctionLibraryLobby.generated.h"
+#include "GsBluePrintEnumLobby.h"
+#include "GsBlueprintFunctionLibraryLobby.generated.h"
 
 
 /**
@@ -13,7 +13,7 @@
    UI 내부로직 처리용이 아닌 이벤트(처리용)
  */
 UCLASS()
-class GAMESERVICE_API UGSBlueprintFunctionLibraryLobby : public UBlueprintFunctionLibrary
+class GAMESERVICE_API UGsBlueprintFunctionLibraryLobby : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 	

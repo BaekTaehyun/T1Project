@@ -11,7 +11,7 @@ public class GameService : ModuleRules
         //모듈의 *.build.cs 파일을 열어 PCHUsage 를 PCHUsageMode.UseExplicitOrSharedPCHs 로 설정하면 됩니다.
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "FileDownloader", "Sockets" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "FileDownloader", "Sockets", "AIModule", "GameplayTasks" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "OpenSSL" });
 

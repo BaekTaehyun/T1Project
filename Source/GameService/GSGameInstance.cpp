@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GSGameInstance.h"
+#include "GsGameInstance.h"
 #include "GameService.h"
-
+#include "Runtime/Engine/Classes/Engine/World.h"
 
 //-------------------------------------------------------------------------------
 // 게임초기화 순서
@@ -14,29 +14,35 @@
 //-------------------------------------------------------------------------------
 
 // 플러그인 초기화, 플레이모드 실행시 호출됨 ------- 중복처리 주의
-UGSGameInstance::UGSGameInstance()
+UGsGameInstance::UGsGameInstance()
 {
 	GSLOG_S(Warning);
 }
 
 // 플레이모드(즉 실제게임)에서만 호출
-void UGSGameInstance::Init()
+void UGsGameInstance::Init()
 {
 	GSLOG_S(Warning);
 	Super::Init();
 
-	_manage.InsertInstance(new GSFMessageManager());
-	_manage.InsertInstance(new GSFGameModeManager());
-	_manage.InsertInstance(new GSFNetManager());
+	_manage.InsertInstance(new FGsMessageManager());
+	_manage.InsertInstance(new FGsGameFlowManager());
+	_manage.InsertInstance(new FGsNetManager());
+
+	
 
 	for(auto& mng : _manage.Get())
 	{
 		mng->Initialize();
 	}
+
+	GetTimerManager().SetTimer(_manageTickHandle, this, &UGsGameInstance::Update, 0.5f, true, 0.0f);
 }
 
-void UGSGameInstance::Shutdown()
+void UGsGameInstance::Shutdown()
 {
+	GetTimerManager().ClearTimer(_manageTickHandle);
+
 	for(auto& mng : _manage.Get())
 	{
 		if (mng.IsValid())
@@ -47,6 +53,11 @@ void UGSGameInstance::Shutdown()
 	_manage.Clear();
 
 	Super::Shutdown();
+}
+
+void UGsGameInstance::Update()
+{
+	GSLOG_S(Warning);
 }
 
 
