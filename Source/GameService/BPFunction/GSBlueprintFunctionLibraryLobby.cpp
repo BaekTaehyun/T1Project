@@ -1,14 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GSBlueprintFunctionLibraryLobby.h"
+#include "GsBlueprintFunctionLibraryLobby.h"
 #include "GameService.h"
-#include "Util/Text.h"
+#include "Util/GsText.h"
 
 
-void UGSBlueprintFunctionLibraryLobby::SendEventGSLobby(EGS_LOBBY_Enum inMessage)
+void UGsBlueprintFunctionLibraryLobby::SendEventGSLobby(EGS_LOBBY_Enum inMessage)
 {
 	GSLOG(Warning, *EnumToString(EGS_LOBBY_Enum, inMessage));
-
-	
 }

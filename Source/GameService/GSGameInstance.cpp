@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GSGameInstance.h"
+#include "GsGameInstance.h"
 #include "GameService.h"
+#include "Runtime/Engine/Classes/Engine/World.h"
 
 //-------------------------------------------------------------------------------
 // 게임초기화 순서
@@ -13,30 +14,50 @@
 //-------------------------------------------------------------------------------
 
 // 플러그인 초기화, 플레이모드 실행시 호출됨 ------- 중복처리 주의
-UGSGameInstance::UGSGameInstance()
+UGsGameInstance::UGsGameInstance()
 {
 	GSLOG_S(Warning);
 }
 
 // 플레이모드(즉 실제게임)에서만 호출
-void UGSGameInstance::Init()
+void UGsGameInstance::Init()
 {
 	GSLOG_S(Warning);
 	Super::Init();
 
-	_gameMode = TUniquePtr<GSFGameModeManager>(new GSFGameModeManager());
-	_gameMode.Get()->InitState();
+	_manage.InsertInstance(new FGsMessageManager());
+	_manage.InsertInstance(new FGsGameFlowManager());
+	_manage.InsertInstance(new FGsNetManager());
+
+	
+
+	for(auto& mng : _manage.Get())
+	{
+		mng->Initialize();
+	}
+
+	GetTimerManager().SetTimer(_manageTickHandle, this, &UGsGameInstance::Update, 0.5f, true, 0.0f);
 }
 
-void UGSGameInstance::Shutdown()
+void UGsGameInstance::Shutdown()
 {
-	Super::Shutdown();
-	if (_gameMode.IsValid())
+	GetTimerManager().ClearTimer(_manageTickHandle);
+
+	for(auto& mng : _manage.Get())
 	{
-		_gameMode->RemoveAll();
-		_gameMode = NULL;
+		if (mng.IsValid())
+		{
+			mng->Finalize();
+		}
 	}
-	
+	_manage.Clear();
+
+	Super::Shutdown();
+}
+
+void UGsGameInstance::Update()
+{
+	GSLOG_S(Warning);
 }
 
 
