@@ -5,6 +5,7 @@
 #include "T1Project.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameService/Character/GsPlayer.h"
 
 //#include "DataActorComponent.h"
 
@@ -16,7 +17,7 @@ class UT1AnimInstance;
 
 
 UCLASS()
-class T1PROJECT_API AT1Player : public ACharacter
+class T1PROJECT_API AT1Player : public AGsPlayer
 {
 	GENERATED_BODY()
 
