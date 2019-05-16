@@ -21,6 +21,9 @@ class GAMESERVICE_API AGsGameObjectManager :
 	GENERATED_BODY()
 	
 public:
+
+	virtual ~AGsGameObjectManager();
+
 	virtual void Initialize() override;
 	virtual void Finalize() override;
 	virtual void Update() override;
@@ -38,7 +41,7 @@ public:
 
 	void DespawnObject(UGsGameObjectBase* Despawn);
     //
-protected:
+protected:	
 	void UpdateAddGameObject();
 	void UpdateRemoveGameObject();
 

@@ -8,6 +8,7 @@
 #include "GameFlow/GsGameFlowManager.h"
 #include "Message/GsMessageManager.h"
 #include "Net/GsNetManager.h"
+#include "Gameobject/GsGameObjectManager.h"
 
 #include "GsGameInstance.generated.h"
 
@@ -34,4 +35,7 @@ public:
 	virtual void Init() override;
 	virtual void Shutdown() override;
 	void Update();
+
+	UPROPERTY(Transient, VisibleInstanceOnly, Meta = (AllowPrivateAccess = true))
+	AGsGameObjectManager* spawner;
 };

@@ -16,9 +16,9 @@ void UGsGameObjectPlayer::Initialize()
 	SET_FLAG_TYPE(ObjectType, UGsGameObjectPlayer::GetObjectType());
 }
 
-void UGsGameObjectPlayer::DeInitialize()
+void UGsGameObjectPlayer::Finalize()
 {
-	Super::DeInitialize();
+	Super::Finalize();
 
 	if (UpperFsm)	{ delete UpperFsm; }
 	if (Skill)		{ delete Skill; }

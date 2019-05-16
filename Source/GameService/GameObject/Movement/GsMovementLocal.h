@@ -12,10 +12,12 @@
  */
 class GAMESERVICE_API FGsMovementLocal : public FGsMovementBase
 {
+	typedef FGsMovementBase Super;
+
 public:
-    virtual void Initialize(UGsGameObjectBase* Owner);
-    virtual void DeInitialize();
-    virtual void Update(float Delta);
+    virtual void Initialize(UGsGameObjectBase* Owner) override;
+	virtual void Finalize() override;
+    virtual void Update(float Delta) override;
 
 public:
     inline UCharacterMovementComponent* GetCharMovement() const { return CharMovement; }

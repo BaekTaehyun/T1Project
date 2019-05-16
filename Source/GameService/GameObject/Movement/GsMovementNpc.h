@@ -11,10 +11,12 @@
  */
 class GAMESERVICE_API FGsMovementNpc : public FGsMovementBase
 {
+	typedef FGsMovementBase Super;
+
 public:
-    virtual void Initialize(class UGsGameObjectBase* Owner);
-    virtual void DeInitialize();
-    virtual void Update(float Delta);
+    virtual void Initialize(class UGsGameObjectBase* Owner) override;
+	virtual void Finalize() override;
+    virtual void Update(float Delta) override;
 
 protected:
     void UpdateState(EPathFollowingStatus::Type Type);

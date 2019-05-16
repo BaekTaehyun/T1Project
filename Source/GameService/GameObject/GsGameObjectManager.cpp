@@ -4,10 +4,19 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/PrimitiveComponent.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "GameService.h"
+
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 #include "GameObject/ObjectClass/GsGameObjectNonPlayer.h"
 #include "GameObject/ObjectClass/GsGameObjectProjectile.h"
 #include "../Class/GsSpawn.h"
+
+
+AGsGameObjectManager::~AGsGameObjectManager()
+{
+	GSLOG(Warning, TEXT("~AGsGameObjectManager()"));
+}
+
 
 void AGsGameObjectManager::Initialize()
 {
@@ -23,13 +32,14 @@ void AGsGameObjectManager::Initialize()
 	{
 		TypeSpawns.Emplace(el);
 	}
+	
 }
 
 void AGsGameObjectManager::Finalize()
 {
 	for (auto el : Spawns)
 	{
-		el->DeInitialize();
+		el->Finalize();
 	}
 
 	TypeSpawns.Empty();
@@ -45,9 +55,10 @@ void AGsGameObjectManager::Update()
 	//대상 추가
 	UpdateAddGameObject();
 
+	//스폰 오브젝트 업데이트
 	for (auto el : Spawns)
 	{
-		el->Update(FApp::GetDeltaTime());
+		el->Update(1.0);
 	}
 }
 
@@ -173,7 +184,6 @@ void AGsGameObjectManager::DespawnObject(UGsGameObjectBase* Despawn)
 		RemoveSpawns.Emplace(Despawn);
 	}
 }
-
 
 void AGsGameObjectManager::UpdateAddGameObject()
 {

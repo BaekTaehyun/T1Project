@@ -7,10 +7,10 @@ namespace TGsSpawn
 	// ActorClass::StaticClass()를 이용한 스폰
 	// 타입이 고정적일때 사용
 	template<typename ActorClass>
-	ActorClass* StaticClass(UWorld* World, const FVector& SpawnLocation, const FRotator& SpawnRotation)
+	static FORCEINLINE ActorClass* StaticClass(UWorld* World, const FVector& SpawnLocation, const FRotator& SpawnRotation)
 	{
 		if (NULL == World) return NULL;
-		return World->SpawnActor<ActorClass>(ActorClass::::StaticClass(), Pos, Rot);
+		return World->SpawnActor<ActorClass>(ActorClass::StaticClass(), Pos, Rot);
 	}
 	/*
 	static ConstructorHelpers::FClassFinder<UAnimInstance> WARR_ANIM(	TEXT("/Game/InfinityBladeWarriors/Character/WarriorAnimBP.WarriorAnimBP_C"));
@@ -21,7 +21,7 @@ namespace TGsSpawn
 	}
 	데이터 드리븐 형식 배치.
 	*/
-	AActor* BPClass(UWorld* World, UClass* Class, const FVector& SpawnLocation, const FRotator& SpawnRotation)
+	static FORCEINLINE AActor* BPClass(UWorld* World, UClass* Class, const FVector& SpawnLocation, const FRotator& SpawnRotation)
 	{
 		if (NULL == World) return NULL;
 		if (NULL == Class) return NULL;
@@ -31,7 +31,7 @@ namespace TGsSpawn
 
 	// 기존객체를 복사생성 배치 할때 사용한다.
 	template<typename ActorClass>
-	ActorClass* Clone(ActorClass* ExistingActor, const FVector& SpawnLocation, const FRotator& SpawnRotation)
+	static FORCEINLINE ActorClass* Clone(ActorClass* ExistingActor, const FVector& SpawnLocation, const FRotator& SpawnRotation)
 	{
 		UWorld* World = ExistingActor->GetWorld();
 		if (NULL == World) return NULL;

@@ -19,7 +19,7 @@ public:
 	virtual ~UGsGameObjectBase();
 
 	virtual void Initialize();
-	virtual void DeInitialize();
+	virtual void Finalize();
     virtual void Update(float Delta);
 
 	__declspec(deprecated("** Using UGsGameObjectManager **"))

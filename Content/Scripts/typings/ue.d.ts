@@ -10595,123 +10595,6 @@ declare class SQLoadScreenHUD extends HUD {
 	static C(Other: UObject | any): SQLoadScreenHUD;
 }
 
-declare class MyUI extends UObject { 
-	SpeakerName: string;
-	SessionStart: DateTime;
-	SessionDuration: number;
-	static Load(ResourceName: string): MyUI;
-	static Find(Outer: UObject, ResourceName: string): MyUI;
-	static GetDefaultObject(): MyUI;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MyUI;
-	static C(Other: UObject | any): MyUI;
-}
-
-declare class T1AIController extends AIController { 
-	static GetDefaultObject(): T1AIController;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1AIController;
-	static C(Other: UObject | any): T1AIController;
-}
-
-declare class T1AWeapon extends Actor { 
-	WEAPON: SkeletalMeshComponent;
-	static GetDefaultObject(): T1AWeapon;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1AWeapon;
-	static C(Other: UObject | any): T1AWeapon;
-}
-
-declare class T1AItemBox extends Actor { 
-	Trigger: BoxComponent;
-	Box: StaticMeshComponent;
-	EFFECT: ParticleSystemComponent;
-	WeaponItemClass: UnrealEngineClass;
-	static GetDefaultObject(): T1AItemBox;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1AItemBox;
-	OnEffectFinish(PSystem: ParticleSystemComponent): void;
-	OnCharacterOverlap(OverlappedComponent: PrimitiveComponent,OtherActor: Actor,OtherComp: PrimitiveComponent,OtherBodyIndex: number,bFromSweep: boolean,SweepResult: HitResult): void;
-	static C(Other: UObject | any): T1AItemBox;
-}
-
-declare class T1AnimInstance extends AnimInstance { 
-	CurrentPawnSpeed: number;
-	IsAir: boolean;
-	AttackMontage: AnimMontage;
-	IsDead: boolean;
-	static Load(ResourceName: string): T1AnimInstance;
-	static Find(Outer: UObject, ResourceName: string): T1AnimInstance;
-	static GetDefaultObject(): T1AnimInstance;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1AnimInstance;
-	AnimNotify_NextAttackCheck(): void;
-	AnimNotify_AttackHitCheck(): void;
-	static C(Other: UObject | any): T1AnimInstance;
-}
-
-declare class T1GameInstance extends GameInstance { 
-	T1PlayerTable: DataTable;
-	static Load(ResourceName: string): T1GameInstance;
-	static Find(Outer: UObject, ResourceName: string): T1GameInstance;
-	static GetDefaultObject(): T1GameInstance;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1GameInstance;
-	static C(Other: UObject | any): T1GameInstance;
-}
-
-declare class T1GameModeBase extends GameModeBase { 
-	static GetDefaultObject(): T1GameModeBase;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1GameModeBase;
-	static C(Other: UObject | any): T1GameModeBase;
-}
-
-declare class T1PlayerStatComponent extends ActorComponent { 
-	Level: number;
-	CurrentHP: number;
-	static Load(ResourceName: string): T1PlayerStatComponent;
-	static Find(Outer: UObject, ResourceName: string): T1PlayerStatComponent;
-	static GetDefaultObject(): T1PlayerStatComponent;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1PlayerStatComponent;
-	static C(Other: UObject | any): T1PlayerStatComponent;
-}
-
-declare class T1Player extends Character { 
-	CurrentWeapon: T1AWeapon;
-	PLAYERSTAT: T1PlayerStatComponent;
-	WEAPON: SkeletalMeshComponent;
-	SPRINGARM: SpringArmComponent;
-	Camera: CameraComponent;
-	HPBARWIDGET: WidgetComponent;
-	AttackRange: number;
-	AttackRadius: number;
-	IsAttacking: boolean;
-	CanNextCombo: boolean;
-	IsComboInputOn: boolean;
-	CurrentComboIndex: number;
-	MaxComboCount: number;
-	T1Anim: T1AnimInstance;
-	static GetDefaultObject(): T1Player;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1Player;
-	OnAttackMontageEnded(Montage: AnimMontage,bInterrupted: boolean): void;
-	static C(Other: UObject | any): T1Player;
-}
-
-declare class T1PlayerController extends PlayerController { 
-	static GetDefaultObject(): T1PlayerController;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1PlayerController;
-	static C(Other: UObject | any): T1PlayerController;
-}
-
-declare class T1PlayerWidget extends UserWidget { 
-	HPProgressBar: ProgressBar;
-	static Load(ResourceName: string): T1PlayerWidget;
-	static Find(Outer: UObject, ResourceName: string): T1PlayerWidget;
-	static GetDefaultObject(): T1PlayerWidget;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1PlayerWidget;
-	static C(Other: UObject | any): T1PlayerWidget;
-}
-
-declare class T1WorldSetting extends WorldSettings { 
-	static GetDefaultObject(): T1WorldSetting;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1WorldSetting;
-	static C(Other: UObject | any): T1WorldSetting;
-}
-
 declare type EGsStateUpperBase = 'None' | 'Idle' | 'Attack' | 'UpperBaseMax' | 'EGsStateUpperBase_MAX';
 declare var EGsStateUpperBase : { None:'None',Idle:'Idle',Attack:'Attack',UpperBaseMax:'UpperBaseMax',EGsStateUpperBase_MAX:'EGsStateUpperBase_MAX', };
 declare type EGsStateBase = 'None' | 'Spawn' | 'Idle' | 'ForwardWalk' | 'BackwardWalk' | 'SideWalk' | 'Run' | 'Beaten' | 'Die' | 'BaseMax' | 'EGsStateBase_MAX';
@@ -10770,12 +10653,37 @@ declare class GsBTFunctionLibraryExtend extends BTFunctionLibrary {
 	static C(Other: UObject | any): GsBTFunctionLibraryExtend;
 }
 
+declare class GsCheatManager extends CheatManager { 
+	static Load(ResourceName: string): GsCheatManager;
+	static Find(Outer: UObject, ResourceName: string): GsCheatManager;
+	static GetDefaultObject(): GsCheatManager;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsCheatManager;
+	TeleportPlayer(in_tag: string): void;
+	static C(Other: UObject | any): GsCheatManager;
+}
+
+declare class GsGameObjectManager extends Actor { 
+	Spawns: GsGameObjectBase[];
+	static GetDefaultObject(): GsGameObjectManager;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectManager;
+	CallbackCompHit(HitComponent: PrimitiveComponent,OtherActor: Actor,OtherComp: PrimitiveComponent,NormalImpulse: Vector,Hit: HitResult): void;
+	CallbackActorDeSpawn(Despawn: Actor): void;
+	static C(Other: UObject | any): GsGameObjectManager;
+}
+
 declare class GsGameInstance extends GameInstance { 
+	spawner: GsGameObjectManager;
 	static Load(ResourceName: string): GsGameInstance;
 	static Find(Outer: UObject, ResourceName: string): GsGameInstance;
 	static GetDefaultObject(): GsGameInstance;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameInstance;
 	static C(Other: UObject | any): GsGameInstance;
+}
+
+declare class GsGameMode extends GameModeBase { 
+	static GetDefaultObject(): GsGameMode;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameMode;
+	static C(Other: UObject | any): GsGameMode;
 }
 
 declare class GsGameModeBase extends GameModeBase { 
@@ -10881,21 +10789,17 @@ declare class GsGameObjectProjectile extends GsGameObjectBase {
 	static C(Other: UObject | any): GsGameObjectProjectile;
 }
 
+declare class GsLevelScriptActor extends LevelScriptActor { 
+	_PlayerSpawnMap: any;
+	static GetDefaultObject(): GsLevelScriptActor;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsLevelScriptActor;
+	static C(Other: UObject | any): GsLevelScriptActor;
+}
+
 declare class GsNpcCharacter extends Character { 
 	static GetDefaultObject(): GsNpcCharacter;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsNpcCharacter;
 	static C(Other: UObject | any): GsNpcCharacter;
-}
-
-declare class GsObjectSpawner extends UObject { 
-	Spawns: GsGameObjectBase[];
-	static Load(ResourceName: string): GsObjectSpawner;
-	static Find(Outer: UObject, ResourceName: string): GsObjectSpawner;
-	static GetDefaultObject(): GsObjectSpawner;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsObjectSpawner;
-	CallbackCompHit(HitComponent: PrimitiveComponent,OtherActor: Actor,OtherComp: PrimitiveComponent,NormalImpulse: Vector,Hit: HitResult): void;
-	CallbackActorDeSpawn(Despawn: Actor): void;
-	static C(Other: UObject | any): GsObjectSpawner;
 }
 
 declare class SkelMeshMergeSectionMapping_BP { 
@@ -10947,6 +10851,12 @@ declare class GsPartsDataContainerBase extends DataAsset {
 	static C(Other: UObject | any): GsPartsDataContainerBase;
 }
 
+declare class GsPlayer extends Character { 
+	static GetDefaultObject(): GsPlayer;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsPlayer;
+	static C(Other: UObject | any): GsPlayer;
+}
+
 declare class GsSkillActionDataBase { 
 	Type: number;
 	Rate: number;
@@ -10972,6 +10882,152 @@ declare class GsSkillDataContainerBase extends DataAsset {
 	static GetDefaultObject(): GsSkillDataContainerBase;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsSkillDataContainerBase;
 	static C(Other: UObject | any): GsSkillDataContainerBase;
+}
+
+declare class GsTargetPoint extends TargetPoint { 
+	static GetDefaultObject(): GsTargetPoint;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsTargetPoint;
+	static C(Other: UObject | any): GsTargetPoint;
+}
+
+declare class GsWorldGameMode extends GsGameMode { 
+	_loadCompleteTimer: TimerHandle;
+	static GetDefaultObject(): GsWorldGameMode;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsWorldGameMode;
+	static C(Other: UObject | any): GsWorldGameMode;
+}
+
+declare class PlayerSpawnPoint extends GsTargetPoint { 
+	_Tag: string;
+	static GetDefaultObject(): PlayerSpawnPoint;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): PlayerSpawnPoint;
+	static C(Other: UObject | any): PlayerSpawnPoint;
+}
+
+declare class MyUI extends UObject { 
+	SpeakerName: string;
+	SessionStart: DateTime;
+	SessionDuration: number;
+	static Load(ResourceName: string): MyUI;
+	static Find(Outer: UObject, ResourceName: string): MyUI;
+	static GetDefaultObject(): MyUI;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MyUI;
+	static C(Other: UObject | any): MyUI;
+}
+
+declare class MyUserWidget extends UserWidget { 
+	Time: number;
+	static Load(ResourceName: string): MyUserWidget;
+	static Find(Outer: UObject, ResourceName: string): MyUserWidget;
+	static GetDefaultObject(): MyUserWidget;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MyUserWidget;
+	static C(Other: UObject | any): MyUserWidget;
+}
+
+declare class T1AIController extends AIController { 
+	static GetDefaultObject(): T1AIController;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1AIController;
+	static C(Other: UObject | any): T1AIController;
+}
+
+declare class T1AWeapon extends Actor { 
+	WEAPON: SkeletalMeshComponent;
+	static GetDefaultObject(): T1AWeapon;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1AWeapon;
+	static C(Other: UObject | any): T1AWeapon;
+}
+
+declare class T1AItemBox extends Actor { 
+	Trigger: BoxComponent;
+	Box: StaticMeshComponent;
+	EFFECT: ParticleSystemComponent;
+	WeaponItemClass: UnrealEngineClass;
+	static GetDefaultObject(): T1AItemBox;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1AItemBox;
+	OnEffectFinish(PSystem: ParticleSystemComponent): void;
+	OnCharacterOverlap(OverlappedComponent: PrimitiveComponent,OtherActor: Actor,OtherComp: PrimitiveComponent,OtherBodyIndex: number,bFromSweep: boolean,SweepResult: HitResult): void;
+	static C(Other: UObject | any): T1AItemBox;
+}
+
+declare class T1AnimInstance extends AnimInstance { 
+	CurrentPawnSpeed: number;
+	IsAir: boolean;
+	AttackMontage: AnimMontage;
+	IsDead: boolean;
+	static Load(ResourceName: string): T1AnimInstance;
+	static Find(Outer: UObject, ResourceName: string): T1AnimInstance;
+	static GetDefaultObject(): T1AnimInstance;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1AnimInstance;
+	AnimNotify_NextAttackCheck(): void;
+	AnimNotify_AttackHitCheck(): void;
+	static C(Other: UObject | any): T1AnimInstance;
+}
+
+declare class T1GameInstance extends GameInstance { 
+	T1PlayerTable: DataTable;
+	static Load(ResourceName: string): T1GameInstance;
+	static Find(Outer: UObject, ResourceName: string): T1GameInstance;
+	static GetDefaultObject(): T1GameInstance;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1GameInstance;
+	static C(Other: UObject | any): T1GameInstance;
+}
+
+declare class T1GameModeBase extends GameModeBase { 
+	static GetDefaultObject(): T1GameModeBase;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1GameModeBase;
+	static C(Other: UObject | any): T1GameModeBase;
+}
+
+declare class T1PlayerStatComponent extends ActorComponent { 
+	Level: number;
+	CurrentHP: number;
+	static Load(ResourceName: string): T1PlayerStatComponent;
+	static Find(Outer: UObject, ResourceName: string): T1PlayerStatComponent;
+	static GetDefaultObject(): T1PlayerStatComponent;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1PlayerStatComponent;
+	static C(Other: UObject | any): T1PlayerStatComponent;
+}
+
+declare class T1Player extends GsPlayer { 
+	CurrentWeapon: T1AWeapon;
+	PLAYERSTAT: T1PlayerStatComponent;
+	WEAPON: SkeletalMeshComponent;
+	SPRINGARM: SpringArmComponent;
+	Camera: CameraComponent;
+	HPBARWIDGET: WidgetComponent;
+	AttackRange: number;
+	AttackRadius: number;
+	IsAttacking: boolean;
+	CanNextCombo: boolean;
+	IsComboInputOn: boolean;
+	CurrentComboIndex: number;
+	MaxComboCount: number;
+	T1Anim: T1AnimInstance;
+	static GetDefaultObject(): T1Player;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1Player;
+	OnAttackMontageEnded(Montage: AnimMontage,bInterrupted: boolean): void;
+	static C(Other: UObject | any): T1Player;
+}
+
+declare class T1PlayerController extends PlayerController { 
+	static GetDefaultObject(): T1PlayerController;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1PlayerController;
+	static C(Other: UObject | any): T1PlayerController;
+}
+
+declare class T1PlayerWidget extends UserWidget { 
+	HPProgressBar: ProgressBar;
+	static Load(ResourceName: string): T1PlayerWidget;
+	static Find(Outer: UObject, ResourceName: string): T1PlayerWidget;
+	static GetDefaultObject(): T1PlayerWidget;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1PlayerWidget;
+	static C(Other: UObject | any): T1PlayerWidget;
+}
+
+declare class T1WorldSetting extends WorldSettings { 
+	static GetDefaultObject(): T1WorldSetting;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1WorldSetting;
+	static C(Other: UObject | any): T1WorldSetting;
 }
 
 declare type EMeshPaintColorViewMode = 'Normal' | 'RGB' | 'Alpha' | 'Red' | 'Green' | 'Blue' | 'EMeshPaintColorViewMode_MAX';
