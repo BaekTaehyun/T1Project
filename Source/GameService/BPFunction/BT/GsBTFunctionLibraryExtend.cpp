@@ -14,7 +14,7 @@
 #include "AIModule/Classes/BehaviorTree/Blackboard/BlackboardKeyType_Vector.h"
 #include "AIModule/Classes/BehaviorTree/Blackboard/BlackboardKeyType_Rotator.h"
 #include "GameObject/ObjectClass/GsGameObjectBase.h"
-#include "GameObject/GsObjectSpawner.h"
+#include "GameObject/GsGameObjectManager.h"
 
 
 #define DEF_SETBLACKBOARDDATA(bc, name, p, v)       if(!p.##name.IsEmpty()) { bc->SetValueAs##name(*p.##name, v.##name); }
@@ -179,7 +179,7 @@ TArray<UGsGameObjectBase*> UGsBTFunctionLibraryExtend::FindObject(UBTNode* NodeO
 {
     TArray<UGsGameObjectBase*> finds;
 
-	finds = GSpawner()->FindObjects(ObjectType);
+	finds = GGameObj()->FindObjects(ObjectType);
 	if (Radius > 0.f)
 	{
 		return finds.FilterByPredicate([=](UGsGameObjectBase* el)

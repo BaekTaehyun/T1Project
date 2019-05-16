@@ -1,5 +1,70 @@
 /// <reference path="_part_0_ue.d.ts">/>
 /// <reference path="_part_1_ue.d.ts">/>
+declare class MaterialExpressionNormalize extends MaterialExpression { 
+	VectorInput: ExpressionInput;
+	static Load(ResourceName: string): MaterialExpressionNormalize;
+	static Find(Outer: UObject, ResourceName: string): MaterialExpressionNormalize;
+	static GetDefaultObject(): MaterialExpressionNormalize;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MaterialExpressionNormalize;
+	static C(Other: UObject | any): MaterialExpressionNormalize;
+}
+
+declare class MaterialExpressionObjectBounds extends MaterialExpression { 
+	static Load(ResourceName: string): MaterialExpressionObjectBounds;
+	static Find(Outer: UObject, ResourceName: string): MaterialExpressionObjectBounds;
+	static GetDefaultObject(): MaterialExpressionObjectBounds;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MaterialExpressionObjectBounds;
+	static C(Other: UObject | any): MaterialExpressionObjectBounds;
+}
+
+declare class MaterialExpressionObjectOrientation extends MaterialExpression { 
+	static Load(ResourceName: string): MaterialExpressionObjectOrientation;
+	static Find(Outer: UObject, ResourceName: string): MaterialExpressionObjectOrientation;
+	static GetDefaultObject(): MaterialExpressionObjectOrientation;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MaterialExpressionObjectOrientation;
+	static C(Other: UObject | any): MaterialExpressionObjectOrientation;
+}
+
+declare class MaterialExpressionObjectPositionWS extends MaterialExpression { 
+	static Load(ResourceName: string): MaterialExpressionObjectPositionWS;
+	static Find(Outer: UObject, ResourceName: string): MaterialExpressionObjectPositionWS;
+	static GetDefaultObject(): MaterialExpressionObjectPositionWS;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MaterialExpressionObjectPositionWS;
+	static C(Other: UObject | any): MaterialExpressionObjectPositionWS;
+}
+
+declare class MaterialExpressionObjectRadius extends MaterialExpression { 
+	static Load(ResourceName: string): MaterialExpressionObjectRadius;
+	static Find(Outer: UObject, ResourceName: string): MaterialExpressionObjectRadius;
+	static GetDefaultObject(): MaterialExpressionObjectRadius;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MaterialExpressionObjectRadius;
+	static C(Other: UObject | any): MaterialExpressionObjectRadius;
+}
+
+declare class MaterialExpressionOneMinus extends MaterialExpression { 
+	Input: ExpressionInput;
+	static Load(ResourceName: string): MaterialExpressionOneMinus;
+	static Find(Outer: UObject, ResourceName: string): MaterialExpressionOneMinus;
+	static GetDefaultObject(): MaterialExpressionOneMinus;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MaterialExpressionOneMinus;
+	static C(Other: UObject | any): MaterialExpressionOneMinus;
+}
+
+declare class MaterialExpressionPanner extends MaterialExpression { 
+	Coordinate: ExpressionInput;
+	Time: ExpressionInput;
+	Speed: ExpressionInput;
+	SpeedX: number;
+	SpeedY: number;
+	ConstCoordinate: any;
+	bFractionalPart: boolean;
+	static Load(ResourceName: string): MaterialExpressionPanner;
+	static Find(Outer: UObject, ResourceName: string): MaterialExpressionPanner;
+	static GetDefaultObject(): MaterialExpressionPanner;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MaterialExpressionPanner;
+	static C(Other: UObject | any): MaterialExpressionPanner;
+}
+
 declare class MaterialExpressionParticleColor extends MaterialExpression { 
 	static Load(ResourceName: string): MaterialExpressionParticleColor;
 	static Find(Outer: UObject, ResourceName: string): MaterialExpressionParticleColor;
@@ -10647,6 +10712,26 @@ declare class T1WorldSetting extends WorldSettings {
 	static C(Other: UObject | any): T1WorldSetting;
 }
 
+declare type EGsStateUpperBase = 'None' | 'Idle' | 'Attack' | 'UpperBaseMax' | 'EGsStateUpperBase_MAX';
+declare var EGsStateUpperBase : { None:'None',Idle:'Idle',Attack:'Attack',UpperBaseMax:'UpperBaseMax',EGsStateUpperBase_MAX:'EGsStateUpperBase_MAX', };
+declare type EGsStateBase = 'None' | 'Spawn' | 'Idle' | 'ForwardWalk' | 'BackwardWalk' | 'SideWalk' | 'Run' | 'Beaten' | 'Die' | 'BaseMax' | 'EGsStateBase_MAX';
+declare var EGsStateBase : { None:'None',Spawn:'Spawn',Idle:'Idle',ForwardWalk:'ForwardWalk',BackwardWalk:'BackwardWalk',SideWalk:'SideWalk',Run:'Run',Beaten:'Beaten',Die:'Die',BaseMax:'BaseMax',EGsStateBase_MAX:'EGsStateBase_MAX', };
+declare class GsAnimInstanceState extends AnimInstance { 
+	static Load(ResourceName: string): GsAnimInstanceState;
+	static Find(Outer: UObject, ResourceName: string): GsAnimInstanceState;
+	static GetDefaultObject(): GsAnimInstanceState;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsAnimInstanceState;
+	IsUpperState(State: EGsStateUpperBase): boolean;
+	IsUpperBlend(): boolean;
+	IsStates(States: EGsStateBase[]): boolean;
+	IsState(State: EGsStateBase): boolean;
+	IsMoveState(): boolean;
+	GetUpperTimer(): number;
+	GetTimer(): number;
+	GetRandomIndex(): number;
+	static C(Other: UObject | any): GsAnimInstanceState;
+}
+
 declare type EGS_LOBBY_Enum = 'GS_LOBBY_START_INTRO' | 'GS_LOBBY_END_INTRO' | 'GS_LOBBY_MAX';
 declare var EGS_LOBBY_Enum : { GS_LOBBY_START_INTRO:'GS_LOBBY_START_INTRO',GS_LOBBY_END_INTRO:'GS_LOBBY_END_INTRO',GS_LOBBY_MAX:'GS_LOBBY_MAX', };
 declare class GsBlueprintFunctionLibraryLobby extends BlueprintFunctionLibrary { 
@@ -10656,6 +10741,33 @@ declare class GsBlueprintFunctionLibraryLobby extends BlueprintFunctionLibrary {
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsBlueprintFunctionLibraryLobby;
 	static SendEventGSLobby(inMessage: EGS_LOBBY_Enum): void;
 	static C(Other: UObject | any): GsBlueprintFunctionLibraryLobby;
+}
+
+declare class GsBTFunctionLibraryExtend extends BTFunctionLibrary { 
+	static Load(ResourceName: string): GsBTFunctionLibraryExtend;
+	static Find(Outer: UObject, ResourceName: string): GsBTFunctionLibraryExtend;
+	static GetDefaultObject(): GsBTFunctionLibraryExtend;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsBTFunctionLibraryExtend;
+	static SetRegistBlackboardData(NodeOwner: BTNode,Parser: GsBTBlackboardDataParser): void;
+	static SetBlackboardEmptyData(NodeOwner: BTNode,Parser: GsBTBlackboardDataParser): void;
+	static SetBlackboardData(NodeOwner: BTNode,Result: GsBTBlackboardDataResult,Parser: GsBTBlackboardDataParser): void;
+	static GetRegistBlackboardData(): GsBTBlackboardDataResult;
+	static GetBlackboardValueAsVectorEx(NodeOwner: BTNode,KeyName: string): Vector;
+	static GetBlackboardValueAsStringEx(NodeOwner: BTNode,KeyName: string): string;
+	static GetBlackboardValueAsRotatorEx(NodeOwner: BTNode,KeyName: string): Rotator;
+	static GetBlackboardValueAsObjectEx(NodeOwner: BTNode,KeyName: string): UObject;
+	static GetBlackboardValueAsNameEx(NodeOwner: BTNode,KeyName: string): string;
+	static GetBlackboardValueAsIntEx(NodeOwner: BTNode,KeyName: string): number;
+	static GetBlackboardValueAsGameObjectEx(NodeOwner: BTNode,KeyName: string): GsGameObjectBase;
+	static GetBlackboardValueAsGameObject(NodeOwner: BTNode,Key: BlackboardKeySelector): GsGameObjectBase;
+	static GetBlackboardValueAsFloatEx(NodeOwner: BTNode,KeyName: string): number;
+	static GetBlackboardValueAsEnumEx(NodeOwner: BTNode,KeyName: string): number;
+	static GetBlackboardValueAsClassEx(NodeOwner: BTNode,KeyName: string): UnrealEngineClass;
+	static GetBlackboardValueAsBoolEx(NodeOwner: BTNode,KeyName: string): boolean;
+	static GetBlackboardValueAsActorEx(NodeOwner: BTNode,KeyName: string): Actor;
+	static FindObject(NodeOwner: BTNode,ActorOwner: Actor,ObjectType: EGsGameObjectType,Radius: number): GsGameObjectBase[];
+	static BB_FindFirstObject(NodeOwner: BTNode,ActorOwner: Actor,ObjectType: EGsGameObjectType,Radius: number): GsBTBlackboardDataResult;
+	static C(Other: UObject | any): GsBTFunctionLibraryExtend;
 }
 
 declare class GsGameInstance extends GameInstance { 
@@ -10670,6 +10782,196 @@ declare class GsGameModeBase extends GameModeBase {
 	static GetDefaultObject(): GsGameModeBase;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameModeBase;
 	static C(Other: UObject | any): GsGameModeBase;
+}
+
+declare class GsGameObjectBlueprintLibrary extends BlueprintFunctionLibrary { 
+	static Load(ResourceName: string): GsGameObjectBlueprintLibrary;
+	static Find(Outer: UObject, ResourceName: string): GsGameObjectBlueprintLibrary;
+	static GetDefaultObject(): GsGameObjectBlueprintLibrary;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectBlueprintLibrary;
+	static SpawnPlayer(ActorClass: UnrealEngineClass,StartPos: Vector,Offset: Vector): void;
+	static SpawnOnGround(ActorClass: UnrealEngineClass,StartPos: Vector,Offset: Vector): Actor;
+	static FindGameObjects(WorldContextObject: UObject,ObjectType: EGsGameObjectType): GsGameObjectBase[];
+	static FindGameObject(WorldContextObject: UObject,ObjectType: EGsGameObjectType): GsGameObjectBase;
+	static C(Other: UObject | any): GsGameObjectBlueprintLibrary;
+}
+
+declare class GsGameObjectDynamic extends GsGameObjectBase { 
+	static Load(ResourceName: string): GsGameObjectDynamic;
+	static Find(Outer: UObject, ResourceName: string): GsGameObjectDynamic;
+	static GetDefaultObject(): GsGameObjectDynamic;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectDynamic;
+	static C(Other: UObject | any): GsGameObjectDynamic;
+}
+
+declare class GsGameObjectPlayer extends GsGameObjectDynamic { 
+	static Load(ResourceName: string): GsGameObjectPlayer;
+	static Find(Outer: UObject, ResourceName: string): GsGameObjectPlayer;
+	static GetDefaultObject(): GsGameObjectPlayer;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectPlayer;
+	static C(Other: UObject | any): GsGameObjectPlayer;
+}
+
+declare class GsInputBindingBase extends UObject { 
+	static Load(ResourceName: string): GsInputBindingBase;
+	static Find(Outer: UObject, ResourceName: string): GsInputBindingBase;
+	static GetDefaultObject(): GsInputBindingBase;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsInputBindingBase;
+	static C(Other: UObject | any): GsInputBindingBase;
+}
+
+declare class GsInputBindingLocalPlayer extends GsInputBindingBase { 
+	static Load(ResourceName: string): GsInputBindingLocalPlayer;
+	static Find(Outer: UObject, ResourceName: string): GsInputBindingLocalPlayer;
+	static GetDefaultObject(): GsInputBindingLocalPlayer;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsInputBindingLocalPlayer;
+	static C(Other: UObject | any): GsInputBindingLocalPlayer;
+}
+
+declare class GsLocalCharacter extends Character { 
+	CameraBoom: SpringArmComponent;
+	FollowCamera: CameraComponent;
+	InputBinder: GsInputBindingLocalPlayer;
+	static GetDefaultObject(): GsLocalCharacter;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsLocalCharacter;
+	static C(Other: UObject | any): GsLocalCharacter;
+}
+
+declare class GsGameObjectLocal extends GsGameObjectPlayer { 
+	Actor: GsLocalCharacter;
+	static Load(ResourceName: string): GsGameObjectLocal;
+	static Find(Outer: UObject, ResourceName: string): GsGameObjectLocal;
+	static GetDefaultObject(): GsGameObjectLocal;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectLocal;
+	GetLocal(): GsLocalCharacter;
+	static C(Other: UObject | any): GsGameObjectLocal;
+}
+
+declare class GsNpcPawn extends Pawn { 
+	Mesh: SkeletalMeshComponent;
+	CapsuleComponent: CapsuleComponent;
+	MovementComponent: PawnMovementComponent;
+	static GetDefaultObject(): GsNpcPawn;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsNpcPawn;
+	static C(Other: UObject | any): GsNpcPawn;
+}
+
+declare class GsGameObjectNonPlayer extends GsGameObjectDynamic { 
+	Actor: GsNpcPawn;
+	static Load(ResourceName: string): GsGameObjectNonPlayer;
+	static Find(Outer: UObject, ResourceName: string): GsGameObjectNonPlayer;
+	static GetDefaultObject(): GsGameObjectNonPlayer;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectNonPlayer;
+	GetNpc(): GsNpcPawn;
+	static C(Other: UObject | any): GsGameObjectNonPlayer;
+}
+
+declare class GsProjectileActor extends Actor { 
+	static GetDefaultObject(): GsProjectileActor;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsProjectileActor;
+	static C(Other: UObject | any): GsProjectileActor;
+}
+
+declare class GsGameObjectProjectile extends GsGameObjectBase { 
+	Actor: GsProjectileActor;
+	static Load(ResourceName: string): GsGameObjectProjectile;
+	static Find(Outer: UObject, ResourceName: string): GsGameObjectProjectile;
+	static GetDefaultObject(): GsGameObjectProjectile;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectProjectile;
+	static C(Other: UObject | any): GsGameObjectProjectile;
+}
+
+declare class GsNpcCharacter extends Character { 
+	static GetDefaultObject(): GsNpcCharacter;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsNpcCharacter;
+	static C(Other: UObject | any): GsNpcCharacter;
+}
+
+declare class GsObjectSpawner extends UObject { 
+	Spawns: GsGameObjectBase[];
+	static Load(ResourceName: string): GsObjectSpawner;
+	static Find(Outer: UObject, ResourceName: string): GsObjectSpawner;
+	static GetDefaultObject(): GsObjectSpawner;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsObjectSpawner;
+	CallbackCompHit(HitComponent: PrimitiveComponent,OtherActor: Actor,OtherComp: PrimitiveComponent,NormalImpulse: Vector,Hit: HitResult): void;
+	CallbackActorDeSpawn(Despawn: Actor): void;
+	static C(Other: UObject | any): GsObjectSpawner;
+}
+
+declare class SkelMeshMergeSectionMapping_BP { 
+	SectionIDs: number[];
+	clone() : SkelMeshMergeSectionMapping_BP;
+	static C(Other: UObject | any): SkelMeshMergeSectionMapping_BP;
+}
+
+declare class SkelMeshMergeUVTransform { 
+	UVTransforms: Transform[];
+	clone() : SkelMeshMergeUVTransform;
+	static C(Other: UObject | any): SkelMeshMergeUVTransform;
+}
+
+declare class SkelMeshMergeUVTransformMapping { 
+	UVTransformsPerMesh: SkelMeshMergeUVTransform[];
+	clone() : SkelMeshMergeUVTransformMapping;
+	static C(Other: UObject | any): SkelMeshMergeUVTransformMapping;
+}
+
+declare class SkeletalMeshMergeParams { 
+	MeshSectionMappings: SkelMeshMergeSectionMapping_BP[];
+	UVTransformsPerMesh: SkelMeshMergeUVTransformMapping[];
+	MeshesToMerge: SkeletalMesh[];
+	StripTopLODS: number;
+	bNeedsCpuAccess: boolean;
+	bSkeletonBefore: boolean;
+	Skeleton: Skeleton;
+	clone() : SkeletalMeshMergeParams;
+	static C(Other: UObject | any): SkeletalMeshMergeParams;
+}
+
+declare type EGsPartsType = 'HAIR' | 'FACE' | 'HEAD' | 'BODY' | 'SHOULDER' | 'GLOVE' | 'LEG' | 'FOOT' | 'EGsPartsType_MAX';
+declare var EGsPartsType : { HAIR:'HAIR',FACE:'FACE',HEAD:'HEAD',BODY:'BODY',SHOULDER:'SHOULDER',GLOVE:'GLOVE',LEG:'LEG',FOOT:'FOOT',EGsPartsType_MAX:'EGsPartsType_MAX', };
+declare class GsPartsDataBase { 
+	Type: EGsPartsType;
+	Mesh: SkeletalMesh;
+	clone() : GsPartsDataBase;
+	static C(Other: UObject | any): GsPartsDataBase;
+}
+
+declare class GsPartsDataContainerBase extends DataAsset { 
+	Params: SkeletalMeshMergeParams;
+	Parts: GsPartsDataBase[];
+	static Load(ResourceName: string): GsPartsDataContainerBase;
+	static Find(Outer: UObject, ResourceName: string): GsPartsDataContainerBase;
+	static GetDefaultObject(): GsPartsDataContainerBase;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsPartsDataContainerBase;
+	static C(Other: UObject | any): GsPartsDataContainerBase;
+}
+
+declare class GsSkillActionDataBase { 
+	Type: number;
+	Rate: number;
+	Count: number;
+	RefID: number;
+	clone() : GsSkillActionDataBase;
+	static C(Other: UObject | any): GsSkillActionDataBase;
+}
+
+declare class GsSkillDataBase { 
+	ID: number;
+	Duration: number;
+	ResAni: AnimMontage;
+	SkillAction: GsSkillActionDataBase[];
+	clone() : GsSkillDataBase;
+	static C(Other: UObject | any): GsSkillDataBase;
+}
+
+declare class GsSkillDataContainerBase extends DataAsset { 
+	Skills: GsSkillDataBase[];
+	static Load(ResourceName: string): GsSkillDataContainerBase;
+	static Find(Outer: UObject, ResourceName: string): GsSkillDataContainerBase;
+	static GetDefaultObject(): GsSkillDataContainerBase;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsSkillDataContainerBase;
+	static C(Other: UObject | any): GsSkillDataContainerBase;
 }
 
 declare type EMeshPaintColorViewMode = 'Normal' | 'RGB' | 'Alpha' | 'Red' | 'Green' | 'Blue' | 'EMeshPaintColorViewMode_MAX';

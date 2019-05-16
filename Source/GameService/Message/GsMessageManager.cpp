@@ -1,6 +1,6 @@
 #include "GsMessageManager.h"
 
-FGsMessageManager* GSFMessageSingle::Instance = NULL;
+FGsMessageManager* FGsMessageSingle::Instance = NULL;
 
 FGsMessageManager::~FGsMessageManager()
 {
