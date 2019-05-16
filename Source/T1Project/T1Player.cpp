@@ -124,7 +124,7 @@ AT1Player::AT1Player()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	
-	TestMet();
+	//TestMet();
 }
 
 // Called when the game starts or when spawned
@@ -161,7 +161,7 @@ void AT1Player::TestMet()
 			UMyUserWidget* _cast = Cast<UMyUserWidget>(_createWidget);
 			if (nullptr != _cast)
 			{
-				_cast->TestUI();
+				//_cast->TestUI();
 				UE_LOG(LogTemp, Log, TEXT("In _cast !!"));
 			}
 			else
