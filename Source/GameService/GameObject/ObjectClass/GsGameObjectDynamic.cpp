@@ -18,9 +18,9 @@ void UGsGameObjectDynamic::Initialize()
     SET_FLAG_TYPE(ObjectType, UGsGameObjectDynamic::GetObjectType());
 }
 
-void UGsGameObjectDynamic::DeInitialize()
+void UGsGameObjectDynamic::Finalize()
 {
-	Super::DeInitialize();
+	Super::Finalize();
 
 	if (Fsm)	    { delete Fsm; }
 	if (Parts)	    { delete Parts; }

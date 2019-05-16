@@ -16,7 +16,7 @@ class GAMESERVICE_API UGsGameObjectProjectile : public UGsGameObjectBase
 	
 public:
 	virtual void Initialize() override;
-	virtual void DeInitialize() override;
+	virtual void Finalize() override;
 
     virtual EGsGameObjectType GetObjectType() const override;
 	virtual AActor* GetActor() const override;

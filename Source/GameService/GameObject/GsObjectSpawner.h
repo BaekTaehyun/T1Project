@@ -21,6 +21,9 @@ class GAMESERVICE_API UGsObjectSpawner :
 	GENERATED_BODY()
 	
 public:
+
+	virtual ~UGsObjectSpawner();
+
 	virtual void Initialize() override;
 	virtual void Finalize() override;
 	virtual void Update() override;
@@ -40,6 +43,7 @@ public:
 	void DespawnObject(UGsGameObjectBase* Despawn);
     //
 protected:
+	bool UpdateGameObject(float Delta);
 	void UpdateAddGameObject();
 	void UpdateRemoveGameObject();
 
@@ -49,7 +53,12 @@ protected:
 	void CallbackActorDeSpawn(AActor* Despawn);
 
 private:
+	//임의 틱관리 객체 생성
+	//추후 Update에서 Delta값을 받는게 좋을것 같다.
+	FDelegateHandle TickDelegate;
+
 	UWorld* World;
+
 	//액터 객체 관리
 	//전체 대상 시리얼라이즈 포함
 	UPROPERTY(Transient, VisibleInstanceOnly, Meta = (AllowPrivateAccess = true))

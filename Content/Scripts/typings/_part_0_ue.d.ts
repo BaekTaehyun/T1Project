@@ -11405,6 +11405,8 @@ declare class Class extends Struct {
 	static GetDefaultObject(): Class;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): Class;
 	static C(Other: UObject | any): Class;
+	SpawnOnGround(StartPos: Vector,Offset: Vector): Actor;
+	SpawnPlayer(StartPos: Vector,Offset: Vector): void;
 	AddDynamicBinding(BindingObject: DynamicBlueprintBinding): void;
 	GetClassPathName(): string;
 	GetDerivedClasses(Results?: UnrealEngineClass[],bRecursive?: boolean): {Results: UnrealEngineClass[]};
@@ -11432,6 +11434,8 @@ declare class Class extends Struct {
 	SpawnObject(Outer: UObject): UObject;
 	GetEditorSubsystem(): EditorSubsystem;
 	CreateDragDropOperation(): DragDropOperation;
+	static SpawnOnGround(ActorClass: UnrealEngineClass,StartPos: Vector,Offset: Vector): Actor;
+	static SpawnPlayer(ActorClass: UnrealEngineClass,StartPos: Vector,Offset: Vector): void;
 	static AddDynamicBinding(Outer: UnrealEngineClass,BindingObject: DynamicBlueprintBinding): void;
 	static GetClassPathName(Class: UnrealEngineClass): string;
 	static GetDerivedClasses(ClassToLookFor: UnrealEngineClass,Results?: UnrealEngineClass[],bRecursive?: boolean): {Results: UnrealEngineClass[]};
@@ -11869,6 +11873,37 @@ declare class AISystemBase extends UObject {
 	static C(Other: UObject | any): AISystemBase;
 }
 
+declare type EGsGameObjectType = 'Base' | 'Static' | 'Projectile' | 'Vehicle' | 'Dynamic' | 'Player' | 'NonPlayer' | 'OtherPlayer' | 'LocalPlayer' | 'EGsGameObjectType_MAX';
+declare var EGsGameObjectType : { Base:'Base',Static:'Static',Projectile:'Projectile',Vehicle:'Vehicle',Dynamic:'Dynamic',Player:'Player',NonPlayer:'NonPlayer',OtherPlayer:'OtherPlayer',LocalPlayer:'LocalPlayer',EGsGameObjectType_MAX:'EGsGameObjectType_MAX', };
+declare class GsBTBlackboardDataResult { 
+	UObject: UObject;
+	Class: UnrealEngineClass;
+	Enum: number;
+	int: number;
+	float: number;
+	bool: boolean;
+	string: string;
+	Name: string;
+	Vector: Vector;
+	Rotator: Rotator;
+	clone() : GsBTBlackboardDataResult;
+	static C(Other: UObject | any): GsBTBlackboardDataResult;
+	static GetRegistBlackboardData(): GsBTBlackboardDataResult;
+}
+
+declare class GsGameObjectBase extends UObject { 
+	static Load(ResourceName: string): GsGameObjectBase;
+	static Find(Outer: UObject, ResourceName: string): GsGameObjectBase;
+	static GetDefaultObject(): GsGameObjectBase;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectBase;
+	GetScale(): Vector;
+	GetRotation(): Rotator;
+	GetObjectType(): EGsGameObjectType;
+	GetLocation(): Vector;
+	GetActor(): Actor;
+	static C(Other: UObject | any): GsGameObjectBase;
+}
+
 declare class BlackboardKeySelector { 
 	AllowedTypes: BlackboardKeyType[];
 	SelectedKeyName: string;
@@ -11877,6 +11912,21 @@ declare class BlackboardKeySelector {
 	bNoneIsAllowedValue: boolean;
 	clone() : BlackboardKeySelector;
 	static C(Other: UObject | any): BlackboardKeySelector;
+}
+
+declare class GsBTBlackboardDataParser { 
+	UObject: string;
+	Class: string;
+	Enum: string;
+	int: string;
+	float: string;
+	bool: string;
+	string: string;
+	Name: string;
+	Vector: string;
+	Rotator: string;
+	clone() : GsBTBlackboardDataParser;
+	static C(Other: UObject | any): GsBTBlackboardDataParser;
 }
 
 declare class GameplayTagQuery { 
@@ -11974,6 +12024,24 @@ declare class BTNode extends UObject {
 	static GetDefaultObject(): BTNode;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): BTNode;
 	static C(Other: UObject | any): BTNode;
+	BB_FindFirstObject(ActorOwner: Actor,ObjectType: EGsGameObjectType,Radius: number): GsBTBlackboardDataResult;
+	FindObject(ActorOwner: Actor,ObjectType: EGsGameObjectType,Radius: number): GsGameObjectBase[];
+	GetBlackboardValueAsActorEx(KeyName: string): Actor;
+	GetBlackboardValueAsBoolEx(KeyName: string): boolean;
+	GetBlackboardValueAsClassEx(KeyName: string): UnrealEngineClass;
+	GetBlackboardValueAsEnumEx(KeyName: string): number;
+	GetBlackboardValueAsFloatEx(KeyName: string): number;
+	GetBlackboardValueAsGameObject(Key: BlackboardKeySelector): GsGameObjectBase;
+	GetBlackboardValueAsGameObjectEx(KeyName: string): GsGameObjectBase;
+	GetBlackboardValueAsIntEx(KeyName: string): number;
+	GetBlackboardValueAsNameEx(KeyName: string): string;
+	GetBlackboardValueAsObjectEx(KeyName: string): UObject;
+	GetBlackboardValueAsRotatorEx(KeyName: string): Rotator;
+	GetBlackboardValueAsStringEx(KeyName: string): string;
+	GetBlackboardValueAsVectorEx(KeyName: string): Vector;
+	SetBlackboardData(Result: GsBTBlackboardDataResult,Parser: GsBTBlackboardDataParser): void;
+	SetBlackboardEmptyData(Parser: GsBTBlackboardDataParser): void;
+	SetRegistBlackboardData(Parser: GsBTBlackboardDataParser): void;
 	ClearBlackboardValue(Key: BlackboardKeySelector): void;
 	ClearBlackboardValueAsVector(Key: BlackboardKeySelector): void;
 	GetBlackboardValueAsActor(Key: BlackboardKeySelector): Actor;
@@ -12001,6 +12069,24 @@ declare class BTNode extends UObject {
 	SetBlackboardValueAsVector(Key: BlackboardKeySelector,Value: Vector): void;
 	StartUsingExternalEvent(OwningActor: Actor): void;
 	StopUsingExternalEvent(): void;
+	static BB_FindFirstObject(NodeOwner: BTNode,ActorOwner: Actor,ObjectType: EGsGameObjectType,Radius: number): GsBTBlackboardDataResult;
+	static FindObject(NodeOwner: BTNode,ActorOwner: Actor,ObjectType: EGsGameObjectType,Radius: number): GsGameObjectBase[];
+	static GetBlackboardValueAsActorEx(NodeOwner: BTNode,KeyName: string): Actor;
+	static GetBlackboardValueAsBoolEx(NodeOwner: BTNode,KeyName: string): boolean;
+	static GetBlackboardValueAsClassEx(NodeOwner: BTNode,KeyName: string): UnrealEngineClass;
+	static GetBlackboardValueAsEnumEx(NodeOwner: BTNode,KeyName: string): number;
+	static GetBlackboardValueAsFloatEx(NodeOwner: BTNode,KeyName: string): number;
+	static GetBlackboardValueAsGameObject(NodeOwner: BTNode,Key: BlackboardKeySelector): GsGameObjectBase;
+	static GetBlackboardValueAsGameObjectEx(NodeOwner: BTNode,KeyName: string): GsGameObjectBase;
+	static GetBlackboardValueAsIntEx(NodeOwner: BTNode,KeyName: string): number;
+	static GetBlackboardValueAsNameEx(NodeOwner: BTNode,KeyName: string): string;
+	static GetBlackboardValueAsObjectEx(NodeOwner: BTNode,KeyName: string): UObject;
+	static GetBlackboardValueAsRotatorEx(NodeOwner: BTNode,KeyName: string): Rotator;
+	static GetBlackboardValueAsStringEx(NodeOwner: BTNode,KeyName: string): string;
+	static GetBlackboardValueAsVectorEx(NodeOwner: BTNode,KeyName: string): Vector;
+	static SetBlackboardData(NodeOwner: BTNode,Result: GsBTBlackboardDataResult,Parser: GsBTBlackboardDataParser): void;
+	static SetBlackboardEmptyData(NodeOwner: BTNode,Parser: GsBTBlackboardDataParser): void;
+	static SetRegistBlackboardData(NodeOwner: BTNode,Parser: GsBTBlackboardDataParser): void;
 	static ClearBlackboardValue(NodeOwner: BTNode,Key: BlackboardKeySelector): void;
 	static ClearBlackboardValueAsVector(NodeOwner: BTNode,Key: BlackboardKeySelector): void;
 	static GetBlackboardValueAsActor(NodeOwner: BTNode,Key: BlackboardKeySelector): Actor;
@@ -13701,6 +13787,8 @@ declare class World extends UObject {
 	InvalidateModelGeometry(InLevel: Level): void;
 	RemoveLevelInstance(): void;
 	GetActors(ActorLayer: ActorLayer): Actor[];
+	FindGameObject(ObjectType: EGsGameObjectType): GsGameObjectBase;
+	FindGameObjects(ObjectType: EGsGameObjectType): GsGameObjectBase[];
 	BeginPlay(): void;
 	DestroyWorld(): void;
 	InitializeActorsForPlay(URL: URL): void;
@@ -13940,6 +14028,8 @@ declare class World extends UObject {
 	static InvalidateModelGeometry(World: World,InLevel: Level): void;
 	static RemoveLevelInstance(World: World): void;
 	static GetActors(WorldContextObject: UObject,ActorLayer: ActorLayer): Actor[];
+	static FindGameObject(WorldContextObject: UObject,ObjectType: EGsGameObjectType): GsGameObjectBase;
+	static FindGameObjects(WorldContextObject: UObject,ObjectType: EGsGameObjectType): GsGameObjectBase[];
 	static BeginPlay(World: World): void;
 	static DestroyWorld(World: World): void;
 	static InitializeActorsForPlay(World: World,URL: URL): void;
@@ -20209,89 +20299,3 @@ declare class WidgetBlueprintLibrary extends BlueprintFunctionLibrary {
 	static C(Other: UObject | any): WidgetBlueprintLibrary;
 }
 
-declare type EWidgetSpace = 'World' | 'Screen' | 'EWidgetSpace_MAX';
-declare var EWidgetSpace : { World:'World',Screen:'Screen',EWidgetSpace_MAX:'EWidgetSpace_MAX', };
-declare type EWidgetTimingPolicy = 'RealTime' | 'GameTime' | 'EWidgetTimingPolicy_MAX';
-declare var EWidgetTimingPolicy : { RealTime:'RealTime',GameTime:'GameTime',EWidgetTimingPolicy_MAX:'EWidgetTimingPolicy_MAX', };
-declare type EWidgetBlendMode = 'Opaque' | 'Masked' | 'Transparent' | 'EWidgetBlendMode_MAX';
-declare var EWidgetBlendMode : { Opaque:'Opaque',Masked:'Masked',Transparent:'Transparent',EWidgetBlendMode_MAX:'EWidgetBlendMode_MAX', };
-declare type EWidgetGeometryMode = 'Plane' | 'Cylinder' | 'EWidgetGeometryMode_MAX';
-declare var EWidgetGeometryMode : { Plane:'Plane',Cylinder:'Cylinder',EWidgetGeometryMode_MAX:'EWidgetGeometryMode_MAX', };
-declare class WidgetComponent extends MeshComponent { 
-	Space: EWidgetSpace;
-	TimingPolicy: EWidgetTimingPolicy;
-	WidgetClass: UnrealEngineClass;
-	DrawSize: IntPoint;
-	bManuallyRedraw: boolean;
-	bRedrawRequested: boolean;
-	RedrawTime: number;
-	CurrentDrawSize: IntPoint;
-	bDrawAtDesiredSize: boolean;
-	Pivot: Vector2D;
-	bReceiveHardwareInput: boolean;
-	bWindowFocusable: boolean;
-	bApplyGammaCorrection: boolean;
-	OwnerPlayer: LocalPlayer;
-	BackgroundColor: LinearColor;
-	TintColorAndOpacity: LinearColor;
-	OpacityFromTexture: number;
-	BlendMode: EWidgetBlendMode;
-	bIsTwoSided: boolean;
-	TickWhenOffscreen: boolean;
-	Widget: UserWidget;
-	BodySetup: BodySetup;
-	TranslucentMaterial: MaterialInterface;
-	TranslucentMaterial_OneSided: MaterialInterface;
-	OpaqueMaterial: MaterialInterface;
-	OpaqueMaterial_OneSided: MaterialInterface;
-	MaskedMaterial: MaterialInterface;
-	MaskedMaterial_OneSided: MaterialInterface;
-	RenderTarget: TextureRenderTarget2D;
-	MaterialInstance: MaterialInstanceDynamic;
-	bAddedToScreen: boolean;
-	bEditTimeUsable: boolean;
-	SharedLayerName: string;
-	LayerZOrder: number;
-	GeometryMode: EWidgetGeometryMode;
-	CylinderArcAngle: number;
-	static Load(ResourceName: string): WidgetComponent;
-	static Find(Outer: UObject, ResourceName: string): WidgetComponent;
-	static GetDefaultObject(): WidgetComponent;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): WidgetComponent;
-	SetWindowFocusable(bInWindowFocusable: boolean): void;
-	SetWidgetSpace(NewSpace: EWidgetSpace): void;
-	SetWidget(Widget: UserWidget): void;
-	SetTwoSided(bWantTwoSided: boolean): void;
-	SetTintColorAndOpacity(NewTintColorAndOpacity: LinearColor): void;
-	SetTickWhenOffscreen(bWantTickWhenOffscreen: boolean): void;
-	SetRedrawTime(bInRedrawTime: number): void;
-	SetPivot(InPivot: Vector2D): void;
-	SetOwnerPlayer(LocalPlayer: LocalPlayer): void;
-	SetManuallyRedraw(bUseManualRedraw: boolean): void;
-	SetGeometryMode(InGeometryMode: EWidgetGeometryMode): void;
-	SetDrawSize(Size: Vector2D): void;
-	SetDrawAtDesiredSize(InbDrawAtDesiredSize: boolean): void;
-	SetCylinderArcAngle(InCylinderArcAngle: number): void;
-	SetBackgroundColor(NewBackgroundColor: LinearColor): void;
-	RequestRedraw(): void;
-	GetWindowFocusable(): boolean;
-	GetWidgetSpace(): EWidgetSpace;
-	GetUserWidgetObject(): UserWidget;
-	GetTwoSided(): boolean;
-	GetTickWhenOffscreen(): boolean;
-	GetRenderTarget(): TextureRenderTarget2D;
-	GetRedrawTime(): number;
-	GetPivot(): Vector2D;
-	GetOwnerPlayer(): LocalPlayer;
-	GetMaterialInstance(): MaterialInstanceDynamic;
-	GetManuallyRedraw(): boolean;
-	GetGeometryMode(): EWidgetGeometryMode;
-	GetDrawSize(): Vector2D;
-	GetDrawAtDesiredSize(): boolean;
-	GetCylinderArcAngle(): number;
-	GetCurrentDrawSize(): Vector2D;
-	static C(Other: UObject | any): WidgetComponent;
-}
-
-declare type EWidgetInteractionSource = 'World' | 'Mouse' | 'CenterScreen' | 'Custom' | 'EWidgetInteractionSource_MAX';
-declare var EWidgetInteractionSource : { World:'World',Mouse:'Mouse',CenterScreen:'CenterScreen',Custom:'Custom',EWidgetInteractionSource_MAX:'EWidgetInteractionSource_MAX', };

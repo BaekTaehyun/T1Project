@@ -19,7 +19,7 @@ public:
 	virtual ~UGsGameObjectBase();
 
 	virtual void Initialize();
-	virtual void DeInitialize();
+	virtual void Finalize();
     virtual void Update(float Delta);
 
     virtual AActor* Spawn(UClass* Instance, UWorld* World, const FVector& Position, const FRotator& Dir);

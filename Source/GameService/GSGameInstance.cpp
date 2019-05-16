@@ -28,7 +28,10 @@ void UGsGameInstance::Init()
 	_manage.InsertInstance(new FGsMessageManager());
 	_manage.InsertInstance(new FGsGameFlowManager());
 	_manage.InsertInstance(new FGsNetManager());
+	//_manage.InsertInstance(NewObject<UGsObjectSpawner>());
 
+	spawner = NewObject<UGsObjectSpawner>();
+	spawner->Initialize();
 	
 
 	for(auto& mng : _manage.Get())
@@ -37,6 +40,10 @@ void UGsGameInstance::Init()
 	}
 
 	GetTimerManager().SetTimer(_manageTickHandle, this, &UGsGameInstance::Update, 0.5f, true, 0.0f);
+
+	//[LBY]
+	//임의 월드 셋팅을 명시적으로 해준다. 추후 씬병경 관련 노티를 받아 처리 변경 필요
+	GSpawner()->SetWorld(GetWorld());
 }
 
 void UGsGameInstance::Shutdown()
@@ -58,6 +65,15 @@ void UGsGameInstance::Shutdown()
 void UGsGameInstance::Update()
 {
 	GSLOG_S(Warning);
+	for (auto& mng : _manage.Get())
+	{
+		if (mng.IsValid())
+		{
+			mng->Update();
+		}
+	}
+
+	spawner->Update();
 }
 
 

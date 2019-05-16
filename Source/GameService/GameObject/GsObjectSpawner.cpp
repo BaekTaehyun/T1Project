@@ -4,9 +4,16 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/PrimitiveComponent.h"
+#include "GameService.h"
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 #include "GameObject/ObjectClass/GsGameObjectNonPlayer.h"
 #include "GameObject/ObjectClass/GsGameObjectProjectile.h"
+
+UGsObjectSpawner::~UGsObjectSpawner()
+{
+	GSLOG(Warning, TEXT("~UGsObjectSpawner()"));
+}
+
 
 void UGsObjectSpawner::Initialize()
 {
@@ -22,19 +29,31 @@ void UGsObjectSpawner::Initialize()
 	{
 		TypeSpawns.Emplace(el);
 	}
+
+	//Tick 델리게이트 설정
+	if (TickDelegate.IsValid())
+	{
+		FTicker::GetCoreTicker().RemoveTicker(TickDelegate);
+	}
+	TickDelegate = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UGsObjectSpawner::UpdateGameObject));
 }
 
 void UGsObjectSpawner::Finalize()
 {
 	for (auto el : Spawns)
 	{
-		el->DeInitialize();
+		el->Finalize();
 	}
 
 	TypeSpawns.Empty();
 	AddSpawns.Empty();
 	RemoveSpawns.Empty();
 	Spawns.Empty();
+
+	if (TickDelegate.IsValid())
+	{
+		FTicker::GetCoreTicker().RemoveTicker(TickDelegate);
+	}
 }
 
 void UGsObjectSpawner::Update()
@@ -43,11 +62,6 @@ void UGsObjectSpawner::Update()
 	UpdateRemoveGameObject();
 	//대상 추가
 	UpdateAddGameObject();
-
-	for (auto el : Spawns)
-	{
-		el->Update(FApp::GetDeltaTime());
-	}
 }
 
 void UGsObjectSpawner::SetWorld(UWorld* world)
@@ -178,6 +192,16 @@ void UGsObjectSpawner::DespawnObject(UGsGameObjectBase* Despawn)
 		//액터 소멸시 일단 관리대상 에서 제거
 		RemoveSpawns.Emplace(Despawn);
 	}
+}
+
+bool UGsObjectSpawner::UpdateGameObject(float Delta)
+{
+	//스폰 오브젝트 업데이트
+	for (auto el : Spawns)
+	{
+		el->Update(Delta);
+	}
+	return true;
 }
 
 void UGsObjectSpawner::UpdateAddGameObject()

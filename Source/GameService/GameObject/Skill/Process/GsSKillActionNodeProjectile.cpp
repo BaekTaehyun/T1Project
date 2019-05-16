@@ -18,7 +18,7 @@ void FGsSKillActionNodeProjectile::Process(UGsGameObjectBase* Owner)
 void FGsSKillActionNodeProjectile::Action(UGsGameObjectBase* Owner)
 {
 	//임시 데이터 리소스 하드코딩
-	FString path = TEXT("Blueprint'/Game/Blueprints/GameObject/BP_ProjectileActor.BP_ProjectileActor'");
+	FString path = TEXT("Blueprint'/Game/Blueprint/GameObject/BP_ProjectileActor.BP_ProjectileActor'");
 	if (auto loadObject = StaticLoadObject(UObject::StaticClass(), nullptr, *path))
 	{
 		auto actor = Owner->GetActor();

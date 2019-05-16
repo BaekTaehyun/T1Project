@@ -18,7 +18,7 @@ class GAMESERVICE_API UGsGameObjectNonPlayer : public UGsGameObjectDynamic
 	
 public:
 	virtual void Initialize() override;
-	virtual void DeInitialize() override;
+	virtual void Finalize() override;
 
 public:
     virtual EGsGameObjectType GetObjectType() const override;
