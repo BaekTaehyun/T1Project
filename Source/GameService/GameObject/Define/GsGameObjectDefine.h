@@ -123,3 +123,14 @@ enum class EGsPartsType : uint8
 	FOOT,
 };
 
+/**
+* 스킬 액션 타입
+*/
+UENUM()
+enum class SkillActionType : uint8
+{
+	CreateProjectile = 1,
+};
+
+
+

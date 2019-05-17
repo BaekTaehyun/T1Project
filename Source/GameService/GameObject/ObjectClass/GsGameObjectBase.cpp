@@ -51,18 +51,6 @@ void UGsGameObjectBase::OnHit(UGsGameObjectBase* Target)
 {
 }
 
-AActor* UGsGameObjectBase::Spawn(UClass* Instance, UWorld* World, const FVector& Position, const FRotator& Dir)
-{
-	FActorSpawnParameters SpawnInfo;
-	//스폰완료 델리게이트 연결
-	//이 델리게이트는 브로드 캐스팅이다. 즉 다른 액터 스폰시에도 응답
-	//World->AddOnActorSpawnedHandler(FOnActorSpawned::FDelegate::CreateRaw(this, &UGsGameObjectBase::ActorSpawned));
-	AActor* actor = World->SpawnActor(Instance, &Position, &Dir, SpawnInfo);
-	ActorSpawned(actor);
-
-	return actor;
-}
-
 void UGsGameObjectBase::ActorSpawned(AActor* Spawn)
 {
 	if (Spawn)
