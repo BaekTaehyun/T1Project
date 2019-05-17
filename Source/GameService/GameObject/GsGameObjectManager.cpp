@@ -32,7 +32,13 @@ void AGsGameObjectManager::Initialize()
 	{
 		TypeSpawns.Emplace(el);
 	}
-	
+
+	//Tick 델리게이트 설정
+	if (TickDelegate.IsValid())
+	{
+		FTicker::GetCoreTicker().RemoveTicker(TickDelegate);
+	}
+	TickDelegate = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &AGsGameObjectManager::Update));
 }
 
 void AGsGameObjectManager::Finalize()
@@ -54,12 +60,6 @@ void AGsGameObjectManager::Update()
 	UpdateRemoveGameObject();
 	//대상 추가
 	UpdateAddGameObject();
-
-	//스폰 오브젝트 업데이트
-	for (auto el : Spawns)
-	{
-		el->Update(1.0);
-	}
 }
 
 
@@ -259,4 +259,16 @@ void AGsGameObjectManager::CallbackActorDeSpawn(AActor* Despawn)
 	{
 		RemoveSpawns.Emplace(findObj);
 	}
+}
+
+//제거 대상
+bool AGsGameObjectManager::Update(float Delta)
+{
+	//위 함수가 제거되면 기존 Update로직으로 이동
+	//스폰 오브젝트 업데이트
+	for (auto el : Spawns)
+	{
+		el->Update(Delta);
+	}
+	return true;
 }

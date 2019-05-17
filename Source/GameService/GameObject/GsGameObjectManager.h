@@ -63,6 +63,10 @@ private:
 	//추가/삭제 대상 관리
 	TArray<UGsGameObjectBase*> AddSpawns;
 	TArray<UGsGameObjectBase*> RemoveSpawns;
+
+	//Update에 Delta값이 반영되면 삭제
+	FDelegateHandle TickDelegate;
+	bool Update(float Delta);
 };
 
 typedef TGsSingleton<AGsGameObjectManager>	AGsGameObjectSingle;
