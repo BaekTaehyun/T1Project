@@ -21,7 +21,7 @@ public:
     virtual EGsGameObjectType GetObjectType() const override;
 	virtual AActor* GetActor() const override;
 
-protected:
+public:
 	virtual void ActorSpawned(AActor* Spawn) override;
 
 protected:
