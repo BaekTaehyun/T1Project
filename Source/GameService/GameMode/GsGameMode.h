@@ -15,5 +15,5 @@ class GAMESERVICE_API AGsGameMode : public AGameModeBase
 	GENERATED_BODY()
 	
 public:
-	virtual void TeleportPlayer(FString in_Tag){}
+	virtual void TeleportPlayer(FString in_Tag, bool in_waitAllLoad = false){}
 };
