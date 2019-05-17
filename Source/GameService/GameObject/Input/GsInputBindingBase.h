@@ -32,6 +32,8 @@ class GAMESERVICE_API UGsInputBindingBase : public UObject
 	
 public:
 	virtual void Initialize();
+	virtual void Finalize();
+
 	virtual void SetBinding(UInputComponent* input);
 
 protected:

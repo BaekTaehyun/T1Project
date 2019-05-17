@@ -23,28 +23,28 @@ void UGsInputBindingLocalPlayer::SetBinding(UInputComponent* input)
 {
 	Super::SetBinding(input);
 
-	input->BindAction<FOnAttachParts>("AttachPartsH", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttachParts, EGsPartsType::HEAD);
-	input->BindAction<FOnAttachParts>("AttachPartsB", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttachParts, EGsPartsType::BODY);
-	input->BindAction<FOnAttachParts>("AttachPartsG", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttachParts, EGsPartsType::GLOVE);
-	input->BindAction<FOnAttachParts>("AttachPartsL", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttachParts, EGsPartsType::LEG);
-	input->BindAction<FOnAttachParts>("AttachPartsHair", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttachParts, EGsPartsType::HAIR);
-	input->BindAction<FOnAttachParts>("AttachPartsFace", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttachParts, EGsPartsType::FACE);
+	input->BindAction<FOnAttachParts>("LocalAttachPartsH", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttachParts, EGsPartsType::HEAD);
+	input->BindAction<FOnAttachParts>("LocalAttachPartsB", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttachParts, EGsPartsType::BODY);
+	input->BindAction<FOnAttachParts>("LocalAttachPartsG", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttachParts, EGsPartsType::GLOVE);
+	input->BindAction<FOnAttachParts>("LocalAttachPartsL", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttachParts, EGsPartsType::LEG);
+	input->BindAction<FOnAttachParts>("LocalAttachPartsHair", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttachParts, EGsPartsType::HAIR);
+	input->BindAction<FOnAttachParts>("LocalAttachPartsFace", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttachParts, EGsPartsType::FACE);
 
 	//key
-	input->BindAction<FOnAttack1>("Attack1", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttack1, 1);
-	input->BindAction<FOnAttack1>("Attack2", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttack1, 2);
-	input->BindAction<FOnAttack1>("Attack3", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttack1, 3);
+	input->BindAction<FOnAttack1>("LocalAttack1", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttack1, 1);
+	input->BindAction<FOnAttack1>("LocalAttack2", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttack1, 2);
+	input->BindAction<FOnAttack1>("LocalAttack3", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttack1, 3);
 
 	//Movement
-	input->BindAction("MoveForward", IE_Pressed, this, &UGsInputBindingLocalPlayer::OnMoveForward);
-	input->BindAction("MoveBackward", IE_Pressed, this, &UGsInputBindingLocalPlayer::OnMoveBackward);
-	input->BindAction("MoveLeft", IE_Pressed, this, &UGsInputBindingLocalPlayer::OnMoveLeft);
-	input->BindAction("MoveRight", IE_Pressed, this, &UGsInputBindingLocalPlayer::OnMoveRight);
-	input->BindAction("MoveStop", IE_Released, this, &UGsInputBindingLocalPlayer::OnMoveStop);
+	input->BindAction("LocalMoveForward", IE_Pressed, this, &UGsInputBindingLocalPlayer::OnMoveForward);
+	input->BindAction("LocalMoveBackward", IE_Pressed, this, &UGsInputBindingLocalPlayer::OnMoveBackward);
+	input->BindAction("LocalMoveLeft", IE_Pressed, this, &UGsInputBindingLocalPlayer::OnMoveLeft);
+	input->BindAction("LocalMoveRight", IE_Pressed, this, &UGsInputBindingLocalPlayer::OnMoveRight);
+	input->BindAction("LocalMoveStop", IE_Released, this, &UGsInputBindingLocalPlayer::OnMoveStop);
 
-	input->BindAxis("MoveRotate", this, &UGsInputBindingLocalPlayer::OnMoveRotateYaw);
-	input->BindAxis("Turn", this, &UGsInputBindingLocalPlayer::OnMoveRotateYaw);
-	input->BindAxis("LookUp", this, &UGsInputBindingLocalPlayer::OnMoveRotatePitch);
+	input->BindAxis("LocalMoveRotate", this, &UGsInputBindingLocalPlayer::OnMoveRotateYaw);
+	input->BindAxis("LocalTurn", this, &UGsInputBindingLocalPlayer::OnMoveRotateYaw);
+	input->BindAxis("LocalLookUp", this, &UGsInputBindingLocalPlayer::OnMoveRotatePitch);
 }
 
 void UGsInputBindingLocalPlayer::OnAttachParts(EGsPartsType Type)

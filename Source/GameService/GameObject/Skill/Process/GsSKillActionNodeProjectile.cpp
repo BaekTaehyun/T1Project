@@ -4,7 +4,7 @@
 #include "Engine/World.h"
 #include "GSGameInstance.h"
 #include "GameObject/ObjectClass/GsGameObjectBase.h"
-#include "GameObject/GsObjectSpawner.h"
+#include "GameObject/GsGameObjectManager.h"
 
 FGsSKillActionNodeProjectile::FGsSKillActionNodeProjectile(const FGsSkillActionDataBase& Data) :
 	FGsSkillActionNodeBase(Data)
@@ -18,7 +18,7 @@ void FGsSKillActionNodeProjectile::Process(UGsGameObjectBase* Owner)
 void FGsSKillActionNodeProjectile::Action(UGsGameObjectBase* Owner)
 {
 	//임시 데이터 리소스 하드코딩
-	FString path = TEXT("Blueprint'/Game/Blueprints/GameObject/BP_ProjectileActor.BP_ProjectileActor'");
+	FString path = TEXT("Blueprint'/Game/Blueprint/GameObject/BP_ProjectileActor.BP_ProjectileActor'");
 	if (auto loadObject = StaticLoadObject(UObject::StaticClass(), nullptr, *path))
 	{
 		auto actor = Owner->GetActor();
@@ -30,7 +30,7 @@ void FGsSKillActionNodeProjectile::Action(UGsGameObjectBase* Owner)
 		//이걸 하지않으면 AActor클래스 정보를 스폰시에 찾을수 없는듯 하다.
 		if (UBlueprint* castBP = Cast<UBlueprint>(loadObject))
 		{
-			GSpawner()->SpawnProjectile(castBP->GeneratedClass, Pos, Rot);
+			GGameObj()->SpawnProjectile(castBP->GeneratedClass, Pos, Rot);
 		}
 	}
 }

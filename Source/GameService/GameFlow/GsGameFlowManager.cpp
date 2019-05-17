@@ -49,8 +49,8 @@ void FGsGameFlowManager::Initialize()
 	//_messagehandler.GetDeliveryAddress().Add(MessageSystem::ID::RECONNECT_START, delFunc);
 
 	//// 메시지 등록 2)
-	GSCHECK(GSFMessageSingle::Instance);
-	GSFMessageSingle::Instance->GetSystem().AddRaw(MessageSystem::ID::RECONNECT_END, this, &FGsGameFlowManager::OnReconnectionEnd);
+	GSCHECK(GMessage());
+	GMessage()->GetSystem().AddRaw(MessageSystem::ID::RECONNECT_END, this, &FGsGameFlowManager::OnReconnectionEnd);
 	//_messagehandler.
 
 	//// 메시지 호출 1)
@@ -59,7 +59,7 @@ void FGsGameFlowManager::Initialize()
 	//_messagehandler.SendMessageC(GSTMessage<MessageSystem::ID, GSFMessageNone>(MessageSystem::ID::RECONNECT_END, GTSMessageNone()));
 
 	//// 메시지 호출 2)
-	GSFMessageSingle::Instance->GetSystem().SendMessage(MessageSystem::ID::RECONNECT_END);
+	GMessage()->GetSystem().SendMessage(MessageSystem::ID::RECONNECT_END);
 }
 
 void FGsGameFlowManager::Finalize()

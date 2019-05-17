@@ -14,9 +14,9 @@ void UGsGameObjectProjectile::Initialize()
     SET_FLAG_TYPE(ObjectType, UGsGameObjectProjectile::GetObjectType());
 }
 
-void UGsGameObjectProjectile::DeInitialize()
+void UGsGameObjectProjectile::Finalize()
 {
-	Super::DeInitialize();
+	Super::Finalize();
 }
 
 void UGsGameObjectProjectile::ActorSpawned(AActor* Spawn)

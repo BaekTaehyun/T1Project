@@ -3,6 +3,7 @@
 #include "GsGameInstance.h"
 #include "GameService.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
+#include "class/GsSpawn.h"
 
 //-------------------------------------------------------------------------------
 // 게임초기화 순서
@@ -28,7 +29,10 @@ void UGsGameInstance::Init()
 	_manage.InsertInstance(new FGsMessageManager());
 	_manage.InsertInstance(new FGsGameFlowManager());
 	_manage.InsertInstance(new FGsNetManager());
+	//_manage.InsertInstance(NewObject<UGsObjectSpawner>());
 
+	spawner = GetWorld()->SpawnActor<AGsGameObjectManager>();
+	spawner->Initialize();
 	
 
 	for(auto& mng : _manage.Get())
@@ -37,6 +41,7 @@ void UGsGameInstance::Init()
 	}
 
 	GetTimerManager().SetTimer(_manageTickHandle, this, &UGsGameInstance::Update, 0.5f, true, 0.0f);
+
 }
 
 void UGsGameInstance::Shutdown()
@@ -58,6 +63,15 @@ void UGsGameInstance::Shutdown()
 void UGsGameInstance::Update()
 {
 	GSLOG_S(Warning);
+	for (auto& mng : _manage.Get())
+	{
+		if (mng.IsValid())
+		{
+			mng->Update();
+		}
+	}
+
+	spawner->Update();
 }
 
 

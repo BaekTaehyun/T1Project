@@ -34,7 +34,7 @@ void UGsGameObjectBase::Initialize()
     SET_FLAG_TYPE(ObjectType, UGsGameObjectBase::GetObjectType());
 }
 
-void UGsGameObjectBase::DeInitialize()
+void UGsGameObjectBase::Finalize()
 {
 	//액터가 존재한다면 소멸
 	if (AActor* actor = GetActor())

@@ -174,6 +174,66 @@ FGuid UFileDownloadManager::AddTaskByUrl(const FString& InUrl, const FString& In
 	return Task->GetGuid();
 }
 
+FGuid UFileDownloadManager::AddTaskByUrlCpp(const FString& InUrl,
+	const FString& InDirectory, const FString& InFileName, bool InOverride,
+	TFunction<void(ETaskEvent InEvent, const FTaskInformation& InInfo)>
+	InProcessTaskEvent)
+{
+	FString TmpDir = InDirectory;
+	if (TmpDir.IsEmpty())
+	{
+		//https://www.google.com/
+		static int32 URLTag = 8;
+		int32 StartSlash = InUrl.Find(FString("/"), ESearchCase::IgnoreCase, ESearchDir::FromStart, URLTag);
+		int32 LastSlash = InUrl.Find(FString("/"), ESearchCase::IgnoreCase, ESearchDir::FromEnd);
+		FString UrlDirectory = InUrl.Mid(StartSlash, LastSlash - StartSlash);
+
+		TmpDir = FPaths::ProjectDir() + UrlDirectory;
+	}
+	TSharedPtr<DownloadTask>Task = MakeShareable(new DownloadTask(InUrl, TmpDir, InFileName, InOverride));
+
+	if (Task.IsValid() == false)
+	{
+		FGuid ret;
+		ret.Invalidate();
+		return ret;
+	}
+
+	UE_LOG(LogFileDownloader, Warning,
+		TEXT("AddTaskByUrlCpp task is valide == true - path: %s")
+		, *TmpDir);
+
+	for (int32 i = 0; i < TaskList.Num(); ++i)
+	{
+		if (TaskList[i]->GetSourceUrl() == Task->GetSourceUrl())
+		{
+			//任务存在于任务列表
+			return TaskList[i]->GetGuid();
+		}
+	}
+
+	this->ProcessTaskEvent = InProcessTaskEvent;
+
+
+	Task->ProcessTaskEvent = [this](ETaskEvent InEvent, const FTaskInformation & InInfo)
+	{
+		if (this != nullptr)
+		{
+			this->OnTaskEvent(InEvent, InInfo);
+			// 寇何 历厘 妮归 龋免
+			if (this->ProcessTaskEvent != nullptr)
+			{
+				this->ProcessTaskEvent(InEvent, InInfo);
+			}
+		}
+
+
+	};
+
+	TaskList.Add(Task);
+	return Task->GetGuid();
+}
+
 void UFileDownloadManager::OnTaskEvent(ETaskEvent InEvent, const FTaskInformation& InInfo)
 {
 	OnDlManagerEvent.Broadcast(InEvent, InInfo);

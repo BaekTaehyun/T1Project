@@ -5,6 +5,9 @@
 #include "CoreMinimal.h"
 #include "TaskInformation.h"
 #include "Tickable.h"
+#include "DownloadEvent.h"
+#include "FileDownloader.h"
+
 #include "FileDownloadManager.Generated.h"
 
 
@@ -104,6 +107,26 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FString DefaultDirectory = TEXT("FileDownload");
+
+
+	// c++ 파일 처리 콜백
+	TFunction<void(ETaskEvent InEvent, const FTaskInformation& InInfo)> ProcessTaskEvent = [this](
+		ETaskEvent InEvent, const FTaskInformation & InInfo)
+	{
+		if (InEvent == ETaskEvent::START_DOWNLOAD)
+		{
+			UE_LOG(LogFileDownloader, Warning, TEXT("%s  %d  Please use FileDownloadManager instead DownloadTask to download file."), __FUNCTION__, __LINE__);
+		}
+	};
+
+
+	// cpp에서 사용하는 task by url
+	// tfunction이 UFUNCTION있으면 에러나서
+	FGuid AddTaskByUrlCpp(const FString& InUrl, const FString& InDirectory = TEXT(""),
+		const FString& InFileName = TEXT(""), bool InOverride = false,
+		TFunction<void(ETaskEvent InEvent, const FTaskInformation& InInfo)>
+		InProcessTaskEvent = nullptr);
+
 
 protected:
 

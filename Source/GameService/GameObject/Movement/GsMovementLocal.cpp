@@ -2,6 +2,7 @@
 
 
 #include "GsMovementLocal.h"
+#include "GameService.h"
 #include "GameObject/ActorExtend/GsLocalCharacter.h"
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 #include "GameObject/State/GsFSMManager.h"
@@ -18,9 +19,9 @@ void FGsMovementLocal::Initialize(UGsGameObjectBase* owner)
     }
 }
 
-void FGsMovementLocal::DeInitialize()
+void FGsMovementLocal::Finalize()
 {
-	Super::DeInitialize();
+	Super::Finalize();
 }
 
 void FGsMovementLocal::Update(float Delta)
@@ -46,6 +47,8 @@ void FGsMovementLocal::Update(float Delta)
                 Local->GetBaseFSM()->ChangeState<FGsStateRun>();
             }
         }
+
+		GSLOG(Warning, TEXT("MoveSpeed %f Velocity %f %f %f"), MoveSpeed, CharMovement->Velocity.X, CharMovement->Velocity.Y, CharMovement->Velocity.Z);
     }
 }
 

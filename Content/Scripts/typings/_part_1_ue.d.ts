@@ -1,3 +1,89 @@
+declare type EWidgetSpace = 'World' | 'Screen' | 'EWidgetSpace_MAX';
+declare var EWidgetSpace : { World:'World',Screen:'Screen',EWidgetSpace_MAX:'EWidgetSpace_MAX', };
+declare type EWidgetTimingPolicy = 'RealTime' | 'GameTime' | 'EWidgetTimingPolicy_MAX';
+declare var EWidgetTimingPolicy : { RealTime:'RealTime',GameTime:'GameTime',EWidgetTimingPolicy_MAX:'EWidgetTimingPolicy_MAX', };
+declare type EWidgetBlendMode = 'Opaque' | 'Masked' | 'Transparent' | 'EWidgetBlendMode_MAX';
+declare var EWidgetBlendMode : { Opaque:'Opaque',Masked:'Masked',Transparent:'Transparent',EWidgetBlendMode_MAX:'EWidgetBlendMode_MAX', };
+declare type EWidgetGeometryMode = 'Plane' | 'Cylinder' | 'EWidgetGeometryMode_MAX';
+declare var EWidgetGeometryMode : { Plane:'Plane',Cylinder:'Cylinder',EWidgetGeometryMode_MAX:'EWidgetGeometryMode_MAX', };
+declare class WidgetComponent extends MeshComponent { 
+	Space: EWidgetSpace;
+	TimingPolicy: EWidgetTimingPolicy;
+	WidgetClass: UnrealEngineClass;
+	DrawSize: IntPoint;
+	bManuallyRedraw: boolean;
+	bRedrawRequested: boolean;
+	RedrawTime: number;
+	CurrentDrawSize: IntPoint;
+	bDrawAtDesiredSize: boolean;
+	Pivot: Vector2D;
+	bReceiveHardwareInput: boolean;
+	bWindowFocusable: boolean;
+	bApplyGammaCorrection: boolean;
+	OwnerPlayer: LocalPlayer;
+	BackgroundColor: LinearColor;
+	TintColorAndOpacity: LinearColor;
+	OpacityFromTexture: number;
+	BlendMode: EWidgetBlendMode;
+	bIsTwoSided: boolean;
+	TickWhenOffscreen: boolean;
+	Widget: UserWidget;
+	BodySetup: BodySetup;
+	TranslucentMaterial: MaterialInterface;
+	TranslucentMaterial_OneSided: MaterialInterface;
+	OpaqueMaterial: MaterialInterface;
+	OpaqueMaterial_OneSided: MaterialInterface;
+	MaskedMaterial: MaterialInterface;
+	MaskedMaterial_OneSided: MaterialInterface;
+	RenderTarget: TextureRenderTarget2D;
+	MaterialInstance: MaterialInstanceDynamic;
+	bAddedToScreen: boolean;
+	bEditTimeUsable: boolean;
+	SharedLayerName: string;
+	LayerZOrder: number;
+	GeometryMode: EWidgetGeometryMode;
+	CylinderArcAngle: number;
+	static Load(ResourceName: string): WidgetComponent;
+	static Find(Outer: UObject, ResourceName: string): WidgetComponent;
+	static GetDefaultObject(): WidgetComponent;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): WidgetComponent;
+	SetWindowFocusable(bInWindowFocusable: boolean): void;
+	SetWidgetSpace(NewSpace: EWidgetSpace): void;
+	SetWidget(Widget: UserWidget): void;
+	SetTwoSided(bWantTwoSided: boolean): void;
+	SetTintColorAndOpacity(NewTintColorAndOpacity: LinearColor): void;
+	SetTickWhenOffscreen(bWantTickWhenOffscreen: boolean): void;
+	SetRedrawTime(bInRedrawTime: number): void;
+	SetPivot(InPivot: Vector2D): void;
+	SetOwnerPlayer(LocalPlayer: LocalPlayer): void;
+	SetManuallyRedraw(bUseManualRedraw: boolean): void;
+	SetGeometryMode(InGeometryMode: EWidgetGeometryMode): void;
+	SetDrawSize(Size: Vector2D): void;
+	SetDrawAtDesiredSize(InbDrawAtDesiredSize: boolean): void;
+	SetCylinderArcAngle(InCylinderArcAngle: number): void;
+	SetBackgroundColor(NewBackgroundColor: LinearColor): void;
+	RequestRedraw(): void;
+	GetWindowFocusable(): boolean;
+	GetWidgetSpace(): EWidgetSpace;
+	GetUserWidgetObject(): UserWidget;
+	GetTwoSided(): boolean;
+	GetTickWhenOffscreen(): boolean;
+	GetRenderTarget(): TextureRenderTarget2D;
+	GetRedrawTime(): number;
+	GetPivot(): Vector2D;
+	GetOwnerPlayer(): LocalPlayer;
+	GetMaterialInstance(): MaterialInstanceDynamic;
+	GetManuallyRedraw(): boolean;
+	GetGeometryMode(): EWidgetGeometryMode;
+	GetDrawSize(): Vector2D;
+	GetDrawAtDesiredSize(): boolean;
+	GetCylinderArcAngle(): number;
+	GetCurrentDrawSize(): Vector2D;
+	static C(Other: UObject | any): WidgetComponent;
+}
+
+declare type EWidgetInteractionSource = 'World' | 'Mouse' | 'CenterScreen' | 'Custom' | 'EWidgetInteractionSource_MAX';
+declare var EWidgetInteractionSource : { World:'World',Mouse:'Mouse',CenterScreen:'CenterScreen',Custom:'Custom',EWidgetInteractionSource_MAX:'EWidgetInteractionSource_MAX', };
 declare class WidgetInteractionComponent extends SceneComponent { 
 	OnHoveredWidgetChanged: UnrealEngineMulticastDelegate<(WidgetComponent: WidgetComponent, PreviousWidgetComponent: WidgetComponent) => void>;
 	VirtualUserIndex: number;
@@ -19750,70 +19836,5 @@ declare class MaterialExpressionNoise extends MaterialExpression {
 	static GetDefaultObject(): MaterialExpressionNoise;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MaterialExpressionNoise;
 	static C(Other: UObject | any): MaterialExpressionNoise;
-}
-
-declare class MaterialExpressionNormalize extends MaterialExpression { 
-	VectorInput: ExpressionInput;
-	static Load(ResourceName: string): MaterialExpressionNormalize;
-	static Find(Outer: UObject, ResourceName: string): MaterialExpressionNormalize;
-	static GetDefaultObject(): MaterialExpressionNormalize;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MaterialExpressionNormalize;
-	static C(Other: UObject | any): MaterialExpressionNormalize;
-}
-
-declare class MaterialExpressionObjectBounds extends MaterialExpression { 
-	static Load(ResourceName: string): MaterialExpressionObjectBounds;
-	static Find(Outer: UObject, ResourceName: string): MaterialExpressionObjectBounds;
-	static GetDefaultObject(): MaterialExpressionObjectBounds;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MaterialExpressionObjectBounds;
-	static C(Other: UObject | any): MaterialExpressionObjectBounds;
-}
-
-declare class MaterialExpressionObjectOrientation extends MaterialExpression { 
-	static Load(ResourceName: string): MaterialExpressionObjectOrientation;
-	static Find(Outer: UObject, ResourceName: string): MaterialExpressionObjectOrientation;
-	static GetDefaultObject(): MaterialExpressionObjectOrientation;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MaterialExpressionObjectOrientation;
-	static C(Other: UObject | any): MaterialExpressionObjectOrientation;
-}
-
-declare class MaterialExpressionObjectPositionWS extends MaterialExpression { 
-	static Load(ResourceName: string): MaterialExpressionObjectPositionWS;
-	static Find(Outer: UObject, ResourceName: string): MaterialExpressionObjectPositionWS;
-	static GetDefaultObject(): MaterialExpressionObjectPositionWS;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MaterialExpressionObjectPositionWS;
-	static C(Other: UObject | any): MaterialExpressionObjectPositionWS;
-}
-
-declare class MaterialExpressionObjectRadius extends MaterialExpression { 
-	static Load(ResourceName: string): MaterialExpressionObjectRadius;
-	static Find(Outer: UObject, ResourceName: string): MaterialExpressionObjectRadius;
-	static GetDefaultObject(): MaterialExpressionObjectRadius;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MaterialExpressionObjectRadius;
-	static C(Other: UObject | any): MaterialExpressionObjectRadius;
-}
-
-declare class MaterialExpressionOneMinus extends MaterialExpression { 
-	Input: ExpressionInput;
-	static Load(ResourceName: string): MaterialExpressionOneMinus;
-	static Find(Outer: UObject, ResourceName: string): MaterialExpressionOneMinus;
-	static GetDefaultObject(): MaterialExpressionOneMinus;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MaterialExpressionOneMinus;
-	static C(Other: UObject | any): MaterialExpressionOneMinus;
-}
-
-declare class MaterialExpressionPanner extends MaterialExpression { 
-	Coordinate: ExpressionInput;
-	Time: ExpressionInput;
-	Speed: ExpressionInput;
-	SpeedX: number;
-	SpeedY: number;
-	ConstCoordinate: any;
-	bFractionalPart: boolean;
-	static Load(ResourceName: string): MaterialExpressionPanner;
-	static Find(Outer: UObject, ResourceName: string): MaterialExpressionPanner;
-	static GetDefaultObject(): MaterialExpressionPanner;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MaterialExpressionPanner;
-	static C(Other: UObject | any): MaterialExpressionPanner;
 }
 

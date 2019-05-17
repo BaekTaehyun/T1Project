@@ -19,9 +19,10 @@ public:
 	virtual ~UGsGameObjectBase();
 
 	virtual void Initialize();
-	virtual void DeInitialize();
+	virtual void Finalize();
     virtual void Update(float Delta);
 
+	__declspec(deprecated("** Using UGsGameObjectManager **"))
     virtual AActor* Spawn(UClass* Instance, UWorld* World, const FVector& Position, const FRotator& Dir);
     //충돌 이벤트
     virtual void OnHit(UGsGameObjectBase* Target);

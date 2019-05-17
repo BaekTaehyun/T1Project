@@ -12,12 +12,9 @@
  */
 class GAMESERVICE_API FGsMovementBase
 {
-protected:
-	typedef FGsMovementBase Super;
-
 public:
     virtual void Initialize(UGsGameObjectBase* Owner);
-    virtual void DeInitialize();
+	virtual void Finalize();
     virtual void Update(float Delta);
 
 public:
