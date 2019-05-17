@@ -30,7 +30,7 @@ public:
 	virtual class FGsSkillBase* GetSkill()  const override;
 	virtual class FGsPartsBase* GetParts() const override;
 
-protected:
+public:
 	virtual void ActorSpawned(AActor* Spawn) override;
 
 private:

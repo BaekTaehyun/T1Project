@@ -48,7 +48,7 @@ public:
     virtual FVector GetScale() const;
     //
 
-protected:
+public:
 	//스폰 완료시 호출
 	virtual void ActorSpawned(AActor* Spawn);
 

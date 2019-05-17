@@ -108,6 +108,7 @@ UGsGameObjectBase* AGsGameObjectManager::SpawnPlayer(UClass* Uclass, const FVect
 	local->Initialize();
 	if (auto actor = TGsSpawn::BPClass(GetWorld(), Uclass, Pos, Rot))
 	{
+		local->ActorSpawned(actor);
 		AddSpawns.Emplace(local);
 		actor->OnDestroyed.AddDynamic(this, &AGsGameObjectManager::CallbackActorDeSpawn);
 	}
@@ -143,6 +144,7 @@ UGsGameObjectBase* AGsGameObjectManager::SpawnNpc(UClass* Uclass, const FVector&
 
 			if (auto actor = TGsSpawn::BPClass(GetWorld(), Uclass, Pos, Rot))
 			{
+				npc->ActorSpawned(actor);
 				AddSpawns.Emplace(npc);
 
                 //액터 자동 소멸 콜백을 연결하여 관리 대상 동기화를 맞춤
@@ -162,7 +164,9 @@ UGsGameObjectBase* AGsGameObjectManager::SpawnProjectile(UClass* Uclass, const F
 	if (auto actor = TGsSpawn::BPClass(GetWorld(), Uclass, Pos, Rot))
 	{
 		AddSpawns.Emplace(projectile);
+		projectile->ActorSpawned(actor);
 		actor->OnDestroyed.AddDynamic(this, &AGsGameObjectManager::CallbackActorDeSpawn);
+
 
 		//충돌 처리
 		if (UPrimitiveComponent* collider = actor->FindComponentByClass<UPrimitiveComponent>())

@@ -29,7 +29,7 @@ public:
 public:
 	virtual void OnHit(UGsGameObjectBase* Target) override;
 
-protected:
+public:
 	virtual void ActorSpawned(AActor* Spawn) override;
 
 protected:
