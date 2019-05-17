@@ -26,7 +26,7 @@ public class GameService : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[] {
             "OpenSSL",
             "JsonUtilities",
-
+            "Json",
         });
 
 		// Uncomment if you are using Slate UI
