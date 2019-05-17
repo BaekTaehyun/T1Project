@@ -31,9 +31,9 @@ void FGsMovementNpc::Initialize(UGsGameObjectBase* owner)
     }
 }
 
-void FGsMovementNpc::DeInitialize()
+void FGsMovementNpc::Finalize()
 {
-	Super::DeInitialize();
+	Super::Finalize();
 }
 
 void FGsMovementNpc::Update(float Delta)

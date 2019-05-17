@@ -17,7 +17,7 @@ class GAMESERVICE_API UGsGameObjectPlayer : public UGsGameObjectDynamic
 	
 public:
 	virtual void Initialize() override;
-	virtual void DeInitialize() override;
+	virtual void Finalize() override;
     virtual void Update(float Delta) override;
 
 public:    

@@ -11,7 +11,9 @@
 #include "GsMessageGame.h"
 
 
-class FGsMessageManager : TGsSingleton<FGsMessageManager>, public IGsManager
+class FGsMessageManager : 
+	public TGsSingleton<FGsMessageManager>,
+	public IGsManager
 {
 	typedef TGsMessageHandler<MessageSystem::ID>	MSystem;
 	typedef TGsMessageHandler<MessageNet::ID>		MNet;
@@ -38,5 +40,5 @@ public:
 	MStage& GetStage() { return _stage; }
 };
 
-typedef TGsSingleton<FGsMessageManager>	GSFMessageSingle;
-#define GMessage() GSFMessageSingle::Instance
+typedef TGsSingleton<FGsMessageManager>	FGsMessageSingle;
+#define GMessage() FGsMessageSingle::Instance

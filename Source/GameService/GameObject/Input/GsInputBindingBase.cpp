@@ -4,7 +4,10 @@
 
 void UGsInputBindingBase::Initialize()
 {
+}
 
+void UGsInputBindingBase::Finalize()
+{
 }
 
 void UGsInputBindingBase::SetBinding(UInputComponent* input)

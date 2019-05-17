@@ -36,9 +36,9 @@ void UGsGameObjectLocal::Initialize()
 	Actor = NULL;
 }
 
-void UGsGameObjectLocal::DeInitialize()
+void UGsGameObjectLocal::Finalize()
 {
-	Super::DeInitialize();
+	Super::Finalize();
 }
 
 void UGsGameObjectLocal::ActorSpawned(AActor* Spawn)
@@ -59,12 +59,12 @@ void UGsGameObjectLocal::ActorSpawned(AActor* Spawn)
         Skill = new FGsSKillLocal();
         Skill->Initialize(this);
         //임시 데이터 적용
-        Skill->LoadData(TEXT("SkillDataContainerBase'/Game/Resource/DataAsset/LocalSkills.LocalSkills'"));
+        Skill->LoadData(TEXT("GsSkillDataContainerBase'/Game/Resource/DataAsset/LocalSkill.LocalSkill'"));
 
         Parts = new FGsPartsLocal();
         Parts->Initialize(this);
         //임시 데이터 적용
-        Parts->LoadData(TEXT("PartsDataContainerBase'/Game/Resource/DataAsset/LocalParts.LocalParts'"));
+        Parts->LoadData(TEXT("GsPartsDataContainerBase'/Game/Resource/DataAsset/LocalParts.LocalParts'"));
 
         //기본 상태 설정
         Fsm->ChangeState<FGsStateSpawn>();

@@ -8,7 +8,7 @@ void FGsMovementBase::Initialize(UGsGameObjectBase* owner)
     Owner = owner;
 }
 
-void FGsMovementBase::DeInitialize()
+void FGsMovementBase::Finalize()
 {
 }
 

@@ -123,15 +123,18 @@ AT1Player::AT1Player()
 	AIControllerClass = AT1AIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
-	
-	//TestMet();
+	// Test
+	CreateUI();
 }
 
 // Called when the game starts or when spawned
 void AT1Player::BeginPlay()
 {
-	Super::BeginPlay();	
-	
+	Super::BeginPlay();
+
+	// Test
+	DisplayObj();
+
 	//bak1210 소켓에 기본클래스 할당하는 코드
 	/*FName WeaponSocket(TEXT("hand_rSocket"));
 	auto CurWeapon = GetWorld()->SpawnActor<AT1AWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
@@ -141,39 +144,35 @@ void AT1Player::BeginPlay()
 	}*/
 }
 
-void AT1Player::TestMet()
+void AT1Player::CreateUI()
 {
-	//TSharedPtr<int> _sharedPtr;
-	//UBlueprintGeneratedClass* _loadBP = LoadObject<UBlueprintGeneratedClass>(NULL, TEXT("/Game/Blueprint/Test_BluePrint.Test_BluePrint_C"));
-
-		// Test Code
 	static ConstructorHelpers::FClassFinder<UUserWidget> _myUserWidget(TEXT("/Game/Blueprint/Test_BluePrint.Test_BluePrint_C"));
 	if (_myUserWidget.Succeeded())
 	{
+		m_UserWidget = _myUserWidget.Class;
 		UE_LOG(LogTemp, Log, TEXT("_myUserWidget.Succeeded()  true"));
-		if (nullptr == GetWorld())
-		{
-			UE_LOG(LogTemp, Log, TEXT("GetWorld() is null"));
-		}
-		if (nullptr != GetWorld())
-		{
-			UUserWidget* _createWidget = CreateWidget(GetWorld()->GetFirstPlayerController(), _myUserWidget.Class);
-			UMyUserWidget* _cast = Cast<UMyUserWidget>(_createWidget);
-			if (nullptr != _cast)
-			{
-				//_cast->TestUI();
-				UE_LOG(LogTemp, Log, TEXT("In _cast !!"));
-			}
-			else
-			{
-				UE_LOG(LogTemp, Log, TEXT("_cast is null"));
-			}
-		}
-
-		//_cast->TestUI();
 	}
+}
 
-	
+void AT1Player::DisplayObj()
+{
+	if (nullptr == GetWorld())
+	{
+		UE_LOG(LogTemp, Log, TEXT("GetWorld() is null"));
+	}
+	if (nullptr != GetWorld())
+	{
+		UUserWidget* _createWidget = CreateWidget(GetWorld()->GetFirstPlayerController(), m_UserWidget);
+		UMyUserWidget* _cast = Cast<UMyUserWidget>(_createWidget);
+		if (nullptr != _cast)
+		{
+			_cast->TestUI();
+		}
+		else
+		{
+			UE_LOG(LogTemp, Log, TEXT("_cast is null"));
+		}
+	}
 }
 
 

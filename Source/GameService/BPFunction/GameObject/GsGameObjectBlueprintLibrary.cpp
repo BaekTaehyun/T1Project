@@ -2,25 +2,24 @@
 
 
 #include "GsGameObjectBlueprintLibrary.h"
-#include "GameObject/GsObjectSpawner.h"
+#include "GameObject/GsGameObjectManager.h"
 
 void UGsGameObjectBlueprintLibrary::SpawnPlayer(TSubclassOf<ACharacter> ActorClass, const FVector& StartPos, const FVector& Offset)
 {
-	GSpawner()->SpawnPlayer(ActorClass.Get(), StartPos + Offset, FRotator(0.f, 0.f, 0.f));
+	GGameObj()->SpawnPlayer(ActorClass.Get(), StartPos + Offset, FRotator(0.f, 0.f, 0.f));
 }
 
 AActor* UGsGameObjectBlueprintLibrary::SpawnOnGround(TSubclassOf<AActor> ActorClass, const FVector& StartPos, const FVector& Offset)
 {
-	auto obj = GSpawner()->SpawnNpc(ActorClass.Get(), StartPos, FRotator(0.f, 0.f, 0.f));
-	return  obj->GetActor();
+	return Cast<AActor>(GGameObj()->SpawnNpc(ActorClass.Get(), StartPos, FRotator(0.f, 0.f, 0.f)));
 }
 
 UGsGameObjectBase* UGsGameObjectBlueprintLibrary::FindGameObject(UObject* WorldContextObject, EGsGameObjectType ObjectType)
 {
-	return GSpawner()->FindObject(ObjectType);
+	return GGameObj()->FindObject(ObjectType);
 }
 
 TArray<UGsGameObjectBase*> UGsGameObjectBlueprintLibrary::FindGameObjects(UObject* WorldContextObject, EGsGameObjectType ObjectType)
 {
-    return GSpawner()->FindObjects(ObjectType);
+    return GGameObj()->FindObjects(ObjectType);
 }

@@ -22,9 +22,9 @@ void UGsGameObjectNonPlayer::Initialize()
 	Fsm->Initialize(this);
 }
 
-void UGsGameObjectNonPlayer::DeInitialize()
+void UGsGameObjectNonPlayer::Finalize()
 {
-	Super::DeInitialize();
+	Super::Finalize();
 }
 
 void UGsGameObjectNonPlayer::OnHit(UGsGameObjectBase* Target)
