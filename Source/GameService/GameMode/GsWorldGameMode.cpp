@@ -25,11 +25,12 @@ void AGsWorldGameMode::StartToLeaveMap()
 
 	if (world)
 	{
-		world->GetTimerManager().ClearTimer(_loadCompleteTimer);
+		world->GetTimerManager().ClearTimer(_ClosestLevelLoadingTimer);
+		world->GetTimerManager().ClearTimer(_VisibleLevelsLoadingTimer);
 	}
 }
 
-void AGsWorldGameMode::TeleportPlayer(FString in_tag)
+void AGsWorldGameMode::TeleportPlayer(FString in_tag, bool in_waitAllLoad)
 {
 	UWorld* world = GetWorld();
 
@@ -52,11 +53,26 @@ void AGsWorldGameMode::TeleportPlayer(FString in_tag)
 					if (baseLevel->TryGetPlayerSpawnPoint(in_tag, point))
 					{						
 						SetPlayerUnspawnedState();
-						character->SetActorLocation(point->GetActorLocation());																		
-						world->UpdateLevelStreaming();						
-						
-						world->GetTimerManager().ClearTimer(_loadCompleteTimer);
-						world->GetTimerManager().SetTimer(_loadCompleteTimer, this, &AGsWorldGameMode::OnCheckLevelsLoadComplete, 0.1f, true, 0);
+						character->SetActorLocation(point->GetActorLocation());
+						world->UpdateLevelStreaming();
+
+						if (in_waitAllLoad)
+						{
+							world->GetTimerManager().ClearTimer(_VisibleLevelsLoadingTimer);
+							world->GetTimerManager().SetTimer(_VisibleLevelsLoadingTimer
+								, this
+								, &AGsWorldGameMode::OnCheckVisibleLevelsLoadComplete
+								, 0.1f, true, 0);
+						}
+						else
+						{
+							_ClosestLevel = GetClosestLevel();
+							world->GetTimerManager().ClearTimer(_ClosestLevelLoadingTimer);
+							world->GetTimerManager().SetTimer(_ClosestLevelLoadingTimer
+								, this
+								, &AGsWorldGameMode::OnCheckClosestLevelsLoadComplete
+								, 0.1f, true, 0);
+						}						
 					}											
 				}
 			}		
@@ -64,7 +80,7 @@ void AGsWorldGameMode::TeleportPlayer(FString in_tag)
 	}
 }
 
-bool AGsWorldGameMode::IsWorldCompositionLoadComplete()
+bool AGsWorldGameMode::IsLoadedVisibleLevels()
 {
 	UWorld* world = GetWorld();
 
@@ -86,11 +102,19 @@ bool AGsWorldGameMode::IsWorldCompositionLoadComplete()
 				if (iter.StreamingLevel)
 				{
 					if (iter.StreamingLevel->IsStreamingStatePending())
-					{					
+					{	
+						FString temp = "streaming bound center : " + iter.StreamingLevel->GetStreamingVolumeBounds().GetCenter().ToString();
+						
+						UE_LOG(LogTemp, Log, TEXT("%s"), *temp);
+
+						temp = "level location : " + iter.StreamingLevel->LevelTransform.GetLocation().ToString();
+
+						UE_LOG(LogTemp, Log, TEXT("%s"), *temp);
+
 						return false;
 					}
 				}
-			}
+			}			
 
 			return true;
 		}
@@ -99,9 +123,9 @@ bool AGsWorldGameMode::IsWorldCompositionLoadComplete()
 	return false;
 }
 
-void AGsWorldGameMode::OnCheckLevelsLoadComplete()
+void AGsWorldGameMode::OnCheckVisibleLevelsLoadComplete()
 {
-	if (IsWorldCompositionLoadComplete())
+	if (IsLoadedVisibleLevels())
 	{
 		SetPlayerSpawendState();
 
@@ -109,8 +133,33 @@ void AGsWorldGameMode::OnCheckLevelsLoadComplete()
 
 		if (world)
 		{
-			world->GetTimerManager().ClearTimer(_loadCompleteTimer);
+			world->GetTimerManager().ClearTimer(_VisibleLevelsLoadingTimer);
 		}		
+	}
+}
+
+bool AGsWorldGameMode::IsLoadedClosestLevel()
+{
+	if (_ClosestLevel)
+	{
+		return !_ClosestLevel->IsStreamingStatePending();
+	}
+
+	return false;
+}
+
+void AGsWorldGameMode::OnCheckClosestLevelsLoadComplete()
+{
+	if (IsLoadedClosestLevel())
+	{
+		SetPlayerSpawendState();
+
+		UWorld* world = GetWorld();
+
+		if (world)
+		{
+			world->GetTimerManager().ClearTimer(_ClosestLevelLoadingTimer);
+		}
 	}
 }
 
@@ -152,4 +201,59 @@ void AGsWorldGameMode::SetPlayerSpawendState()
 			}
 		}
 	}
+}
+
+ULevelStreaming* AGsWorldGameMode::GetClosestLevel()
+{
+	UWorld* world = GetWorld();
+	float MinDistance = MAX_FLT;	
+
+	if (world)
+	{		
+		TArray<FDistanceVisibleLevel> VisibleLevels;
+		TArray<FDistanceVisibleLevel> HiddenLevels;
+
+		ACharacter* player = UGameplayStatics::GetPlayerCharacter(world, 0);		
+
+		if (player)
+		{
+			world->WorldComposition->GetDistanceVisibleLevels(player->GetActorLocation()
+				, VisibleLevels
+				, HiddenLevels);
+			FIntPoint worldOriginLocationXY = FIntPoint(world->OriginLocation.X, world->OriginLocation.Y);
+			FVector playerLocation = player->GetActorLocation();
+			ULevelStreaming* level = nullptr;
+
+			for (FDistanceVisibleLevel& iter : VisibleLevels)
+			{	
+				if (iter.StreamingLevel)
+				{
+					const FWorldTileInfo& tile = world->WorldComposition->GetTileInfo(iter.StreamingLevel->GetWorldAssetPackageFName());
+
+					FIntPoint levelOffsetXY = FIntPoint(tile.AbsolutePosition.X, tile.AbsolutePosition.Y);
+					FIntPoint offset = levelOffsetXY - worldOriginLocationXY;
+					FVector position = FVector(levelOffsetXY);
+					float distance = (playerLocation - position).Size();
+
+					if (MinDistance > distance)
+					{
+						MinDistance = distance;
+						level = iter.StreamingLevel;
+					}
+				}				
+			}
+
+#if WITH_EDITOR			
+			if (level)
+			{
+				FString loadedLevel = "Get closest level : " + level->GetWorldAssetPackageFName().ToString();
+				UE_LOG(LogTemp, Log, TEXT("%s"), *loadedLevel);
+			}			
+#endif
+
+			return level;
+		}		
+	}
+
+	return nullptr;
 }

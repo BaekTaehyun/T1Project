@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameMode/GsGameMode.h"
+#include "Runtime/Engine/Classes/Engine/WorldComposition.h"
 #include "GsWorldGameMode.generated.h"
 
 /**
@@ -16,17 +17,24 @@ class GAMESERVICE_API AGsWorldGameMode : public AGsGameMode
 
 private:	
 	UPROPERTY()
-		FTimerHandle _loadCompleteTimer;
+		FTimerHandle _VisibleLevelsLoadingTimer;
+	UPROPERTY()
+		FTimerHandle _ClosestLevelLoadingTimer;	
+	UPROPERTY()
+		ULevelStreaming* _ClosestLevel;
 	
 public:
 	AGsWorldGameMode();	
 	virtual void StartToLeaveMap();
 	
-	virtual void TeleportPlayer(FString in_tag);
+	virtual void TeleportPlayer(FString in_tag, bool in_waitAllLoad = false);	
 
 private:	
-	bool IsWorldCompositionLoadComplete();
-	void OnCheckLevelsLoadComplete();
+	bool IsLoadedVisibleLevels();		
+	void OnCheckVisibleLevelsLoadComplete();
+	bool IsLoadedClosestLevel();
+	void OnCheckClosestLevelsLoadComplete();
 	void SetPlayerUnspawnedState();
 	void SetPlayerSpawendState();
+	ULevelStreaming* GetClosestLevel();
 };
