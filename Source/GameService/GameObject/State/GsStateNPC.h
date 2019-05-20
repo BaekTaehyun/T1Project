@@ -12,6 +12,7 @@ template <class tState, typename tStateType>
 class GAMESERVICE_API FGsStateSingleNpc : public FGsStateTargetBase<UGsGameObjectNonPlayer, tState, tStateType>
 {
 protected:
+	//하위 Class들에서 define처리를 해야하지만 너무 많으므로... ㅠ
 	typedef FGsStateSingleNpc Super;
 
 	virtual bool OnProcessEvent(UGsGameObjectNonPlayer* Owner, tStateType StateID) override

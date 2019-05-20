@@ -11,6 +11,7 @@ template <class tState, typename tStateType>
 class GAMESERVICE_API FGsStateSingleLocal : public FGsStateTargetBase<UGsGameObjectLocal, tState, tStateType>
 {
 protected:
+	//하위 Class들에서 define처리를 해야하지만 너무 많으므로... ㅠ
 	typedef FGsStateSingleLocal Super;
 
 	virtual bool OnProcessEvent(UGsGameObjectLocal* Owner, tStateType StateID) override
@@ -50,9 +51,6 @@ public:
 
 	virtual bool OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID) override;
 	virtual void OnEnter(UGsGameObjectLocal* Owner) override;
-
-protected:
-
 };
 
 class GAMESERVICE_API FGsStateIdle : public FGsStateSingleLocal<FGsStateIdle, EGsStateBase>

@@ -6,8 +6,6 @@
 #include "GsGameObjectDynamic.h"
 #include "GsGameObjectNonPlayer.generated.h"
 
-class APawn;
-class ANpcPawn;
 /**
  * 
  */

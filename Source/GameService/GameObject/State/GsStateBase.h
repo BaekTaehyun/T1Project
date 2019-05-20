@@ -54,10 +54,11 @@ protected:
 	{
 		if (Fsm && Fsm->Prev) { Fsm->ChangeDelayPrevState(Time); }
 	}
-};
 
+//타이핑 실수 방지 내부 사용 메크로 정의
 #define ObjectBaseStateChange(State) ChangeState<State>(Owner->GetBaseFSM())
 #define ObjectUpperStateChange(State) ChangeState<State>(Owner->GetUpperFSM())
+};
 
 template <class T>
 class GAMESERVICE_API TGsStateSingleton : public IGsStateBase

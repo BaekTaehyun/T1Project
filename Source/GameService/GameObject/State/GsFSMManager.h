@@ -8,10 +8,11 @@
 class IGsStateBase;
 
 /**
- * 
+ * 상태 관리 매니져 클래스
  */
 class GAMESERVICE_API FGsFSMManager
 {
+	//ChangeState() 메서드 접근 허용 클래스(유일)
 	friend class IGsStateBase;
 
 public:
@@ -21,7 +22,6 @@ public:
 	FORCEINLINE IGsStateBase* PrevState() const	{ return Prev; }
 	bool IsState(int StateID) const;
 
-	//region
 	template <class State>
 	void Initialize(UGsGameObjectBase* Owner);		//시작 State정의
 	void DeInitialize();
@@ -32,6 +32,8 @@ public:
 	template <class tChar>
 	void Update(tChar* Owner, float Delta);
 
+	//스테이트 타입값 기반 상태 제어 처리
+	//ChangeState() 호출은 상태 클래스 내에서만 가능하도록 Private 선언
 	template <typename tStateType>
 	void ProcessEvent(tStateType StateID, FGsStateChangeFailed const& FailDelegate = NULL);
 
@@ -52,8 +54,6 @@ private:
 	UGsGameObjectBase* Owner;
 	IGsStateBase* Current;
 	IGsStateBase* Prev;
-
-	FGsStateChangeFailed DelStateChangeFailed;
 };
 
 template <class tState>

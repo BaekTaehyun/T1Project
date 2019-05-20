@@ -10,11 +10,7 @@
  */
 class GAMESERVICE_API FGsSkillBase
 {
-protected:
-	typedef FGsSkillBase Super;
-
 public:
-
 	virtual void Initialize(class UGsGameObjectBase* Owner);
 	virtual void DeInitialize();
     virtual void Update(float Delta);

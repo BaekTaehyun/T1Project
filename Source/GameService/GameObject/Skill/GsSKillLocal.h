@@ -6,12 +6,13 @@
 #include "GsSkillBase.h"
 #include "Process/GsSkillActionNodeBase.h"
 
-class ALocalPlayerObject;
 /**
  * 
  */
 class GAMESERVICE_API FGsSKillLocal : public FGsSkillBase
 {
+	typedef FGsSkillBase Super;
+
 public:
 	FGsSKillLocal();
 	virtual ~FGsSKillLocal();
