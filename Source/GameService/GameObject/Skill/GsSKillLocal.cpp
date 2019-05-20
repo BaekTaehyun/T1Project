@@ -38,7 +38,7 @@ void FGsSKillLocal::UseSKill(int ID)
 	//스킬 상태로 전환
 	auto My = Cast<UGsGameObjectLocal>(Owner);
 	auto fsm = My->GetUpperFSM();
-	fsm->ChangeState<FGsStateAttack>();
+	fsm->ProcessEvent(EGsStateUpperBase::Attack);
 }
 
 void FGsSKillLocal::LoadSKillNode()
@@ -124,6 +124,6 @@ void FGsSKillLocal::RunSkillNode(float DeltaTime)
 		//상체 유휴 상태로 전환
 		auto* My = Cast<UGsGameObjectLocal>(Owner);
 		auto* fsm = My->GetUpperFSM();
-		fsm->ChangeState<FGsStateUpperIdle>();
+		fsm->ProcessEvent(EGsStateUpperBase::Idle);
 	}
 }

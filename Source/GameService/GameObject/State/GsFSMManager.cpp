@@ -2,38 +2,22 @@
 
 #include "GsFSMManager.h"
 #include "Runtime/Engine/Public/TimerManager.h"
-
-void FGsFSMManager::Initialize(UGsGameObjectBase* owner)
-{
-	Owner = owner;
-	Current = nullptr;
-	Prev = nullptr;
-}
+#include "GsStateBase.h"
 
 void FGsFSMManager::DeInitialize()
 {
 }
 
-bool FGsFSMManager::ChangeState(IGsStateBase* State, FGsStateChangeFailed const& FailDelegate)
+bool FGsFSMManager::IsState(int StateID) const
+{
+	return (nullptr != Current && Current->GetStateID() == StateID);
+}
+
+bool FGsFSMManager::ChangeState(IGsStateBase* State)
 {
 	check(State);
 	if (nullptr != Current)
 	{
-		//체인지 가능 여부 검사
-		if (false == State->IsChange(Current->GetStateID()))
-		{			
-			//
-			//실패에 대한 델리게이트를 연결하여 호출 상황에 맞게 유동적인 대처를 유도한다.
-			if (FailDelegate.IsBound())
-			{
-				FailDelegate.Execute(Current->GetStateID());
-			}
-			//
-
-			UE_LOG(LogTemp, Warning, TEXT("%s State Change Failed! CurrState(%s)"), *State->Name(), *Current->Name());
-			return false;
-		}
-
 		//[Todo] 애님 블루프린트의 FSM전환 가능 여부를 알수 있다면 여기서 검사
 		//
 

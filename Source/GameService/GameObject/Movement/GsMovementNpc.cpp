@@ -60,14 +60,14 @@ void FGsMovementNpc::UpdateState(EPathFollowingStatus::Type Type)
     switch (Type)
     {
     case EPathFollowingStatus::Idle:
-        fsm->ChangeState<FGsStateNpcIdle>();
+		fsm->ProcessEvent(EGsStateBase::Idle);
         break;
     case EPathFollowingStatus::Waiting:
         break;
     case EPathFollowingStatus::Paused:
         break;
     case EPathFollowingStatus::Moving:
-        fsm->ChangeState<FGsStateNpcWalk>();
+		fsm->ProcessEvent(EGsStateBase::ForwardWalk);
         break;
     }
 }

@@ -68,6 +68,7 @@ enum class EGsStateBase : uint8
 	BaseMax,
 };
 
+
 /**
 * Upper State Define
 */

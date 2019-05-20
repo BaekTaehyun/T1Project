@@ -23,12 +23,33 @@ int FGsStateSpawn::GetAniRandomCount()
 	return 2;
 }
 
+bool FGsStateSpawn::OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID)
+{
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	switch (StateID)
+	{
+	case EGsStateBase::Idle:
+		ChangeState<FGsStateIdle>(Owner->GetBaseFSM());
+		break;
+	default:
+		return false;
+	}
+
+	return true;
+}
+
 void FGsStateSpawn::OnEnter(UGsGameObjectLocal* Owner)
 {
 	Super::OnEnter(Owner);
 
-	Owner->GetBaseFSM()->ChangeDelayState<FGsStateIdle>(1.5f);
+	//임시 처리
+	ChangeDelayState<FGsStateIdle>(Owner->GetBaseFSM(), 1.5f);
 }
+
 
 /// FStateIdle ///
 int FGsStateIdle::GetStateID()
@@ -41,10 +62,39 @@ FString FGsStateIdle::Name()
 	return TEXT("StateIdle");
 }
 
+bool FGsStateIdle::OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID)
+{
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	switch (StateID)
+	{
+	case EGsStateBase::ForwardWalk:
+		ObjectBaseStateChange(FGsStateForwardWalk);
+		break;
+	case EGsStateBase::BackwardWalk:
+		ObjectBaseStateChange(FGsStateBackwardWalk);
+		break;
+	case EGsStateBase::SideWalk:
+		ObjectBaseStateChange(FGsStateSideWalk);
+		break;
+	case EGsStateBase::Run:
+		ObjectBaseStateChange(FGsStateRun);
+		break;
+	default:
+		return false;
+	}
+
+	return true;
+}
+
 void FGsStateIdle::OnEnter(UGsGameObjectLocal* Owner)
 {
 	Super::OnEnter(Owner);
 }
+
 
 /// FStateForwardWalk ///
 int FGsStateForwardWalk::GetStateID()
@@ -57,6 +107,34 @@ FString FGsStateForwardWalk::Name()
 	return TEXT("StateForwardWalk");
 }
 
+bool FGsStateForwardWalk::OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID)
+{
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	switch (StateID)
+	{
+	case EGsStateBase::Idle:
+		ObjectBaseStateChange(FGsStateIdle);
+		break;
+	case EGsStateBase::BackwardWalk:
+		ObjectBaseStateChange(FGsStateBackwardWalk);
+		break;
+	case EGsStateBase::SideWalk:
+		ObjectBaseStateChange(FGsStateSideWalk);
+		break;
+	case EGsStateBase::Run:
+		ObjectBaseStateChange(FGsStateRun);
+		break;
+	default:
+		return false;
+	}
+
+	return true;
+}
+
 void FGsStateForwardWalk::OnEnter(UGsGameObjectLocal* Owner)
 {
 	Super::OnEnter(Owner);
@@ -65,6 +143,7 @@ void FGsStateForwardWalk::OnEnter(UGsGameObjectLocal* Owner)
 void FGsStateForwardWalk::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
 {
 }
+
 
 /// FStateBackwardWalk ///
 int FGsStateBackwardWalk::GetStateID()
@@ -77,6 +156,34 @@ FString FGsStateBackwardWalk::Name()
 	return TEXT("StateBackwardWalk");
 }
 
+bool FGsStateBackwardWalk::OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID)
+{
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	switch (StateID)
+	{
+	case EGsStateBase::Idle:
+		ObjectBaseStateChange(FGsStateIdle);
+		break;
+	case EGsStateBase::ForwardWalk:
+		ObjectBaseStateChange(FGsStateForwardWalk);
+		break;
+	case EGsStateBase::SideWalk:
+		ObjectBaseStateChange(FGsStateSideWalk);
+		break;
+	case EGsStateBase::Run:
+		ObjectBaseStateChange(FGsStateRun);
+		break;
+	default:
+		return false;
+	}
+
+	return true;
+}
+
 void FGsStateBackwardWalk::OnEnter(UGsGameObjectLocal* Owner)
 {
 	Super::OnEnter(Owner);
@@ -85,6 +192,7 @@ void FGsStateBackwardWalk::OnEnter(UGsGameObjectLocal* Owner)
 void FGsStateBackwardWalk::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
 {
 }
+
 
 /// FStateSideWalk ///
 int FGsStateSideWalk::GetStateID()
@@ -95,6 +203,31 @@ int FGsStateSideWalk::GetStateID()
 FString FGsStateSideWalk::Name()
 {
 	return TEXT("StateSideWalk");
+}
+
+bool FGsStateSideWalk::OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID)
+{
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	switch (StateID)
+	{
+	case EGsStateBase::Idle:
+		ObjectBaseStateChange(FGsStateIdle);
+		break;
+	case EGsStateBase::ForwardWalk:
+		ObjectBaseStateChange(FGsStateForwardWalk);
+		break;
+	case EGsStateBase::BackwardWalk:
+		ObjectBaseStateChange(FGsStateBackwardWalk);
+		break;
+	default:
+		return false;
+	}
+
+	return true;
 }
 
 void FGsStateSideWalk::OnEnter(UGsGameObjectLocal* Owner)
@@ -117,14 +250,26 @@ FString FGsStateRun::Name()
 	return TEXT("StateRun");
 }
 
-bool FGsStateRun::IsChange(int StateID)
+bool FGsStateRun::OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID)
 {
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
 	switch (StateID)
 	{
-	case (int)EGsStateBase::ForwardWalk:
-		return true;
+	case EGsStateBase::Idle:
+		ObjectBaseStateChange(FGsStateIdle);
+		break;
+	case EGsStateBase::ForwardWalk:
+		ObjectBaseStateChange(FGsStateForwardWalk);
+		break;
+	default:
+		break;
 	}
-	return false;
+
+	return true;
 }
 
 void FGsStateRun::OnEnter(UGsGameObjectLocal* Owner)
@@ -147,6 +292,25 @@ FString FGsStateUpperIdle::Name()
 	return TEXT("StateUpperIdle");
 }
 
+bool FGsStateUpperIdle::OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateUpperBase StateID)
+{
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	switch (StateID)
+	{
+	case EGsStateUpperBase::Attack:
+		ObjectUpperStateChange(FGsStateAttack);
+		break;
+	default:
+		return false;
+	}
+	
+	return true;
+}
+
 void FGsStateUpperIdle::OnEnter(UGsGameObjectLocal* Owner)
 {
 	//상체 애니 재생 정지
@@ -167,6 +331,25 @@ int FGsStateAttack::GetStateID()
 FString FGsStateAttack::Name()
 {
 	return TEXT("StateAttack");
+}
+
+bool FGsStateAttack::OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateUpperBase StateID)
+{
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	switch (StateID)
+	{
+	case EGsStateUpperBase::Idle:
+		ObjectUpperStateChange(FGsStateUpperIdle);
+		break;
+	default:
+		return false;
+	}
+
+	return true;
 }
 
 void FGsStateAttack::OnEnter(UGsGameObjectLocal* Owner)

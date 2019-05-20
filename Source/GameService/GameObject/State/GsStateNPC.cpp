@@ -13,11 +13,21 @@ FString FGsStateNpcSpawn::Name()
     return TEXT("StateNpcSpawn");
 }
 
+bool FGsStateNpcSpawn::OnProcessEvent(UGsGameObjectNonPlayer* Owner, EGsStateBase StateID)
+{
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	return true;
+}
+
 void FGsStateNpcSpawn::OnEnter(UGsGameObjectNonPlayer* Owner)
 {
 	Super::OnEnter(Owner);
 
-    Owner->GetBaseFSM()->ChangeDelayState<FGsStateNpcIdle>(1.5f);
+    ChangeDelayState<FGsStateNpcIdle>(Owner->GetBaseFSM(), 1.5f);
 }
 
 
@@ -29,6 +39,28 @@ int FGsStateNpcIdle::GetStateID()
 FString FGsStateNpcIdle::Name()
 {
 	return TEXT("StateNpcIdle");
+}
+
+bool FGsStateNpcIdle::OnProcessEvent(UGsGameObjectNonPlayer* Owner, EGsStateBase StateID)
+{
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	switch (StateID)
+	{
+	case EGsStateBase::ForwardWalk:
+		ObjectBaseStateChange(FGsStateNpcWalk);
+		break;
+	case EGsStateBase::Beaten:
+		ObjectBaseStateChange(FGsStateNpcBeaten);
+		break;
+	default:
+		return false;
+	}
+
+	return true;
 }
 
 void FGsStateNpcIdle::OnEnter(UGsGameObjectNonPlayer* Owner)
@@ -44,6 +76,28 @@ int FGsStateNpcWalk::GetStateID()
 FString FGsStateNpcWalk::Name()
 {
     return TEXT("StateNpcWalk");
+}
+
+bool FGsStateNpcWalk::OnProcessEvent(UGsGameObjectNonPlayer* Owner, EGsStateBase StateID)
+{
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	switch (StateID)
+	{
+	case EGsStateBase::Idle:
+		ObjectBaseStateChange(FGsStateNpcIdle);
+		break;
+	case EGsStateBase::Beaten:
+		ObjectBaseStateChange(FGsStateNpcBeaten);
+		break;
+	default:
+		return false;
+	}
+
+	return true;
 }
 
 void FGsStateNpcWalk::OnEnter(UGsGameObjectNonPlayer* Owner)
@@ -62,10 +116,32 @@ FString FGsStateNpcBeaten::Name()
 	return TEXT("StateNpcBeaten");
 }
 
+bool FGsStateNpcBeaten::OnProcessEvent(UGsGameObjectNonPlayer* Owner, EGsStateBase StateID)
+{
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	switch (StateID)
+	{
+	case EGsStateBase::Idle:
+		ObjectBaseStateChange(FGsStateNpcIdle);
+		break;
+	case EGsStateBase::ForwardWalk:
+		ObjectBaseStateChange(FGsStateNpcWalk);
+		break;
+	default:
+		return false;
+	}
+
+	return true;
+}
+
 void FGsStateNpcBeaten::OnEnter(UGsGameObjectNonPlayer* Owner)
 {
 	Super::OnEnter(Owner);
 
 	//임의로 상태전환 시간 설정
-	Owner->GetBaseFSM()->ChangeDelayPrevState(2.f);
+	ChangeDelayPrevState(Owner->GetBaseFSM(), 2.f);
 }

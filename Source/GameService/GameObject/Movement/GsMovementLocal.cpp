@@ -44,11 +44,9 @@ void FGsMovementLocal::Update(float Delta)
             if (walkSpeed > CharMovement->MaxWalkSpeed)
             {
                 SetMoveType(EGsGameObjectMoveType::Run);
-                Local->GetBaseFSM()->ChangeState<FGsStateRun>();
+				Local->GetBaseFSM()->ProcessEvent(EGsStateBase::Run);
             }
         }
-
-		GSLOG(Warning, TEXT("MoveSpeed %f Velocity %f %f %f"), MoveSpeed, CharMovement->Velocity.X, CharMovement->Velocity.Y, CharMovement->Velocity.Z);
     }
 }
 
@@ -59,7 +57,7 @@ void FGsMovementLocal::OnStop()
     SetMoveType(EGsGameObjectMoveType::None);
     CharMovement->SetMovementMode(MOVE_None);
 
-    Local->GetBaseFSM()->ChangeState<FGsStateIdle>();
+	Local->GetBaseFSM()->ProcessEvent(EGsStateBase::Idle);
 }
 
 void FGsMovementLocal::OnMove()
@@ -74,13 +72,13 @@ void FGsMovementLocal::OnMove()
     switch (MoveDirType)
     {
     case EGsGameObjectMoveDirType::Forward:
-        fsm->ChangeState<FGsStateForwardWalk>();
+		Local->GetBaseFSM()->ProcessEvent(EGsStateBase::ForwardWalk);
         break;
     case EGsGameObjectMoveDirType::SideStep:
-        fsm->ChangeState<FGsStateSideWalk>();
+		Local->GetBaseFSM()->ProcessEvent(EGsStateBase::SideWalk);
         break;
     case EGsGameObjectMoveDirType::Backward:
-        fsm->ChangeState<FGsStateBackwardWalk>();
+		Local->GetBaseFSM()->ProcessEvent(EGsStateBase::BackwardWalk);
         break;
     }
 }

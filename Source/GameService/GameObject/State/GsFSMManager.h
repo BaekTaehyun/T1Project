@@ -2,53 +2,71 @@
 
 #pragma once
 
-#include "GsStateBase.h"
 #include "GameObject/Define/GsGameObjectDefine.h"
 #include "GameObject/ObjectClass/GsGameObjectBase.h"
+
+class IGsStateBase;
 
 /**
  * 
  */
 class GAMESERVICE_API FGsFSMManager
 {
-    DECLARE_DELEGATE_OneParam(FGsStateChangeFailed, int32/* State Id*/);
+	friend class IGsStateBase;
 
 public:
+	DECLARE_DELEGATE_OneParam(FGsStateChangeFailed, uint8/* State Id*/);
+
 	FORCEINLINE IGsStateBase* CurrentState() const { return Current; }
 	FORCEINLINE IGsStateBase* PrevState() const	{ return Prev; }
-	FORCEINLINE bool IsState(int StateID) const
-	{
-		return (nullptr != Current && Current->GetStateID() == StateID);
-	}
+	bool IsState(int StateID) const;
 
 	//region
-	void Initialize(UGsGameObjectBase* Owner);
+	template <class State>
+	void Initialize(UGsGameObjectBase* Owner);		//시작 State정의
 	void DeInitialize();
 
-	template <class Char>
-	void Update(Char* Owner, float Delta);
-	template <class State>
-	bool ChangeState(FGsStateChangeFailed const& FailDelegate = nullptr);
+	//[Todo]
+	//나중에 Update만이라도 캐스팅을 피하게 작업해보기....ㅠ
+	//현재는 의미없는 템플릿..
+	template <class tChar>
+	void Update(tChar* Owner, float Delta);
+
+	template <typename tStateType>
+	void ProcessEvent(tStateType StateID, FGsStateChangeFailed const& FailDelegate = NULL);
+
+private:
+	template <class tState>
+	bool ChangeState();
+	bool ChangeState(IGsStateBase* State);
+
 	//FTimerManager를 통한 이벤트 처리 일정 시간후 스테이트 전환
-	template <class State>
+	template <class tState>
 	void ChangeDelayState(float Time);
 	void ChangeDelayState(IGsStateBase* State, float Time);
 	void ChangeDelayPrevState(float Time);
-
-private:
-	bool ChangeState(IGsStateBase* State, FGsStateChangeFailed const& FailDelegate = NULL);
+	
 	void CallbakChangeState(IGsStateBase* State);
 
 private:
 	UGsGameObjectBase* Owner;
 	IGsStateBase* Current;
 	IGsStateBase* Prev;
+
+	FGsStateChangeFailed DelStateChangeFailed;
 };
 
-//[Todo]
-//나중에 Update만이라도 캐스팅을 피하게 작업해보기....ㅠ
-template <class Char>
-void FGsFSMManager::Update(Char* Owner, float Delta)
+template <class tState>
+void FGsFSMManager::Initialize(UGsGameObjectBase* owner)
+{
+	Owner = owner;
+	Prev = nullptr;
+	Current = tState::GetInstance();
+	ChangeState(Current);
+}
+
+template <class tChar>
+void FGsFSMManager::Update(tChar* Owner, float Delta)
 {
 	if (nullptr != Current)
 	{
@@ -56,16 +74,25 @@ void FGsFSMManager::Update(Char* Owner, float Delta)
 	}
 }
 
-template <class State>
-bool FGsFSMManager::ChangeState(FGsStateChangeFailed const& FailDelegate)
+template <typename tStateType>
+void FGsFSMManager::ProcessEvent(tStateType StateID, FGsStateChangeFailed const& FailDelegate)
 {
-	State* state = State::GetInstance();
-	return ChangeState(state, FailDelegate);
+	if (Current)
+	{
+		Current->ProcessEvent(Owner, static_cast<uint8>(StateID), FailDelegate);
+	}
 }
 
-template <class State>
+template <class tState>
+bool FGsFSMManager::ChangeState()
+{
+	auto state = tState::GetInstance();
+	return ChangeState(state);
+}
+
+template <class tState>
 void FGsFSMManager::ChangeDelayState(float Time)
 {
-	State* state = State::GetInstance();
+	auto state = tState::GetInstance();
 	ChangeDelayState(state, Time);
 }

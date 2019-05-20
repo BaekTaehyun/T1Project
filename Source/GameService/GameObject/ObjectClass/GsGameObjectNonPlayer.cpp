@@ -16,10 +16,7 @@ void UGsGameObjectNonPlayer::Initialize()
 {
 	Super::Initialize();
 
-    SET_FLAG_TYPE(ObjectType, UGsGameObjectNonPlayer::GetObjectType());
-
-	Fsm = new FGsFSMManager();
-	Fsm->Initialize(this);
+    SET_FLAG_TYPE(ObjectType, UGsGameObjectNonPlayer::GetObjectType());	
 }
 
 void UGsGameObjectNonPlayer::Finalize()
@@ -31,7 +28,7 @@ void UGsGameObjectNonPlayer::OnHit(UGsGameObjectBase* Target)
 {
 	Super::OnHit(Target);
 
-	Fsm->ChangeState<FGsStateNpcBeaten>();
+	Fsm->ProcessEvent(EGsStateBase::Beaten);
 }
 
 void UGsGameObjectNonPlayer::ActorSpawned(AActor* Spawn)
@@ -46,7 +43,7 @@ void UGsGameObjectNonPlayer::ActorSpawned(AActor* Spawn)
         Movement = new FGsMovementNpc();
         Movement->Initialize(this);
 
-        //기본 상태 설정
-        Fsm->ChangeState<FGsStateNpcSpawn>();
+		Fsm = new FGsFSMManager();
+		Fsm->Initialize<FGsStateNpcSpawn>(this);
 	}
 }

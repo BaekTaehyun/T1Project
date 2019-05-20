@@ -26,12 +26,6 @@ void UGsGameObjectLocal::Initialize()
 
     //타입 정의
     SET_FLAG_TYPE(ObjectType, UGsGameObjectLocal::GetObjectType());
-    
-	Fsm = new FGsFSMManager();
-	Fsm->Initialize(this);
-
-	UpperFsm = new FGsFSMManager();
-	UpperFsm->Initialize(this);
 
 	Actor = NULL;
 }
@@ -66,8 +60,11 @@ void UGsGameObjectLocal::ActorSpawned(AActor* Spawn)
         //임시 데이터 적용
         Parts->LoadData(TEXT("GsPartsDataContainerBase'/Game/Resource/DataAsset/LocalParts.LocalParts'"));
 
-        //기본 상태 설정
-        Fsm->ChangeState<FGsStateSpawn>();
+		Fsm = new FGsFSMManager();
+		Fsm->Initialize<FGsStateSpawn>(this);
+
+		UpperFsm = new FGsFSMManager();
+		UpperFsm->Initialize<FGsStateUpperIdle>(this);
 
         //모든 파츠 장착
         Parts->AttachAll();

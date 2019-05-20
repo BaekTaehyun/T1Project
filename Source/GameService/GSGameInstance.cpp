@@ -62,7 +62,7 @@ void UGsGameInstance::Shutdown()
 
 void UGsGameInstance::Update()
 {
-	GSLOG_S(Warning);
+	//GSLOG_S(Warning);
 	for (auto& mng : _manage.Get())
 	{
 		if (mng.IsValid())

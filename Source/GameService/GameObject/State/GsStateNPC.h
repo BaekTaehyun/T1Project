@@ -8,11 +8,16 @@
 #include "GameObject/ObjectClass/GsGameObjectNonPlayer.h"
 
 
-template <typename T>
-class GAMESERVICE_API FGsStateSingleNpc : public FGsStateTargetBase<UGsGameObjectNonPlayer, T>
+template <class tState, typename tStateType>
+class GAMESERVICE_API FGsStateSingleNpc : public FGsStateTargetBase<UGsGameObjectNonPlayer, tState, tStateType>
 {
 protected:
 	typedef FGsStateSingleNpc Super;
+
+	virtual bool OnProcessEvent(UGsGameObjectNonPlayer* Owner, tStateType StateID) override
+	{
+		return true;
+	}
 
 	//애님 블루프린트에 가장 최우선으로 상태를 전송해줘야한다.
 	virtual void OnEnter(UGsGameObjectNonPlayer* Owner) override
@@ -35,39 +40,43 @@ protected:
 	}
 };
 
-class GAMESERVICE_API FGsStateNpcSpawn : public FGsStateSingleNpc<FGsStateNpcSpawn>
+class GAMESERVICE_API FGsStateNpcSpawn : public FGsStateSingleNpc<FGsStateNpcSpawn, EGsStateBase>
 {
 public:
     virtual int GetStateID() override;
     virtual FString Name() override;
     //virtual int GetAniRandomCount() override;
     
+	virtual bool OnProcessEvent(UGsGameObjectNonPlayer* Owner, EGsStateBase StateID) override;
     virtual void OnEnter(UGsGameObjectNonPlayer* Owner) override;
 };
 
-class GAMESERVICE_API FGsStateNpcIdle : public FGsStateSingleNpc<FGsStateNpcIdle>
+class GAMESERVICE_API FGsStateNpcIdle : public FGsStateSingleNpc<FGsStateNpcIdle, EGsStateBase>
 {
 public:
 	virtual int GetStateID() override;
 	virtual FString Name() override;
 
+	virtual bool OnProcessEvent(UGsGameObjectNonPlayer* Owner, EGsStateBase StateID) override;
 	virtual void OnEnter(UGsGameObjectNonPlayer* Owner) override;
 };
 
-class GAMESERVICE_API FGsStateNpcWalk : public FGsStateSingleNpc<FGsStateNpcWalk>
+class GAMESERVICE_API FGsStateNpcWalk : public FGsStateSingleNpc<FGsStateNpcWalk, EGsStateBase>
 {
 public:
     virtual int GetStateID() override;
     virtual FString Name() override;
 
+	virtual bool OnProcessEvent(UGsGameObjectNonPlayer* Owner, EGsStateBase StateID) override;
     virtual void OnEnter(UGsGameObjectNonPlayer* Owner) override;
 };
 
-class GAMESERVICE_API FGsStateNpcBeaten : public FGsStateSingleNpc<FGsStateNpcBeaten>
+class GAMESERVICE_API FGsStateNpcBeaten : public FGsStateSingleNpc<FGsStateNpcBeaten, EGsStateBase>
 {
 public:
 	virtual int GetStateID() override;
 	virtual FString Name() override;
 
+	virtual bool OnProcessEvent(UGsGameObjectNonPlayer* Owner, EGsStateBase StateID) override;
 	virtual void OnEnter(UGsGameObjectNonPlayer* Owner) override;
 };
