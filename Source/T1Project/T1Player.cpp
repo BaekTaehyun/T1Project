@@ -27,7 +27,7 @@ AT1Player::AT1Player()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	
 	// 케릭터에게 카메라 세팅합니다.
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
@@ -162,17 +162,22 @@ void AT1Player::DisplayObj()
 	}
 	if (nullptr != GetWorld())
 	{
+		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 		UUserWidget* _createWidget = CreateWidget(GetWorld()->GetFirstPlayerController(), m_UserWidget);
 		UMyUserWidget* _cast = Cast<UMyUserWidget>(_createWidget);
 		if (nullptr != _cast)
 		{
 			_cast->TestUI();
+			//AddDynamic(_cast->obje , TEXT("TestAddBinding"));
 		}
 		else
 		{
 			UE_LOG(LogTemp, Log, TEXT("_cast is null"));
 		}
 	}
+	
+	//auto const TargetPlayer = GetLocalPlayerFromControllerId(GEditor->PlayWorld, 0);
+	//if (TargetPlayer && TargetPlayer->PlayerController && !TargetPlayer->PlayerController->bShowMouseCursor)
 }
 
 

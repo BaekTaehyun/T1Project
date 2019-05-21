@@ -6,6 +6,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GameService/Character/GsPlayer.h"
+#include "UserWidget.h"
 
 //#include "DataActorComponent.h"
 
@@ -87,7 +88,6 @@ public:
 
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
 	float AttackRadius;
-
 	
 private:
 	// 프로젝트 옵션에 인풋과 매칭되는 함수
