@@ -4,7 +4,7 @@
 #include "GsSkillDataBase.generated.h"
 
 /**
- *
+ * 스킬 액션 담당 구조체
  */
 USTRUCT(BlueprintType)
 struct GAMESERVICE_API FGsSkillActionDataBase
@@ -16,11 +16,14 @@ struct GAMESERVICE_API FGsSkillActionDataBase
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	float Rate;	//실행 타이밍 정보
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	int Count;	//수집 대상 갯수
+	int Count;	//수집 대상 갯수(Pram 변수들)
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	int RefID;	//효과 참조 정보
+	int RefID;	//효과 참조 정보(Pram 변수들)
 };
 
+/**
+* 스킬 정보 구조체
+*/
 USTRUCT(BlueprintType)
 struct GAMESERVICE_API FGsSkillDataBase
 {
