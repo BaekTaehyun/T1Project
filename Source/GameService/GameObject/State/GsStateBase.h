@@ -41,7 +41,8 @@ protected:
 	template <class tState>
 	bool ChangeState(FGsFSMManager* Fsm)
 	{
-		if (Fsm) { Fsm->ChangeState<tState>(); }
+		if (Fsm) { return Fsm->ChangeState<tState>(); }
+		return false;
 	}
 
 	template <class tState>
