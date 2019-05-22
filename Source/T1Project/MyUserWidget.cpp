@@ -14,3 +14,13 @@ void UMyUserWidget::TestUI()
 {
 	AddToViewport();
 }
+
+void UMyUserWidget::OnClickTest()
+{
+	UE_LOG(LogTemp , Log , TEXT("Success Log ~~~~~"));
+}
+
+void UMyUserWidget::OnClickCastFailed()
+{
+	UE_LOG(LogTemp, Log, TEXT("Cast Failed Log !!!!!!!!!!"));
+}
