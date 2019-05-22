@@ -168,7 +168,7 @@ void AT1Player::DisplayObj()
 		if (nullptr != _cast)
 		{
 			_cast->TestUI();
-			//AddDynamic(_cast->obje , TEXT("TestAddBinding"));
+			//AddDynamic(this , &AT1Player::OnClickTest);
 		}
 		else
 		{
