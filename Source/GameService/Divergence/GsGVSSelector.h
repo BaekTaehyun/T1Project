@@ -13,7 +13,7 @@ class  GsGVSSelector
 {
 public:
 	GsGVSSelector();
-	~GsGVSSelector();
+	virtual ~GsGVSSelector();
 
 	bool IsSelected()
 	{

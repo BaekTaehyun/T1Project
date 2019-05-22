@@ -10,6 +10,8 @@
  */
 
 // gvs 기본 정보
+// parse(FJsonObjectConverter::JsonArrayStringToUStruct)하기 위해서 
+// 멤버 이름이 json 파일과 이름이 같아야 함
 USTRUCT()
 struct FGsGVSInfo
 {
@@ -47,12 +49,12 @@ public:
 
 
 // 플랫폼 정보
-class  GsGVSPlatform
+class GsGVSPlatform
 {
 public:
 		
 	GsGVSPlatform();
-	~GsGVSPlatform();
+	virtual ~GsGVSPlatform();
 
 	// gvs json 데이터 가공
 	void SetInfo(TArray<FGsGVSInfo>& In_arrInfo);

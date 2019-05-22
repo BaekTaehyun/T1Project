@@ -3,9 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
 /**
- * 
+ * TO DO: GsGVSSelector에서 현재 버전 정의 및 어디서 참조할지 정해야함
  */
 class UFileDownloadManager;
 class GsGVSPlatform;
@@ -15,7 +14,7 @@ class GsDivergenceVersion
 {
 public:
 	GsDivergenceVersion();
-	~GsDivergenceVersion();
+	virtual ~GsDivergenceVersion();
 
 	// gvs 로드
 	void LoadGVS();
@@ -29,10 +28,10 @@ private:
 	UFileDownloadManager* _fileDownloadManager;
 	
 	// 플랫폼에 따른 gvs 정보
-	TSharedPtr<GsGVSPlatform> _platform;
+	GsGVSPlatform* _platform;
 
 	// 현재 내상황에 맞는 정보 
-	TSharedPtr<GsGVSSelector> _selector;
+	GsGVSSelector* _selector;
 
 	bool _bInit = false;
 };
