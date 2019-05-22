@@ -39,7 +39,7 @@ private:
 	bool bStackProcessed;
 	
 protected:
-	/** 스택에 푸쉬할 때 부르며, 초기화 데이터를 넘길 수 있음. 위의 창이 닫혀서 다시 위에 올라올 때는 불리지 않음 
+	/** 스택에 푸쉬할 때 부르며, 초기화 데이터를 넘길 수 있음.
 	 * 주의: OnInitialized 뒤에 불리지만 Construct 보다 전에 불리므로 Slate 세팅과 관련된 처리를 여기서 하면 안됨.
 	 */
 	UFUNCTION(BlueprintNativeEvent, Category = "GsManaged", meta = (DisplayName = "OnPush"))
@@ -50,9 +50,9 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, Category = "GsManaged", meta = (DisplayName = "OnMessage"))
 	void OnMessage(FName InKey, UGsUIParameter* InParam = nullptr);
 	virtual void OnMessage_Implementation(FName InKey, UGsUIParameter* InParam = nullptr);
+
 	// 방법 2. UMG에서 IGsUIEventInterface를 추가 후 해당 메시지를 받는다. 간단할 경우에 사용.
 	// 방법 3. UGsUIWindow, Popup, Tray 중 하나를 상속받아 별도 구현하여 사용. 복잡한 경우에 사용.
-
 
 	/*
 	// 이하는 UserWidget에서 제공되는 함수로, 용도에 맞게 상속받아 사용할 것.
@@ -74,9 +74,5 @@ protected:
 	// RefCount가 0이되어 실제 파괴될 때 불린다. 별도 BP이벤트는 제공하지 않는다.
 	virtual void BeginDestroy() override;
 	*/
-
-	
-	
-
 	friend class AGsUIManager;
 };

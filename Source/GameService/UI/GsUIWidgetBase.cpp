@@ -32,8 +32,7 @@ void UGsUIWidgetBase::Close()
 	}
 }
 
-UFUNCTION(BlueprintCallable, Category = "GsManaged")
-class AGsUIManager* UGsUIWidgetBase::GetUIManager()
+AGsUIManager* UGsUIWidgetBase::GetUIManager()
 {
 	return AGsUIManager::GetUIManager(GetOwningPlayer());
 }
