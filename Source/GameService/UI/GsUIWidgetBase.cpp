@@ -4,6 +4,7 @@
 #include "GsUIWidgetBase.h"
 #include "GsUIParameter.h"
 #include "GameService.h"
+#include "GsUIManager.h"
 
 
 UGsUIWidgetBase::UGsUIWidgetBase(const FObjectInitializer& ObjectInitializer)
@@ -24,7 +25,17 @@ void UGsUIWidgetBase::OnMessage_Implementation(FName InKey, UGsUIParameter* InPa
 
 void UGsUIWidgetBase::Close()
 {
+	AGsUIManager* UIManager = GetUIManager();
+	if (nullptr != UIManager)
+	{
+		UIManager->Pop(this);
+	}
+}
 
+UFUNCTION(BlueprintCallable, Category = "GsManaged")
+class AGsUIManager* UGsUIWidgetBase::GetUIManager()
+{
+	return AGsUIManager::GetUIManager(GetOwningPlayer());
 }
 
 /*

@@ -28,9 +28,11 @@ public:
 	/** 윈도우타입(화면을 다 가리는)인가 */
 	virtual bool IsWindow() const { return false; }
 
-	//UFUNCTION(BlueprintCallable, Category = "GsManaged")
+	UFUNCTION(BlueprintCallable, Category = "GsManaged")
 	virtual void Close();
 
+	UFUNCTION(BlueprintCallable, Category = "GsManaged")
+	class AGsUIManager* GetUIManager();
 
 private:
 	/** 스택 중복 처리를 막는다 */

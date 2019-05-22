@@ -6,7 +6,6 @@
 #include "GsUIWidgetBase.h"
 #include "GsUIParameter.h"
 #include "GsUIEventInterface.h"
-#include "Test/GsPlayerControllerLobby.h"
 
 
 AGsUIManager::AGsUIManager(const FObjectInitializer& ObjectInitializer)
@@ -329,11 +328,9 @@ void AGsUIManager::RemoveAll()
 
 AGsUIManager* AGsUIManager::GetUIManager(class APlayerController* InOwner)
 {
-	// FIX:
-	AGsPlayerControllerLobby* PC = Cast<AGsPlayerControllerLobby>(InOwner);
-	if (nullptr != PC)
+	if (nullptr != InOwner)
 	{
-		return PC->GetUIManager();
+		return Cast<AGsUIManager>(InOwner->GetHUD());
 	}
 
 	return nullptr;
