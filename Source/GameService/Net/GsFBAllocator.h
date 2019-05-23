@@ -49,7 +49,7 @@ public:
 	uint32_t size() const { return fbBuilder_.GetSize(); }
 
 	using StringOffset = flatbuffers::Offset<flatbuffers::String>;
-	z
+	
 	//http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2231.htm
 	/*The types declared are mbstate_t(described in 7.29.1) and size_t(described in 7.19);
 	char8_t
