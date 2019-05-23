@@ -2,7 +2,7 @@
 #include "SocketHelper.h"
 
 
-#ifndef USE_UNREAL4
+#ifndef __UNREAL__
 #include <random>
 #include <vector>
 #else
@@ -13,7 +13,7 @@
 
 FSocket* ConnectFSocket(const char* host, uint16_t port)
 {
-#ifndef USE_UNREAL4
+#ifndef __UNREAL__
 	auto addresses = IPAddress::GetHostByName(AF_UNSPEC, SOCK_STREAM, host, port);
 	if (addresses.empty() == true)
 	{
@@ -102,7 +102,7 @@ FSocket* ConnectFSocket(const char* host, uint16_t port)
 
 void DestroyFSocket(FSocket* socket)
 {
-#ifndef USE_UNREAL4
+#ifndef __UNREAL__
 	delete socket;
 #else
 	if (socket == nullptr)

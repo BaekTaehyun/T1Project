@@ -28,7 +28,11 @@ Buffer::Buffer(int32_t size)
 
 Buffer::~Buffer()
 {
-	SimpleAllocator::Free(buffer_);
+	if (buffer_ != nullptr)
+	{
+		SimpleAllocator::Free(buffer_);
+		buffer_ = nullptr;
+	}
 }
 
 int32_t Buffer::moveStartPos(int32_t diff)

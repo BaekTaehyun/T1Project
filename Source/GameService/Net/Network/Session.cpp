@@ -4,7 +4,6 @@
 #include "TaskExecuter.h"
 #include "Protocol.h"
 
-
 Session::Session(SessionEventHandler* handler)
 	: handler_(handler)
 {
@@ -116,7 +115,7 @@ bool Session::send(uint16_t packetId, const void* data, int32_t size)
 }
 
 
-void Session::onConnected(bool result, FSocket* socket)
+void Session::onConnected(bool result, FSocket* socket, std::shared_ptr<SendSocketTask> sender, std::shared_ptr<ReceiveSocketTask> receiver)
 {
 	if (result == false)
 	{
@@ -126,18 +125,18 @@ void Session::onConnected(bool result, FSocket* socket)
 	}
 
 	socket_ = socket;
-	start(socket);
+	start(socket, sender, receiver);
 }
 
-void Session::start(FSocket* socket)
+void Session::start(FSocket* socket, std::shared_ptr<SendSocketTask> sender, std::shared_ptr<ReceiveSocketTask> receiver)
 {
+	(socket);
 	clear();
 
 	connected_ = true;
-	sendTask_ = std::make_shared<SendSocketTask>(shared_from_this(), socket, 4 * 1024);
+	sendTask_ = sender;
 
-	auto task = std::make_shared<ReceiveSocketTask>(shared_from_this(), socket, 64 * 1024);
-	TaskExecuter::GetInstance()->push(task);
+	TaskExecuter::GetInstance()->push(receiver);
 
 	pushEvent(IOEventType::Connected, true);
 }
@@ -156,7 +155,7 @@ void Session::onPacket(FSocket* socket, std::vector<Packet*> packets)
 	{
 		for (auto packet : packets)
 		{
-			delete packet;
+			GetPacketPool()->Delete(packet);
 		}
 
 		return;

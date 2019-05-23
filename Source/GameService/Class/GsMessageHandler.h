@@ -92,7 +92,7 @@ class TGsMessageHandlerOneParam
 {
 public:
 	virtual ~TGsMessageHandlerOneParam() { RemoveAll(); }
-	DECLARE_EVENT_OneParam(TGsMessageHandlerOneParam, MessageType, const T2&)
+	DECLARE_EVENT_OneParam(TGsMessageHandlerOneParam, MessageType, T2&)
 
 private:
 	TMap<T1, MessageType>	_delieveryAddr;
@@ -110,7 +110,7 @@ public:
 	// ex) _messagehandler.AddRaw(MessageSystem::ID::RECONNECT_END, this, &GSFGameModeManager::OnReconnectionEnd);
 	template <typename UserClass, typename... VarTypes>
 	FDelegateHandle AddRaw(T1 Message, UserClass* InUserObject,
-		typename TMemFunPtrType<false, UserClass, void(const T2&, VarTypes...)>::Type InFunc, VarTypes... Vars)
+		typename TMemFunPtrType<false, UserClass, void(T2&, VarTypes...)>::Type InFunc, VarTypes... Vars)
 	{
 		TGsMessageHandlerOneParam<T1, T2>::MessageType delFunc;
 		auto Result = delFunc.AddRaw(InUserObject, InFunc);
@@ -120,7 +120,7 @@ public:
 
 	//-------------------------------------------------------------------------
 	// 메세지 전송(Sync 용)
-	virtual void SendMessage(const T1& id, const T2& inData)
+	virtual void SendMessage(T1& id, T2& inData)
 	{
 		auto delegateFunc = _delieveryAddr.FindRef(id);
 		delegateFunc.Broadcast(inData);
@@ -134,7 +134,7 @@ public:
 	//-------------------------------------------------------------------------
 	// 메세지 전송(ASync 용) : 다른 Thread에서 메인쓰레드로 요청할때( Hive, 다운로드, ThreadJob등)
 	// 큐에 메시지를 담고 메인루프에서 꺼낸다음 일괄호출하는 방식사용
-	virtual void SendMessageAsync(T1& id, const T2& inData)
+	virtual void SendMessageAsync(T1& id, T2& inData)
 	{
 		FScopeLock InsertLock(&CriticalSection);
 		_AsyncMessage.Add(TGsMessage<T1, T2>(id, inData));

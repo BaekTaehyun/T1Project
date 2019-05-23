@@ -27,10 +27,10 @@ void FGsGVSInfo::PrintLog()
 bool FGsGVSInfo::IsCurrentPlatform()
 {
 	// 현재 기기의 플랫폼 이름 가져오기
-	FString findVal = UGameplayStatics::GetPlatformName();
+	FString DevicefindVal = UGameplayStatics::GetPlatformName();
 	
 	// 안드면
-	if (findVal.Compare(TEXT("Android")) == 0)
+	if (DevicefindVal.Compare(TEXT("Android")) == 0)
 	{
 		// 인포의 텍스트랑 비교
 		if (platform.Compare(TEXT("android")) == 0)

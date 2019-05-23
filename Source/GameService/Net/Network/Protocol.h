@@ -3,11 +3,13 @@
 
 #include <cstdint>
 #include <cassert>
+#include <cstring>
 
 #include "AllocateHelper.h"
 #include "Buffer.h"
 #include "Crc32.h"
-
+#include "./Crypto/ChaCha20.h"
+#include "CoreMinimal.h"
 
 // #pragma pack(push, 1)은 MSVC, gcc, clang 모두 지원하는 것 같다.
 // 빌드 해보고 실패하면 그때 수정하자
@@ -32,17 +34,9 @@ public:
 	Packet(const PacketHeader* header, const void* data, uint32_t len)
 		: header_(*header)
 	{
+		(data);
 		data_ = SimpleAllocator::Alloc<uint8_t>(len);
 		len_ = len;
-
-		if (header->crc32 != 0)
-		{
-			uint32_t crc32 = Crc32::Compute(data, len);
-			(crc32);
-			assert(crc32 == header->crc32);
-		}
-
-		std::memcpy(data_, data, len);
 	}
 	~Packet()
 	{
@@ -53,6 +47,12 @@ public:
 		}
 	}
 
+	uint32_t calcCrc32() const
+	{
+		return Crc32::Compute(data_, len_);
+	}
+
+	/*
 	static void* operator new(size_t size)
 	{
 		return SimpleAllocator::Alloc<Buffer>(size);
@@ -60,52 +60,125 @@ public:
 	static void operator delete(void* ptr)
 	{
 		return SimpleAllocator::Free(ptr);
-	}
-
+	}*/
 };
 
 
+// 최초 할당수 100
+class FPacketPool 
+#ifdef __UNREAL__
+	: public TLockFreeClassAllocator<Packet, 100>
+#endif
+{
+	static FPacketPool* instance_;
+public:
+	static FPacketPool* GetInstance()
+	{
+		if (nullptr == instance_)
+		{
+			instance_ = new FPacketPool();
+		}
+		return instance_;
+	}
+
+	static void RemoveInstance()
+	{
+		if (nullptr != instance_)
+		{
+			delete instance_;
+			instance_ = nullptr;
+		}
+	}
+
+	Packet* New(const PacketHeader* header, const void* data, uint32_t len)
+	{
+#ifdef __UNREAL__
+		return new (Allocate()) Packet(header, data, len);
+#else
+		return new Packet(header, data, len);
+#endif
+	}
+	void Delete(Packet* in)
+	{
+#ifdef __UNREAL__
+		Free(in);
+#else
+		delete in;
+#endif
+	}
+};
+FPacketPool* FPacketPool::instance_ = nullptr;
+
+#define GetPacketPool() FPacketPool::GetInstance()
 
 inline Buffer* MakePacket(uint16_t packetId, const void* data, int32_t size)
 {
 	int32_t totalSize = sizeof(PacketHeader) + size;
-	Buffer* buffer = new Buffer(totalSize);
+	Buffer* buffer = GetBufferPool()->New(totalSize);//new Buffer(totalSize); 
 
 	PacketHeader header;
 	header.packetId = packetId;
 	header.size = totalSize;
-	header.crc32 = Crc32::Compute(data, size);
+	header.crc32 = 0;
 	buffer->copy(&header, sizeof(header));
 
 	buffer->copy(data, size);
 	return buffer;
 }
 
-inline bool PopPacket(Buffer* buffer, Packet*& packet)
+inline const PacketHeader*	SeekPacketHeader(const Buffer* buffer)
+{
+	uint32_t remainLen = buffer->getSize();
+	const uint8_t* streamBuf = buffer->getBuffer();
+
+	if (remainLen >= sizeof(PacketHeader))
+	{
+		return reinterpret_cast<const PacketHeader*>(streamBuf);
+	}
+
+	return nullptr;
+}
+
+inline bool PopPacket(Buffer* buffer, ChaCha20Decrypter* decrypter, Packet*& packet )
 {
 	assert(packet == nullptr);
 
-	uint32_t remainBytes = buffer->getSize();
-	uint8_t* nowBuf = buffer->getBuffer();
+	uint32_t remainLen = buffer->getSize();
+	uint8_t* streamBuf = buffer->getBuffer();
 
-	if (remainBytes >= sizeof(PacketHeader))
+	if (remainLen >= sizeof(PacketHeader))
 	{
-		const PacketHeader* header = reinterpret_cast<const PacketHeader*>(nowBuf);
+		const PacketHeader* header = reinterpret_cast<const PacketHeader*>(streamBuf);
 		if (header->size < sizeof(PacketHeader))
 		{
 			return false;
 		}
 
-		if (header->size > remainBytes)
+		if (header->size > remainLen)
 		{
-			buffer->makeSpace(header->size - remainBytes);
+			int32_t needLen = header->size - remainLen;
+			if (buffer->makeSpace(needLen) < needLen)
+			{
+				return false;
+			}
+
 			return true;
 		}
 
-		void* body = nowBuf + sizeof(PacketHeader);
-		uint32_t bodySize = header->size - sizeof(PacketHeader);
+		void* data = streamBuf + sizeof(PacketHeader);
+		uint32_t dataSize = header->size - sizeof(PacketHeader);
 
-		packet = new Packet(header, body, bodySize);
+		//packet = new Packet(header, data, dataSize);
+		packet = GetPacketPool()->New(header, data, dataSize);
+
+		if (decrypter != nullptr)
+		{
+			decrypter->decrypt(data, dataSize, packet->data_, packet->len_);
+		}
+		else
+		{
+			std::memcpy(packet->data_, data, dataSize);
+		}
 
 		buffer->moveStartPos(header->size);
 		return true;

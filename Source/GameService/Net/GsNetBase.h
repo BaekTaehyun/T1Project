@@ -1,11 +1,11 @@
 #pragma once
 
 #include "GsNet.h"
+#include "GsFBAllocator.h"
 #include "../Class/GsState.h"
-
 #include "./Network/SocketConfig.h"
 #include "./Network/Session.h"
-#include "LeanPacket_generated.h"
+#include "../class/GsMessageHandler.h"
 
 
 //------------------------------------------------------------------------------
@@ -15,7 +15,8 @@ class FGsNetBase : public TGsState<FGsNet::Mode>, public SessionEventHandler
 {
 	FGsNet::NetConnectionData _connectionInfo;
 	std::shared_ptr<Session> session_;  // 서버 구조에 맞춤
-
+	TGsMessageHandlerOneParam <LeanPacket::Protocol, Packet*> _handler;
+	LeanPacket::Protocol _protocal;
 public:
 	FGsNetBase() : TGsState<FGsNet::Mode>(FGsNet::Mode::MAX) {}
 	FGsNetBase(FGsNet::Mode inMode) : TGsState<FGsNet::Mode>(inMode) {}
@@ -26,7 +27,7 @@ public:
 	virtual void Update();
 
 	void Init(FGsNet::NetConnectionData&& indata);
-	void Send(LeanPacket::Protocol inProtocol, class FlatBufferBuilder& inbuilder);
+	void Send(LeanPacket::Protocol inProtocol, class FBBuilder& inbuilder);
 
 protected:
 	bool Connect(FString inAddr, uint16 inPort = 8888);
