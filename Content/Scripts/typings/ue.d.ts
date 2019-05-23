@@ -4303,7 +4303,7 @@ declare class ChunkPartData {
 }
 
 declare class FileManifestData { 
-	FileName: string;
+	Filename: string;
 	FileHash: SHAHashData;
 	FileChunkParts: ChunkPartData[];
 	InstallTags: string[];
@@ -5077,7 +5077,7 @@ declare class DatasmithImportOptions extends UObject {
 	BaseOptions: DatasmithImportBaseOptions;
 	TessellationOptions: DatasmithTessellationOptions;
 	ReimportOptions: DatasmithReimportOptions;
-	FileName: string;
+	Filename: string;
 	FilePath: string;
 	static Load(ResourceName: string): DatasmithImportOptions;
 	static Find(Outer: UObject, ResourceName: string): DatasmithImportOptions;
@@ -6433,7 +6433,7 @@ declare class AutomationBlueprintFunctionLibrary extends BlueprintFunctionLibrar
 	static Find(Outer: UObject, ResourceName: string): AutomationBlueprintFunctionLibrary;
 	static GetDefaultObject(): AutomationBlueprintFunctionLibrary;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): AutomationBlueprintFunctionLibrary;
-	static TakeHighResScreenshot(ResX: number,ResY: number,FileName: string,Camera: CameraActor,bMaskEnabled: boolean,bCaptureHDR: boolean): boolean;
+	static TakeHighResScreenshot(ResX: number,ResY: number,Filename: string,Camera: CameraActor,bMaskEnabled: boolean,bCaptureHDR: boolean): boolean;
 	static TakeAutomationScreenshotOfUI(WorldContextObject: UObject,LatentInfo: LatentActionInfo,Name: string,Options: AutomationScreenshotOptions): void;
 	static TakeAutomationScreenshotAtCamera(WorldContextObject: UObject,LatentInfo: LatentActionInfo,Camera: CameraActor,NameOverride: string,Notes: string,Options: AutomationScreenshotOptions): void;
 	static TakeAutomationScreenshot(WorldContextObject: UObject,LatentInfo: LatentActionInfo,Name: string,Notes: string,Options: AutomationScreenshotOptions): void;
@@ -8100,7 +8100,7 @@ declare class PixelInspectorView extends UObject {
 	SubsurfaceColor: LinearColor;
 	SubsurfaceProfile: Vector;
 	Opacity: number;
-	Clearcoat: number;
+	ClearCoat: number;
 	ClearCoatRoughness: number;
 	WorldNormal: Vector;
 	BackLit: number;
@@ -8541,12 +8541,12 @@ declare class JavascriptContext extends UObject {
 	SetContextId(Name: string): void;
 	SetAsDebugContext(InPort: number): void;
 	RunScript(Script: string,bOutput: boolean): string;
-	RunFile(FileName: string): void;
+	RunFile(Filename: string): void;
 	ResetAsDebugContext(): void;
 	RequestV8GarbageCollection(): void;
-	ReadScriptFile(FileName: string): string;
+	ReadScriptFile(Filename: string): string;
 	IsDebugContext(): boolean;
-	GetScriptFileFullPath(FileName: string): string;
+	GetScriptFileFullPath(Filename: string): string;
 	FindPathFile(TargetRootPath: string,TargetFileName: string,OutFiles?: string[]): {OutFiles: string[]};
 	Expose(Name: string,UObject: UObject): void;
 	DestroyInspector(): void;
@@ -8756,10 +8756,10 @@ declare class JavascriptLogCategory {
 	static C(Other: UObject | any): JavascriptLogCategory;
 	GetCategoryName(): string;
 	IsSuppressed(Verbosity: ELogVerbosity_JS): boolean;
-	Log(Verbosity: ELogVerbosity_JS,Message: string,FileName: string,LineNumber: number): void;
+	Log(Verbosity: ELogVerbosity_JS,Message: string,Filename: string,LineNumber: number): void;
 	static GetCategoryName(Category: JavascriptLogCategory): string;
 	static IsSuppressed(Category: JavascriptLogCategory,Verbosity: ELogVerbosity_JS): boolean;
-	static Log(Category: JavascriptLogCategory,Verbosity: ELogVerbosity_JS,Message: string,FileName: string,LineNumber: number): void;
+	static Log(Category: JavascriptLogCategory,Verbosity: ELogVerbosity_JS,Message: string,Filename: string,LineNumber: number): void;
 	static CreateLogCategory(CategoryName: string,InDefaultVerbosity: ELogVerbosity_JS): JavascriptLogCategory;
 }
 
@@ -8810,8 +8810,8 @@ declare class JavascriptLibrary extends BlueprintFunctionLibrary {
 	static Find(Outer: UObject, ResourceName: string): JavascriptLibrary;
 	static GetDefaultObject(): JavascriptLibrary;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): JavascriptLibrary;
-	static WriteStringToFile(UObject: UObject,FileName: string,Data: string,EncodingOptions: EJavascriptEncodingOptions): boolean;
-	static WriteFile(UObject: UObject,FileName: string): boolean;
+	static WriteStringToFile(UObject: UObject,Filename: string,Data: string,EncodingOptions: EJavascriptEncodingOptions): boolean;
+	static WriteFile(UObject: UObject,Filename: string): boolean;
 	static V8_SetIdleTaskBudget(BudgetInSeconds: number): void;
 	static V8_SetFlagsFromString(V8Flags: string): void;
 	static UnregisterComponent(ActorComponent: ActorComponent): void;
@@ -8833,13 +8833,13 @@ declare class JavascriptLibrary extends BlueprintFunctionLibrary {
 	static ReregisterAllComponents(Actor: Actor): void;
 	static RequestAsyncLoad(Manager: JavascriptStreamableManager,TargetsToStream: SoftObjectPath[],DelegateToCall: JavascriptFunction,Priority: number): void;
 	static RegisterComponent(ActorComponent: ActorComponent): void;
-	static ReadStringFromFile(UObject: UObject,FileName: string): string;
-	static ReadFile(UObject: UObject,FileName: string): boolean;
+	static ReadStringFromFile(UObject: UObject,Filename: string): string;
+	static ReadFile(UObject: UObject,Filename: string): boolean;
 	static ReadDirectory(UObject: UObject,Directory: string,OutItems?: DirectoryItem[]): {OutItems: DirectoryItem[], $: boolean};
 	static NewStat(InStatName: string,InStatDesc: string,InGroupName: string,InGroupCategory: string,InGroupDesc: string,bDefaultEnable: boolean,bShouldClearEveryFrame: boolean,InStatType: EJavascriptStatDataType,bCycleStat: boolean,bSortByName: boolean): JavascriptStat;
 	static MarkRenderStateDirty(Component: ActorComponent): void;
 	static MakeDirectory(Path: string,Tree: boolean): boolean;
-	static Log(Category: JavascriptLogCategory,Verbosity: ELogVerbosity_JS,Message: string,FileName: string,LineNumber: number): void;
+	static Log(Category: JavascriptLogCategory,Verbosity: ELogVerbosity_JS,Message: string,Filename: string,LineNumber: number): void;
 	static LoadPackage(InOuter: Package,PackageName: string): Package;
 	static IsSuppressed(Category: JavascriptLogCategory,Verbosity: ELogVerbosity_JS): boolean;
 	static IsRegistered(ActorComponent: ActorComponent): boolean;
@@ -8875,7 +8875,7 @@ declare class JavascriptLibrary extends BlueprintFunctionLibrary {
 	static GetHitCount(UNode: JavascriptProfileNode): number;
 	static GetFunctionParmsSize(UFunction: UFunction): number;
 	static GetFunctionName(UNode: JavascriptProfileNode): string;
-	static GetFileSize(UObject: UObject,FileName: string): number;
+	static GetFileSize(UObject: UObject,Filename: string): number;
 	static GetFields(UObject: UObject,bIncludeSuper: boolean): Field[];
 	static GetDynamicBinding(Outer: UnrealEngineClass,BindingObjectClass: UnrealEngineClass): DynamicBlueprintBinding;
 	static GetDir(UObject: UObject,WhichDir: string): string;
@@ -8898,10 +8898,10 @@ declare class JavascriptLibrary extends BlueprintFunctionLibrary {
 	static GenerateNavigation(InWorld: World,NavData: RecastNavMesh): void;
 	static FindPackage(InOuter: UObject,PackageName: string): Package;
 	static FindObjectWithOuter(Outer: UObject,ClassToLookFor: UnrealEngineClass,NameToLookFor: string): UObject;
-	static FileExists(FileName: string): boolean;
+	static FileExists(Filename: string): boolean;
 	static Duplicate(UObject: UObject,Outer: UObject,Name: string): UObject;
 	static DirectoryExists(InDirectory: string): boolean;
-	static DeleteFile(FileName: string,ReadOnly: boolean): boolean;
+	static DeleteFile(Filename: string,ReadOnly: boolean): boolean;
 	static DeleteDirectory(Path: string,RequireExists: boolean,Tree: boolean): boolean;
 	static CreateStreamableManager(): JavascriptStreamableManager;
 	static CreateSocket(SocketType: string,Description: string,bForceUDP: boolean): JavascriptSocket;
@@ -8949,7 +8949,7 @@ declare class JavascriptOutputDevice extends UObject {
 	static GetDefaultObject(): JavascriptOutputDevice;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): JavascriptOutputDevice;
 	OnMessage(Message: string,Verbosity: ELogVerbosity_JS,Category: string): void;
-	static Log(Category: string,Verbosity: ELogVerbosity_JS,FileName: string,LineNumber: number,Message: string): void;
+	static Log(Category: string,Verbosity: ELogVerbosity_JS,Filename: string,LineNumber: number,Message: string): void;
 	Kill(): void;
 	static C(Other: UObject | any): JavascriptOutputDevice;
 }
@@ -10598,7 +10598,7 @@ declare class SQLoadScreenHUD extends HUD {
 declare type ETaskEvent = 'START_DOWNLOAD' | 'DOWNLOAD_UPDATE' | 'STOP' | 'DOWNLOAD_COMPLETED' | 'ERROR_OCCUR' | 'ETaskEvent_MAX';
 declare var ETaskEvent : { START_DOWNLOAD:'START_DOWNLOAD',DOWNLOAD_UPDATE:'DOWNLOAD_UPDATE',STOP:'STOP',DOWNLOAD_COMPLETED:'DOWNLOAD_COMPLETED',ERROR_OCCUR:'ERROR_OCCUR',ETaskEvent_MAX:'ETaskEvent_MAX', };
 declare class TaskInformation { 
-	FileName: string;
+	Filename: string;
 	DestDirectory: string;
 	SourceUrl: string;
 	ETag: string;
@@ -10927,6 +10927,91 @@ declare class GsTargetPoint extends TargetPoint {
 	static C(Other: UObject | any): GsTargetPoint;
 }
 
+declare class GsUIEventInterface extends Interface { 
+	static Load(ResourceName: string): GsUIEventInterface;
+	static Find(Outer: UObject, ResourceName: string): GsUIEventInterface;
+	static GetDefaultObject(): GsUIEventInterface;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIEventInterface;
+	UIEvent_ServerSelectComplete(InServerID: number): void;
+	UIEvent_ChangeDownloadRate(InRate: number): void;
+	UIEvent_AccountLoginComplete(): void;
+	static C(Other: UObject | any): GsUIEventInterface;
+}
+
+declare class GsUIParameter extends UObject { 
+	static Load(ResourceName: string): GsUIParameter;
+	static Find(Outer: UObject, ResourceName: string): GsUIParameter;
+	static GetDefaultObject(): GsUIParameter;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIParameter;
+	static C(Other: UObject | any): GsUIParameter;
+}
+
+declare class GsUIWidgetBase extends UserWidget { 
+	static Load(ResourceName: string): GsUIWidgetBase;
+	static Find(Outer: UObject, ResourceName: string): GsUIWidgetBase;
+	static GetDefaultObject(): GsUIWidgetBase;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIWidgetBase;
+	OnPush(InParam: GsUIParameter): void;
+	OnMessage(InKey: string,InParam: GsUIParameter): void;
+	GetUIManager(): GsUIManager;
+	Close(): void;
+	static C(Other: UObject | any): GsUIWidgetBase;
+}
+
+declare class GsUIManager extends HUD { 
+	CachedWidgets: any;
+	static GetDefaultObject(): GsUIManager;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIManager;
+	StackPeek(): GsUIWidgetBase;
+	RemoveAll(): void;
+	Push(InClass: UnrealEngineClass,InParam: GsUIParameter): void;
+	Pop(InWidget: GsUIWidgetBase): void;
+	GetCachedWidget(InPathName: string): GsUIWidgetBase;
+	static C(Other: UObject | any): GsUIManager;
+}
+
+declare class GsUIParameterInt extends GsUIParameter { 
+	Data: number;
+	static Load(ResourceName: string): GsUIParameterInt;
+	static Find(Outer: UObject, ResourceName: string): GsUIParameterInt;
+	static GetDefaultObject(): GsUIParameterInt;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIParameterInt;
+	static C(Other: UObject | any): GsUIParameterInt;
+}
+
+declare class GsUIParameterFloat extends GsUIParameter { 
+	Data: number;
+	static Load(ResourceName: string): GsUIParameterFloat;
+	static Find(Outer: UObject, ResourceName: string): GsUIParameterFloat;
+	static GetDefaultObject(): GsUIParameterFloat;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIParameterFloat;
+	static C(Other: UObject | any): GsUIParameterFloat;
+}
+
+declare class GsUIPopup extends GsUIWidgetBase { 
+	static Load(ResourceName: string): GsUIPopup;
+	static Find(Outer: UObject, ResourceName: string): GsUIPopup;
+	static GetDefaultObject(): GsUIPopup;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIPopup;
+	static C(Other: UObject | any): GsUIPopup;
+}
+
+declare class GsUITray extends GsUIWidgetBase { 
+	static Load(ResourceName: string): GsUITray;
+	static Find(Outer: UObject, ResourceName: string): GsUITray;
+	static GetDefaultObject(): GsUITray;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUITray;
+	static C(Other: UObject | any): GsUITray;
+}
+
+declare class GsUIWindow extends GsUIWidgetBase { 
+	static Load(ResourceName: string): GsUIWindow;
+	static Find(Outer: UObject, ResourceName: string): GsUIWindow;
+	static GetDefaultObject(): GsUIWindow;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIWindow;
+	static C(Other: UObject | any): GsUIWindow;
+}
+
 declare class GsWorldGameMode extends GsGameMode { 
 	_VisibleLevelsLoadingTimer: TimerHandle;
 	_ClosestLevelLoadingTimer: TimerHandle;
@@ -10960,6 +11045,8 @@ declare class MyUserWidget extends UserWidget {
 	static Find(Outer: UObject, ResourceName: string): MyUserWidget;
 	static GetDefaultObject(): MyUserWidget;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MyUserWidget;
+	OnClickTest(): void;
+	OnClickCastFailed(): void;
 	static C(Other: UObject | any): MyUserWidget;
 }
 
@@ -10970,7 +11057,7 @@ declare class T1AIController extends AIController {
 }
 
 declare class T1AWeapon extends Actor { 
-	WEAPON: SkeletalMeshComponent;
+	Weapon: SkeletalMeshComponent;
 	static GetDefaultObject(): T1AWeapon;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1AWeapon;
 	static C(Other: UObject | any): T1AWeapon;
@@ -10979,7 +11066,7 @@ declare class T1AWeapon extends Actor {
 declare class T1AItemBox extends Actor { 
 	Trigger: BoxComponent;
 	Box: StaticMeshComponent;
-	EFFECT: ParticleSystemComponent;
+	Effect: ParticleSystemComponent;
 	WeaponItemClass: UnrealEngineClass;
 	static GetDefaultObject(): T1AItemBox;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1AItemBox;
@@ -11029,11 +11116,11 @@ declare class T1PlayerStatComponent extends ActorComponent {
 
 declare class T1Player extends GsPlayer { 
 	CurrentWeapon: T1AWeapon;
-	PLAYERSTAT: T1PlayerStatComponent;
-	WEAPON: SkeletalMeshComponent;
-	SPRINGARM: SpringArmComponent;
+	PlayerStat: T1PlayerStatComponent;
+	Weapon: SkeletalMeshComponent;
+	SpringArm: SpringArmComponent;
 	Camera: CameraComponent;
-	HPBARWIDGET: WidgetComponent;
+	HPBarWidget: WidgetComponent;
 	AttackRange: number;
 	AttackRadius: number;
 	IsAttacking: boolean;
@@ -13180,7 +13267,7 @@ declare class EditableMesh extends UObject {
 	SetAllowCompact(bInAllowCompact: boolean): void;
 	SearchSpatialDatabaseForPolygonsPotentiallyIntersectingPlane(InPlane: Plane,OutPolygons?: PolygonID[]): {OutPolygons: PolygonID[]};
 	SearchSpatialDatabaseForPolygonsPotentiallyIntersectingLineSegment(LineSegmentStart: Vector,LineSegmentEnd: Vector,OutPolygons?: PolygonID[]): {OutPolygons: PolygonID[]};
-	SearchSpatialDatabaseForPolygonsInVolume(planes: Plane[],OutPolygons?: PolygonID[]): {OutPolygons: PolygonID[]};
+	SearchSpatialDatabaseForPolygonsInVolume(Planes: Plane[],OutPolygons?: PolygonID[]): {OutPolygons: PolygonID[]};
 	RevertInstance(): EditableMesh;
 	Revert(): void;
 	RemovePolygonPerimeterVertices(PolygonID: PolygonID,FirstVertexNumberToRemove: number,NumVerticesToRemove: number,bDeleteOrphanedVertexInstances: boolean): void;
@@ -13917,7 +14004,7 @@ declare class JavascriptEditorGlobalDelegates extends UObject {
 	OnObjectReimported(UObject: UObject): void;
 	OnNewAssetCreated(InFactory: Factory): void;
 	OnNewActorsDropped(DroppedObjects: UObject[],OutNewActors: Actor[]): void;
-	OnMapOpened(FileName: string,bAsTemplate: boolean): void;
+	OnMapOpened(Filename: string,bAsTemplate: boolean): void;
 	OnLightingBuildStarted(): void;
 	OnLightingBuildKept(): void;
 	OnInMemoryAssetDeleted(InObject: UObject): void;
@@ -14096,7 +14183,7 @@ declare class JavascriptEditorLibrary extends BlueprintFunctionLibrary {
 	static SetAlphamapDataFromMemory(LandscapeInfo: LandscapeInfo,LayerInfo: LandscapeLayerInfoObject,MinX: number,MinY: number,MaxX: number,MaxY: number,PaintingRestriction: ELandscapeLayerPaintingRestriction): void;
 	static SetActorLabel(Actor: Actor,NewActorLabel: string,bMarkDirty: boolean): void;
 	static Select(USelection: USelection,InObject: UObject): void;
-	static SavePackage(Package: Package,FileName: string): boolean;
+	static SavePackage(Package: Package,Filename: string): boolean;
 	static RequestEndPlayMapInPIE(): void;
 	static ReplaceAnimNotifyClass(Sequence: AnimSequenceBase,NotifyName: string,NewNotifyName: string,NewNotifyClass: UObject): number;
 	static RemoveLevelInstance(World: World): void;
