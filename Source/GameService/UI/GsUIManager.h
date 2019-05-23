@@ -20,6 +20,8 @@ public:
 
 	static AGsUIManager* GetUIManager(class APlayerController* InOwner);
 
+	virtual void BeginDestroy() override;
+
 	/** À§Á¬ ¶ç¿ì±â */
 	UFUNCTION(BlueprintCallable, Category = "GsUI")
 	void Push(TSubclassOf<UGsUIWidgetBase> InClass, class UGsUIParameter* InParam = nullptr);

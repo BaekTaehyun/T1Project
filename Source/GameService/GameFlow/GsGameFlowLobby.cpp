@@ -1,13 +1,17 @@
 #include "GsGameFlowLobby.h"
 #include "GameService.h"
-#include "./Stage/StageLobby/GsStageManagerLobby.h"
+#include "Stage/StageLobby/GsStageManagerLobby.h"
+#include "Message/GsMessageManager.h"
+#include "GameMode/GsGameModeLobby.h"
+
+
 FGsGameFlowLobby::FGsGameFlowLobby() : FGsGameFlowBase(FGsGameFlow::Mode::LOBBY)
 {
 }
 
 FGsGameFlowLobby::~FGsGameFlowLobby()
 {
-	GSLOG(Warning, TEXT("FGsGameFlowLobby : ~FGsGameModeLobby"));
+	GSLOG(Warning, TEXT("FGsGameFlowLobby : ~FGsGameFlowLobby"));
 }
 
 void FGsGameFlowLobby::Enter()
@@ -19,6 +23,9 @@ void FGsGameFlowLobby::Enter()
 	{
 		_stageManager.Get()->InitState();
 	}
+
+	// FIX: 적당한 위치
+	InitMessageHandler();
 }
 
 void FGsGameFlowLobby::Exit()
@@ -43,4 +50,97 @@ void FGsGameFlowLobby::OnReconnectionStart()
 void FGsGameFlowLobby::OnReconnectionEnd()
 {
 	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnReconectionEnd"));
+}
+
+
+void FGsGameFlowLobby::InitMessageHandler()
+{
+	GMessage()->GetStage().AddRaw(MessageLobby::Stage::INTRO_COMPLETE, this, &FGsGameFlowLobby::OnIntroComplete);
+	GMessage()->GetStage().AddRaw(MessageLobby::Stage::ASSETDOWN_COMPLETE, this, &FGsGameFlowLobby::OnAssetDownloadComplete);
+	GMessage()->GetStage().AddRaw(MessageLobby::Stage::LOGIN_COMPLETE, this, &FGsGameFlowLobby::OnLoginComplete);
+	GMessage()->GetStage().AddRaw(MessageLobby::Stage::SERVER_SELECTCOMPLETE, this, &FGsGameFlowLobby::OnServerSelectComplete);
+	GMessage()->GetStage().AddRaw(MessageLobby::Stage::BACKTO_SERVER_SELECT, this, &FGsGameFlowLobby::OnBackToServerSelect);
+	GMessage()->GetStage().AddRaw(MessageLobby::Stage::ENTER_INGAME, this, &FGsGameFlowLobby::OnEnterIngame);
+	GMessage()->GetStage().AddRaw(MessageLobby::Stage::INGAME_LOAD_COMPLETE, this, &FGsGameFlowLobby::OnIngameLoadComplete);
+
+	GMessage()->GetHive().AddRaw(MessageLobby::Hive::GVS_DOWNLOAD_COMPLETE, this, &FGsGameFlowLobby::OnGVSDownloadComplete);
+	GMessage()->GetHive().AddRaw(MessageLobby::Hive::HIVE_LOGIN_COMPLETE, this, &FGsGameFlowLobby::OnHiveLoginComplete);
+}
+
+void FGsGameFlowLobby::OnIntroComplete()
+{
+	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnIntroComplete"));
+
+	AGsGameModeLobby* GameModeLobby = AGsGameModeLobby::GetGameModeLobby();
+	if (nullptr != GameModeLobby)
+	{
+		// 개발모드일 경우 바로 로그인 화면으로 연결
+		if (GameModeLobby->IsDevMode())
+		{
+			_stageManager.Get()->ChangeState(FGsStageMode::Lobby::SERVER_SELECT);
+			return;
+		}
+	}
+
+	_stageManager.Get()->ChangeState(FGsStageMode::Lobby::ASSET_DOWNLOAD);
+}
+
+void FGsGameFlowLobby::OnAssetDownloadComplete()
+{
+	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnAssetDownloadComplete"));
+
+	_stageManager.Get()->ChangeState(FGsStageMode::Lobby::SERVER_SELECT);
+}
+
+void FGsGameFlowLobby::OnLoginComplete()
+{
+	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnLoginComplete"));
+	
+	AGsGameModeLobby* GameModeLobby = AGsGameModeLobby::GetGameModeLobby();
+	if (nullptr != GameModeLobby)
+	{
+		GameModeLobby->SetAccountLogin(true);
+	}
+}
+
+void FGsGameFlowLobby::OnServerSelectComplete()
+{
+	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnLoginComplete"));
+
+	_stageManager.Get()->ChangeState(FGsStageMode::Lobby::CAHRACTER_SELECT);
+}
+
+void FGsGameFlowLobby::OnGVSDownloadComplete()
+{
+	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnGVSDownloadComplete"));
+
+	// TOOD:
+}
+
+void FGsGameFlowLobby::OnHiveLoginComplete()
+{
+	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnHiveLoginComplete"));
+
+	GMessage()->GetStage().SendMessage(MessageLobby::Stage::LOGIN_COMPLETE);
+}
+
+void FGsGameFlowLobby::OnBackToServerSelect()
+{
+	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnBackToServerSelect"));
+
+	// 현재 UI 스택에서 빼기?
+
+	_stageManager.Get()->ChangeState(FGsStageMode::Lobby::SERVER_SELECT);
+}
+
+void FGsGameFlowLobby::OnEnterIngame()
+{
+	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnEnterIngame"));
+
+	// FIX: 여기서 받는게 맞는가
+}
+
+void FGsGameFlowLobby::OnIngameLoadComplete()
+{
+	// FIX: 여기서 받는게 맞는가
 }
