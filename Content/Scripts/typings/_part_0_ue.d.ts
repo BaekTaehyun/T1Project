@@ -307,7 +307,7 @@ declare var ELerpInterpolationMode : { QuatInterp:'QuatInterp',EulerInterp:'Eule
 declare class Transform { 
 	Rotation: Quat;
 	Translation: Vector;
-	Scale3d: Vector;
+	Scale3D: Vector;
 	clone() : Transform;
 	static C(Other: UObject | any): Transform;
 	Conv_TransformToText(): string;
@@ -2019,7 +2019,7 @@ declare class Texture extends UObject {
 	CompressionSettings: TextureCompressionSettings;
 	Filter: TextureFilter;
 	LODGroup: TextureGroup;
-	sRGB: boolean;
+	SRGB: boolean;
 	bUseLegacyGamma: boolean;
 	NeverStream: boolean;
 	bNoTiling: boolean;
@@ -2034,10 +2034,10 @@ declare class Texture extends UObject {
 	static C(Other: UObject | any): Texture;
 	SetSplashScreen(Scale: Vector2D,Offset: Vector,bShowLoadingMovie: boolean,bShowOnSet: boolean): void;
 	SetSpectatorScreenTexture(): void;
-	ExportToDisk(Filename: string,Options: ImageWriteOptions): void;
+	ExportToDisk(FileName: string,Options: ImageWriteOptions): void;
 	static SetSplashScreen(Texture: Texture,Scale: Vector2D,Offset: Vector,bShowLoadingMovie: boolean,bShowOnSet: boolean): void;
 	static SetSpectatorScreenTexture(InTexture: Texture): void;
-	static ExportToDisk(Texture: Texture,Filename: string,Options: ImageWriteOptions): void;
+	static ExportToDisk(Texture: Texture,FileName: string,Options: ImageWriteOptions): void;
 }
 
 declare type EMaterialUsage = 'MATUSAGE_SkeletalMesh' | 'MATUSAGE_ParticleSprites' | 'MATUSAGE_BeamTrails' | 'MATUSAGE_MeshParticles' | 'MATUSAGE_StaticLighting' | 'MATUSAGE_MorphTargets' | 'MATUSAGE_SplineMesh' | 'MATUSAGE_InstancedStaticMeshes' | 'MATUSAGE_Clothing' | 'MATUSAGE_NiagaraSprites' | 'MATUSAGE_NiagaraRibbons' | 'MATUSAGE_NiagaraMeshParticles' | 'MATUSAGE_GeometryCache' | 'MATUSAGE_MAX';
@@ -2065,7 +2065,7 @@ declare class Material extends MaterialInterface {
 	WorldDisplacement: VectorMaterialInput;
 	TessellationMultiplier: ScalarMaterialInput;
 	SubsurfaceColor: ColorMaterialInput;
-	ClearCoat: ScalarMaterialInput;
+	Clearcoat: ScalarMaterialInput;
 	ClearCoatRoughness: ScalarMaterialInput;
 	AmbientOcclusion: ScalarMaterialInput;
 	Refraction: ScalarMaterialInput;
@@ -13898,10 +13898,10 @@ declare class World extends UObject {
 	CreateRenderTarget2D(Width: number,Height: number,Format: ETextureRenderTargetFormat): TextureRenderTarget2D;
 	DrawMaterialToRenderTarget(TextureRenderTarget: TextureRenderTarget2D,Material: MaterialInterface): void;
 	EndDrawCanvasToRenderTarget(Context: DrawToRenderTargetContext): void;
-	ExportRenderTarget(TextureRenderTarget: TextureRenderTarget2D,FilePath: string,Filename: string): void;
-	ExportTexture2D(Texture: Texture2D,FilePath: string,Filename: string): void;
+	ExportRenderTarget(TextureRenderTarget: TextureRenderTarget2D,FilePath: string,FileName: string): void;
+	ExportTexture2D(Texture: Texture2D,FilePath: string,FileName: string): void;
 	ImportBufferAsTexture2D(Buffer: number[]): Texture2D;
-	ImportFileAsTexture2D(Filename: string): Texture2D;
+	ImportFileAsTexture2D(FileName: string): Texture2D;
 	ReadRenderTargetPixel(TextureRenderTarget: TextureRenderTarget2D,X: number,Y: number): Color;
 	ReadRenderTargetRawPixel(TextureRenderTarget: TextureRenderTarget2D,X: number,Y: number): LinearColor;
 	ReadRenderTargetRawUV(TextureRenderTarget: TextureRenderTarget2D,U: number,V: number): LinearColor;
@@ -14139,10 +14139,10 @@ declare class World extends UObject {
 	static CreateRenderTarget2D(WorldContextObject: UObject,Width: number,Height: number,Format: ETextureRenderTargetFormat): TextureRenderTarget2D;
 	static DrawMaterialToRenderTarget(WorldContextObject: UObject,TextureRenderTarget: TextureRenderTarget2D,Material: MaterialInterface): void;
 	static EndDrawCanvasToRenderTarget(WorldContextObject: UObject,Context: DrawToRenderTargetContext): void;
-	static ExportRenderTarget(WorldContextObject: UObject,TextureRenderTarget: TextureRenderTarget2D,FilePath: string,Filename: string): void;
-	static ExportTexture2D(WorldContextObject: UObject,Texture: Texture2D,FilePath: string,Filename: string): void;
+	static ExportRenderTarget(WorldContextObject: UObject,TextureRenderTarget: TextureRenderTarget2D,FilePath: string,FileName: string): void;
+	static ExportTexture2D(WorldContextObject: UObject,Texture: Texture2D,FilePath: string,FileName: string): void;
 	static ImportBufferAsTexture2D(WorldContextObject: UObject,Buffer: number[]): Texture2D;
-	static ImportFileAsTexture2D(WorldContextObject: UObject,Filename: string): Texture2D;
+	static ImportFileAsTexture2D(WorldContextObject: UObject,FileName: string): Texture2D;
 	static ReadRenderTargetPixel(WorldContextObject: UObject,TextureRenderTarget: TextureRenderTarget2D,X: number,Y: number): Color;
 	static ReadRenderTargetRawPixel(WorldContextObject: UObject,TextureRenderTarget: TextureRenderTarget2D,X: number,Y: number): LinearColor;
 	static ReadRenderTargetRawUV(WorldContextObject: UObject,TextureRenderTarget: TextureRenderTarget2D,U: number,V: number): LinearColor;
@@ -14273,13 +14273,13 @@ declare class Package extends UObject {
 	static C(Other: UObject | any): Package;
 	DeletePackage(): boolean;
 	FindWorldInPackage(): World;
-	SavePackage(Filename: string): boolean;
+	SavePackage(FileName: string): boolean;
 	GetLongPackagePath(): string;
 	HasAnyPackageFlags(Flags: number): boolean;
 	LoadPackage(PackageName: string): Package;
 	static DeletePackage(Package: Package): boolean;
 	static FindWorldInPackage(Package: Package): World;
-	static SavePackage(Package: Package,Filename: string): boolean;
+	static SavePackage(Package: Package,FileName: string): boolean;
 	static GetLongPackagePath(InPackage: Package): string;
 	static HasAnyPackageFlags(Package: Package,Flags: number): boolean;
 	static LoadPackage(InOuter: Package,PackageName: string): Package;
@@ -14343,18 +14343,18 @@ declare class UObject {
 	GetArchetypePathName(): string;
 	GetDir(WhichDir: string): string;
 	GetFields(bIncludeSuper: boolean): Field[];
-	GetFileSize(Filename: string): number;
+	GetFileSize(FileName: string): number;
 	GetName(): string;
 	GetObjectsWithOuter(Results?: UObject[],bIncludeNestedObjects?: boolean,ExclusionFlags?: number,ExclusionInternalFlags?: number): {Results: UObject[]};
 	GetOuter(): UObject;
 	GetOutermost(): UObject;
 	HasAnyFlags(Flags: number): boolean;
 	ReadDirectory(Directory: string,OutItems?: DirectoryItem[]): {OutItems: DirectoryItem[], $: boolean};
-	ReadFile(Filename: string): boolean;
-	ReadStringFromFile(Filename: string): string;
+	ReadFile(FileName: string): boolean;
+	ReadStringFromFile(FileName: string): string;
 	SetObjectFlags(Flags: number): void;
-	WriteFile(Filename: string): boolean;
-	WriteStringToFile(Filename: string,Data: string,EncodingOptions: EJavascriptEncodingOptions): boolean;
+	WriteFile(FileName: string): boolean;
+	WriteStringToFile(FileName: string,Data: string,EncodingOptions: EJavascriptEncodingOptions): boolean;
 	GetDatasmithUserData(): DatasmithAssetUserData;
 	GetDatasmithUserDataKeysAndValuesForValue(StringToMatch: string,OutKeys?: string[],OutValues?: string[]): {OutKeys: string[], OutValues: string[]};
 	GetDatasmithUserDataValueForKey(Key: string): string;
@@ -14431,18 +14431,18 @@ declare class UObject {
 	static GetArchetypePathName(UObject: UObject): string;
 	static GetDir(UObject: UObject,WhichDir: string): string;
 	static GetFields(UObject: UObject,bIncludeSuper: boolean): Field[];
-	static GetFileSize(UObject: UObject,Filename: string): number;
+	static GetFileSize(UObject: UObject,FileName: string): number;
 	static GetName(UObject: UObject): string;
 	static GetObjectsWithOuter(Outer: UObject,Results?: UObject[],bIncludeNestedObjects?: boolean,ExclusionFlags?: number,ExclusionInternalFlags?: number): {Results: UObject[]};
 	static GetOuter(UObject: UObject): UObject;
 	static GetOutermost(UObject: UObject): UObject;
 	static HasAnyFlags(UObject: UObject,Flags: number): boolean;
 	static ReadDirectory(UObject: UObject,Directory: string,OutItems?: DirectoryItem[]): {OutItems: DirectoryItem[], $: boolean};
-	static ReadFile(UObject: UObject,Filename: string): boolean;
-	static ReadStringFromFile(UObject: UObject,Filename: string): string;
+	static ReadFile(UObject: UObject,FileName: string): boolean;
+	static ReadStringFromFile(UObject: UObject,FileName: string): string;
 	static SetObjectFlags(Obj: UObject,Flags: number): void;
-	static WriteFile(UObject: UObject,Filename: string): boolean;
-	static WriteStringToFile(UObject: UObject,Filename: string,Data: string,EncodingOptions: EJavascriptEncodingOptions): boolean;
+	static WriteFile(UObject: UObject,FileName: string): boolean;
+	static WriteStringToFile(UObject: UObject,FileName: string,Data: string,EncodingOptions: EJavascriptEncodingOptions): boolean;
 	static GetDatasmithUserData(UObject: UObject): DatasmithAssetUserData;
 	static GetDatasmithUserDataKeysAndValuesForValue(UObject: UObject,StringToMatch: string,OutKeys?: string[],OutValues?: string[]): {OutKeys: string[], OutValues: string[]};
 	static GetDatasmithUserDataValueForKey(UObject: UObject,Key: string): string;
@@ -15180,7 +15180,7 @@ declare class ImageWriteBlueprintLibrary extends BlueprintFunctionLibrary {
 	static Find(Outer: UObject, ResourceName: string): ImageWriteBlueprintLibrary;
 	static GetDefaultObject(): ImageWriteBlueprintLibrary;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): ImageWriteBlueprintLibrary;
-	static ExportToDisk(Texture: Texture,Filename: string,Options: ImageWriteOptions): void;
+	static ExportToDisk(Texture: Texture,FileName: string,Options: ImageWriteOptions): void;
 	static C(Other: UObject | any): ImageWriteBlueprintLibrary;
 }
 
@@ -18385,7 +18385,7 @@ declare class K2Node_TransitionRuleGetter extends K2Node {
 }
 
 declare class SourceControlState { 
-	Filename: string;
+	FileName: string;
 	bIsValid: boolean;
 	bIsUnknown: boolean;
 	bCanCheckIn: boolean;

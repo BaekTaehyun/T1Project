@@ -5,6 +5,7 @@
 
 #include "AllocateHelper.h"
 #include "CoreMinimal.h"
+#include "../../Class/GsSingleton.h"
 
 
 class Buffer
@@ -51,29 +52,10 @@ public:
 
 class FBufferPool
 #ifdef __UNREAL__
-	: public TLockFreeClassAllocator<Buffer, 100>
+	: public TLockFreeClassAllocator<Buffer, 100>, TGsPoolSingle<FBufferPool>
 #endif
 {
-	static FBufferPool* instance_;
 public:
-	static FBufferPool* GetInstance()
-	{
-		if (nullptr == instance_)
-		{
-			instance_ = new FBufferPool();
-		}
-		return instance_;
-	}
-
-	static void RemoveInstance()
-	{
-		if (nullptr != instance_)
-		{
-			delete instance_;
-			instance_ = nullptr;
-		}
-	}
-
 	Buffer* New(int32_t size)
 	{
 #ifdef __UNREAL__
@@ -91,6 +73,6 @@ public:
 #endif
 	}
 };
-FBufferPool* FBufferPool::instance_ = nullptr;
+FBufferPool* TGsPoolSingle<FBufferPool>::_instance= nullptr;
 
-#define GetBufferPool() FBufferPool::GetInstance()
+#define GetBufferPool() TGsPoolSingle<FBufferPool>::GetInstance()

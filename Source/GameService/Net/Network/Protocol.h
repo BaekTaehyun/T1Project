@@ -10,6 +10,7 @@
 #include "Crc32.h"
 #include "./Crypto/ChaCha20.h"
 #include "CoreMinimal.h"
+#include "../../Class/GsSingleton.h"
 
 // #pragma pack(push, 1)은 MSVC, gcc, clang 모두 지원하는 것 같다.
 // 빌드 해보고 실패하면 그때 수정하자
@@ -67,29 +68,10 @@ public:
 // 최초 할당수 100
 class FPacketPool 
 #ifdef __UNREAL__
-	: public TLockFreeClassAllocator<Packet, 100>
+	: public TLockFreeClassAllocator<Packet, 100>, TGsPoolSingle<FPacketPool>
 #endif
 {
-	static FPacketPool* instance_;
 public:
-	static FPacketPool* GetInstance()
-	{
-		if (nullptr == instance_)
-		{
-			instance_ = new FPacketPool();
-		}
-		return instance_;
-	}
-
-	static void RemoveInstance()
-	{
-		if (nullptr != instance_)
-		{
-			delete instance_;
-			instance_ = nullptr;
-		}
-	}
-
 	Packet* New(const PacketHeader* header, const void* data, uint32_t len)
 	{
 #ifdef __UNREAL__
@@ -107,9 +89,9 @@ public:
 #endif
 	}
 };
-FPacketPool* FPacketPool::instance_ = nullptr;
+FPacketPool* TGsPoolSingle<FPacketPool>::_instance = nullptr;
 
-#define GetPacketPool() FPacketPool::GetInstance()
+#define GetPacketPool() TGsPoolSingle<FPacketPool>::GetInstance()
 
 inline Buffer* MakePacket(uint16_t packetId, const void* data, int32_t size)
 {
