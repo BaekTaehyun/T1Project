@@ -20,10 +20,15 @@ public:
 	UMyUserWidget(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	void TestUI();
 
+	UFUNCTION(BlueprintCallable)
+		void OnClickTest();
+	UFUNCTION(BlueprintCallable)
+		void OnClickCastFailed();
+	
+
 
 	UPROPERTY(EditAnywhere)
 		int32 Time;
-
 
 	
 };

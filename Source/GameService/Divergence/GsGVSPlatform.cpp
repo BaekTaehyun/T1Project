@@ -27,10 +27,10 @@ void FGsGVSInfo::PrintLog()
 bool FGsGVSInfo::IsCurrentPlatform()
 {
 	// 현재 기기의 플랫폼 이름 가져오기
-	FString DevicefindVal = UGameplayStatics::GetPlatformName();
+	FString devicePlatformName = UGameplayStatics::GetPlatformName();
 	
 	// 안드면
-	if (DevicefindVal.Compare(TEXT("Android")) == 0)
+	if (devicePlatformName.Compare(TEXT("Android")) == 0)
 	{
 		// 인포의 텍스트랑 비교
 		if (platform.Compare(TEXT("android")) == 0)
@@ -79,6 +79,9 @@ bool FGsGVSInfo::IsIncludeVersion(const FString& In_versetText)
 
 GsGVSPlatform::GsGVSPlatform()
 {
+	UE_LOG(LogGVSInfo, Warning,
+		TEXT("GsGVSPlatform()"));
+
 	_mapTypeStr.Add(EGsServiceType::live, TEXT("live"));
 	_mapTypeStr.Add(EGsServiceType::submission, TEXT("submission"));
 	_mapTypeStr.Add(EGsServiceType::qa, TEXT("qa"));
@@ -90,6 +93,12 @@ GsGVSPlatform::GsGVSPlatform()
 
 GsGVSPlatform::~GsGVSPlatform()
 {
+	// 맵 구성원 제거
+	_mapTypeStr.Empty();
+	_mapTypeGVS.Empty();
+
+	UE_LOG(LogGVSInfo, Warning,
+		TEXT("~GsGVSPlatform()"));
 }
 
 
