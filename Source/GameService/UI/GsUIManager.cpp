@@ -12,6 +12,13 @@ AGsUIManager::AGsUIManager(const FObjectInitializer& ObjectInitializer)
 	
 }
 
+void AGsUIManager::BeginDestroy()
+{
+	RemoveAll();
+
+	Super::BeginDestroy();
+}
+
 void AGsUIManager::Push(TSubclassOf<UGsUIWidgetBase> InClass, UGsUIParameter* InParam)
 {
 	if (nullptr == InClass)
