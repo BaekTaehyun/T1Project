@@ -1,7 +1,6 @@
 #include "GsStageLobby_AssetDownload.h"
 #include "GameService.h"
 #include "UI/GsUIManager.h"
-#include "BPFunction/GSBluePrintEnumLobby.h"
 #include "GameMode/GsGameModeLobby.h"
 
 
@@ -25,15 +24,11 @@ void FGsStageLobby_AssetDownLoad::Enter()
 		AGsUIManager* UIManager = GameModeLobby->GetUIManager();
 		if (nullptr != UIManager)
 		{
-			auto WidgetClass = GameModeLobby->GetWidgetClass(EGS_LOBBY_WIDGET_Enum::GS_LOBBY_WIDGET_ASSET_DOWNLOAD);
-			if (nullptr != WidgetClass)
-			{
-				UIManager->Push(WidgetClass);
-
-				// FIX:
-				// TEST: 다운로드 시작
-				GameModeLobby->TestStartDownload();
-			}
+			UIManager->PushByKeyName(FName(TEXT("WindowAssetDownload")));
+			
+#pragma todo("yjchoung: Test Code")
+			// TEST: 다운로드 시작
+			GameModeLobby->TestStartDownload();
 		}
 	}
 }

@@ -19,22 +19,17 @@ AGsGameModeLobby::AGsGameModeLobby()
 
 }
 
-void AGsGameModeLobby::PreInitializeComponents()
-{
-	Super::PreInitializeComponents();
-
-	// 이벤트 핸들러 등록
-	GMessage()->GetStage().AddUObject(MessageLobby::Stage::LOGIN_COMPLETE, this, &AGsGameModeLobby::OnLoginComplete);
-}
-
 void AGsGameModeLobby::StartPlay()
 {
 	Super::StartPlay();
 
+	// 핸들러 등록을 PreInitializeComponents에 넣어보려고 했는데, 이러면 에디터에서 블루프린트 편집 시 불리며 에러가 난다.
+	GMessage()->GetStage().AddUObject(MessageLobby::Stage::LOGIN_COMPLETE, this, &AGsGameModeLobby::OnLoginComplete);
+
 	AGsUIManager* UIManager = GetUIManager();
 	if (nullptr != UIManager)
 	{
-		UIManager->Push(GetWidgetClass(EGS_LOBBY_WIDGET_Enum::GS_LOBBY_WIDGET_INTRO));
+		UIManager->PushByKeyName(FName(TEXT("WindowIntro")));
 	}
 }
 
@@ -78,11 +73,14 @@ void AGsGameModeLobby::OnRepeatTestTimer()
 	AGsUIManager* UIManager = GetUIManager();
 	if (nullptr != UIManager)
 	{
-		auto WidgetClass = GetWidgetClass(EGS_LOBBY_WIDGET_Enum::GS_LOBBY_WIDGET_ASSET_DOWNLOAD);
-		auto* TargetWidget = UIManager->GetCachedWidget(WidgetClass.Get()->GetPathName());
-		if (nullptr != TargetWidget)
+		auto WidgetClass = UIManager->GetWidgetClass(FName(TEXT("WindowAssetDownload")));
+		if (nullptr != WidgetClass)
 		{
-			IGsUIEventInterface::Execute_UIEvent_ChangeDownloadRate(TargetWidget, DownloadRate);
+			auto* TargetWidget = UIManager->GetCachedWidget(WidgetClass.Get()->GetPathName());
+			if (nullptr != TargetWidget)
+			{
+				IGsUIEventInterface::Execute_UIEvent_ChangeDownloadRate(TargetWidget, DownloadRate);
+			}
 		}
 	}
 }
@@ -109,11 +107,14 @@ void AGsGameModeLobby::SetAccountLogin(bool InComplete)
 		AGsUIManager* UIManager = GetUIManager();
 		if (nullptr != UIManager)
 		{
-			auto WidgetClass = GetWidgetClass(EGS_LOBBY_WIDGET_Enum::GS_LOBBY_WIDGET_SERVER_SELECT);
-			auto* TargetWidget = UIManager->GetCachedWidget(WidgetClass.Get()->GetPathName());
-			if (nullptr != TargetWidget)
+			auto WidgetClass = UIManager->GetWidgetClass(FName(TEXT("WindowServerSelect")));
+			if (nullptr != WidgetClass)
 			{
-				IGsUIEventInterface::Execute_UIEvent_AccountLoginComplete(TargetWidget);
+				auto* TargetWidget = UIManager->GetCachedWidget(WidgetClass.Get()->GetPathName());
+				if (nullptr != TargetWidget)
+				{
+					IGsUIEventInterface::Execute_UIEvent_AccountLoginComplete(TargetWidget);
+				}
 			}
 		}
 	}
@@ -121,24 +122,23 @@ void AGsGameModeLobby::SetAccountLogin(bool InComplete)
 
 void AGsGameModeLobby::TryAccountLogin()
 {
-	// FIX: 하이브 로그인 요청 로직
-
-	// 일단은 하이브 로그인 완료 이벤트를 바로 뿌림
+#pragma todo("yjchoung: Request Hive Account Login")
+	// FIX: 하이브 로그인 요청 로직 처리 필요.
+	// 일단은 로그인 완료되었다고 치고 완료 이벤트를 바로 뿌림
 	GMessage()->GetHive().SendMessage(MessageLobby::Hive::HIVE_LOGIN_COMPLETE);
 }
 
 void AGsGameModeLobby::TryDevAccountLogin(FString InName, FString InPassword)
 {
+#pragma todo("yjchoung: Request Dev Account Login")
 	// FIX: 인증서버 로그인 요청 로직
-
-	// 일단은 로그인 완료 이벤트를 바로 뿌림
+	// 일단은 로그인 완료되었다고 치고 완료 이벤트를 바로 뿌림
 	GMessage()->GetStage().SendMessage(MessageLobby::Stage::LOGIN_COMPLETE);
 }
 
 void AGsGameModeLobby::TrySelectServer(int32 InServerID)
 {
-	// FIX: 서버와 통신이 필요한가?
-
+#pragma todo("yjchoung: Test Code")
 	// TEST: 임의로 무조건 1값을 세팅(0보다 크면 선택된 서버가 있다고 판단)
 	SetSelectedServer(1);
 	//SetSelectedServer(InServerID);
@@ -151,11 +151,14 @@ void AGsGameModeLobby::SetSelectedServer(int32 InServerID)
 	AGsUIManager* UIManager = GetUIManager();
 	if (nullptr != UIManager)
 	{
-		auto WidgetClass = GetWidgetClass(EGS_LOBBY_WIDGET_Enum::GS_LOBBY_WIDGET_SERVER_SELECT);
-		auto* TargetWidget = UIManager->GetCachedWidget(WidgetClass.Get()->GetPathName());
-		if (nullptr != TargetWidget)
+		auto WidgetClass = UIManager->GetWidgetClass(FName("WindowServerSelect"));
+		if (nullptr != WidgetClass)
 		{
-			IGsUIEventInterface::Execute_UIEvent_ServerSelectComplete(TargetWidget, InServerID);
+			auto* TargetWidget = UIManager->GetCachedWidget(WidgetClass.Get()->GetPathName());
+			if (nullptr != TargetWidget)
+			{
+				IGsUIEventInterface::Execute_UIEvent_ServerSelectComplete(TargetWidget, InServerID);
+			}
 		}
 	}
 }
@@ -183,17 +186,6 @@ AGsUIManager* AGsGameModeLobby::GetUIManager()
 	if (nullptr != LocalPC)
 	{
 		return Cast<AGsUIManager>(LocalPC->GetHUD());
-	}
-
-	return nullptr;
-}
-
-TSubclassOf<class UGsUIWidgetBase> AGsGameModeLobby::GetWidgetClass(EGS_LOBBY_WIDGET_Enum InType) const
-{
-	// FIX: Find에서 키를 못찾으면 에러가 나서 검사. 다른 함수를 써야하는지 알아볼 것.
-	if (WidgetClassMap.Contains(InType))
-	{
-		return *WidgetClassMap.Find(InType);
 	}
 
 	return nullptr;

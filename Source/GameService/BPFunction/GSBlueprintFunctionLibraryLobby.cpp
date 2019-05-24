@@ -11,7 +11,7 @@ void UGsBlueprintFunctionLibraryLobby::SendEventGSLobby(EGS_LOBBY_Enum inMessage
 {
 	GSLOG(Warning, *EnumToString(EGS_LOBBY_Enum, inMessage));
 
-	// FIX: 구조화
+	// 개선: 구조화
 	switch (inMessage)
 	{
 	case EGS_LOBBY_Enum::GS_LOBBY_END_INTRO:
@@ -31,7 +31,6 @@ void UGsBlueprintFunctionLibraryLobby::SendEventGSLobby(EGS_LOBBY_Enum inMessage
 	break;
 	case EGS_LOBBY_Enum::GS_LOBBY_INGAME_LOAD_COMPLETE:
 	{
-		// FIX:
 		GMessage()->GetStage().SendMessage(MessageLobby::Stage::INGAME_LOAD_COMPLETE);
 	}
 	break;

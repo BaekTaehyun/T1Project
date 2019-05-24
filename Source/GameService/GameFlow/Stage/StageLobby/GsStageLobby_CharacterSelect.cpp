@@ -1,7 +1,6 @@
 #include "GsStageLobby_CharacterSelect.h"
 #include "GameService.h"
 #include "UI/GsUIManager.h"
-#include "BPFunction/GSBluePrintEnumLobby.h"
 #include "GameMode/GsGameModeLobby.h"
 
 
@@ -25,11 +24,7 @@ void FGsStageLobby_CharacterSelect::Enter()
 		AGsUIManager* UIManager = GameModeLobby->GetUIManager();
 		if (nullptr != UIManager)
 		{
-			auto WidgetClass = GameModeLobby->GetWidgetClass(EGS_LOBBY_WIDGET_Enum::GS_LOBBY_WIDGET_CHARACTER_SELECT);
-			if (nullptr != WidgetClass)
-			{
-				UIManager->Push(WidgetClass);
-			}
+			UIManager->PushByKeyName(FName(TEXT("WindowCharacterSelect")));
 		}
 	}
 }
