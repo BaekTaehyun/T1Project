@@ -59,7 +59,6 @@ public:
 	{
 		return fbBuilder_.CreateString(str);
 	}*/
-#pragma	todo("convert FString to uft8 string")
 	// https://en.cppreference.com/w/cpp/string/basic_string
 	// c++ 20에 기본으로 추가됨.. 현재는 지원하지 않음
 	// std::u8string (C++20)	std::basic_string<char8_t>
@@ -67,6 +66,11 @@ public:
 	{
 		return fbBuilder_.CreateString(str);
 	}*/
+#pragma	todo("bak1210 : serverside string check!!")
+	StringOffset createString(const FString& str)
+	{
+		return fbBuilder_.CreateString(TCHAR_TO_UTF8(*str));
+	}
 
 	template<typename T>
 	flatbuffers::Offset<flatbuffers::Vector<T>> createVector(const std::vector<T>& v)

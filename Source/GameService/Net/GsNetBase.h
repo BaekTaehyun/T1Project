@@ -22,11 +22,11 @@ public:
 	FGsNetBase(FGsNet::Mode inMode) : TGsState<FGsNet::Mode>(inMode) {}
 	virtual ~FGsNetBase() {}
 
-	virtual void Enter();
-	virtual void Exit();
-	virtual void Update();
+	virtual void Enter() override;
+	virtual void Exit() override;
+	virtual void Update() override;
 
-	void Init(FGsNet::NetConnectionData&& indata);
+	void InitConnection(FGsNet::NetConnectionData&& indata);
 	void Send(LeanPacket::Protocol inProtocol, class FBBuilder& inbuilder);
 
 protected:

@@ -18,7 +18,7 @@ AGsGameModeLobby::AGsGameModeLobby()
 	bIsAccountLoginComplete = false;
 	SelectedServerID = 0;
 
-	GMessage()->GetStage().AddUObject(MessageLobby::Stage::LOGIN_COMPLETE, this, &AGsGameModeLobby::OnLoginComplete);
+	//GMessage()->GetStage().AddUObject(MessageLobby::Stage::LOGIN_COMPLETE, this, &AGsGameModeLobby::OnLoginComplete);
 	
 }
 

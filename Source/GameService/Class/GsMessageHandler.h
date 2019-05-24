@@ -48,6 +48,64 @@ public:
 		return Result;
 	}
 
+	template<typename FunctorType, typename... VarTypes>
+	inline FDelegateHandle AddLambda(T1 Message, FunctorType&& InFunctor, VarTypes... Vars)
+	{
+		TGsMessageHandler<T1>::MessageType delFunc;
+		auto Result = delFunc.AddLambda(InFunctor, Vars...);
+		_delieveryAddr.Add(Message, delFunc);
+		return Result;
+	}
+
+	template <typename UObjectTemplate, typename... VarTypes>
+	inline FDelegateHandle AddUFunction(T1 Message, UObjectTemplate* InUserObject,
+		const FName& InFunctionName, VarTypes... Vars)
+	{
+		TGsMessageHandler<T1>::MessageType delFunc;
+		auto Result = delFunc.AddUFunction(InUserObject, InFunctionName, Vars...);
+		_delieveryAddr.Add(Message, delFunc);
+		return Result;
+	}
+
+	template <typename... VarTypes>
+	inline FDelegateHandle AddStatic(T1 Message, 
+		typename TBaseStaticDelegateInstance<void(ParamTypes...), VarTypes...>::FFuncPtr InFunc, VarTypes... Vars)
+	{
+		TGsMessageHandler<T1>::MessageType delFunc;
+		auto Result = delFunc.AddStatic(InFunc, Vars...);
+		_delieveryAddr.Add(Message, delFunc);
+		return Result;
+	}
+
+	template<typename UserClass, typename FunctorType, typename... VarTypes>
+	inline FDelegateHandle AddWeakLambda(T1 Message, UserClass* InUserObject,
+		FunctorType&& InFunctor, VarTypes... Vars)
+	{
+		TGsMessageHandler<T1>::MessageType delFunc;
+		auto Result = delFunc.AddWeakLambda(InUserObject, InFunctor, Vars...);
+		_delieveryAddr.Add(Message, delFunc);
+		return Result;
+	}
+	
+	template <typename UserClass, typename... VarTypes>
+	inline FDelegateHandle AddSP(T1 Message, const TSharedRef<UserClass, ESPMode::Fast>& InUserObjectRef,
+		typename TMemFunPtrType<false, UserClass, void(ParamTypes..., VarTypes...)>::Type InFunc, VarTypes... Vars)
+	{
+		TGsMessageHandler<T1>::MessageType delFunc;
+		auto Result = delFunc.AddSP(InUserObjectRef, InFunc, Vars...);
+		_delieveryAddr.Add(Message, delFunc);
+		return Result;
+	}
+	
+	void Remove(T1 Message, FDelegateHandle Handle)
+	{
+		if (Handle.IsValid())
+		{
+			auto delegateFunc = _delieveryAddr.FindRef(Message);
+			delegateFunc.RemoveDelegateInstance(Handle);
+		}
+	}
+
 	//-------------------------------------------------------------------------
 	// 메세지 전송(Sync 용)
 	virtual void SendMessage(const T1& id)
@@ -136,6 +194,72 @@ public:
 		auto Result = delFunc.AddUObject(InUserObject, InFunc, Vars...);
 		_delieveryAddr.Add(Message, delFunc);
 		return Result;
+	}
+
+	template<typename FunctorType, typename... VarTypes>
+	inline FDelegateHandle AddLambda(T1 Message, FunctorType&& InFunctor, VarTypes... Vars)
+	{
+		TGsMessageHandler<T1>::MessageType delFunc;
+		auto Result = delFunc.AddLambda(InFunctor, Vars...);
+		_delieveryAddr.Add(Message, delFunc);
+		return Result;
+	}
+
+	template <typename UObjectTemplate, typename... VarTypes>
+	inline FDelegateHandle AddUFunction(T1 Message, UObjectTemplate* InUserObject,
+		const FName& InFunctionName, VarTypes... Vars)
+	{
+		TGsMessageHandler<T1>::MessageType delFunc;
+		auto Result = delFunc.AddUFunction(InUserObject, InFunctionName, Vars...);
+		_delieveryAddr.Add(Message, delFunc);
+		return Result;
+	}
+
+	template <typename... VarTypes>
+	inline FDelegateHandle AddStatic(T1 Message,
+		typename TBaseStaticDelegateInstance<void(T2&), VarTypes...>::FFuncPtr InFunc, VarTypes... Vars)
+	{
+		TGsMessageHandler<T1>::MessageType delFunc;
+		auto Result = delFunc.AddStatic(InFunc, Vars...);
+		_delieveryAddr.Add(Message, delFunc);
+		return Result;
+	}
+
+	template<typename UserClass, typename FunctorType, typename... VarTypes>
+	inline FDelegateHandle AddWeakLambda(T1 Message, UserClass* InUserObject,
+		FunctorType&& InFunctor, VarTypes... Vars)
+	{
+		TGsMessageHandler<T1>::MessageType delFunc;
+		auto Result = delFunc.AddWeakLambda(InUserObject, InFunctor, Vars...);
+		_delieveryAddr.Add(Message, delFunc);
+		return Result;
+	}
+
+	/**
+	 * Adds a shared pointer-based (fast, not thread-safe) member function delegate.
+	 *
+	 * Shared pointer delegates keep a weak reference to your object.
+	 *
+	 * @param	InUserObjectRef	User object to bind to
+	 * @param	InFunc			Class method function address
+	 */
+	template <typename UserClass, typename... VarTypes>
+	inline FDelegateHandle AddSP(T1 Message, const TSharedRef<UserClass, ESPMode::Fast>& InUserObjectRef,
+		typename TMemFunPtrType<false, UserClass, void(T2&, VarTypes...)>::Type InFunc, VarTypes... Vars)
+	{
+		TGsMessageHandler<T1>::MessageType delFunc;
+		auto Result = delFunc.AddSP(InUserObjectRef, InFunc, Vars...);
+		_delieveryAddr.Add(Message, delFunc);
+		return Result;
+	}
+
+	void Remove(T1 Message, FDelegateHandle Handle)
+	{
+		if (Handle.IsValid())
+		{
+			auto delegateFunc = _delieveryAddr.FindRef(Message);
+			delegateFunc.RemoveDelegateInstance(Handle);
+		}
 	}
 
 	//-------------------------------------------------------------------------

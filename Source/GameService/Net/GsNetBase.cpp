@@ -42,7 +42,7 @@ void FGsNetBase::Update()
 };
 
 //技记 按眉 积己贸府
-void FGsNetBase::Init(FGsNet::NetConnectionData&& indata)
+void FGsNetBase::InitConnection(FGsNet::NetConnectionData&& indata)
 {
 	_connectionInfo = std::move(indata);
 
