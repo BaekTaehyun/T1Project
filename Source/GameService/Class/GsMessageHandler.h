@@ -38,6 +38,16 @@ public:
 		return Result;
 	}
 
+	template <typename UserClass, typename... VarTypes>
+	inline FDelegateHandle AddUObject(UserClass* InUserObject,
+		typename TMemFunPtrType<false, UserClass, void(ParamTypes..., VarTypes...)>::Type InFunc, VarTypes... Vars)
+	{
+		TGsMessageHandler<T1>::MessageType delFunc;
+		auto Result = delFunc.Add(FDelegate::CreateUObject(InUserObject, InFunc, Vars...));
+		_delieveryAddr.Add(Message, delFunc);
+		return Result;
+	}
+
 	//-------------------------------------------------------------------------
 	// 메세지 전송(Sync 용)
 	virtual void SendMessage(const T1& id)
@@ -114,6 +124,16 @@ public:
 	{
 		TGsMessageHandlerOneParam<T1, T2>::MessageType delFunc;
 		auto Result = delFunc.AddRaw(InUserObject, InFunc);
+		_delieveryAddr.Add(Message, delFunc);
+		return Result;
+	}
+
+	template <typename UserClass, typename... VarTypes>
+	inline FDelegateHandle AddUObject(UserClass* InUserObject,
+		typename TMemFunPtrType<false, UserClass, void(T2&, VarTypes...)>::Type InFunc, VarTypes... Vars)
+	{
+		TGsMessageHandler<T1>::MessageType delFunc;
+		auto Result = delFunc.Add(FDelegate::CreateUObject(InUserObject, InFunc, Vars...));
 		_delieveryAddr.Add(Message, delFunc);
 		return Result;
 	}

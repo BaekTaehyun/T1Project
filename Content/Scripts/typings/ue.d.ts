@@ -10717,16 +10717,16 @@ declare class GsGameInstance extends GameInstance {
 	static C(Other: UObject | any): GsGameInstance;
 }
 
-declare class GsGameMode extends GameModeBase { 
-	static GetDefaultObject(): GsGameMode;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameMode;
-	static C(Other: UObject | any): GsGameMode;
-}
-
 declare class GsGameModeBase extends GameModeBase { 
 	static GetDefaultObject(): GsGameModeBase;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameModeBase;
 	static C(Other: UObject | any): GsGameModeBase;
+}
+
+declare class GsGameMode extends GsGameModeBase { 
+	static GetDefaultObject(): GsGameMode;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameMode;
+	static C(Other: UObject | any): GsGameMode;
 }
 
 declare class GsGameModeLobby extends GsGameModeBase { 

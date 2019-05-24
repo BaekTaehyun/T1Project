@@ -14,18 +14,21 @@ FGsGameFlowLobby::~FGsGameFlowLobby()
 	GSLOG(Warning, TEXT("FGsGameFlowLobby : ~FGsGameFlowLobby"));
 }
 
+void FGsGameFlowLobby::Init()
+{
+	GSLOG(Warning, TEXT("FGsGameFlowLobby : Init"));
+	InitMessageHandler();
+}
+
 void FGsGameFlowLobby::Enter()
 {
 	GSLOG(Warning, TEXT("FGsGameFlowLobby : Enter"));
-
 	_stageManager = TUniquePtr<FGsStageManagerLobby>(new FGsStageManagerLobby());
 	if (_stageManager.IsValid())
 	{
-		_stageManager.Get()->InitState();
+		_stageManager->InitState();
 	}
-
-	// FIX: 적당한 위치
-	InitMessageHandler();
+	
 }
 
 void FGsGameFlowLobby::Exit()
@@ -33,7 +36,7 @@ void FGsGameFlowLobby::Exit()
 	GSLOG(Warning, TEXT("FGsGameFlowLobby : Exit"));
 	if (_stageManager.IsValid())
 	{
-		_stageManager.Get()->RemoveAll();
+		_stageManager->RemoveAll();
 	}
 }
 
@@ -77,19 +80,19 @@ void FGsGameFlowLobby::OnIntroComplete()
 		// 개발모드일 경우 바로 로그인 화면으로 연결
 		if (GameModeLobby->IsDevMode())
 		{
-			_stageManager.Get()->ChangeState(FGsStageMode::Lobby::SERVER_SELECT);
+			_stageManager->ChangeState(FGsStageMode::Lobby::SERVER_SELECT);
 			return;
 		}
 	}
 
-	_stageManager.Get()->ChangeState(FGsStageMode::Lobby::ASSET_DOWNLOAD);
+	_stageManager->ChangeState(FGsStageMode::Lobby::ASSET_DOWNLOAD);
 }
 
 void FGsGameFlowLobby::OnAssetDownloadComplete()
 {
 	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnAssetDownloadComplete"));
 
-	_stageManager.Get()->ChangeState(FGsStageMode::Lobby::SERVER_SELECT);
+	_stageManager->ChangeState(FGsStageMode::Lobby::SERVER_SELECT);
 }
 
 void FGsGameFlowLobby::OnLoginComplete()
@@ -107,7 +110,7 @@ void FGsGameFlowLobby::OnServerSelectComplete()
 {
 	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnLoginComplete"));
 
-	_stageManager.Get()->ChangeState(FGsStageMode::Lobby::CAHRACTER_SELECT);
+	_stageManager->ChangeState(FGsStageMode::Lobby::CAHRACTER_SELECT);
 }
 
 void FGsGameFlowLobby::OnGVSDownloadComplete()
@@ -130,7 +133,7 @@ void FGsGameFlowLobby::OnBackToServerSelect()
 
 	// 현재 UI 스택에서 빼기?
 
-	_stageManager.Get()->ChangeState(FGsStageMode::Lobby::SERVER_SELECT);
+	_stageManager->ChangeState(FGsStageMode::Lobby::SERVER_SELECT);
 }
 
 void FGsGameFlowLobby::OnEnterIngame()

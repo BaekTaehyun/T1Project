@@ -13,6 +13,7 @@ class FGsGameFlowLobby : public FGsGameFlowBase
 public:
 	FGsGameFlowLobby();
 	virtual ~FGsGameFlowLobby();
+	virtual void Init() override;
 	virtual void Enter() override;
 	virtual void Exit() override;
 	virtual void Update() override;

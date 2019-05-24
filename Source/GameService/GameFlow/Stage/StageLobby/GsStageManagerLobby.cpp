@@ -53,7 +53,8 @@ void FGsStageManagerLobby::InitState()
 
 	for (auto& e : allMode)
 	{
-		MakeInstance(e);
+		auto inst = MakeInstance(e);
+		inst->Init();
 	}
 
 	ChangeState(FGsStageMode::Lobby::INTRO);
