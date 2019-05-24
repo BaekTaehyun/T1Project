@@ -55,12 +55,10 @@ void FGsGameFlowLobby::OnReconnectionEnd()
 	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnReconectionEnd"));
 }
 
-
 void FGsGameFlowLobby::InitMessageHandler()
 {
 	GMessage()->GetStage().AddRaw(MessageLobby::Stage::INTRO_COMPLETE, this, &FGsGameFlowLobby::OnIntroComplete);
-	GMessage()->GetStage().AddRaw(MessageLobby::Stage::ASSETDOWN_COMPLETE, this, &FGsGameFlowLobby::OnAssetDownloadComplete);
-	
+	GMessage()->GetStage().AddRaw(MessageLobby::Stage::ASSETDOWN_COMPLETE, this, &FGsGameFlowLobby::OnAssetDownloadComplete);	
 	GMessage()->GetStage().AddRaw(MessageLobby::Stage::SERVER_SELECTCOMPLETE, this, &FGsGameFlowLobby::OnServerSelectComplete);
 	GMessage()->GetStage().AddRaw(MessageLobby::Stage::BACKTO_SERVER_SELECT, this, &FGsGameFlowLobby::OnBackToServerSelect);
 	GMessage()->GetStage().AddRaw(MessageLobby::Stage::ENTER_INGAME, this, &FGsGameFlowLobby::OnEnterIngame);
@@ -97,7 +95,7 @@ void FGsGameFlowLobby::OnAssetDownloadComplete()
 
 void FGsGameFlowLobby::OnServerSelectComplete()
 {
-	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnLoginComplete"));
+	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnServerSelectComplete"));
 
 	_stageManager->ChangeState(FGsStageMode::Lobby::CAHRACTER_SELECT);
 }
