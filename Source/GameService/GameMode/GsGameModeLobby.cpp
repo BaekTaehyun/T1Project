@@ -17,15 +17,21 @@ AGsGameModeLobby::AGsGameModeLobby()
 	bIsDevMode = false;
 	bIsAccountLoginComplete = false;
 	SelectedServerID = 0;
+}
 
+void AGsGameModeLobby::PreInitializeComponents()
+{
+	Super::PreInitializeComponents();
+
+	// 이벤트 핸들러 등록
 	GMessage()->GetStage().AddUObject(MessageLobby::Stage::LOGIN_COMPLETE, this, &AGsGameModeLobby::OnLoginComplete);
-	
 }
 
 void AGsGameModeLobby::StartPlay()
 {
 	Super::StartPlay();
 
+	// 인트로 UI 재생
 	AGsUIManager* UIManager = GetUIManager();
 	if (nullptr != UIManager)
 	{

@@ -27,8 +27,7 @@ protected:
 
 	/** MessageLobby::Stage 메시지 핸들러 함수 정의 */
 	void OnIntroComplete();
-	void OnAssetDownloadComplete();
-	void OnLoginComplete(); // Hive 로그인 or Dev 모드 인증서버 로그인 완료
+	void OnAssetDownloadComplete();	
 	void OnServerSelectComplete();
 	void OnBackToServerSelect();
 	void OnEnterIngame();
