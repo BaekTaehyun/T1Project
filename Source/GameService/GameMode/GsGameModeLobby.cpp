@@ -8,7 +8,6 @@
 #include "UI/GsUIEventInterface.h"
 
 
-//AGsGameModeLobby::AGsGameModeLobby(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 AGsGameModeLobby::AGsGameModeLobby()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -18,8 +17,14 @@ AGsGameModeLobby::AGsGameModeLobby()
 	bIsAccountLoginComplete = false;
 	SelectedServerID = 0;
 
-	//GMessage()->GetStage().AddUObject(MessageLobby::Stage::LOGIN_COMPLETE, this, &AGsGameModeLobby::OnLoginComplete);
-	
+}
+
+void AGsGameModeLobby::PreInitializeComponents()
+{
+	Super::PreInitializeComponents();
+
+	// 이벤트 핸들러 등록
+	GMessage()->GetStage().AddUObject(MessageLobby::Stage::LOGIN_COMPLETE, this, &AGsGameModeLobby::OnLoginComplete);
 }
 
 void AGsGameModeLobby::StartPlay()
