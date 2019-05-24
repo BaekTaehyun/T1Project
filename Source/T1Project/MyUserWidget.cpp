@@ -23,6 +23,14 @@ void UMyUserWidget::OnDisplay()
 	
 }
 
+void UMyUserWidget::BeginDestroy()
+{
+	Super::BeginDestroy();
+
+	RemoveFromViewport();
+	UE_LOG(LogTemp, Log, TEXT("Call RemoveFromViewport() !!! "));
+}
+
 
 void UMyUserWidget::OnClickTest()
 {

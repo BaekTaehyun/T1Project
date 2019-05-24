@@ -14,6 +14,11 @@ class T1PROJECT_API UMyUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+
+protected:
+	virtual void BeginDestroy() override;
+		
+
 private:
 	void SetIcon();
 		
