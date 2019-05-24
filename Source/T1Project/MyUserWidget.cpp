@@ -10,17 +10,31 @@ UMyUserWidget::UMyUserWidget(const FObjectInitializer& ObjectInitializer)
 	
 }
 
-void UMyUserWidget::TestUI()
+
+void UMyUserWidget::SetIcon()
+{
+
+}
+
+
+void UMyUserWidget::OnDisplay()
 {
 	AddToViewport();
+	
 }
+
+void UMyUserWidget::BeginDestroy()
+{
+	Super::BeginDestroy();
+
+	RemoveFromViewport();
+	UE_LOG(LogTemp, Log, TEXT("Call RemoveFromViewport() !!! "));
+}
+
 
 void UMyUserWidget::OnClickTest()
 {
 	UE_LOG(LogTemp , Log , TEXT("Success Log ~~~~~"));
+	SetIcon();
 }
 
-void UMyUserWidget::OnClickCastFailed()
-{
-	UE_LOG(LogTemp, Log, TEXT("Cast Failed Log !!!!!!!!!!"));
-}

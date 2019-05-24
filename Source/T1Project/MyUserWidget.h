@@ -14,16 +14,21 @@ class T1PROJECT_API UMyUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+
+protected:
+	virtual void BeginDestroy() override;
+		
+
+private:
+	void SetIcon();
 		
 
 public:
 	UMyUserWidget(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
-	void TestUI();
+	void OnDisplay();
 
 	UFUNCTION(BlueprintCallable)
 		void OnClickTest();
-	UFUNCTION(BlueprintCallable)
-		void OnClickCastFailed();
 	
 
 
