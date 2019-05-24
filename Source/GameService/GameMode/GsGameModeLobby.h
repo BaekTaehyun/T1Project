@@ -76,7 +76,7 @@ protected:
 	/** 타이머 핸들러 */
 	void OnRepeatTestTimer();
 	// TEST End ---------------------------------------------------------------------------
-
+	void OnLoginComplete(); // Hive 로그인 or Dev 모드 인증서버 로그인 완료
 protected:
 	/** 개발모드인가. 에셋 다운로드 과정 스킵 후 로그인으로 바로 넘어감 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Lobby")

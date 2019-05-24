@@ -39,11 +39,11 @@ public:
 	}
 
 	template <typename UserClass, typename... VarTypes>
-	inline FDelegateHandle AddUObject(UserClass* InUserObject,
+	inline FDelegateHandle AddUObject(T1 Message, UserClass* InUserObject,
 		typename TMemFunPtrType<false, UserClass, void(ParamTypes..., VarTypes...)>::Type InFunc, VarTypes... Vars)
 	{
 		TGsMessageHandler<T1>::MessageType delFunc;
-		auto Result = delFunc.Add(FDelegate::CreateUObject(InUserObject, InFunc, Vars...));
+		auto Result = delFunc.AddUObject(InUserObject, InFunc, Vars...);
 		_delieveryAddr.Add(Message, delFunc);
 		return Result;
 	}
@@ -129,11 +129,11 @@ public:
 	}
 
 	template <typename UserClass, typename... VarTypes>
-	inline FDelegateHandle AddUObject(UserClass* InUserObject,
+	inline FDelegateHandle AddUObject(T1 Message, UserClass* InUserObject,
 		typename TMemFunPtrType<false, UserClass, void(T2&, VarTypes...)>::Type InFunc, VarTypes... Vars)
 	{
 		TGsMessageHandler<T1>::MessageType delFunc;
-		auto Result = delFunc.Add(FDelegate::CreateUObject(InUserObject, InFunc, Vars...));
+		auto Result = delFunc.AddUObject(InUserObject, InFunc, Vars...);
 		_delieveryAddr.Add(Message, delFunc);
 		return Result;
 	}

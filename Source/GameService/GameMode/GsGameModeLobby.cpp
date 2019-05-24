@@ -17,6 +17,9 @@ AGsGameModeLobby::AGsGameModeLobby()
 	bIsDevMode = false;
 	bIsAccountLoginComplete = false;
 	SelectedServerID = 0;
+
+	GMessage()->GetStage().AddUObject(MessageLobby::Stage::LOGIN_COMPLETE, this, &AGsGameModeLobby::OnLoginComplete);
+	
 }
 
 void AGsGameModeLobby::StartPlay()
@@ -77,6 +80,13 @@ void AGsGameModeLobby::OnRepeatTestTimer()
 			IGsUIEventInterface::Execute_UIEvent_ChangeDownloadRate(TargetWidget, DownloadRate);
 		}
 	}
+}
+
+
+void AGsGameModeLobby::OnLoginComplete()
+{
+	GSLOG(Warning, TEXT("AGsGameModeLobby : OnLoginComplete"));
+	SetAccountLogin(true);
 }
 
 void AGsGameModeLobby::TryGameLogin()

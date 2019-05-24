@@ -60,7 +60,7 @@ void FGsGameFlowLobby::InitMessageHandler()
 {
 	GMessage()->GetStage().AddRaw(MessageLobby::Stage::INTRO_COMPLETE, this, &FGsGameFlowLobby::OnIntroComplete);
 	GMessage()->GetStage().AddRaw(MessageLobby::Stage::ASSETDOWN_COMPLETE, this, &FGsGameFlowLobby::OnAssetDownloadComplete);
-	GMessage()->GetStage().AddRaw(MessageLobby::Stage::LOGIN_COMPLETE, this, &FGsGameFlowLobby::OnLoginComplete);
+	
 	GMessage()->GetStage().AddRaw(MessageLobby::Stage::SERVER_SELECTCOMPLETE, this, &FGsGameFlowLobby::OnServerSelectComplete);
 	GMessage()->GetStage().AddRaw(MessageLobby::Stage::BACKTO_SERVER_SELECT, this, &FGsGameFlowLobby::OnBackToServerSelect);
 	GMessage()->GetStage().AddRaw(MessageLobby::Stage::ENTER_INGAME, this, &FGsGameFlowLobby::OnEnterIngame);
@@ -93,17 +93,6 @@ void FGsGameFlowLobby::OnAssetDownloadComplete()
 	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnAssetDownloadComplete"));
 
 	_stageManager->ChangeState(FGsStageMode::Lobby::SERVER_SELECT);
-}
-
-void FGsGameFlowLobby::OnLoginComplete()
-{
-	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnLoginComplete"));
-	
-	AGsGameModeLobby* GameModeLobby = AGsGameModeLobby::GetGameModeLobby();
-	if (nullptr != GameModeLobby)
-	{
-		GameModeLobby->SetAccountLogin(true);
-	}
 }
 
 void FGsGameFlowLobby::OnServerSelectComplete()
