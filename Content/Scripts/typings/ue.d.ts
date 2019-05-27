@@ -10723,17 +10723,10 @@ declare class GsGameModeBase extends GameModeBase {
 	static C(Other: UObject | any): GsGameModeBase;
 }
 
-declare class GsGameMode extends GsGameModeBase { 
-	static GetDefaultObject(): GsGameMode;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameMode;
-	static C(Other: UObject | any): GsGameMode;
-}
-
 declare class GsGameModeLobby extends GsGameModeBase { 
 	bIsDevMode: boolean;
 	bIsAccountLoginComplete: boolean;
 	SelectedServerID: number;
-	WidgetClassMap: any;
 	static GetDefaultObject(): GsGameModeLobby;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameModeLobby;
 	TrySelectServer(InServerID: number): void;
@@ -10988,10 +10981,12 @@ declare class GsUIWidgetBase extends UserWidget {
 
 declare class GsUIManager extends HUD { 
 	CachedWidgets: any;
+	WidgetClassTable: DataTable;
 	static GetDefaultObject(): GsUIManager;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIManager;
 	StackPeek(): GsUIWidgetBase;
 	RemoveAll(): void;
+	PushByKeyName(InKey: string,InParam: GsUIParameter): void;
 	Push(InClass: UnrealEngineClass,InParam: GsUIParameter): void;
 	Pop(InWidget: GsUIWidgetBase): void;
 	GetCachedWidget(InPathName: string): GsUIWidgetBase;
@@ -11014,6 +11009,14 @@ declare class GsUIParameterFloat extends GsUIParameter {
 	static GetDefaultObject(): GsUIParameterFloat;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIParameterFloat;
 	static C(Other: UObject | any): GsUIParameterFloat;
+}
+
+declare class GsUIPathTable extends UObject { 
+	static Load(ResourceName: string): GsUIPathTable;
+	static Find(Outer: UObject, ResourceName: string): GsUIPathTable;
+	static GetDefaultObject(): GsUIPathTable;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIPathTable;
+	static C(Other: UObject | any): GsUIPathTable;
 }
 
 declare class GsUIPopup extends GsUIWidgetBase { 
@@ -11059,11 +11062,12 @@ declare class MyUI extends UObject {
 }
 
 declare class MyUserWidget extends UserWidget { 
-	Time: number;
+	_TempString: string;
 	static Load(ResourceName: string): MyUserWidget;
 	static Find(Outer: UObject, ResourceName: string): MyUserWidget;
 	static GetDefaultObject(): MyUserWidget;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MyUserWidget;
+	OnClickText(): void;
 	OnClickTest(): void;
 	static C(Other: UObject | any): MyUserWidget;
 }

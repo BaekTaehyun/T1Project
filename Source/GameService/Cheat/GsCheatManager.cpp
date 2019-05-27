@@ -2,7 +2,7 @@
 
 
 #include "GsCheatManager.h"
-#include "GameMode/GsGameMode.h"
+#include "GameMode/GsGameModeWorld.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 
 void UGsCheatManager::TeleportPlayer(FString in_tag)
@@ -15,7 +15,7 @@ void UGsCheatManager::TeleportPlayer(FString in_tag)
 
 		if (mode)
 		{
-			AGsGameMode* gameMode = Cast<AGsGameMode>(mode);
+			AGsGameModeWorld* gameMode = Cast<AGsGameModeWorld>(mode);
 			
 			if (gameMode)
 			{

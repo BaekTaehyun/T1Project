@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameMode/GsGameMode.h"
 #include "Runtime/Engine/Classes/Engine/WorldComposition.h"
+#include "GsGameModeBase.h"
 #include "GsGameModeWorld.generated.h"
 
 /**
@@ -17,16 +17,15 @@ class GAMESERVICE_API AGsGameModeWorld : public AGsGameModeBase
 
 private:	
 	UPROPERTY()
-		FTimerHandle _VisibleLevelsLoadingTimer;
+	FTimerHandle _VisibleLevelsLoadingTimer;
 	UPROPERTY()
-		FTimerHandle _ClosestLevelLoadingTimer;	
+	FTimerHandle _ClosestLevelLoadingTimer;	
 	UPROPERTY()
-		ULevelStreaming* _ClosestLevel;
+	ULevelStreaming* _ClosestLevel;
 	
 public:
 	AGsGameModeWorld();
 	virtual void StartToLeaveMap();
-	
 	virtual void TeleportPlayer(FString in_tag, bool in_waitAllLoad = false);	
 
 private:	
