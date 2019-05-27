@@ -72,6 +72,8 @@ public:
 	/** WidgetClassMap에 등록된 WidgetClass 가져오기 */
 	TSubclassOf<class UGsUIWidgetBase> GetWidgetClass(EGS_LOBBY_WIDGET_Enum InType) const;
 
+	// 씬을 로드한다.
+	void OnLoadGameScene();
 protected:
 	/** 타이머 핸들러 */
 	void OnRepeatTestTimer();

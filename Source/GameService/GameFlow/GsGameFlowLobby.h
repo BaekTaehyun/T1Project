@@ -30,7 +30,6 @@ protected:
 	void OnAssetDownloadComplete();	
 	void OnServerSelectComplete();
 	void OnBackToServerSelect();
-	void OnEnterIngame();
 	void OnIngameLoadComplete();
 
 	void OnGVSDownloadComplete();

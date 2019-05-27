@@ -40,6 +40,7 @@ public:
 
 
 	void DespawnObject(UGsGameObjectBase* Despawn);
+	void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
     //
 protected:	
 	void UpdateAddGameObject();

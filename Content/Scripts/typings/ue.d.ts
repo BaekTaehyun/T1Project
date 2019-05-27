@@ -10699,6 +10699,14 @@ declare class GsCheatManager extends CheatManager {
 	static C(Other: UObject | any): GsCheatManager;
 }
 
+declare class GsGameInstance extends GameInstance { 
+	static Load(ResourceName: string): GsGameInstance;
+	static Find(Outer: UObject, ResourceName: string): GsGameInstance;
+	static GetDefaultObject(): GsGameInstance;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameInstance;
+	static C(Other: UObject | any): GsGameInstance;
+}
+
 declare class GsGameObjectManager extends Actor { 
 	Spawns: GsGameObjectBase[];
 	static GetDefaultObject(): GsGameObjectManager;
@@ -10708,16 +10716,8 @@ declare class GsGameObjectManager extends Actor {
 	static C(Other: UObject | any): GsGameObjectManager;
 }
 
-declare class GsGameInstance extends GameInstance { 
-	spawner: GsGameObjectManager;
-	static Load(ResourceName: string): GsGameInstance;
-	static Find(Outer: UObject, ResourceName: string): GsGameInstance;
-	static GetDefaultObject(): GsGameInstance;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameInstance;
-	static C(Other: UObject | any): GsGameInstance;
-}
-
 declare class GsGameModeBase extends GameModeBase { 
+	_gameObjManager: GsGameObjectManager;
 	static GetDefaultObject(): GsGameModeBase;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameModeBase;
 	static C(Other: UObject | any): GsGameModeBase;
@@ -10746,6 +10746,15 @@ declare class GsGameModeLobby extends GsGameModeBase {
 	IsAccountLoginComplete(): boolean;
 	GetSelectedServer(): number;
 	static C(Other: UObject | any): GsGameModeLobby;
+}
+
+declare class GsGameModeWorld extends GsGameModeBase { 
+	_VisibleLevelsLoadingTimer: TimerHandle;
+	_ClosestLevelLoadingTimer: TimerHandle;
+	_ClosestLevel: LevelStreaming;
+	static GetDefaultObject(): GsGameModeWorld;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameModeWorld;
+	static C(Other: UObject | any): GsGameModeWorld;
 }
 
 declare class GsGameObjectBlueprintLibrary extends BlueprintFunctionLibrary { 
@@ -11031,15 +11040,6 @@ declare class GsUIWindow extends GsUIWidgetBase {
 	static C(Other: UObject | any): GsUIWindow;
 }
 
-declare class GsWorldGameMode extends GsGameMode { 
-	_VisibleLevelsLoadingTimer: TimerHandle;
-	_ClosestLevelLoadingTimer: TimerHandle;
-	_ClosestLevel: LevelStreaming;
-	static GetDefaultObject(): GsWorldGameMode;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsWorldGameMode;
-	static C(Other: UObject | any): GsWorldGameMode;
-}
-
 declare class PlayerSpawnPoint extends GsTargetPoint { 
 	_Tag: string;
 	static GetDefaultObject(): PlayerSpawnPoint;
@@ -11065,7 +11065,6 @@ declare class MyUserWidget extends UserWidget {
 	static GetDefaultObject(): MyUserWidget;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): MyUserWidget;
 	OnClickTest(): void;
-	OnClickCastFailed(): void;
 	static C(Other: UObject | any): MyUserWidget;
 }
 

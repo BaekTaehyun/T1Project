@@ -5,13 +5,13 @@
 #include "CoreMinimal.h"
 #include "GameMode/GsGameMode.h"
 #include "Runtime/Engine/Classes/Engine/WorldComposition.h"
-#include "GsWorldGameMode.generated.h"
+#include "GsGameModeWorld.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GAMESERVICE_API AGsWorldGameMode : public AGsGameMode
+class GAMESERVICE_API AGsGameModeWorld : public AGsGameModeBase
 {
 	GENERATED_BODY()
 
@@ -24,7 +24,7 @@ private:
 		ULevelStreaming* _ClosestLevel;
 	
 public:
-	AGsWorldGameMode();	
+	AGsGameModeWorld();
 	virtual void StartToLeaveMap();
 	
 	virtual void TeleportPlayer(FString in_tag, bool in_waitAllLoad = false);	

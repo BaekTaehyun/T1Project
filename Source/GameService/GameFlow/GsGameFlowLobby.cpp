@@ -3,7 +3,7 @@
 #include "Stage/StageLobby/GsStageManagerLobby.h"
 #include "Message/GsMessageManager.h"
 #include "GameMode/GsGameModeLobby.h"
-
+#include "Kismet/GameplayStatics.h"
 
 FGsGameFlowLobby::FGsGameFlowLobby() : FGsGameFlowBase(FGsGameFlow::Mode::LOBBY)
 {
@@ -29,6 +29,8 @@ void FGsGameFlowLobby::Enter()
 		_stageManager->InitState();
 	}
 	
+	//spawner = GetWorld()->SpawnActor<AGsGameObjectManager>();
+	//spawner->Initialize();
 }
 
 void FGsGameFlowLobby::Exit()
@@ -61,8 +63,8 @@ void FGsGameFlowLobby::InitMessageHandler()
 	GMessage()->GetStage().AddRaw(MessageLobby::Stage::ASSETDOWN_COMPLETE, this, &FGsGameFlowLobby::OnAssetDownloadComplete);	
 	GMessage()->GetStage().AddRaw(MessageLobby::Stage::SERVER_SELECTCOMPLETE, this, &FGsGameFlowLobby::OnServerSelectComplete);
 	GMessage()->GetStage().AddRaw(MessageLobby::Stage::BACKTO_SERVER_SELECT, this, &FGsGameFlowLobby::OnBackToServerSelect);
-	GMessage()->GetStage().AddRaw(MessageLobby::Stage::ENTER_INGAME, this, &FGsGameFlowLobby::OnEnterIngame);
-	GMessage()->GetStage().AddRaw(MessageLobby::Stage::INGAME_LOAD_COMPLETE, this, &FGsGameFlowLobby::OnIngameLoadComplete);
+	
+	//GMessage()->GetStage().AddRaw(MessageLobby::Stage::INGAME_LOAD_COMPLETE, this, &FGsGameFlowLobby::OnIngameLoadComplete);
 
 	GMessage()->GetHive().AddRaw(MessageLobby::Hive::GVS_DOWNLOAD_COMPLETE, this, &FGsGameFlowLobby::OnGVSDownloadComplete);
 	GMessage()->GetHive().AddRaw(MessageLobby::Hive::HIVE_LOGIN_COMPLETE, this, &FGsGameFlowLobby::OnHiveLoginComplete);
@@ -123,14 +125,5 @@ void FGsGameFlowLobby::OnBackToServerSelect()
 	_stageManager->ChangeState(FGsStageMode::Lobby::SERVER_SELECT);
 }
 
-void FGsGameFlowLobby::OnEnterIngame()
-{
-	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnEnterIngame"));
 
-	// FIX: 여기서 받는게 맞는가
-}
 
-void FGsGameFlowLobby::OnIngameLoadComplete()
-{
-	// FIX: 여기서 받는게 맞는가
-}

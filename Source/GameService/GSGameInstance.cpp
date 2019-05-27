@@ -29,11 +29,6 @@ void UGsGameInstance::Init()
 	_manage.InsertInstance(new FGsMessageManager());
 	_manage.InsertInstance(new FGsGameFlowManager());
 	_manage.InsertInstance(new FGsNetManager());
-	//_manage.InsertInstance(NewObject<UGsObjectSpawner>());
-
-	spawner = GetWorld()->SpawnActor<AGsGameObjectManager>();
-	spawner->Initialize();
-	
 
 	for(auto& mng : _manage.Get())
 	{
@@ -70,8 +65,6 @@ void UGsGameInstance::Update()
 			mng->Update();
 		}
 	}
-
-	spawner->Update();
 }
 
 

@@ -24,7 +24,11 @@ void AGsGameModeLobby::PreInitializeComponents()
 	Super::PreInitializeComponents();
 
 	// 이벤트 핸들러 등록
-	GMessage()->GetStage().AddUObject(MessageLobby::Stage::LOGIN_COMPLETE, this, &AGsGameModeLobby::OnLoginComplete);
+	if (nullptr != GMessage())
+	{
+		GMessage()->GetStage().AddUObject(MessageLobby::Stage::LOGIN_COMPLETE, this, &AGsGameModeLobby::OnLoginComplete);
+		GMessage()->GetStage().AddUObject(MessageLobby::Stage::ENTER_INGAME, this, &AGsGameModeLobby::OnLoadGameScene);
+	}
 }
 
 void AGsGameModeLobby::StartPlay()
@@ -92,6 +96,12 @@ void AGsGameModeLobby::OnLoginComplete()
 {
 	GSLOG(Warning, TEXT("AGsGameModeLobby : OnLoginComplete"));
 	SetAccountLogin(true);
+}
+
+void AGsGameModeLobby::OnLoadGameScene()
+{
+	GSLOG(Warning, TEXT("AGsGameModeLobby : OnLoadGameScene"));
+	UGameplayStatics::OpenLevel((UObject*)GetGameInstance(), FName(TEXT("WorldCompositionTest")), true, TEXT("?game=/Game/Blueprint/GameMode/BP_WorldMode.BP_WorldMode_C"));
 }
 
 void AGsGameModeLobby::TryGameLogin()

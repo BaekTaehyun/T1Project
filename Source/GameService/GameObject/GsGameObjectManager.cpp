@@ -39,6 +39,8 @@ void AGsGameObjectManager::Initialize()
 		FTicker::GetCoreTicker().RemoveTicker(TickDelegate);
 	}
 	TickDelegate = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &AGsGameObjectManager::Update));
+
+	AddToRoot();
 }
 
 void AGsGameObjectManager::Finalize()
@@ -175,6 +177,11 @@ UGsGameObjectBase* AGsGameObjectManager::SpawnProjectile(UClass* Uclass, const F
 		}
 	}
 	return projectile;
+}
+
+void AGsGameObjectManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	RemoveFromRoot();
 }
 
 void AGsGameObjectManager::DespawnObject(UGsGameObjectBase* Despawn)
