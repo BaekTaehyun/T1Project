@@ -26,6 +26,7 @@ void AGsGameModeLobby::PreInitializeComponents()
 	// 이벤트 핸들러 등록
 	if (nullptr != GMessage())
 	{
+#pragma todo("must delete!!!")
 		GMessage()->GetStage().AddUObject(MessageLobby::Stage::LOGIN_COMPLETE, this, &AGsGameModeLobby::OnLoginComplete);
 		GMessage()->GetStage().AddUObject(MessageLobby::Stage::ENTER_INGAME, this, &AGsGameModeLobby::OnLoadGameScene);
 	}

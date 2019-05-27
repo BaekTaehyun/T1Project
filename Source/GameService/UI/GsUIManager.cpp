@@ -4,12 +4,20 @@
 #include "GsUIWidgetBase.h"
 #include "GsUIParameter.h"
 #include "GsUIEventInterface.h"
+//#include "UI/GsUIPopup.h"
+#include "UObject/ConstructorHelpers.h"
+#include "GsUIPathTable.h"
+#include "Engine/StreamableManager.h"
+#include "Engine/AssetManager.h"
 
 
 AGsUIManager::AGsUIManager(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	
+	PrimaryActorTick.bCanEverTick = true;
+
+	static ConstructorHelpers::FObjectFinder<UDataTable> UIPathTable(TEXT("/Game/UI/UIPathTable.UIPathTable"));
+	WidgetClassTable = UIPathTable.Object;
 }
 
 void AGsUIManager::BeginDestroy()
@@ -19,6 +27,18 @@ void AGsUIManager::BeginDestroy()
 	Super::BeginDestroy();
 }
 
+void AGsUIManager::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+}
+
+void AGsUIManager::PushByKeyName(FName InKey, class UGsUIParameter* InParam)
+{
+	auto WidgetClass = GetWidgetClass(InKey);
+	
+	Push(WidgetClass, InParam);
+}
+
 void AGsUIManager::Push(TSubclassOf<UGsUIWidgetBase> InClass, UGsUIParameter* InParam)
 {
 	if (nullptr == InClass)
@@ -26,7 +46,7 @@ void AGsUIManager::Push(TSubclassOf<UGsUIWidgetBase> InClass, UGsUIParameter* In
 		GSLOG(Error, TEXT("UIWidget class is null"));
 		return;
 	}
-	
+
 	FName Key = FName(*InClass.Get()->GetPathName());
 
 	// 개선: 널리턴하면 무조건 에러 뱉어서 검사를 넣었음. 다른 함수 써야하는지 확인필요 
@@ -38,7 +58,7 @@ void AGsUIManager::Push(TSubclassOf<UGsUIWidgetBase> InClass, UGsUIParameter* In
 
 	if (nullptr == Widget)
 	{
-		// FIX: PC 얻어오는 과정
+		// 개선: PC 얻어오는 과정
 		APlayerController* PC = GEngine->GetFirstLocalPlayerController(GetWorld());
 		if (nullptr != PC)
 		{
@@ -96,13 +116,25 @@ void AGsUIManager::PushStack(UGsUIWidgetBase* InWidget, UGsUIParameter* InParame
 				Widget->RemoveFromParent();
 			}
 		}
-	}	
-
+	}
+	
+	/*
+	// TEST: ZOrder문제 수정 위한 테스트
+	if (InWidget->IsA<UGsUIPopup>())
+	{
+		InWidget->AddToViewport(DefaultPopupZOrder);
+	}
+	else
+	{
+		InWidget->AddToViewport();
+	}
+	*/
 	InWidget->AddToViewport();
 }
 
 void AGsUIManager::PushUnstack(UGsUIWidgetBase* InWidget, UGsUIParameter* InParameters)
 {
+	//InWidget->AddToViewport(DefaultTrayZOrder);
 	InWidget->AddToViewport();
 
 	UnstackedWidgets.Add(InWidget);
@@ -254,6 +286,42 @@ AGsUIManager* AGsUIManager::GetUIManager(class APlayerController* InOwner)
 	if (nullptr != InOwner)
 	{
 		return Cast<AGsUIManager>(InOwner->GetHUD());
+	}
+
+	return nullptr;
+}
+
+TSubclassOf<UGsUIWidgetBase> AGsUIManager::GetWidgetClass(FName InKey)
+{	
+	FGsTableUIPath* TableRow = GetTableRow(InKey);
+	if (nullptr == TableRow)
+	{
+		GSLOG(Error, TEXT("Fail to find row in UIPathTable. Key: %s"), *InKey.ToString());
+		return nullptr;
+	}
+
+	if (TableRow->WidgetClass.IsNull())
+	{
+		GSLOG(Error, TEXT("WidgetClass is null. Key: %s"), *InKey.ToString());
+		return nullptr;
+	}
+
+	if (TableRow->WidgetClass.IsPending())
+	{
+		FStreamableManager& AssetMgr = UAssetManager::GetStreamableManager();
+		const FSoftObjectPath& AssetRef = TableRow->WidgetClass.ToStringReference();
+
+		TableRow->WidgetClass =	AssetMgr.SynchronousLoad(AssetRef);
+	}
+
+	return TableRow->WidgetClass.Get();
+}
+
+FGsTableUIPath* AGsUIManager::GetTableRow(FName InKey)
+{
+	if (nullptr != WidgetClassTable)
+	{
+		return WidgetClassTable->FindRow<FGsTableUIPath>(InKey, TEXT(""));
 	}
 
 	return nullptr;

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
 #include "GsUIWidgetBase.h"
+#include "Engine/DataTable.h"
 #include "GsUIManager.generated.h"
 
 /**
@@ -21,7 +22,12 @@ public:
 	static AGsUIManager* GetUIManager(class APlayerController* InOwner);
 
 	virtual void BeginDestroy() override;
+	virtual void Tick(float DeltaSeconds) override;
 
+	/** 위젯 띄우기 */
+	UFUNCTION(BlueprintCallable, Category = "GsUI")
+	void PushByKeyName(FName InKey, class UGsUIParameter* InParam = nullptr);
+	
 	/** 위젯 띄우기 */
 	UFUNCTION(BlueprintCallable, Category = "GsUI")
 	void Push(TSubclassOf<UGsUIWidgetBase> InClass, class UGsUIParameter* InParam = nullptr);
@@ -44,11 +50,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "GsUI") // TEST: 블루프린트에 노출시키지 않을 것
 	void RemoveAll();
 
+	/** UIPathTable 에서 해당 키의 Row를 찾아 WidgetClass를 리턴한다 */
+	TSubclassOf<UGsUIWidgetBase> GetWidgetClass(FName InKey);
+
 protected:
 	void PushStack(UGsUIWidgetBase* InWidget, UGsUIParameter* InParameters = nullptr);
 	void PushUnstack(UGsUIWidgetBase* InWidget, UGsUIParameter* InParameters = nullptr);
 	void PopStack(UGsUIWidgetBase* InWidget);
 	void PopUnstack(UGsUIWidgetBase* InWidget);
+
+	struct FGsTableUIPath* GetTableRow(FName InKey);
 
 protected:
 	/** FName에 GetPathName 넣어서 관리 */
@@ -57,4 +68,11 @@ protected:
 
 	TArray<UGsUIWidgetBase*> StackedWidgets;
 	TArray<UGsUIWidgetBase*> UnstackedWidgets;
+
+	UPROPERTY()
+	UDataTable* WidgetClassTable;
+
+	//const int32 DefaultPopupZOrder = 50;
+	//const int32 DefaultTrayZOrder = 100;
+	//TQueue<TSubclassOf<UGsUIWidgetBase>> PushQueue; // TEST
 };
