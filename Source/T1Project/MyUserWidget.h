@@ -21,19 +21,26 @@ protected:
 
 private:
 	void SetIcon();
-		
-
+	
+	
 public:
 	UMyUserWidget(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	void OnDisplay();
 
 	UFUNCTION(BlueprintCallable)
 		void OnClickTest();
+
+	UFUNCTION(BlueprintCallable)
+		void OnClickText();
 	
 
 
 	UPROPERTY(EditAnywhere)
-		int32 Time;
+		FString _TempString;
+
+private:
+	int m_NumTest;
+	
 
 	
 };
