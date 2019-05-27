@@ -22,7 +22,6 @@ public:
 	/** 로비 게임모드 얻기 */
 	static AGsGameModeLobby* GetGameModeLobby();
 
-	virtual void PreInitializeComponents() override;
 	virtual void StartPlay() override;
 
 	/** 로컬 플레이어 컨트롤러 얻어오기 */
@@ -69,9 +68,6 @@ public:
 	/** 타이머를 돌려 DownloadRate를 증가 */
 	void TestStartDownload();
 
-	/** WidgetClassMap에 등록된 WidgetClass 가져오기 */
-	TSubclassOf<class UGsUIWidgetBase> GetWidgetClass(EGS_LOBBY_WIDGET_Enum InType) const;
-
 	// 씬을 로드한다.
 	void OnLoadGameScene();
 protected:
@@ -99,9 +95,5 @@ protected:
 
 	/** UI 프로그레스바 진행 테스트용 타이머 */
 	FTimerHandle TestTimerHandle;
-
-	/** Enum으로 등록된 UI들 */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Lobby")
-	TMap<EGS_LOBBY_WIDGET_Enum, TSubclassOf<class UGsUIWidgetBase>> WidgetClassMap;
 	// TEST End ---------------------------------------------------------------------------
 };
