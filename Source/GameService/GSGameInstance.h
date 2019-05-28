@@ -8,7 +8,7 @@
 #include "GameFlow/GsGameFlowManager.h"
 #include "Message/GsMessageManager.h"
 #include "Net/GsNetManager.h"
-#include "Gameobject/GsGameObjectManager.h"
+
 
 #include "GsGameInstance.generated.h"
 
@@ -36,6 +36,11 @@ public:
 	virtual void Shutdown() override;
 	void Update();
 
-	UPROPERTY(Transient, VisibleInstanceOnly, Meta = (AllowPrivateAccess = true))
-	AGsGameObjectManager* spawner;
+	// 개발모드인가
+	UFUNCTION(BlueprintPure, Category = "Lobby")
+	bool IsDevMode() const { return bIsDevMode; }
+
+protected:
+	// 개발모드
+	bool bIsDevMode; 
 };

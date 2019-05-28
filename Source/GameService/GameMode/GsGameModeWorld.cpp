@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GsWorldGameMode.h"
+#include "GsGameModeWorld.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Runtime/Engine/Classes/Engine/WorldComposition.h"
@@ -14,12 +14,12 @@
 #include "GameService/Level/LevelScriptActor/GsLevelScriptActor.h"
 #include "GameService/Character/GsPlayer.h"
 
-AGsWorldGameMode::AGsWorldGameMode()
+AGsGameModeWorld::AGsGameModeWorld()
 {
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-void AGsWorldGameMode::StartToLeaveMap()
+void AGsGameModeWorld::StartToLeaveMap()
 {
 	UWorld* world = GetWorld();
 
@@ -30,7 +30,7 @@ void AGsWorldGameMode::StartToLeaveMap()
 	}
 }
 
-void AGsWorldGameMode::TeleportPlayer(FString in_tag, bool in_waitAllLoad)
+void AGsGameModeWorld::TeleportPlayer(FString in_tag, bool in_waitAllLoad)
 {
 	UWorld* world = GetWorld();
 
@@ -61,7 +61,7 @@ void AGsWorldGameMode::TeleportPlayer(FString in_tag, bool in_waitAllLoad)
 							world->GetTimerManager().ClearTimer(_VisibleLevelsLoadingTimer);
 							world->GetTimerManager().SetTimer(_VisibleLevelsLoadingTimer
 								, this
-								, &AGsWorldGameMode::OnCheckVisibleLevelsLoadComplete
+								, &AGsGameModeWorld::OnCheckVisibleLevelsLoadComplete
 								, 0.1f, true, 0);
 						}
 						else
@@ -70,7 +70,7 @@ void AGsWorldGameMode::TeleportPlayer(FString in_tag, bool in_waitAllLoad)
 							world->GetTimerManager().ClearTimer(_ClosestLevelLoadingTimer);
 							world->GetTimerManager().SetTimer(_ClosestLevelLoadingTimer
 								, this
-								, &AGsWorldGameMode::OnCheckClosestLevelsLoadComplete
+								, &AGsGameModeWorld::OnCheckClosestLevelsLoadComplete
 								, 0.1f, true, 0);
 						}						
 					}											
@@ -80,7 +80,7 @@ void AGsWorldGameMode::TeleportPlayer(FString in_tag, bool in_waitAllLoad)
 	}
 }
 
-bool AGsWorldGameMode::IsLoadedVisibleLevels()
+bool AGsGameModeWorld::IsLoadedVisibleLevels()
 {
 	UWorld* world = GetWorld();
 
@@ -123,7 +123,7 @@ bool AGsWorldGameMode::IsLoadedVisibleLevels()
 	return false;
 }
 
-void AGsWorldGameMode::OnCheckVisibleLevelsLoadComplete()
+void AGsGameModeWorld::OnCheckVisibleLevelsLoadComplete()
 {
 	if (IsLoadedVisibleLevels())
 	{
@@ -138,7 +138,7 @@ void AGsWorldGameMode::OnCheckVisibleLevelsLoadComplete()
 	}
 }
 
-bool AGsWorldGameMode::IsLoadedClosestLevel()
+bool AGsGameModeWorld::IsLoadedClosestLevel()
 {
 	if (_ClosestLevel)
 	{
@@ -148,7 +148,7 @@ bool AGsWorldGameMode::IsLoadedClosestLevel()
 	return false;
 }
 
-void AGsWorldGameMode::OnCheckClosestLevelsLoadComplete()
+void AGsGameModeWorld::OnCheckClosestLevelsLoadComplete()
 {
 	if (IsLoadedClosestLevel())
 	{
@@ -163,7 +163,7 @@ void AGsWorldGameMode::OnCheckClosestLevelsLoadComplete()
 	}
 }
 
-void AGsWorldGameMode::SetPlayerUnspawnedState()
+void AGsGameModeWorld::SetPlayerUnspawnedState()
 {
 	UWorld* world = GetWorld();
 
@@ -183,7 +183,7 @@ void AGsWorldGameMode::SetPlayerUnspawnedState()
 	}
 }
 
-void AGsWorldGameMode::SetPlayerSpawendState()
+void AGsGameModeWorld::SetPlayerSpawendState()
 {
 	UWorld* world = GetWorld();
 
@@ -203,7 +203,7 @@ void AGsWorldGameMode::SetPlayerSpawendState()
 	}
 }
 
-ULevelStreaming* AGsWorldGameMode::GetClosestLevel()
+ULevelStreaming* AGsGameModeWorld::GetClosestLevel()
 {
 	UWorld* world = GetWorld();
 	float MinDistance = MAX_FLT;	

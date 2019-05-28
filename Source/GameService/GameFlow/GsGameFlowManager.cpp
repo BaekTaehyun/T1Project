@@ -35,7 +35,8 @@ void FGsGameFlowManager::Initialize()
 	constexpr std::initializer_list<FGsGameFlow::Mode> allMode = { FGsGameFlow::Mode::LOBBY, FGsGameFlow::Mode::GAME };
 	for (auto& e : allMode)
 	{
-		MakeInstance(e);
+		auto inst = MakeInstance(e);
+		inst->Init();
 	}
 
 	ChangeState(FGsGameFlow::Mode::LOBBY);

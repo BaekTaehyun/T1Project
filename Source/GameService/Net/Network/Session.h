@@ -11,6 +11,7 @@
 #include "Protocol.h"
 
 
+
 class Session;
 class SessionEventHandler
 {
@@ -59,8 +60,6 @@ class Session : public std::enable_shared_from_this<Session>
 
 	std::mutex lock_;
 	std::vector<Packet*> packets_;
-
-
 public:
 
 	explicit Session(SessionEventHandler* handler);
@@ -81,14 +80,14 @@ public:
 
 public:
 
-	void onConnected(bool result, FSocket* socket);
+	void onConnected(bool result, FSocket* socket, std::shared_ptr<SendSocketTask> sender, std::shared_ptr<ReceiveSocketTask> receiver);
 	void onPacket(FSocket* socket, std::vector<Packet*> packets);
 	void onError(FSocket* socket);
 	void onDisconnected(FSocket* socket);
 
 private:
 
-	void start(FSocket* socket);
+	void start(FSocket* socket, std::shared_ptr<SendSocketTask> sender, std::shared_ptr<ReceiveSocketTask> receiver);
 	void clear();
 
 	void pushEvent(IOEventType type, bool result);

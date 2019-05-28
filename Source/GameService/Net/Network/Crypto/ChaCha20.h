@@ -13,8 +13,6 @@ struct CHACAH20_KEY
 	uint8_t	counter[16];
 };
 
-CHACAH20_KEY	GenerateChaCha20Key();
-
 
 class ChaCha20Encrypter
 {

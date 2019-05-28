@@ -14,6 +14,7 @@ public:
 	FGsGameFlowGame();
 	virtual ~FGsGameFlowGame();
 
+	virtual void Init() override;
 	virtual void Enter() override;
 	virtual void Exit() override;
 	virtual void Update() override;

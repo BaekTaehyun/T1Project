@@ -8,8 +8,16 @@ Task::~Task()
 
 void Task::process(TaskExecuter* executer)
 {
-	if (onExecute(executer) == true)
+	try
 	{
+		if (onExecute(executer) == true)
+		{
+			onEnd(executer);
+		}
+	}
+	catch (...)
+	{
+		result_ = false;
 		onEnd(executer);
 	}
 }

@@ -139,6 +139,11 @@ void AGsGameObjectManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	RemoveFromRoot();
 }
 
+void AGsGameObjectManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	RemoveFromRoot();
+}
+
 void AGsGameObjectManager::DespawnObject(UGsGameObjectBase* Despawn)
 {
 	if (Spawns.Contains(Despawn))

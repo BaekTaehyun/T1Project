@@ -123,8 +123,7 @@ AT1Player::AT1Player()
 	AIControllerClass = AT1AIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
-	// Test
-	CreateUI();
+	
 }
 
 // Called when the game starts or when spawned
@@ -132,8 +131,8 @@ void AT1Player::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Test
-	DisplayObj();
+	// UI Test
+	CreateUI();
 
 	//bak1210 소켓에 기본클래스 할당하는 코드
 	/*FName WeaponSocket(TEXT("hand_rSocket"));
@@ -146,40 +145,29 @@ void AT1Player::BeginPlay()
 
 void AT1Player::CreateUI()
 {
-	static ConstructorHelpers::FClassFinder<UUserWidget> _myUserWidget(TEXT("/Game/Blueprint/Test_BluePrint.Test_BluePrint_C"));
-	if (_myUserWidget.Succeeded())
-	{
-		m_UserWidget = _myUserWidget.Class;
-		UE_LOG(LogTemp, Log, TEXT("_myUserWidget.Succeeded()  true"));
+	UBlueprintGeneratedClass* _isLoaded = LoadObject<UBlueprintGeneratedClass>(nullptr, TEXT("/Game/Blueprint/Test_BluePrint.Test_BluePrint_C"));
+	if (nullptr == _isLoaded)
+	{	
+		UE_LOG(LogTemp, Log, TEXT("_isLoaded is nullptr !!"));
 	}
-}
-
-void AT1Player::DisplayObj()
-{
-	if (nullptr == GetWorld())
+	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("GetWorld() is null"));
-	}
-	if (nullptr != GetWorld())
-	{
-		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-		UUserWidget* _createWidget = CreateWidget(GetWorld()->GetFirstPlayerController(), m_UserWidget);
-		UMyUserWidget* _cast = Cast<UMyUserWidget>(_createWidget);
-		if (nullptr != _cast)
+		UE_LOG(LogTemp, Log, TEXT("_isLoaded Success !!"));
+		if (nullptr != GetWorld())
 		{
-			_cast->TestUI();
-			//AddDynamic(_cast->obje , TEXT("TestAddBinding"));
-		}
-		else
-		{
-			UE_LOG(LogTemp, Log, TEXT("_cast is null"));
+			GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+			UUserWidget* _createWidget = CreateWidget(GetWorld()->GetFirstPlayerController(), _isLoaded);
+			if (nullptr == _createWidget)
+			{
+				UE_LOG(LogTemp, Log, TEXT("_createWidget is nullptr !!"));
+			}
+			else
+			{
+				_createWidget->AddToViewport();
+			}
 		}
 	}
-	
-	//auto const TargetPlayer = GetLocalPlayerFromControllerId(GEditor->PlayWorld, 0);
-	//if (TargetPlayer && TargetPlayer->PlayerController && !TargetPlayer->PlayerController->bShowMouseCursor)
 }
-
 
 bool AT1Player::CanSetWeapon()
 {

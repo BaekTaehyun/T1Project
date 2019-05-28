@@ -3,7 +3,7 @@
 
 #include "SocketConfig.h"
 
-#ifndef USE_UNREAL4
+#ifndef __UNREAL__
 
 #include <cstdint>
 #include <string>

@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "GameObject/GsGameObjectManager.h"
+
 #include "GsGameModeBase.generated.h"
 
 /**
@@ -14,14 +16,21 @@
 UCLASS()
 class GAMESERVICE_API AGsGameModeBase : public AGameModeBase
 {
-	GENERATED_BODY()
-	AGsGameModeBase();
+	GENERATED_BODY()	
 public:
+	AGsGameModeBase();
+
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
 
 	// 플레이어가 게임에 입장하는 순간(로그인), Editor에서 Play
 	virtual void PostLogin(APlayerController* newPlayer) override;
 
+	virtual void TeleportPlayer(FString in_Tag, bool in_waitAllLoad = false) {}
+
 	virtual void StartPlay() override;
 	virtual void Tick(float deltaSeconds);
+
+private:
+	UPROPERTY(Transient, VisibleInstanceOnly, Meta = (AllowPrivateAccess = true))
+	AGsGameObjectManager*	_gameObjManager;
 };

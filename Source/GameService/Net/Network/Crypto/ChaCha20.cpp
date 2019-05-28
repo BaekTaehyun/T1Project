@@ -1,31 +1,6 @@
 
 #include "ChaCha20.h"
 
-#include <random>
-
-
-namespace
-{
-	void	GetRandomBytes(uint8_t* buff, size_t size)
-	{
-		std::random_device rd;
-		std::uniform_int_distribution<long> dist;
-
-		for (size_t i = 0; i < size; ++i)
-		{
-			buff[i] = static_cast<uint8_t>(dist(rd));
-		}
-	}
-}
-
-
-CHACAH20_KEY	GenerateChaCha20Key()
-{
-	CHACAH20_KEY key;
-	GetRandomBytes(key.key, sizeof(key.key));
-	GetRandomBytes(key.counter, sizeof(key.counter));
-	return key;
-}
 
 
 ChaCha20Encrypter::ChaCha20Encrypter()

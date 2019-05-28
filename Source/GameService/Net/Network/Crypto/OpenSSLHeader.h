@@ -2,9 +2,8 @@
 #pragma once
 
 
-#define USE_UNREAL4
 
-#ifdef USE_UNREAL4
+#ifdef __UNREAL__
 #define UI UI_ST
 THIRD_PARTY_INCLUDES_START
 #endif
@@ -19,7 +18,7 @@ THIRD_PARTY_INCLUDES_START
 static_assert(OPENSSL_VERSION_NUMBER >= NEED_OPENSSL_VERSION, "OpenSSL version error");
 
 
-#ifdef USE_UNREAL4
+#ifdef __UNREAL__
 THIRD_PARTY_INCLUDES_END
 #undef UI
 #endif

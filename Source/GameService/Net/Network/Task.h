@@ -17,7 +17,7 @@ public:
 
 	bool isSucceed() const { return result_ == true; }
 
-	virtual void process(TaskExecuter* executer);
+	void process(TaskExecuter* executer);
 
 	template<typename T>
 	std::shared_ptr<T> toSharedPtr()

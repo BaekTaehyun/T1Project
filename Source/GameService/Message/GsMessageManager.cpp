@@ -19,7 +19,7 @@ void FGsMessageManager::Finalize()
 
 void FGsMessageManager::Update()
 {
-	//bak1210 순서는 차차잡기로 한다.
+#pragma todo("bak1210 : Message Update Sequence Set Need!")
 	_system.Update();
 	_net.Update();
 	_hive.Update();

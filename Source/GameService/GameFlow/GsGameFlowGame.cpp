@@ -11,22 +11,27 @@ FGsGameFlowGame::~FGsGameFlowGame()
 	GSLOG(Warning, TEXT("FGsGameFlowGame : ~FGsGameFlowGame"));
 }
 
+void FGsGameFlowGame::Init()
+{
+	GSLOG(Warning, TEXT("FGsGameFlowGame : Init"));
+	
+}
+
 void FGsGameFlowGame::Enter()
 {
 	GSLOG(Warning, TEXT("FGsGameFlowGame : Enter"));
 	_stageManager = TUniquePtr<FGsStageManagerGame>(new FGsStageManagerGame());
 	if (_stageManager.IsValid())
 	{
-		_stageManager.Get()->InitState();
+		_stageManager->InitState();
 	}
-
 }
 
 void FGsGameFlowGame::Exit()
 {
 	if (_stageManager.IsValid())
 	{
-		_stageManager.Get()->RemoveAll();
+		_stageManager->RemoveAll();
 	}
 
 	GSLOG(Warning, TEXT("FGsGameFlowGame : Exit"));
