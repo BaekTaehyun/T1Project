@@ -35,6 +35,9 @@ void AGsGameModeBase::PostLogin(APlayerController * newPlayer)
 void AGsGameModeBase::StartPlay()
 {
 	GSLOG(Warning, TEXT("StartPlay"));
+
+	_SpawnComponent = NewObject<UGsSpawnComponent>(this, NAME_None, RF_Transient);
+	_SpawnComponent->RegisterComponent();
 }
 
 void AGsGameModeBase::Tick(float deltaSeconds)

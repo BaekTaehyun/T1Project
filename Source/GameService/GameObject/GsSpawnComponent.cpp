@@ -1,4 +1,4 @@
-﻿#include "GsGameObjectManager.h"
+﻿#include "GsSpawnComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -11,16 +11,25 @@
 #include "GameObject/ObjectClass/GsGameObjectProjectile.h"
 #include "../Class/GsSpawn.h"
 
-
-AGsGameObjectManager::~AGsGameObjectManager()
+UGsSpawnComponent::UGsSpawnComponent(const class FObjectInitializer &OBJ) : Super(OBJ)
 {
-	GSLOG(Warning, TEXT("~AGsGameObjectManager()"));
+	PrimaryComponentTick.bCanEverTick = true;
+
+	//InitializeComponent 함수를 호출하고 싶을때 다음과 같은 플레그가 설정되어야 호출됩니다.
+	bWantsInitializeComponent = true;
+
+	
 }
 
-
-void AGsGameObjectManager::Initialize()
+UGsSpawnComponent::~UGsSpawnComponent()
 {
-	TGsSingleton::InitInstance(this);
+	GSLOG(Warning, TEXT("~UGsSpawnComponent()"));
+}
+
+void UGsSpawnComponent::InitializeComponent()
+{
+	Super::InitializeComponent();
+	UGsSpawnerSingle::InitInstance(this);
 
 	Spawns.Empty();
 	AddSpawns.Empty();
@@ -33,17 +42,10 @@ void AGsGameObjectManager::Initialize()
 		TypeSpawns.Emplace(el);
 	}
 
-	//Tick 델리게이트 설정
-	if (TickDelegate.IsValid())
-	{
-		FTicker::GetCoreTicker().RemoveTicker(TickDelegate);
-	}
-	TickDelegate = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &AGsGameObjectManager::Update));
-
-	AddToRoot();
+	PrimaryComponentTick.SetTickFunctionEnable(true);
 }
 
-void AGsGameObjectManager::Finalize()
+void UGsSpawnComponent::UninitializeComponent()
 {
 	for (auto el : Spawns)
 	{
@@ -54,18 +56,30 @@ void AGsGameObjectManager::Finalize()
 	AddSpawns.Empty();
 	RemoveSpawns.Empty();
 	Spawns.Empty();
+
+	PrimaryComponentTick.SetTickFunctionEnable(false);
+
+	UGsSpawnerSingle::RemoveInstance();
 }
 
-void AGsGameObjectManager::Update()
+void UGsSpawnComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	//대상 리스트 제거
 	UpdateRemoveGameObject();
 	//대상 추가
 	UpdateAddGameObject();
+
+	//위 함수가 제거되면 기존 Update로직으로 이동
+	//스폰 오브젝트 업데이트
+	for (auto el : Spawns)
+	{
+		el->Update(DeltaTime);
+	}
 }
 
 
-UGsGameObjectBase* AGsGameObjectManager::FindObject(AActor* Actor, EGsGameObjectType Type)
+UGsGameObjectBase* UGsSpawnComponent::FindObject(AActor* Actor, EGsGameObjectType Type)
 {
 	if (Type == EGsGameObjectType::Base)
 	{
@@ -94,17 +108,17 @@ UGsGameObjectBase* AGsGameObjectManager::FindObject(AActor* Actor, EGsGameObject
 	return NULL;
 }
 
-UGsGameObjectBase* AGsGameObjectManager::FindObject(EGsGameObjectType Type)
+UGsGameObjectBase* UGsSpawnComponent::FindObject(EGsGameObjectType Type)
 {
     return TypeSpawns[Type].Num() > 0 ? TypeSpawns[Type].Top() : NULL;
 }
 
-TArray<UGsGameObjectBase*> AGsGameObjectManager::FindObjects(EGsGameObjectType Type)
+TArray<UGsGameObjectBase*> UGsSpawnComponent::FindObjects(EGsGameObjectType Type)
 {
 	return TypeSpawns[Type];
 }
 
-UGsGameObjectBase* AGsGameObjectManager::SpawnPlayer(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
+UGsGameObjectBase* UGsSpawnComponent::SpawnPlayer(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
 {
 	auto local = NewObject<UGsGameObjectLocal>();
 	local->Initialize();
@@ -112,7 +126,7 @@ UGsGameObjectBase* AGsGameObjectManager::SpawnPlayer(UClass* Uclass, const FVect
 	{
 		local->ActorSpawned(actor);
 		AddSpawns.Emplace(local);
-		actor->OnDestroyed.AddDynamic(this, &AGsGameObjectManager::CallbackActorDeSpawn);
+		actor->OnDestroyed.AddDynamic(this, &UGsSpawnComponent::CallbackActorDeSpawn);
 	}
 	return local;
 }
@@ -120,7 +134,7 @@ UGsGameObjectBase* AGsGameObjectManager::SpawnPlayer(UClass* Uclass, const FVect
 //[Todo] Class UCharacterMovementComponent
 //void UCharacterMovementComponent::FindFloor(const FVector& CapsuleLocation, FFindFloorResult& OutFloorResult, bool bCanUseCachedLocation, const FHitResult* DownwardSweepResult) const
 //내부 구현을 참고 하여 개선한다.
-UGsGameObjectBase* AGsGameObjectManager::SpawnNpc(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
+UGsGameObjectBase* UGsSpawnComponent::SpawnNpc(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
 {
 	auto npc = NewObject<UGsGameObjectNonPlayer>();
 	npc->Initialize();
@@ -150,7 +164,7 @@ UGsGameObjectBase* AGsGameObjectManager::SpawnNpc(UClass* Uclass, const FVector&
 				AddSpawns.Emplace(npc);
 
                 //액터 자동 소멸 콜백을 연결하여 관리 대상 동기화를 맞춤
-				actor->OnDestroyed.AddDynamic(this, &AGsGameObjectManager::CallbackActorDeSpawn);
+				actor->OnDestroyed.AddDynamic(this, &UGsSpawnComponent::CallbackActorDeSpawn);
 			}
 		}
 	}
@@ -158,7 +172,7 @@ UGsGameObjectBase* AGsGameObjectManager::SpawnNpc(UClass* Uclass, const FVector&
 	return npc;
 }
 
-UGsGameObjectBase* AGsGameObjectManager::SpawnProjectile(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
+UGsGameObjectBase* UGsSpawnComponent::SpawnProjectile(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
 {
 	auto projectile = NewObject<UGsGameObjectProjectile>();
 	projectile->Initialize();
@@ -167,24 +181,20 @@ UGsGameObjectBase* AGsGameObjectManager::SpawnProjectile(UClass* Uclass, const F
 	{
 		AddSpawns.Emplace(projectile);
 		projectile->ActorSpawned(actor);
-		actor->OnDestroyed.AddDynamic(this, &AGsGameObjectManager::CallbackActorDeSpawn);
+		actor->OnDestroyed.AddDynamic(this, &UGsSpawnComponent::CallbackActorDeSpawn);
 
 
 		//충돌 처리
 		if (UPrimitiveComponent* collider = actor->FindComponentByClass<UPrimitiveComponent>())
 		{
-			collider->OnComponentHit.AddDynamic(this, &AGsGameObjectManager::CallbackCompHit);
+			collider->OnComponentHit.AddDynamic(this, &UGsSpawnComponent::CallbackCompHit);
 		}
 	}
 	return projectile;
 }
 
-void AGsGameObjectManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-	RemoveFromRoot();
-}
 
-void AGsGameObjectManager::DespawnObject(UGsGameObjectBase* Despawn)
+void UGsSpawnComponent::DespawnObject(UGsGameObjectBase* Despawn)
 {
 	if (Spawns.Contains(Despawn))
 	{
@@ -196,7 +206,7 @@ void AGsGameObjectManager::DespawnObject(UGsGameObjectBase* Despawn)
 	}
 }
 
-void AGsGameObjectManager::UpdateAddGameObject()
+void UGsSpawnComponent::UpdateAddGameObject()
 {
 	//대상 추가
 	if (0 < AddSpawns.Num())
@@ -217,7 +227,7 @@ void AGsGameObjectManager::UpdateAddGameObject()
 	}
 }
 
-void AGsGameObjectManager::UpdateRemoveGameObject()
+void UGsSpawnComponent::UpdateRemoveGameObject()
 {
 	if (0 < RemoveSpawns.Num())
 	{
@@ -238,7 +248,7 @@ void AGsGameObjectManager::UpdateRemoveGameObject()
 	}
 }
 
-void AGsGameObjectManager::CallbackCompHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+void UGsSpawnComponent::CallbackCompHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (OtherActor)
@@ -259,7 +269,7 @@ void AGsGameObjectManager::CallbackCompHit(UPrimitiveComponent* HitComponent, AA
 	}
 }
 
-void AGsGameObjectManager::CallbackActorDeSpawn(AActor* Despawn)
+void UGsSpawnComponent::CallbackActorDeSpawn(AActor* Despawn)
 {
 	//관리 대상인가 찾음
 	if (auto findObj = FindObject(Despawn))
@@ -268,14 +278,3 @@ void AGsGameObjectManager::CallbackActorDeSpawn(AActor* Despawn)
 	}
 }
 
-//제거 대상
-bool AGsGameObjectManager::Update(float Delta)
-{
-	//위 함수가 제거되면 기존 Update로직으로 이동
-	//스폰 오브젝트 업데이트
-	for (auto el : Spawns)
-	{
-		el->Update(Delta);
-	}
-	return true;
-}

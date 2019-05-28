@@ -6,27 +6,24 @@
 #include "GameObject/Define/GsGameObjectDefine.h"
 #include "Class/GsManager.h"
 #include "Class/GsSingleton.h"
-#include "GsGameObjectManager.generated.h"
+#include "GsSpawnComponent.generated.h"
 
 /**
  * 임시 스폰 담당 클래스
  * 액터 디스폰 델리게이트 연결 이슈로 UObject형으로 처리(다른 방법이 있는지 확인)
  */
 UCLASS()
-class GAMESERVICE_API AGsGameObjectManager : 
-	public AActor,
-	public TGsSingleton<AGsGameObjectManager>,
-	public IGsManager
+class GAMESERVICE_API UGsSpawnComponent : 
+	public UActorComponent,
+	public TGsSingleton<UGsSpawnComponent>
 {
-	GENERATED_BODY()
-	
 public:
+	GENERATED_UCLASS_BODY()
+	virtual ~UGsSpawnComponent();
 
-	virtual ~AGsGameObjectManager();
-
-	virtual void Initialize() override;
-	virtual void Finalize() override;
-	virtual void Update() override;
+	virtual void InitializeComponent() override;
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void UninitializeComponent() override;
 
 	class UGsGameObjectBase* FindObject(class AActor* Actor, EGsGameObjectType Type = EGsGameObjectType::Base);
     UGsGameObjectBase* FindObject(EGsGameObjectType Type);
@@ -40,7 +37,6 @@ public:
 
 
 	void DespawnObject(UGsGameObjectBase* Despawn);
-	void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
     //
 protected:	
 	void UpdateAddGameObject();
@@ -70,7 +66,7 @@ private:
 	bool Update(float Delta);
 };
 
-typedef TGsSingleton<AGsGameObjectManager>	AGsGameObjectSingle;
-AGsGameObjectManager* AGsGameObjectSingle::Instance = NULL;
-#define GGameObj() AGsGameObjectSingle::Instance
+typedef TGsSingleton<UGsSpawnComponent>	UGsSpawnerSingle;
+UGsSpawnComponent* UGsSpawnerSingle::Instance = NULL;
+#define GGameObj() UGsSpawnerSingle::Instance
 

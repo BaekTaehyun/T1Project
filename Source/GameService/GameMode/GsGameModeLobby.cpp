@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Message/GsMessageManager.h"
 #include "UI/GsUIManager.h"
+#include "../GameObject/GsSpawnComponent.h"
 #include "UI/GsUIEventInterface.h"
 
 
@@ -31,7 +32,7 @@ void AGsGameModeLobby::StartPlay()
 		GMessage()->GetStage().AddUObject(MessageLobby::Stage::LOGIN_COMPLETE, this, &AGsGameModeLobby::OnLoginComplete);
 		GMessage()->GetStage().AddUObject(MessageLobby::Stage::ENTER_INGAME, this, &AGsGameModeLobby::OnLoadGameScene);
 	}
-
+	
 	AGsUIManager* UIManager = GetUIManager();
 	if (nullptr != UIManager)
 	{

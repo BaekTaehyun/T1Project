@@ -30,7 +30,7 @@ public:
 	virtual void StartPlay() override;
 	virtual void Tick(float deltaSeconds);
 
-private:
+protected:
 	UPROPERTY(Transient, VisibleInstanceOnly, Meta = (AllowPrivateAccess = true))
-	AGsGameObjectManager*	_gameObjManager;
+	UGsSpawnComponent*	_SpawnComponent;
 };
