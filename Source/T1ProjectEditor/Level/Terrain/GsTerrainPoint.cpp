@@ -8,7 +8,9 @@ UGsTerrainPoint::UGsTerrainPoint()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;	
+	PrimaryComponentTick.bCanEverTick = true;
+
+	bWantsOnUpdateTransform = true;
 	// ...
 }
 
@@ -22,6 +24,12 @@ void UGsTerrainPoint::BeginPlay()
 	
 }
 
+void UGsTerrainPoint::OnUpdateTransform(EUpdateTransformFlags UpdateTransfo, ETeleportType Teleport)
+{
+	Super::OnUpdateTransform(UpdateTransfo, Teleport);
+
+	UE_LOG(LogTemp, Log, TEXT("Point"));
+}
 
 // Called every frame
 void UGsTerrainPoint::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

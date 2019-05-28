@@ -2,6 +2,8 @@
 
 
 #include "GsTerrainActor.h"
+#include "Runtime/Engine/Classes/Engine/World.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
 #include "T1ProjectEditor/Level/Terrain/GsTerrainPoint.h"
 
@@ -11,25 +13,84 @@ AGsTerrainActor::AGsTerrainActor()
 	//PrimaryActorTick.bStartWithTickEnabled = true;
 }
 
+void AGsTerrainActor::OnConstruction(const FTransform& in_transfrom)
+{
+	Super::OnConstruction(in_transfrom);
+
+	//Draw();
+
+	DrawAll();
+}
+
 void AGsTerrainActor::Tick(float in_deltaTime)
 {
-	UE_LOG(LogTemp, Log, TEXT("Tick : %s"), *GetName());	
+	Super::Tick(in_deltaTime);	
 
 	//FlushPersistentDebugLines(GetWorld());
 
-	//DrawLines();
-	//
-	//DrawRects();
+	/*DrawLines();
+	
+	DrawRects();*/
 }
 
 void AGsTerrainActor::TickActor(float in_deltaTime, enum ELevelTick in_tickType, FActorTickFunction& in_thisTickFunction)
 {
 	Super::TickActor(in_deltaTime, in_tickType, in_thisTickFunction);
+
+	/*if (in_tickType == ELevelTick::LEVELTICK_TimeOnly)
+	{
+		UE_LOG(LogTemp, Log, TEXT("LEVELTICK_TimeOnly : %s"), *GetName());
+
+		DrawLines();
+
+		DrawRects();
+	}
+	else if (in_tickType == ELevelTick::LEVELTICK_ViewportsOnly)
+	{
+		UE_LOG(LogTemp, Log, TEXT("LEVELTICK_ViewportsOnly : %s"), *GetName());
+
+		DrawLines();
+
+		DrawRects();
+	}*/
 }
 
 bool AGsTerrainActor::ShouldTickIfViewportsOnly() const
 {
 	return true;
+}
+
+void AGsTerrainActor::Draw()
+{
+	DrawLines();
+	DrawRects();
+}
+
+void AGsTerrainActor::DrawAll()
+{
+	TArray<AActor*> terrainArray;
+
+	UGameplayStatics::GetAllActorsOfClass(GetWorld()
+		, AGsTerrainActor::StaticClass()
+		, terrainArray);
+
+	AGsTerrainActor* terrain;
+
+	FlushPersistentDebugLines(GetWorld());
+
+	for (AActor* iter : terrainArray)
+	{
+		if (iter)
+		{
+			terrain = Cast<AGsTerrainActor>(iter);
+
+			if (terrain)
+			{
+				terrain->DrawLines();
+				terrain->DrawRects();
+			}
+		}
+	}
 }
 
 void AGsTerrainActor::DrawLines()

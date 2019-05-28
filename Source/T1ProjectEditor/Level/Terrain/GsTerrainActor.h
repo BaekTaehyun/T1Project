@@ -24,9 +24,13 @@ public:
 
 public:
 	AGsTerrainActor();	
+	virtual void OnConstruction(const FTransform& in_transfrom) override;
 	virtual void Tick(float in_deltaTime) override;
 	virtual void TickActor(float in_deltaTime, enum ELevelTick in_tickType, FActorTickFunction& in_thisTickFunction) override;
 	virtual bool ShouldTickIfViewportsOnly() const override;
+	UFUNCTION(BlueprintCallable, Category = "Terrain Actor")
+	void Draw();	
+	void DrawAll();
 	void DrawLines();	
 	void DrawRects();
 

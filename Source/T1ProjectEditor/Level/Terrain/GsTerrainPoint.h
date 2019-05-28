@@ -19,6 +19,7 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	virtual void OnUpdateTransform(EUpdateTransformFlags UpdateTransfo,	ETeleportType Teleport) override;
 
 public:	
 	// Called every frame	
