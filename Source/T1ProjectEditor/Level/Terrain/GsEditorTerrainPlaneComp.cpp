@@ -65,21 +65,13 @@ void UGsEditorTerrainPlaneComp::Draw(UGsEditorPillarComp* in_start, UGsEditorPil
 		//triangle
 		TArray<int32> triangles;
 
-		/*triangles.Add(0);
-		triangles.Add(1);
-		triangles.Add(2);
-
 		triangles.Add(0);
 		triangles.Add(2);
-		triangles.Add(3);*/
+		triangles.Add(1);
 
 		triangles.Add(0);
 		triangles.Add(3);
 		triangles.Add(2);
-
-		triangles.Add(0);
-		triangles.Add(2);
-		triangles.Add(1); 
 
 		//normal
 		TArray<FVector> normals;
@@ -100,25 +92,20 @@ void UGsEditorTerrainPlaneComp::Draw(UGsEditorPillarComp* in_start, UGsEditorPil
 		//tangents
 		TArray<FProcMeshTangent> tangents;
 
-		tangents.Add(FProcMeshTangent(0, 1, 0));
-		tangents.Add(FProcMeshTangent(0, 1, 0));
-		tangents.Add(FProcMeshTangent(0, 1, 0));
+		tangents.Add(FProcMeshTangent(0, 0, 1));
+		tangents.Add(FProcMeshTangent(0, 0, 1));
+		tangents.Add(FProcMeshTangent(0, 0, 1));
 
 		//vertex color
 		TArray<FLinearColor> vertexColors;
 
-		vertexColors.Add(FLinearColor(0.75, 0.75, 0.75, 1.0));
-		vertexColors.Add(FLinearColor(0.75, 0.75, 0.75, 1.0));
-		vertexColors.Add(FLinearColor(0.75, 0.75, 0.75, 1.0));
+		vertexColors.Add(FLinearColor::Blue);
+		vertexColors.Add(FLinearColor::Blue);
+		vertexColors.Add(FLinearColor::Blue);
 
 		CreateMeshSection_LinearColor(0, vertexs, triangles, normals, uv, vertexColors, tangents, true);
 		ContainsPhysicsTriMeshData(true);
-
-		UMaterial* material = NewObject<UMaterial>();
-		//Surface color 
-		/*UMaterial* material = UMaterial::GetDefaultMaterial(MD_Surface);
-		UMaterialInstanceDynamic* instanceMaterial = CreateAndSetMaterialInstanceDynamicFromMaterial(0, material);*/
-
+		
 		if (_Parent)
 		{
 			if (_Parent->_PlaneMaterial)
@@ -127,14 +114,7 @@ void UGsEditorTerrainPlaneComp::Draw(UGsEditorPillarComp* in_start, UGsEditorPil
 				instanceMaterial->SetVectorParameterValue(FName("Color"), FLinearColor(100.0f, 100.0f, 0.0f));
 				SetMaterial(0, instanceMaterial);
 			}			
-		}
-		
-
-		//UMaterial* material = NewObject<UMaterial>();
-
-		/*UMaterialInstance* material = UMaterialInstanceDynamic::Create(, NULL);
-		SetMaterial()*/
-		
+		}	
 	}	
 }
 

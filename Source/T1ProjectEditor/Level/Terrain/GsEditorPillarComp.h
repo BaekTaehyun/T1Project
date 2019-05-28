@@ -34,5 +34,5 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void OnUpdateTransform(EUpdateTransformFlags UpdateTransfo, ETeleportType Teleport) override;
-
+	void AddTriangle(int32 v1, int32 v2, int32 v3, TArray<int32>& in_triangleArray);
 };
