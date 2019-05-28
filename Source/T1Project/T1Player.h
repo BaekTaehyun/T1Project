@@ -89,6 +89,20 @@ public:
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
 	float AttackRadius;
 	
+
+	// UpDown 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void(float In_newAxisValue)> FunctionUpDown;
+	// LeftRight 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void(float In_newAxisValue)> FunctionLeftRight;
+	// LookUp 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void(float In_newAxisValue)> FunctionLookUp;
+	// Turn 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void(float In_newAxisValue)> FunctionTurn;
+
+	// ZoomIn 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void()> FunctionZoomIn;
+	// ZoomOut 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void()> FunctionZoomOut;
 private:
 	// 프로젝트 옵션에 인풋과 매칭되는 함수
 	void UpDown(float newAxisValue);
@@ -135,4 +149,5 @@ private:
 
 	UPROPERTY()
 	class UT1AnimInstance* T1Anim;
+
 };
