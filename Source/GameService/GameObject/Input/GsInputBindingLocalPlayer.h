@@ -27,6 +27,7 @@ protected:
 	//Local Character Bind
 	void OnAttachParts(EGsPartsType Type);
 	void OnAttack1(int32 slot);
+	void OnAction();
 	void OnMoveForward();
 	void OnMoveBackward();
 	void OnMoveLeft();

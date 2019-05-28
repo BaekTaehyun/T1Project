@@ -23,7 +23,7 @@ protected:
 	//애님 블루프린트에 가장 최우선으로 상태를 전송해줘야한다.
 	virtual void OnEnter(UGsGameObjectNonPlayer* Owner) override
 	{
-		if (AGsNpcPawn* actor = Owner->GetNpc())
+		if (AGsNpcPawn* actor = Owner->GetNpcPawn())
 		{
 			auto anim = actor->GetAnim();
 			anim->ChangeState(GetStateID());

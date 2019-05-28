@@ -19,13 +19,17 @@ class GAMESERVICE_API AGsLocalCharacter : public ACharacter
 	//캐릭터 따라가기 카메라
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
-
 	//InputBinder
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UGsInputBindingLocalPlayer* InputBinder;
+	//Anim
+	UGsAnimInstanceState* Animation;
+
+public:
+	FORCEINLINE UGsAnimInstanceState* GetAnim() const { return Animation; }
+	FORCEINLINE UGsInputBindingLocalPlayer* GetInputBinder() const { return InputBinder; }
 
 public:
 	// Sets default values for this character's properties
@@ -40,12 +44,4 @@ protected:
 	virtual void PostInitializeComponents() override;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:
-	FORCEINLINE UGsAnimInstanceState* GetAnim() const { return Animation; }
-	FORCEINLINE UGsInputBindingLocalPlayer* GetInputBinder() const { return InputBinder; }
-
-private:
-	//Anim
-	UGsAnimInstanceState* Animation;
 };

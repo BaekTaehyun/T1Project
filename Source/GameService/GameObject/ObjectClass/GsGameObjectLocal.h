@@ -29,11 +29,17 @@ public:
 	virtual class FGsFSMManager* GetUpperFSM() const override;
 	virtual class FGsSkillBase* GetSkill()  const override;
 	virtual class FGsPartsBase* GetParts() const override;
+	class FGsGameObjectEventBase* GetEvent() const;
 
 public:
 	virtual void ActorSpawned(AActor* Spawn) override;
 
+protected:
+	virtual void RegistEvent() override;
+
 private:
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = GameObject, Meta = (AllowPrivateAccess = true))
  	AGsLocalCharacter* Actor;
+
+	FGsGameObjectEventBase* Event;
 };

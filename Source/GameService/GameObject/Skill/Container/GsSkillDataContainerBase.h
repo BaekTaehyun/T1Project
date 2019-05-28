@@ -6,9 +6,6 @@
 #include "GameObject/Skill/Data/GsSkillDataBase.h"
 #include "GsSkillDataContainerBase.generated.h"
 
-/**
- * 
- */
  /**
   * 스킬 데이터정보를 담고있는 클래스
   * 추후 변경될 여지가 많음

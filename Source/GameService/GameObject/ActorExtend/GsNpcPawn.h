@@ -17,6 +17,20 @@ class GAMESERVICE_API AGsNpcPawn : public APawn
 {
 	GENERATED_BODY()
 	
+	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	USkeletalMeshComponent* Mesh;
+	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UCapsuleComponent* CapsuleComponent;
+	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UPawnMovementComponent* MovementComponent;
+	//Anim
+	UGsAnimInstanceState* Animation;
+
+public:
+	FORCEINLINE UGsAnimInstanceState* GetAnim() const { return Animation; }
+	FORCEINLINE UPawnMovementComponent* GetPawnMovement() const { return MovementComponent; }
+	
+public:
 	// Sets default values for this pawn's properties
 	AGsNpcPawn();
     // Called every frame
@@ -28,18 +42,4 @@ protected:
 	virtual void PostInitializeComponents() override;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:
-	FORCEINLINE UGsAnimInstanceState* GetAnim() const { return Animation; }
-    FORCEINLINE UPawnMovementComponent* GetPawnMovement() const { return MovementComponent; }
-
-private:
-    UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-    USkeletalMeshComponent* Mesh;
-    UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-    UCapsuleComponent* CapsuleComponent;
-    UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-    UPawnMovementComponent* MovementComponent;
-	//Anim
-	UGsAnimInstanceState* Animation;
 };

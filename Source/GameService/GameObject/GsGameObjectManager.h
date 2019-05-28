@@ -8,6 +8,8 @@
 #include "Class/GsSingleton.h"
 #include "GsGameObjectManager.generated.h"
 
+class UGsGameObjectBase;
+
 /**
  * 임시 스폰 담당 클래스
  * 액터 디스폰 델리게이트 연결 이슈로 UObject형으로 처리(다른 방법이 있는지 확인)
@@ -28,7 +30,7 @@ public:
 	virtual void Finalize() override;
 	virtual void Update() override;
 
-	class UGsGameObjectBase* FindObject(class AActor* Actor, EGsGameObjectType Type = EGsGameObjectType::Base);
+	UGsGameObjectBase* FindObject(AActor* Actor, EGsGameObjectType Type = EGsGameObjectType::Base);
     UGsGameObjectBase* FindObject(EGsGameObjectType Type);
 	TArray<UGsGameObjectBase*> FindObjects(EGsGameObjectType Type);
 
@@ -37,13 +39,19 @@ public:
 	UGsGameObjectBase* SpawnPlayer(UClass* Uclass, const FVector& Pos, const FRotator& Rot);
 	UGsGameObjectBase* SpawnNpc(UClass* Uclass, const FVector& Pos, const FRotator& Rot);
 	UGsGameObjectBase* SpawnProjectile(UClass* Uclass, const FVector& Pos, const FRotator& Rot);
+	UGsGameObjectBase* SpawnVehicle(UClass* Uclass, const FVector& Pos, const FRotator& Rot);
 
+	//이 메서드는 아직 GameObject타입별 후처리에대한 처리가 지원되지 않음
+	template<class tGameobject>
+	tGameobject* SpawnObject(UClass* Uclass, const FVector& Pos, const FRotator& Rot, bool CalcOnGround = false);
 
 	void DespawnObject(UGsGameObjectBase* Despawn);
+	void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
     //
 protected:	
 	void UpdateAddGameObject();
 	void UpdateRemoveGameObject();
+	FVector CalcOnGround(UClass* Uclass, const FVector& Pos);
 
 	UFUNCTION()
 	void CallbackCompHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
@@ -64,10 +72,35 @@ private:
 	TArray<UGsGameObjectBase*> AddSpawns;
 	TArray<UGsGameObjectBase*> RemoveSpawns;
 
-	//Update에 Delta값이 반영되면 삭제
 	FDelegateHandle TickDelegate;
 	bool Update(float Delta);
 };
+
+template<class tGameobject>
+tGameobject* AGsGameObjectManager::SpawnObject(UClass* Uclass, const FVector& Pos, const FRotator& Rot, bool IsOnGround)
+{
+	if (auto object = NewObject<tGameobject>())
+	{
+		object->Initialize();
+		FVector spawnPos = Pos;
+
+		if (IsOnGround)
+		{
+			spawnPos = CalcOnGround(Uclass, Pos);
+		}
+
+		if (auto actor = TGsSpawn::BPClass(GetWorld(), Uclass, spawnPos, Rot))
+		{
+			AddSpawns.Emplace(object);
+			object->ActorSpawned(actor);
+			actor->OnDestroyed.AddDynamic(this, &AGsGameObjectManager::CallbackActorDeSpawn);
+		}
+
+		return object;
+	}
+
+	return NULL;
+}
 
 typedef TGsSingleton<AGsGameObjectManager>	AGsGameObjectSingle;
 AGsGameObjectManager* AGsGameObjectSingle::Instance = NULL;

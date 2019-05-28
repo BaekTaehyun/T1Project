@@ -9,6 +9,7 @@
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 #include "GameObject/ObjectClass/GsGameObjectNonPlayer.h"
 #include "GameObject/ObjectClass/GsGameObjectProjectile.h"
+#include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
 #include "../Class/GsSpawn.h"
 
 
@@ -39,6 +40,8 @@ void AGsGameObjectManager::Initialize()
 		FTicker::GetCoreTicker().RemoveTicker(TickDelegate);
 	}
 	TickDelegate = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &AGsGameObjectManager::Update));
+
+	AddToRoot();
 }
 
 void AGsGameObjectManager::Finalize()
@@ -104,77 +107,36 @@ TArray<UGsGameObjectBase*> AGsGameObjectManager::FindObjects(EGsGameObjectType T
 
 UGsGameObjectBase* AGsGameObjectManager::SpawnPlayer(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
 {
-	auto local = NewObject<UGsGameObjectLocal>();
-	local->Initialize();
-	if (auto actor = TGsSpawn::BPClass(GetWorld(), Uclass, Pos, Rot))
-	{
-		local->ActorSpawned(actor);
-		AddSpawns.Emplace(local);
-		actor->OnDestroyed.AddDynamic(this, &AGsGameObjectManager::CallbackActorDeSpawn);
-	}
-	return local;
+	return SpawnObject<UGsGameObjectLocal>(Uclass, Pos, Rot);
 }
 
-//[Todo] Class UCharacterMovementComponent
-//void UCharacterMovementComponent::FindFloor(const FVector& CapsuleLocation, FFindFloorResult& OutFloorResult, bool bCanUseCachedLocation, const FHitResult* DownwardSweepResult) const
-//내부 구현을 참고 하여 개선한다.
 UGsGameObjectBase* AGsGameObjectManager::SpawnNpc(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
 {
-	auto npc = NewObject<UGsGameObjectNonPlayer>();
-	npc->Initialize();
-
-	FVector rayOri = Pos + FVector(0.f, 0.f, 1000.f);
-	FVector rayDes = rayOri + FVector(0.f, 0.f, -1.f)  * 1200.f;
-
-	FHitResult HitResult;
-	TArray<AActor*> actorsToIgnore;
-
-	//생성도 되기전에 얻어오는게 맞는지 모르것음...
-	if (AActor* castActor = Uclass->GetDefaultObject<AActor>())
-	{
-		UKismetSystemLibrary::LineTraceSingle(GetWorld(), rayOri, rayDes, UEngineTypes::ConvertToTraceType(ECC_WorldStatic),
-			false, actorsToIgnore, EDrawDebugTrace::ForDuration, HitResult, true, FLinearColor::Green, FLinearColor::Red);
-		if (HitResult.bBlockingHit)
-		{
-			FVector location = HitResult.Location + FVector(0.f, 0.f, 0.5f);
-			if (UCapsuleComponent* Capshule = castActor->FindComponentByClass<UCapsuleComponent>())
-			{
-				location.Z += Capshule->GetUnscaledCapsuleHalfHeight();
-			}
-
-			if (auto actor = TGsSpawn::BPClass(GetWorld(), Uclass, Pos, Rot))
-			{
-				npc->ActorSpawned(actor);
-				AddSpawns.Emplace(npc);
-
-                //액터 자동 소멸 콜백을 연결하여 관리 대상 동기화를 맞춤
-				actor->OnDestroyed.AddDynamic(this, &AGsGameObjectManager::CallbackActorDeSpawn);
-			}
-		}
-	}
-
-	return npc;
+	return SpawnObject<UGsGameObjectNonPlayer>(Uclass, Pos, Rot, true);
 }
 
 UGsGameObjectBase* AGsGameObjectManager::SpawnProjectile(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
 {
-	auto projectile = NewObject<UGsGameObjectProjectile>();
-	projectile->Initialize();
-
-	if (auto actor = TGsSpawn::BPClass(GetWorld(), Uclass, Pos, Rot))
+	if (auto projectile = SpawnObject<UGsGameObjectProjectile>(Uclass, Pos, Rot))
 	{
-		AddSpawns.Emplace(projectile);
-		projectile->ActorSpawned(actor);
-		actor->OnDestroyed.AddDynamic(this, &AGsGameObjectManager::CallbackActorDeSpawn);
-
-
 		//충돌 처리
-		if (UPrimitiveComponent* collider = actor->FindComponentByClass<UPrimitiveComponent>())
+		if (UPrimitiveComponent* collider = projectile->GetActor()->FindComponentByClass<UPrimitiveComponent>())
 		{
 			collider->OnComponentHit.AddDynamic(this, &AGsGameObjectManager::CallbackCompHit);
 		}
+		return projectile;
 	}
-	return projectile;
+	return NULL;
+}
+
+UGsGameObjectBase* AGsGameObjectManager::SpawnVehicle(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
+{
+	return SpawnObject<UGsGameObjectWheelVehicle>(Uclass, Pos, Rot);
+}
+
+void AGsGameObjectManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	RemoveFromRoot();
 }
 
 void AGsGameObjectManager::DespawnObject(UGsGameObjectBase* Despawn)
@@ -229,6 +191,35 @@ void AGsGameObjectManager::UpdateRemoveGameObject()
 		}
 		RemoveSpawns.Empty();
 	}
+}
+
+FVector AGsGameObjectManager::CalcOnGround(UClass* Uclass, const FVector& Pos)
+{
+	//[Todo] Class UCharacterMovementComponent
+			//void UCharacterMovementComponent::FindFloor(const FVector& CapsuleLocation, FFindFloorResult& OutFloorResult, bool bCanUseCachedLocation, const FHitResult* DownwardSweepResult) const
+			//내부 구현을 참고 하여 개선한다.
+	FVector rayOri = Pos + FVector(0.f, 0.f, 1000.f);
+	FVector rayDes = rayOri + FVector(0.f, 0.f, -1.f)  * 1200.f;
+
+	FHitResult HitResult;
+	TArray<AActor*> actorsToIgnore;
+	//생성도 되기전에 얻어오는게 맞는지 모르것음...
+	if (AActor* castActor = Uclass->GetDefaultObject<AActor>())
+	{
+		UKismetSystemLibrary::LineTraceSingle(GetWorld(), rayOri, rayDes, UEngineTypes::ConvertToTraceType(ECC_WorldStatic),
+			false, actorsToIgnore, EDrawDebugTrace::ForDuration, HitResult, true, FLinearColor::Green, FLinearColor::Red);
+		if (HitResult.bBlockingHit)
+		{
+			FVector location = HitResult.Location + FVector(0.f, 0.f, 0.5f);
+			if (UCapsuleComponent* Capshule = castActor->FindComponentByClass<UCapsuleComponent>())
+			{
+				location.Z += Capshule->GetUnscaledCapsuleHalfHeight();
+			}
+
+			return location;
+		}
+	}
+	return Pos;
 }
 
 void AGsGameObjectManager::CallbackCompHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,

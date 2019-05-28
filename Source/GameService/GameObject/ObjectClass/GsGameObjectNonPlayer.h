@@ -22,7 +22,7 @@ public:
     virtual EGsGameObjectType GetObjectType() const override;
 	virtual AActor* GetActor() const override;
     UFUNCTION(BlueprintCallable, Category = "GameObject")
-	virtual AGsNpcPawn* GetNpc() const;
+	virtual AGsNpcPawn* GetNpcPawn() const;
 
 public:
 	virtual void OnHit(UGsGameObjectBase* Target) override;

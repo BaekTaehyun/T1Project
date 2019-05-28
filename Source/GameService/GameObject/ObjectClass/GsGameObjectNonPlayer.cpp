@@ -9,8 +9,8 @@
 #include "GameObject/State/GsStateNPC.h"
 
 EGsGameObjectType	UGsGameObjectNonPlayer::GetObjectType() const   { return EGsGameObjectType::NonPlayer; }
-AActor*				UGsGameObjectNonPlayer::GetActor() const        { return GetNpc(); }
-AGsNpcPawn*			UGsGameObjectNonPlayer::GetNpc() const			{ return Actor; }
+AActor*				UGsGameObjectNonPlayer::GetActor() const        { return GetNpcPawn(); }
+AGsNpcPawn*			UGsGameObjectNonPlayer::GetNpcPawn() const		{ return (Actor->IsValidLowLevel()) ? Actor : NULL; }
 
 void UGsGameObjectNonPlayer::Initialize()
 {

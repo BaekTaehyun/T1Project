@@ -10,6 +10,9 @@ class GAMESERVICE_API AGsProjectileActor : public AActor
 {
 	GENERATED_BODY()
 	
+	//UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+		//UProjectileMovementComponent* ProjectileMovementComponent;
+	
 public:	
 	// Sets default values for this actor's properties
 	AGsProjectileActor();
@@ -20,8 +23,4 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-private:
-    //UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-    //UProjectileMovementComponent* ProjectileMovementComponent;
 };

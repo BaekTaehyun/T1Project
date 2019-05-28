@@ -34,10 +34,8 @@ public:
 	int ID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SKill")
 	float Duration;
-	//추후 Editor상에서 리소스를 드래그하면 Path정보가 입력되는 형태로 구현이 필요함
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SKill")
-	UAnimMontage* ResAni;
-	//FString ResAni;
+	TSoftObjectPtr<UAnimMontage> ResAni;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SKill")
 	TArray<FGsSkillActionDataBase> SkillAction;
