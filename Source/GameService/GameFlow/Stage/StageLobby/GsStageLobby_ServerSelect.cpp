@@ -1,7 +1,6 @@
 #include "GsStageLobby_ServerSelect.h"
 #include "GameService.h"
-#include "UI/GsUIManager.h"
-#include "GameMode/GsGameModeLobby.h"
+#include "Message/GsMessageManager.h"
 
 
 FGsStageLobby_ServerSelect::FGsStageLobby_ServerSelect() : FGsStageLobbyBase(FGsStageMode::Lobby::SERVER_SELECT)
@@ -18,15 +17,7 @@ void FGsStageLobby_ServerSelect::Enter()
 	FGsStageLobbyBase::Enter();
 	GSLOG(Warning, TEXT("FGsStageLobby_ServerSelect : Enter"));
 
-	AGsGameModeLobby* GameModeLobby = AGsGameModeLobby::GetGameModeLobby();
-	if (nullptr != GameModeLobby)
-	{
-		AGsUIManager* UIManager = GameModeLobby->GetUIManager();
-		if (nullptr != UIManager)
-		{
-			UIManager->PushByKeyName(FName(TEXT("WindowServerSelect")));
-		}
-	}
+	GMessage()->GetStage().SendMessage(MessageLobby::Stage::ENTER_SERVERSELECT_STAGE);
 }
 
 void FGsStageLobby_ServerSelect::Exit()
