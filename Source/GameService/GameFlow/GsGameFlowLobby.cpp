@@ -2,8 +2,7 @@
 #include "GameService.h"
 #include "Stage/StageLobby/GsStageManagerLobby.h"
 #include "Message/GsMessageManager.h"
-#include "GameMode/GsGameModeLobby.h"
-#include "Kismet/GameplayStatics.h"
+
 
 FGsGameFlowLobby::FGsGameFlowLobby() : FGsGameFlowBase(FGsGameFlow::Mode::LOBBY)
 {
@@ -74,17 +73,6 @@ void FGsGameFlowLobby::OnIntroComplete()
 {
 	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnIntroComplete"));
 
-	AGsGameModeLobby* GameModeLobby = AGsGameModeLobby::GetGameModeLobby();
-	if (nullptr != GameModeLobby)
-	{
-		// 개발모드일 경우 바로 로그인 화면으로 연결
-		if (GameModeLobby->IsDevMode())
-		{
-			_stageManager->ChangeState(FGsStageMode::Lobby::SERVER_SELECT);
-			return;
-		}
-	}
-
 	_stageManager->ChangeState(FGsStageMode::Lobby::ASSET_DOWNLOAD);
 }
 
@@ -119,8 +107,6 @@ void FGsGameFlowLobby::OnHiveLoginComplete()
 void FGsGameFlowLobby::OnBackToServerSelect()
 {
 	GSLOG(Warning, TEXT("FGsGameFlowLobby : OnBackToServerSelect"));
-
-	// 현재 UI 스택에서 빼기?
 
 	_stageManager->ChangeState(FGsStageMode::Lobby::SERVER_SELECT);
 }

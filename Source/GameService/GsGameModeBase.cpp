@@ -35,6 +35,8 @@ void AGsGameModeBase::PostLogin(APlayerController * newPlayer)
 void AGsGameModeBase::StartPlay()
 {
 	GSLOG(Warning, TEXT("StartPlay"));
+
+	Super::StartPlay();
 }
 
 void AGsGameModeBase::Tick(float deltaSeconds)
