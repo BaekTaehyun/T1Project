@@ -12,7 +12,6 @@ AGsGameModeLobby::AGsGameModeLobby()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-
 	// ...
 	LobbyComponent = CreateDefaultSubobject<UGsLobbyComponent>(TEXT("LobbyComponent"));
 }
@@ -20,7 +19,7 @@ AGsGameModeLobby::AGsGameModeLobby()
 void AGsGameModeLobby::StartPlay()
 {
 	Super::StartPlay();
-
+	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 	// FIX: 준비가 되었다고 메시지를 쏘고 해당 State이면 재생해야할 듯
 	AGsUIManager* UIManager = GetUIManager();
 	if (nullptr != UIManager)
