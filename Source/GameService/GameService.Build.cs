@@ -21,8 +21,8 @@ public class GameService : ModuleRules
             "Sockets",
             "AIModule",
             "GameplayTasks",
-            "T1Project"
-        });
+			"PhysXVehicles",
+			"T1Project"        });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {
             "OpenSSL",
