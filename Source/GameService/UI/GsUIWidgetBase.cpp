@@ -8,9 +8,11 @@
 
 
 UGsUIWidgetBase::UGsUIWidgetBase(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer),	bStackProcessed(false)
+	: Super(ObjectInitializer)
 {
-
+	bStackProcessed = false;
+	bNotUseManagedZOrder = false;
+	AddZOrder = 0;
 }
 
 void UGsUIWidgetBase::OnPush_Implementation(UGsUIParameter* InParam)
@@ -35,6 +37,11 @@ void UGsUIWidgetBase::Close()
 AGsUIManager* UGsUIWidgetBase::GetUIManager()
 {
 	return AGsUIManager::GetUIManager(GetOwningPlayer());
+}
+
+int32 UGsUIWidgetBase::GetManagedZOrder() const
+{
+	return (bNotUseManagedZOrder) ? AddZOrder : GetManagedDefaultZOrder() + AddZOrder;
 }
 
 /*

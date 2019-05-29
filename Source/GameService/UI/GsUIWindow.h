@@ -20,4 +20,7 @@ public:
 
 	/** 윈도우타입(화면을 다 가리는)인가 */
 	virtual bool IsWindow() const final { return true; }
+
+protected:
+	virtual int32 GetManagedDefaultZOrder() const override { return 10; }
 };
