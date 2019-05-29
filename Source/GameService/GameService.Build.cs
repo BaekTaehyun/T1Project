@@ -21,12 +21,13 @@ public class GameService : ModuleRules
             "Sockets",
             "AIModule",
             "GameplayTasks",
+            "T1Project"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {
             "OpenSSL",
             "JsonUtilities",
-            "Json",
+            "Json",            
         });
 
 		// Uncomment if you are using Slate UI

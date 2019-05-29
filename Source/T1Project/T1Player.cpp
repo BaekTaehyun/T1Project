@@ -21,6 +21,7 @@
 #include "UserWidget.h"
 #include "MyUserWidget.h"
 
+#include "../GameService/Camera/GsCameraModeManager.h"
 
 // Sets default values
 AT1Player::AT1Player()
@@ -141,6 +142,12 @@ void AT1Player::BeginPlay()
 	{
 		CurWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, WeaponSocket);
 	}*/
+
+	// 캐릭터 세팅
+	if (GsCameraModeSingle::Instance != nullptr)
+	{
+		GsCameraModeSingle::Instance->SetCharacter(this);
+	}
 }
 
 void AT1Player::CreateUI()
@@ -192,6 +199,12 @@ void AT1Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+#ifdef CAM_MODE
+	if (GsCameraModeSingle::Instance != nullptr)
+	{
+		GsCameraModeSingle::Instance->Update(DeltaTime);
+	}
+#else
 	SpringArm->TargetArmLength = FMath::FInterpTo(SpringArm->TargetArmLength, ArmLengthTo, DeltaTime, ArmLengthSpeed);
 
 	if (CurrentCameraControlMode == ECameraControlMode::DIABLO )
@@ -204,7 +217,7 @@ void AT1Player::Tick(float DeltaTime)
 			AddMovementInput(DirectionToMove);
 		}
 	}
-
+#endif
 }
 
 // Called to bind functionality to input
@@ -225,6 +238,16 @@ void AT1Player::SetupPlayerInputComponent(UInputComponent* inputComponent)
 
 	InputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &AT1Player::Jump);
 	InputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AT1Player::Attack);
+
+	InputComponent->BindAction(TEXT("ZoomIn"),
+		EInputEvent::IE_Pressed,
+		this,
+		&AT1Player::ZoomIn);
+
+	InputComponent->BindAction(TEXT("ZoomOut"),
+		EInputEvent::IE_Pressed,
+		this,
+		&AT1Player::ZoomOut);
 }
 
 
@@ -291,6 +314,12 @@ void AT1Player::PossessedBy(AController* NewController)
 
 void AT1Player::UpDown(float newAxisValue)
 {
+#ifdef CAM_MODE
+	if (FunctionUpDown != nullptr)
+	{
+		FunctionUpDown(newAxisValue);
+	}
+#else
 	//바인딩된후 실제 이동처리
 	if (CurrentCameraControlMode == ECameraControlMode::FOLLOW)
 	{
@@ -300,11 +329,17 @@ void AT1Player::UpDown(float newAxisValue)
 	{
 		DirectionToMove.X = newAxisValue;
 	}
-	
+#endif
 }
 
 void AT1Player::LeftRight(float newAxisValue)
 {
+#ifdef CAM_MODE
+	if (FunctionLeftRight != nullptr)
+	{
+		FunctionLeftRight(newAxisValue);
+	}
+#else
 	if (CurrentCameraControlMode == ECameraControlMode::FOLLOW)
 	{
 		AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::Y), newAxisValue);
@@ -313,31 +348,70 @@ void AT1Player::LeftRight(float newAxisValue)
 	{
 		DirectionToMove.Y = newAxisValue;
 	}
-	
+#endif
 }
 
 void AT1Player::LookUp(float newAxisValue)
 {
+#ifdef CAM_MODE
+	if (FunctionLookUp != nullptr)
+	{
+		FunctionLookUp(newAxisValue);
+	}
+#else
 	if (CurrentCameraControlMode == ECameraControlMode::FOLLOW)
 	{
 		AddControllerPitchInput(newAxisValue);
 	}
+#endif
 	
 }
 
 void AT1Player::Turn(float newAxisValue)
 {
+#ifdef CAM_MODE
+	if (FunctionTurn != nullptr)
+	{
+		FunctionTurn(newAxisValue);
+	}
+#else
 	if (CurrentCameraControlMode == ECameraControlMode::FOLLOW)
 	{
 		AddControllerYawInput(newAxisValue);
 	}
+#endif
 }
 
 void AT1Player::CameraViewChange()
 {
+#ifdef CAM_MODE
+	if (GsCameraModeSingle::Instance != nullptr)
+	{
+		GsCameraModeSingle::Instance->NextStep();
+	}
+#else
+
 	bool bFollow = CurrentCameraControlMode == ECameraControlMode::FOLLOW;
 	GetController()->SetControlRotation(bFollow ? GetActorRotation() : SpringArm->RelativeRotation);
 	SetCameraControlMode(bFollow ? ECameraControlMode::DIABLO : ECameraControlMode::FOLLOW);
+#endif
+
+}
+
+void AT1Player::ZoomIn()
+{
+	if (FunctionZoomIn != nullptr)
+	{
+		FunctionZoomIn();
+	}
+}
+
+void AT1Player::ZoomOut()
+{
+	if (FunctionZoomOut != nullptr)
+	{
+		FunctionZoomOut();
+	}
 }
 
 void AT1Player::SetCameraControlMode(ECameraControlMode inMode)

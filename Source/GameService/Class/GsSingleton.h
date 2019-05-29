@@ -2,7 +2,7 @@
 
 // 동적생성 싱글톤을 쓰지 않는다.
 template<typename T>
-class TGsSingleton
+class GAMESERVICE_API TGsSingleton
 {
 public:
 	virtual ~TGsSingleton() {}

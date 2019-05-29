@@ -56,7 +56,7 @@ void GsCameraModeManager::Initialize()
 	// 테이블 읽기
 
 	static ConstructorHelpers::FObjectFinder<UDataTable> TBL(
-		TEXT("/Game/TEST/Data/CamModeData.CamModeData"));
+		TEXT("/Game/Game/Camera/CamModeData.CamModeData"));
 
 	CamModeData = TBL.Object;
 

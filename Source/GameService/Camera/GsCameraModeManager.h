@@ -27,7 +27,7 @@ public:
 // 인자 변환 enter, exit, update에서 ACharacter 넘기기위해서 별도로 만듬...
 //--------------------------------------------------------------
 struct FGsCamModeData;
-class GsCameraModeManager :
+class GAMESERVICE_API GsCameraModeManager :
 	public GSTMap<EGsControlMode, GsCameraModeBase, GsCameraModeAllocator>,
 	public TGsSingleton<GsCameraModeManager>
 {

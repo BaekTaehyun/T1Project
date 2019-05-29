@@ -12,6 +12,8 @@
 
 #include "T1Player.generated.h"
 
+#define CAM_MODE
+
 class USpringArmComponent;
 class UCameraComponent;
 class UT1AnimInstance;
@@ -109,6 +111,9 @@ private:
 	void LeftRight(float newAxisValue);
 	void Turn(float newAxisValue);
 	void LookUp(float newAxisValue);
+
+	void ZoomIn();
+	void ZoomOut();
 
 	void CameraViewChange();
 	void SetCameraControlMode(ECameraControlMode inControlMode);
