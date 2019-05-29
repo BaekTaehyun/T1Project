@@ -22,10 +22,10 @@ public:
 
 	UGsUIWidgetBase(const FObjectInitializer& ObjectInitializer);
 
-	/** 스택시키는 UI인가 */
+	// 스택 관리되는 UI인가
 	virtual bool IsStackUI() const { return false; }
 	
-	/** 윈도우타입(화면을 다 가리는)인가 */
+	// 윈도우 타입(화면을 다 가리는 타입. GsUIWindow 상속객체)인가
 	virtual bool IsWindow() const { return false; }
 
 	UFUNCTION(BlueprintCallable, Category = "GsManaged")
@@ -33,26 +33,36 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "GsManaged")
 	class AGsUIManager* GetUIManager();
-
-private:
-	/** 스택 중복 처리를 막는다 */
-	bool bStackProcessed;
 	
 protected:
-	/** 스택에 푸쉬할 때 부르며, 초기화 데이터를 넘길 수 있음.
-	 * 주의: OnInitialized 뒤에 불리지만 Construct 보다 전에 불리므로 Slate 세팅과 관련된 처리를 여기서 하면 안됨.
-	 */
+	//스택에 푸쉬할 때 부르며, 초기화 데이터를 넘길 수 있음.
+	//주의: OnInitialized 뒤에 불리지만 Construct 보다 전에 불리므로 Slate 세팅과 관련된 처리를 여기서 하면 안됨.
 	UFUNCTION(BlueprintNativeEvent, Category = "GsManaged", meta = (DisplayName = "OnPush"))
 	void OnPush(UGsUIParameter* InParam = nullptr);
 	virtual void OnPush_Implementation(UGsUIParameter* InParam = nullptr);
 
-	// 방법 1. 이 메시지를 보낸다. 간단할 경우에 사용.
+	// FName을 구분자로 쓸 수 있는 메시지를 보냄
 	UFUNCTION(BlueprintNativeEvent, Category = "GsManaged", meta = (DisplayName = "OnMessage"))
 	void OnMessage(FName InKey, UGsUIParameter* InParam = nullptr);
 	virtual void OnMessage_Implementation(FName InKey, UGsUIParameter* InParam = nullptr);
 
-	// 방법 2. UMG에서 IGsUIEventInterface를 추가 후 해당 메시지를 받는다. 간단할 경우에 사용.
-	// 방법 3. UGsUIWindow, Popup, Tray 중 하나를 상속받아 별도 구현하여 사용. 복잡한 경우에 사용.
+	// Window < Popup < Tray 뎁스 보장을 위한 값. 자손 클래스에서 값 부여(Window: 10, Popup: 100, Tray: 500)
+	virtual int32 GetManagedDefaultZOrder() const { return 0; }
+	virtual int32 GetManagedZOrder() const;
+	
+protected:
+	// Window, Popup, Tray 순서보장 관리를 받지 않고 강제로 세팅하고 싶을 경우 true로 설정
+	UPROPERTY(EditDefaultsOnly, Category = "GsManaged")
+	bool bNotUseManagedZOrder;
+
+	// 주의: 최적화를 위해 가능한 쓰지 않도록 하는 것이 좋겠음.
+	// 뎁스 조절을 위해 더해질 값. 
+	UPROPERTY(EditDefaultsOnly, Category = "GsManaged")
+	int32 AddZOrder;
+
+private:
+	// 스택 중복 처리를 막는다
+	bool bStackProcessed;
 
 	/*
 	// 이하는 UserWidget에서 제공되는 함수로, 용도에 맞게 상속받아 사용할 것.

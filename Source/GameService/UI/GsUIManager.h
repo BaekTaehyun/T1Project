@@ -41,14 +41,20 @@ public:
 	UGsUIWidgetBase* StackPeek(); // Current
 
 	UFUNCTION(BlueprintCallable, Category = "GsUI")
-	UGsUIWidgetBase* GetCachedWidget(FString InPathName);
-	
+	UGsUIWidgetBase* GetCachedWidget(FString InPathName);	
+
+	//UFUNCTION(BlueprintCallable, Category = "GsUI") // TEST: 블루프린트에 노출시키지 않을 것
 	void RemoveAllStack();
+
+	//UFUNCTION(BlueprintCallable, Category = "GsUI") // TEST: 블루프린트에 노출시키지 않을 것
 	void RemoveAllTray();
 
 	/** 캐싱한 정보까지 지운다 */
-	UFUNCTION(BlueprintCallable, Category = "GsUI") // TEST: 블루프린트에 노출시키지 않을 것
+	//UFUNCTION(BlueprintCallable, Category = "GsUI") // TEST: 블루프린트에 노출시키지 않을 것
 	void RemoveAll();
+
+	//UFUNCTION(BlueprintCallable, Category = "GsUI") // TEST:
+	//void TestForceGC();
 
 	/** UIPathTable 에서 해당 키의 Row를 찾아 WidgetClass를 리턴한다 */
 	TSubclassOf<UGsUIWidgetBase> GetWidgetClass(FName InKey);
@@ -60,19 +66,19 @@ protected:
 	void PopUnstack(UGsUIWidgetBase* InWidget);
 
 	struct FGsTableUIPath* GetTableRow(FName InKey);
+	void AddToViewport(UGsUIWidgetBase* InWidget);
 
 protected:
 	/** FName에 GetPathName 넣어서 관리 */
 	UPROPERTY()
 	TMap<FName, UGsUIWidgetBase*> CachedWidgets; // Key: PathName
 
+	UPROPERTY()
 	TArray<UGsUIWidgetBase*> StackedWidgets;
-	TArray<UGsUIWidgetBase*> UnstackedWidgets;
+
+	UPROPERTY()
+	TArray<UGsUIWidgetBase*> UnstackedWidgets;  // 인스턴스 목록 있으면 필요없을듯한데
 
 	UPROPERTY()
 	UDataTable* WidgetClassTable;
-
-	//const int32 DefaultPopupZOrder = 50;
-	//const int32 DefaultTrayZOrder = 100;
-	//TQueue<TSubclassOf<UGsUIWidgetBase>> PushQueue; // TEST
 };

@@ -1,0 +1,110 @@
+[
+  {
+	"platform" : "android",
+	"service_type" : "dev",
+	"version" : ["0.045"],
+	"server_id" : "GL-TEST",
+    "auth_agent" : ["ryb-gl-test-auth01.gamevil.com"],
+	"auth_agent_port" : 7600,
+    "cdn_suburl" : "Global/dev/v0045"
+  },
+  {
+	"platform" : "ios",
+	"service_type" : "dev",
+	"version" : ["0.050"],
+	"server_id" : "GL-TEST",
+    "auth_agent" : ["ryb-gl-test-auth01.gamevil.com"],
+	"auth_agent_port" : 7600,
+    "cdn_suburl" : "Global/dev/v0050"
+  },
+  {
+	"platform" : "android",
+	"service_type" : "qa",
+	"version" : ["0.044"],
+	"server_id" : "GL-QA",
+    "auth_agent" : ["ryb-gl-qa-auth.gamevil.com"],
+	"auth_agent_port" : 7600,
+    "cdn_suburl" : "Global/qa/v0044"
+  },
+  {
+	"platform" : "ios",
+	"service_type" : "qa",
+	"version" : ["0.049"],
+	"server_id" : "GL-QA",
+    "auth_agent" : ["ryb-gl-qa-auth.gamevil.com"],
+	"auth_agent_port" : 7600,
+    "cdn_suburl" : "Global/qa/v0049"
+  },
+  {
+	"platform" : "android",
+	"service_type" : "submission",
+	"version" : ["0.000"],
+	"server_id" : "GL-REVIEW",
+    "auth_agent" : ["ryb-gl-review01.gamevil.com"],
+	"auth_agent_port" : 7600,
+    "cdn_suburl" : "Global/submission/v0043"
+  },
+  {
+	"platform" : "ios",
+	"service_type" : "submission",
+	"version" : ["0.000"],
+	"server_id" : "GL-REVIEW",
+    "auth_agent" : ["ryb-gl-review01.gamevil.com"],
+	"auth_agent_port" : 7600,
+    "cdn_suburl" : "Global/submission/v0048"
+  },
+  {
+	"platform" : "android",
+	"service_type" : "live",
+	"version" : ["0.043"],
+	"server_id" : "US",
+    "auth_agent" : ["ryb-ngl-auth07.gamevil.com"],
+	"auth_agent_port" : 7600,
+    "cdn_suburl" : "Global/live/v0018"
+  },
+  {
+	"platform" : "ios",
+	"service_type" : "live",
+	"version" : ["0.048"],
+	"server_id" : "US",
+    "auth_agent" : ["ryb-ngl-auth07.gamevil.com"],
+	"auth_agent_port" : 7600,
+    "cdn_suburl" : "Global/live/v0018"
+  },
+  {
+	"platform" : "android",
+	"service_type" : "Test02",
+	"version" : ["0.500"],
+	"server_id" : "GL-TEST",
+    "auth_agent" : ["ryb-gl-review01.gamevil.com"],
+	"auth_agent_port" : 7600,
+    "cdn_suburl" : "Global/dev/v0500"
+  },
+  {
+	"platform" : "ios",
+	"service_type" : "Test02",
+	"version" : ["0.500"],
+	"server_id" : "GL-TEST",
+    "auth_agent" : ["ryb-gl-test-auth01.gamevil.com"],
+	"auth_agent_port" : 7600,
+    "cdn_suburl" : "Global/dev/v0025"
+  },
+  {
+	"platform" : "android",
+	"service_type" : "Test01",
+	"version" : ["0.000"],
+	"server_id" : "GL-TEST",
+    "auth_agent" : ["ryb-gl-test-auth01.gamevil.com"],
+	"auth_agent_port" : 7600,
+    "cdn_suburl" : "Global/dev/v0040"
+  },
+  {
+	"platform" : "ios",
+	"service_type" : "Test01",
+	"version" : ["0.100"],
+	"server_id" : "GL-TEST",
+   "auth_agent" : ["ryb-gl-review01.gamevil.com"],
+	"auth_agent_port" : 7600,
+    "cdn_suburl" : "Global/dev/v0044"
+  }
+]

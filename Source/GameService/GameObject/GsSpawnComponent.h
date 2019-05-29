@@ -11,10 +11,6 @@
 
 class UGsGameObjectBase;
 
-/**
- * 임시 스폰 담당 클래스
- * 액터 디스폰 델리게이트 연결 이슈로 UObject형으로 처리(다른 방법이 있는지 확인)
- */
 UCLASS()
 class GAMESERVICE_API UGsSpawnComponent : 
 	public UActorComponent,
@@ -28,10 +24,10 @@ public:
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void UninitializeComponent() override;
 
-	UGsGameObjectBase* FindObject(class AActor* Actor, EGsGameObjectType Type = EGsGameObjectType::Base);
     UGsGameObjectBase* FindObject(EGsGameObjectType Type);
-	TArray<UGsGameObjectBase*> FindObjects(EGsGameObjectType Type);
-	
+	UGsGameObjectBase* FindObject(class AActor*, EGsGameObjectType type = EGsGameObjectType::Base);
+	TArray<UGsGameObjectBase*> FindObjectArray(EGsGameObjectType Type);
+		
 	//이 메서드는 아직 GameObject타입별 후처리에대한 처리가 지원되지 않음
 	template<class tGameobject>
 	tGameobject* SpawnObject(UClass* Uclass, const FVector& Pos, const FRotator& Rot, bool IsOnGround = false)
@@ -87,6 +83,7 @@ private:
 	TArray<UGsGameObjectBase*> AddSpawns;
 	TArray<UGsGameObjectBase*> RemoveSpawns;
 };
+
 
 typedef TGsSingleton<UGsSpawnComponent>	UGsSpawnerSingle;
 UGsSpawnComponent* UGsSpawnerSingle::Instance = NULL;

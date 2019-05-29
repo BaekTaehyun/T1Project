@@ -179,7 +179,7 @@ TArray<UGsGameObjectBase*> UGsBTFunctionLibraryExtend::FindObject(UBTNode* NodeO
 {
     TArray<UGsGameObjectBase*> finds;
 
-	finds = GGameObj()->FindObjects(ObjectType);
+	finds = GGameObj()->FindObjectArray(ObjectType);
 	if (Radius > 0.f)
 	{
 		return finds.FilterByPredicate([=](UGsGameObjectBase* el)

@@ -9,17 +9,13 @@
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 #include "GameObject/ObjectClass/GsGameObjectNonPlayer.h"
 #include "GameObject/ObjectClass/GsGameObjectProjectile.h"
-#include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
-#include "../Class/GsSpawn.h"
+#include "Class/GsSpawn.h"
 
 UGsSpawnComponent::UGsSpawnComponent(const class FObjectInitializer &OBJ) : Super(OBJ)
 {
 	PrimaryComponentTick.bCanEverTick = true;
-
 	//InitializeComponent 함수를 호출하고 싶을때 다음과 같은 플레그가 설정되어야 호출됩니다.
 	bWantsInitializeComponent = true;
-
-	
 }
 
 UGsSpawnComponent::~UGsSpawnComponent()
@@ -28,7 +24,7 @@ UGsSpawnComponent::~UGsSpawnComponent()
 }
 
 void UGsSpawnComponent::InitializeComponent()
-{
+{	
 	Super::InitializeComponent();
 	UGsSpawnerSingle::InitInstance(this);
 
@@ -42,9 +38,11 @@ void UGsSpawnComponent::InitializeComponent()
 	{
 		TypeSpawns.Emplace(el);
 	}
+
 	
 	PrimaryComponentTick.SetTickFunctionEnable(true);
 }
+
 
 void UGsSpawnComponent::UninitializeComponent()
 {
@@ -63,6 +61,7 @@ void UGsSpawnComponent::UninitializeComponent()
 	UGsSpawnerSingle::RemoveInstance();
 }
 
+
 void UGsSpawnComponent::TickComponent(float DeltaTime, enum ELevelTick TickType,
 	FActorComponentTickFunction* ThisTickFunction)
 {
@@ -79,6 +78,7 @@ void UGsSpawnComponent::TickComponent(float DeltaTime, enum ELevelTick TickType,
 		el->Update(DeltaTime);
 	}
 }
+
 
 
 UGsGameObjectBase* UGsSpawnComponent::FindObject(AActor* Actor, EGsGameObjectType Type)
@@ -110,15 +110,18 @@ UGsGameObjectBase* UGsSpawnComponent::FindObject(AActor* Actor, EGsGameObjectTyp
 	return NULL;
 }
 
+
 UGsGameObjectBase* UGsSpawnComponent::FindObject(EGsGameObjectType Type)
 {
     return TypeSpawns[Type].Num() > 0 ? TypeSpawns[Type].Top() : NULL;
 }
 
-TArray<UGsGameObjectBase*> UGsSpawnComponent::FindObjects(EGsGameObjectType Type)
+
+TArray<UGsGameObjectBase*> UGsSpawnComponent::FindObjectArray(EGsGameObjectType Type)
 {
 	return TypeSpawns[Type];
 }
+
 
 template <>
 UGsGameObjectProjectile* UGsSpawnComponent::SpawnObject(UClass* Uclass, const FVector& Pos, const FRotator& Rot, bool IsOnGround)
@@ -126,7 +129,6 @@ UGsGameObjectProjectile* UGsSpawnComponent::SpawnObject(UClass* Uclass, const FV
 	if (auto projectile = NewObject<UGsGameObjectProjectile>())
 	{
 		SpawnObjectInternal(projectile, Uclass, Pos, Rot, IsOnGround);
-
 		if (UPrimitiveComponent* collider = projectile->
 			GetActor()->FindComponentByClass<UPrimitiveComponent>())
 		{
@@ -149,6 +151,7 @@ void UGsSpawnComponent::DespawnObject(UGsGameObjectBase* Despawn)
 	}
 }
 
+
 void UGsSpawnComponent::UpdateAddGameObject()
 {
 	//대상 추가
@@ -169,6 +172,7 @@ void UGsSpawnComponent::UpdateAddGameObject()
 		AddSpawns.Empty();
 	}
 }
+
 
 
 void UGsSpawnComponent::UpdateRemoveGameObject()
@@ -242,7 +246,6 @@ void UGsSpawnComponent::CallbackCompHit(UPrimitiveComponent* HitComponent, AActo
 		}
 	}
 }
-
 
 void UGsSpawnComponent::CallbackActorDeSpawn(AActor* Despawn)
 {

@@ -1960,10 +1960,6 @@ try { let fnprepatch_630 = JavascriptLibrary.prototype.DeleteFile;JavascriptLibr
 try { let fnprepatch_631 = JavascriptLibrary.prototype.CreateSocket;JavascriptLibrary.prototype.CreateSocket = function (SocketType, Description, bForceUDP = false) { return fnprepatch_631.call(this, SocketType, Description, bForceUDP) }; } catch (e) {};
 try { let fnprepatch_632 = JavascriptProcess.prototype.Terminate;JavascriptProcess.prototype.Terminate = function (KillTree = false) { return fnprepatch_632.call(this, KillTree) }; } catch (e) {};
 try { let fnprepatch_633 = JavascriptUMGLibrary.prototype.AddWindow;JavascriptUMGLibrary.prototype.AddWindow = function (NewWindow, bShowImmediately = true) { return fnprepatch_633.call(this, NewWindow, bShowImmediately) }; } catch (e) {};
-try { SQLReflector.prototype.NewObjectInstance = SQLReflector.prototype.NewONamedbjectInstance; } catch (e) {};
-try { SQLReflector.NewObjectInstance = SQLReflector.NewONamedbjectInstance; } catch (e) {};
-try { SQLReflector.prototype.GetObjectofClass = SQLReflector.prototype.GetClassDefaultObject; } catch (e) {};
-try { SQLReflector.GetObjectofClass = SQLReflector.GetClassDefaultObject; } catch (e) {};
 try { let fnprepatch_634 = FileDownloadManager.prototype.AddTaskByUrl;FileDownloadManager.prototype.AddTaskByUrl = function (InUrl, InDirectory, InFileName, InOverride = false) { return fnprepatch_634.call(this, InUrl, InDirectory, InFileName, InOverride) }; } catch (e) {};
 try { let fnprepatch_635 = GsBTFunctionLibraryExtend.prototype.FindObject;GsBTFunctionLibraryExtend.prototype.FindObject = function (NodeOwner, ActorOwner, ObjectType, Radius = -1) { return fnprepatch_635.call(this, NodeOwner, ActorOwner, ObjectType, Radius) }; } catch (e) {};
 try { let fnprepatch_636 = GsBTFunctionLibraryExtend.prototype.BB_FindFirstObject;GsBTFunctionLibraryExtend.prototype.BB_FindFirstObject = function (NodeOwner, ActorOwner, ObjectType, Radius = -1) { return fnprepatch_636.call(this, NodeOwner, ActorOwner, ObjectType, Radius) }; } catch (e) {};

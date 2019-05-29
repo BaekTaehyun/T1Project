@@ -23,5 +23,5 @@ UGsGameObjectBase* UGsGameObjectBlueprintLibrary::FindGameObject(UObject* WorldC
 
 TArray<UGsGameObjectBase*> UGsGameObjectBlueprintLibrary::FindGameObjects(UObject* WorldContextObject, EGsGameObjectType ObjectType)
 {
-    return GGameObj()->FindObjects(ObjectType);
+    return GGameObj()->FindObjectArray(ObjectType);
 }
