@@ -9,6 +9,7 @@
 #include "GameObject/ActorExtend/GsWheelVehicle.h"
 #include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
+#include "GameObject/ActorExtend/GsLocalCharacter.h"
 
 FGsGameObjectEventLocal::FGsGameObjectEventLocal(UGsGameObjectBase* owner) : Super(owner)
 {
@@ -44,13 +45,13 @@ void FGsGameObjectEventLocal::OnVehicleRide(const GsGameObjectEventParamBase& Pa
 	//Attach
 	AActor* passengerActor = cast->Passenger->GetActor();
 	AWheeledVehicle* vehicleActor = Cast<UGsGameObjectWheelVehicle>(cast->Target)->GetWhellVehicle();
-	passengerActor->AttachToActor(vehicleActor, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("WheelVehicleSlot01"));
 
 	//내가 탑승
 	if (cast->Passenger->IsObjectType(EGsGameObjectType::LocalPlayer))
 	{
 		//상태 전환
-		Cast<UGsGameObjectLocal>(Owner)->GetBaseFSM()->ProcessEvent(EGsStateBase::Ride);
+		auto Local = Cast<UGsGameObjectLocal>(Owner);
+		Local->GetBaseFSM()->ProcessEvent(EGsStateBase::Ride);
 
 		//컨트롤러 변경
 		if (auto controller = UGameplayStatics::GetPlayerController(cast->Passenger->GetActor()->GetWorld(), 0))
@@ -59,5 +60,7 @@ void FGsGameObjectEventLocal::OnVehicleRide(const GsGameObjectEventParamBase& Pa
 			controller->Possess(vehicleActor);
 		}
 	}
+
+	passengerActor->AttachToActor(vehicleActor, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("WheelVehicleSlot01"));
 }
 

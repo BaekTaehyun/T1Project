@@ -14,6 +14,11 @@ AActor* UGsGameObjectBlueprintLibrary::SpawnOnGround(TSubclassOf<AActor> ActorCl
 	return Cast<AActor>(GGameObj()->SpawnNpc(ActorClass.Get(), StartPos, FRotator(0.f, 0.f, 0.f)));
 }
 
+AActor* UGsGameObjectBlueprintLibrary::SpawnVehicle(TSubclassOf<AActor> ActorClass, const FVector& StartPos, const FVector& Offset)
+{
+	return Cast<AActor>(GGameObj()->SpawnVehicle(ActorClass.Get(), StartPos, FRotator(0.f, 0.f, 0.f)));
+}
+
 UGsGameObjectBase* UGsGameObjectBlueprintLibrary::FindGameObject(UObject* WorldContextObject, EGsGameObjectType ObjectType)
 {
 	return GGameObj()->FindObject(ObjectType);

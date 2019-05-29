@@ -12,14 +12,14 @@
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
 
 //프로퍼티
-EGsGameObjectType	UGsGameObjectLocal::GetObjectType() const { return EGsGameObjectType::LocalPlayer; }
-AActor*				UGsGameObjectLocal::GetActor() const	  { return GetLocal(); }
-AGsLocalCharacter*	UGsGameObjectLocal::GetLocal() const	  { return (Actor->IsValidLowLevel()) ? Actor : NULL; }
-FGsFSMManager*		UGsGameObjectLocal::GetBaseFSM() const    { return Fsm; }
-FGsFSMManager*		UGsGameObjectLocal::GetUpperFSM() const   { return UpperFsm; }
-FGsSkillBase*		UGsGameObjectLocal::GetSkill() const      { return Skill; }
-FGsPartsBase*		UGsGameObjectLocal::GetParts() const      { return Parts; }
-FGsGameObjectEventBase* UGsGameObjectLocal::GetEvent() const  { return Event; }
+EGsGameObjectType	UGsGameObjectLocal::GetObjectType() const		{ return EGsGameObjectType::LocalPlayer; }
+AActor*				UGsGameObjectLocal::GetActor() const			{ return GetLocalCharacter(); }
+AGsLocalCharacter*	UGsGameObjectLocal::GetLocalCharacter() const	{ return (Actor->IsValidLowLevel()) ? Actor : NULL; }
+FGsFSMManager*		UGsGameObjectLocal::GetBaseFSM() const			{ return Fsm; }
+FGsFSMManager*		UGsGameObjectLocal::GetUpperFSM() const			{ return UpperFsm; }
+FGsSkillBase*		UGsGameObjectLocal::GetSkill() const			{ return Skill; }
+FGsPartsBase*		UGsGameObjectLocal::GetParts() const			{ return Parts; }
+FGsGameObjectEventBase* UGsGameObjectLocal::GetEvent() const		{ return Event; }
 //
 
 void UGsGameObjectLocal::Initialize()

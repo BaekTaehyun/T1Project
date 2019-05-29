@@ -24,11 +24,12 @@ class GAMESERVICE_API AGsGameObjectManager :
 	
 public:
 
+	AGsGameObjectManager();
 	virtual ~AGsGameObjectManager();
 
 	virtual void Initialize() override;
 	virtual void Finalize() override;
-	virtual void Update() override;
+	virtual void Tick(float DeltaTime) override;
 
 	UGsGameObjectBase* FindObject(AActor* Actor, EGsGameObjectType Type = EGsGameObjectType::Base);
     UGsGameObjectBase* FindObject(EGsGameObjectType Type);
@@ -46,6 +47,8 @@ public:
 	tGameobject* SpawnObject(UClass* Uclass, const FVector& Pos, const FRotator& Rot, bool CalcOnGround = false);
 
 	void DespawnObject(UGsGameObjectBase* Despawn);
+
+	void BeginPlay() override;
 	void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
     //
 protected:	
@@ -72,8 +75,7 @@ private:
 	TArray<UGsGameObjectBase*> AddSpawns;
 	TArray<UGsGameObjectBase*> RemoveSpawns;
 
-	FDelegateHandle TickDelegate;
-	bool Update(float Delta);
+	
 };
 
 template<class tGameobject>

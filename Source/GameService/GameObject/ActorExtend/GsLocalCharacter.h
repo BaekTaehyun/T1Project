@@ -40,6 +40,8 @@ public:
     // Called to bind functionality to input
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void DisableComponentsSimulatePhysics();
+
 protected:
 	virtual void PostInitializeComponents() override;
 	// Called when the game starts or when spawned

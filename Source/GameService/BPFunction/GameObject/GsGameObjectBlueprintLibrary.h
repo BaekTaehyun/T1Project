@@ -23,6 +23,9 @@ class GAMESERVICE_API UGsGameObjectBlueprintLibrary : public UBlueprintFunctionL
 	UFUNCTION(BlueprintCallable, meta = (Tooltip = ""), Category = "GameObject")
 	static AActor* SpawnOnGround(TSubclassOf<AActor> ActorClass, const FVector& StartPos, const FVector& Offset);
 
+	UFUNCTION(BlueprintCallable, meta = (Tooltip = ""), Category = "GameObject")
+	static AActor* SpawnVehicle(TSubclassOf<AActor> ActorClass, const FVector& StartPos, const FVector& Offset);
+
 	//GameObject 찾기
     UFUNCTION(BlueprintPure, Category = "GameObject", Meta = (WorldContext = "WorldContextObject"))
     static UGsGameObjectBase* FindGameObject(UObject* WorldContextObject, EGsGameObjectType ObjectType);

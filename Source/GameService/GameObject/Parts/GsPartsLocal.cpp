@@ -14,7 +14,7 @@ void FGsPartsLocal::Initialize(UGsGameObjectBase* owner)
 	Local = Cast<UGsGameObjectLocal>(owner);
     if (Local)
     {
-        ActorComponent = Local->GetLocal()->FindComponentByClass<UActorComponent>();
+        ActorComponent = Local->GetLocalCharacter()->FindComponentByClass<UActorComponent>();
     }
 }
 
@@ -24,7 +24,7 @@ void FGsPartsLocal::Attached()
 
 	if (USkeletalMesh* mesh = MergeParts())
 	{
-		USkeletalMeshComponent* MeshComponent = Local->GetLocal()->GetMesh();
+		USkeletalMeshComponent* MeshComponent = Local->GetLocalCharacter()->GetMesh();
 		MeshComponent->SetSkeletalMesh(mesh);
 	}
 }
@@ -35,7 +35,7 @@ void FGsPartsLocal::Detached()
 
 	if (USkeletalMesh* mesh = MergeParts())
 	{
-		USkeletalMeshComponent* MeshComponent = Local->GetLocal()->GetMesh();
+		USkeletalMeshComponent* MeshComponent = Local->GetLocalCharacter()->GetMesh();
 		MeshComponent->SetSkeletalMesh(mesh);
 	}
 }

@@ -98,7 +98,7 @@ void UGsInputBindingLocalPlayer::OnMoveForward()
 {
     if (auto movement = Target->GetMovement())
     {
-        FVector dir = FRotationMatrix(Target->GetLocal()->Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
+        FVector dir = FRotationMatrix(Target->GetLocalCharacter()->Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
         movement->Move(dir, EGsGameObjectMoveDirType::Forward, 10.0f);
     }
 }
@@ -107,7 +107,7 @@ void UGsInputBindingLocalPlayer::OnMoveBackward()
 {
     if (auto movement = Target->GetMovement())
     {
-        FVector dir = FRotationMatrix(Target->GetLocal()->Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
+        FVector dir = FRotationMatrix(Target->GetLocalCharacter()->Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
         movement->Move(dir, EGsGameObjectMoveDirType::Backward, -5.f);
     }
 }
@@ -116,7 +116,7 @@ void UGsInputBindingLocalPlayer::OnMoveLeft()
 {
     if (auto movement = Target->GetMovement())
     {
-        FVector dir = FRotationMatrix(Target->GetLocal()->Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
+        FVector dir = FRotationMatrix(Target->GetLocalCharacter()->Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
         movement->Move(dir, EGsGameObjectMoveDirType::SideStep, -5.f);
     }
 }
@@ -125,23 +125,23 @@ void UGsInputBindingLocalPlayer::OnMoveRight()
 {
     if (auto movement = Target->GetMovement())
     {
-        FVector dir = FRotationMatrix(Target->GetLocal()->Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
+        FVector dir = FRotationMatrix(Target->GetLocalCharacter()->Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
         movement->Move(dir, EGsGameObjectMoveDirType::SideStep, 5.f);
     }
 }
 
 void UGsInputBindingLocalPlayer::OnMoveRotate(float Value)
 {
-	FVector dir = FRotationMatrix(Target->GetLocal()->GetControlRotation()).GetScaledAxis(EAxis::Y);
-	Target->GetLocal()->AddMovementInput(dir, Value);
+	FVector dir = FRotationMatrix(Target->GetLocalCharacter()->GetControlRotation()).GetScaledAxis(EAxis::Y);
+	Target->GetLocalCharacter()->AddMovementInput(dir, Value);
 }
 
 void UGsInputBindingLocalPlayer::OnMoveRotateYaw(float Value)
 {
-	Target->GetLocal()->AddControllerYawInput(Value);
+	Target->GetLocalCharacter()->AddControllerYawInput(Value);
 }
 
 void UGsInputBindingLocalPlayer::OnMoveRotatePitch(float Value)
 {
-	Target->GetLocal()->AddControllerPitchInput(Value);
+	Target->GetLocalCharacter()->AddControllerPitchInput(Value);
 }

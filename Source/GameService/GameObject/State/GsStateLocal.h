@@ -22,7 +22,7 @@ protected:
 	//애님 블루프린트에 가장 최우선으로 상태를 전송해줘야한다.
 	virtual void OnEnter(UGsGameObjectLocal* Owner) override
 	{
-		if (auto anim = Owner->GetLocal()->GetAnim())
+		if (auto anim = Owner->GetLocalCharacter()->GetAnim())
 		{
 			anim->ChangeState(GetStateID(), 0, GetAniRandomCount());
 		}
@@ -109,6 +109,16 @@ public:
 	virtual void OnUpdate(UGsGameObjectLocal* Owner, float Delta) override;
 };
 
+class GAMESERVICE_API FGsStateRide : public FGsStateSingleLocal<FGsStateRide, EGsStateBase>
+{
+public:
+	virtual int GetStateID() override;
+	virtual FString Name() override;
+
+	virtual bool OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID) override;
+	virtual void OnEnter(UGsGameObjectLocal* Owner) override;
+	virtual void OnUpdate(UGsGameObjectLocal* Owner, float Delta) override;
+};
 
 //Uppper
 class GAMESERVICE_API FGsStateUpperIdle : public FGsStateSingleLocal<FGsStateUpperIdle, EGsStateUpperBase>

@@ -83,6 +83,9 @@ bool FGsStateIdle::OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateI
 	case EGsStateBase::Run:
 		ObjectBaseStateChange(FGsStateRun);
 		break;
+	case EGsStateBase::Ride:
+		ObjectBaseStateChange(FGsStateRide);
+		break;
 	default:
 		return false;
 	}
@@ -281,6 +284,46 @@ void FGsStateRun::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
 {
 }
 
+
+///FStateUpperRide///
+int FGsStateRide::GetStateID()
+{
+	return (int)EGsStateBase::Ride;
+}
+
+FString FGsStateRide::Name()
+{
+	return TEXT("StateRide");
+}
+
+bool FGsStateRide::OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID)
+{
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	switch (StateID)
+	{
+	case EGsStateBase::Idle:
+		ObjectBaseStateChange(FGsStateIdle);
+		break;
+	}
+
+	return true;
+}
+
+void FGsStateRide::OnEnter(UGsGameObjectLocal* Owner)
+{
+	//피직 정보 끄기
+	Owner->GetLocalCharacter()->DisableComponentsSimulatePhysics();
+}
+
+void FGsStateRide::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
+{
+
+}
+
 ///FStateUpperIdle///
 int FGsStateUpperIdle::GetStateID()
 {
@@ -317,7 +360,7 @@ void FGsStateUpperIdle::OnEnter(UGsGameObjectLocal* Owner)
 	auto skillMgr = Owner->GetSkill();
 	if (skillMgr->CurrentSkillData)
 	{
-		auto anim = Owner->GetLocal()->GetAnim();
+		auto anim = Owner->GetLocalCharacter()->GetAnim();
 		anim->StopUpperAni(skillMgr->CurrentSkillData->GetAni());
 	}
 }
@@ -359,7 +402,7 @@ void FGsStateAttack::OnEnter(UGsGameObjectLocal* Owner)
 	auto skillMgr = Owner->GetSkill();
 	if (skillMgr->CurrentSkillData)
 	{
-		auto anim = Owner->GetLocal()->GetAnim();
+		auto anim = Owner->GetLocalCharacter()->GetAnim();
 		anim->PlayUpperAni(skillMgr->CurrentSkillData->GetAni());
 		skillMgr->OnSKillNode();
 	}

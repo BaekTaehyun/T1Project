@@ -23,7 +23,7 @@ public:
     virtual EGsGameObjectType GetObjectType() const override;
 	virtual AActor* GetActor() const override;
     UFUNCTION(BlueprintCallable, Category = "GameObject")
-	AGsLocalCharacter* GetLocal() const;
+	AGsLocalCharacter* GetLocalCharacter() const;
 
 	virtual class FGsFSMManager* GetBaseFSM() const override;
 	virtual class FGsFSMManager* GetUpperFSM() const override;

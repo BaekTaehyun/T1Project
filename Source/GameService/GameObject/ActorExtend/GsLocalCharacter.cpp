@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameObject/Input/GsInputBindingLocalPlayer.h"
 
 AGsLocalCharacter::~AGsLocalCharacter()
@@ -56,4 +57,22 @@ void AGsLocalCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	InputBinder->SetBinding(PlayerInputComponent);
+}
+
+void AGsLocalCharacter::DisableComponentsSimulatePhysics()
+{
+	/*
+	TInlineComponentArray<UPrimitiveComponent*> Components;
+	GetComponents(Components);
+
+	for (UPrimitiveComponent* Component : Components)
+	{
+		Component->SetSimulatePhysics(false);
+	}*/
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	//GetCharacterMovement()->DisableMovement();
+	//GetCharacterMovement()->bEnablePhysicsInteraction = false;
+	//GetCharacterMovement()->SetComponentTickEnabled(false);
 }
