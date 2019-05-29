@@ -10707,17 +10707,19 @@ declare class GsGameInstance extends GameInstance {
 	static C(Other: UObject | any): GsGameInstance;
 }
 
-declare class GsGameObjectManager extends Actor { 
+declare class GsSpawnComponent extends ActorComponent { 
 	Spawns: GsGameObjectBase[];
-	static GetDefaultObject(): GsGameObjectManager;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectManager;
+	static Load(ResourceName: string): GsSpawnComponent;
+	static Find(Outer: UObject, ResourceName: string): GsSpawnComponent;
+	static GetDefaultObject(): GsSpawnComponent;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsSpawnComponent;
 	CallbackCompHit(HitComponent: PrimitiveComponent,OtherActor: Actor,OtherComp: PrimitiveComponent,NormalImpulse: Vector,Hit: HitResult): void;
 	CallbackActorDeSpawn(Despawn: Actor): void;
-	static C(Other: UObject | any): GsGameObjectManager;
+	static C(Other: UObject | any): GsSpawnComponent;
 }
 
 declare class GsGameModeBase extends GameModeBase { 
-	_gameObjManager: GsGameObjectManager;
+	_gameObjSpawner: GsSpawnComponent;
 	static GetDefaultObject(): GsGameModeBase;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameModeBase;
 	static C(Other: UObject | any): GsGameModeBase;

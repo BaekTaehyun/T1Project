@@ -18,9 +18,9 @@ class GAMESERVICE_API FGsPartsLocal : public FGsPartsBase
 public:
 	virtual void Initialize(UGsGameObjectBase* Owner) override;
 
-	virtual void Attach(EGsPartsType Type, ...) override;
-	virtual void Detach(EGsPartsType Type, ...) override;
-	virtual void AttachAll() override;
+protected:
+	virtual void Attached() override;
+	virtual void Detached() override;
 
 private:
 	USkeletalMesh* MergeParts() const;

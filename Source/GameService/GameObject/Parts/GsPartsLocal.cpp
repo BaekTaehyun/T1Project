@@ -18,58 +18,21 @@ void FGsPartsLocal::Initialize(UGsGameObjectBase* owner)
     }
 }
 
-void FGsPartsLocal::Attach(EGsPartsType Type, ...)
+void FGsPartsLocal::Attached()
 {
-	if (auto data = GetParts(Type))
+	Super::Attached();
+
+	if (USkeletalMesh* mesh = MergeParts())
 	{
-		if (!Parts.Contains(data))
-		{
-			Parts.Add(data);
-			if (USkeletalMesh* mesh = MergeParts())
-			{
-				USkeletalMeshComponent* MeshComponent = Local->GetLocal()->GetMesh();
-				MeshComponent->SetSkeletalMesh(mesh, false);
-			}
-		}
-	}
-/*
-* [Todo] 가변인자, 또는 복수개 파라미터 적용 구현필요
-*/
-	/*
-	va_list params;
-
-	va_start(params, char);
-
-	EPartsType t = va_arg(params, char);
-
-	va_end();*/
-
-}
-
-void FGsPartsLocal::Detach(EGsPartsType Type, ...)
-{
-	if (auto data = GetParts(Type))
-	{
-		if (Parts.Contains(data))
-		{
-			Parts.Remove(data);
-			if (USkeletalMesh* mesh = MergeParts())
-			{
-				USkeletalMeshComponent* MeshComponent = Local->GetLocal()->GetMesh();
-				MeshComponent->SetSkeletalMesh(mesh);
-			}
-		}
+		USkeletalMeshComponent* MeshComponent = Local->GetLocal()->GetMesh();
+		MeshComponent->SetSkeletalMesh(mesh);
 	}
 }
 
-void FGsPartsLocal::AttachAll()
+void FGsPartsLocal::Detached()
 {
-	Parts.Empty();
-	for (auto &el : PartsFctory->GetPartsData())
-	{
-		Parts.Add(&el);
-	}
-	
+	Super::Detached();
+
 	if (USkeletalMesh* mesh = MergeParts())
 	{
 		USkeletalMeshComponent* MeshComponent = Local->GetLocal()->GetMesh();
@@ -84,12 +47,9 @@ USkeletalMesh* FGsPartsLocal::MergeParts() const
 		TArray<USkeletalMesh*> mergeMeshes;
 		mergeMeshes.Empty(Parts.Num());
 
-		for (int32 i = 0; i < Parts.Num(); i++)
+		for (auto el : Parts)
 		{
-			if (Parts[i] == NULL)
-				continue;
-
-			mergeMeshes.Add(Parts[i]->Mesh);
+			mergeMeshes.Add(el.Get()->Mesh.Get());
 		}
 
 		if (mergeMeshes.Num() > 1)

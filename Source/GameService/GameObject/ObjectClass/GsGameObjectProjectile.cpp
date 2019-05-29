@@ -5,7 +5,7 @@
 #include "Runtime/Engine/Classes/GameFramework/ProjectileMovementComponent.h"
 
 EGsGameObjectType	UGsGameObjectProjectile::GetObjectType() const  { return EGsGameObjectType::Projectile; }
-AActor*				UGsGameObjectProjectile::GetActor() const       { return Actor; }
+AActor*				UGsGameObjectProjectile::GetActor() const       { return (Actor->IsValidLowLevel()) ? Actor : NULL; }
 
 void UGsGameObjectProjectile::Initialize()
 {

@@ -13,6 +13,14 @@ bool FGsFSMManager::IsState(int StateID) const
 	return (nullptr != Current && Current->GetStateID() == StateID);
 }
 
+void FGsFSMManager::Update(UGsGameObjectBase* owner, float Delta)
+{
+	if (Current)
+	{
+		Current->Update(owner, Delta);
+	}
+}
+
 bool FGsFSMManager::ChangeState(IGsStateBase* State)
 {
 	check(State);

@@ -6,7 +6,10 @@
 #include "GameObject/Define/GsGameObjectDefine.h"
 #include "Class/GsManager.h"
 #include "Class/GsSingleton.h"
+#include "Class/GsSpawn.h"
 #include "GsSpawnComponent.generated.h"
+
+class UGsGameObjectBase;
 
 /**
  * 임시 스폰 담당 클래스
@@ -25,26 +28,49 @@ public:
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void UninitializeComponent() override;
 
-	class UGsGameObjectBase* FindObject(class AActor* Actor, EGsGameObjectType Type = EGsGameObjectType::Base);
+	UGsGameObjectBase* FindObject(class AActor* Actor, EGsGameObjectType Type = EGsGameObjectType::Base);
     UGsGameObjectBase* FindObject(EGsGameObjectType Type);
 	TArray<UGsGameObjectBase*> FindObjects(EGsGameObjectType Type);
-
-	//[Todo] 임시 오브젝트 스폰 처리 메서드들..
-	//추후 특정 스폰 데이터형을 입력받아 처리하게 변경 필요
-	UGsGameObjectBase* SpawnPlayer(UClass* Uclass, const FVector& Pos, const FRotator& Rot);
-	UGsGameObjectBase* SpawnNpc(UClass* Uclass, const FVector& Pos, const FRotator& Rot);
-	UGsGameObjectBase* SpawnProjectile(UClass* Uclass, const FVector& Pos, const FRotator& Rot);
-
-
+	
+	//이 메서드는 아직 GameObject타입별 후처리에대한 처리가 지원되지 않음
+	template<class tGameobject>
+	tGameobject* SpawnObject(UClass* Uclass, const FVector& Pos, const FRotator& Rot, bool IsOnGround = false)
+	{
+		if (auto object = NewObject<tGameobject>())
+		{
+			return SpawnObjectInternal(object, Uclass, Pos, Rot, IsOnGround);
+		}
+		return NULL;
+	}
 	void DespawnObject(UGsGameObjectBase* Despawn);
-    //
-protected:	
+
+protected:
+	template<class tGameobject>
+	tGameobject* SpawnObjectInternal(tGameobject* Instance, UClass* Uclass, const FVector& Pos, const FRotator& Rot, bool IsOnGround = false)
+	{
+		Instance->Initialize();
+		FVector spawnPos = Pos;
+		if (IsOnGround)
+		{
+			spawnPos = CalcOnGround(Uclass, Pos);
+		}
+		if (auto actor = TGsSpawn::BPClass(GetWorld(), Uclass, spawnPos, Rot))
+		{
+			AddSpawns.Emplace(Instance);
+			Instance->ActorSpawned(actor);
+			actor->OnDestroyed.AddDynamic(this, &UGsSpawnComponent::CallbackActorDeSpawn);
+		}
+		return Instance;
+	}
+
 	void UpdateAddGameObject();
 	void UpdateRemoveGameObject();
+	FVector CalcOnGround(UClass* Uclass, const FVector& Pos);
 
 	UFUNCTION()
 	void CallbackCompHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 		UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
 	UFUNCTION()
 	void CallbackActorDeSpawn(AActor* Despawn);
 
@@ -60,13 +86,11 @@ private:
 	//추가/삭제 대상 관리
 	TArray<UGsGameObjectBase*> AddSpawns;
 	TArray<UGsGameObjectBase*> RemoveSpawns;
-
-	//Update에 Delta값이 반영되면 삭제
-	FDelegateHandle TickDelegate;
-	bool Update(float Delta);
 };
 
 typedef TGsSingleton<UGsSpawnComponent>	UGsSpawnerSingle;
 UGsSpawnComponent* UGsSpawnerSingle::Instance = NULL;
 #define GGameObj() UGsSpawnerSingle::Instance
+
+
 

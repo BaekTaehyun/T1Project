@@ -9,6 +9,7 @@
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 #include "GameObject/ObjectClass/GsGameObjectNonPlayer.h"
 #include "GameObject/ObjectClass/GsGameObjectProjectile.h"
+#include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
 #include "../Class/GsSpawn.h"
 
 UGsSpawnComponent::UGsSpawnComponent(const class FObjectInitializer &OBJ) : Super(OBJ)
@@ -41,7 +42,7 @@ void UGsSpawnComponent::InitializeComponent()
 	{
 		TypeSpawns.Emplace(el);
 	}
-
+	
 	PrimaryComponentTick.SetTickFunctionEnable(true);
 }
 
@@ -62,7 +63,8 @@ void UGsSpawnComponent::UninitializeComponent()
 	UGsSpawnerSingle::RemoveInstance();
 }
 
-void UGsSpawnComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UGsSpawnComponent::TickComponent(float DeltaTime, enum ELevelTick TickType,
+	FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	//대상 리스트 제거
@@ -118,81 +120,22 @@ TArray<UGsGameObjectBase*> UGsSpawnComponent::FindObjects(EGsGameObjectType Type
 	return TypeSpawns[Type];
 }
 
-UGsGameObjectBase* UGsSpawnComponent::SpawnPlayer(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
+template <>
+UGsGameObjectProjectile* UGsSpawnComponent::SpawnObject(UClass* Uclass, const FVector& Pos, const FRotator& Rot, bool IsOnGround)
 {
-	auto local = NewObject<UGsGameObjectLocal>();
-	local->Initialize();
-	if (auto actor = TGsSpawn::BPClass(GetWorld(), Uclass, Pos, Rot))
+	if (auto projectile = NewObject<UGsGameObjectProjectile>())
 	{
-		local->ActorSpawned(actor);
-		AddSpawns.Emplace(local);
-		actor->OnDestroyed.AddDynamic(this, &UGsSpawnComponent::CallbackActorDeSpawn);
-	}
-	return local;
-}
+		SpawnObjectInternal(projectile, Uclass, Pos, Rot, IsOnGround);
 
-//[Todo] Class UCharacterMovementComponent
-//void UCharacterMovementComponent::FindFloor(const FVector& CapsuleLocation, FFindFloorResult& OutFloorResult, bool bCanUseCachedLocation, const FHitResult* DownwardSweepResult) const
-//내부 구현을 참고 하여 개선한다.
-UGsGameObjectBase* UGsSpawnComponent::SpawnNpc(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
-{
-	auto npc = NewObject<UGsGameObjectNonPlayer>();
-	npc->Initialize();
-
-	FVector rayOri = Pos + FVector(0.f, 0.f, 1000.f);
-	FVector rayDes = rayOri + FVector(0.f, 0.f, -1.f)  * 1200.f;
-
-	FHitResult HitResult;
-	TArray<AActor*> actorsToIgnore;
-
-	//생성도 되기전에 얻어오는게 맞는지 모르것음...
-	if (AActor* castActor = Uclass->GetDefaultObject<AActor>())
-	{
-		UKismetSystemLibrary::LineTraceSingle(GetWorld(), rayOri, rayDes, UEngineTypes::ConvertToTraceType(ECC_WorldStatic),
-			false, actorsToIgnore, EDrawDebugTrace::ForDuration, HitResult, true, FLinearColor::Green, FLinearColor::Red);
-		if (HitResult.bBlockingHit)
-		{
-			FVector location = HitResult.Location + FVector(0.f, 0.f, 0.5f);
-			if (UCapsuleComponent* Capshule = castActor->FindComponentByClass<UCapsuleComponent>())
-			{
-				location.Z += Capshule->GetUnscaledCapsuleHalfHeight();
-			}
-
-			if (auto actor = TGsSpawn::BPClass(GetWorld(), Uclass, Pos, Rot))
-			{
-				npc->ActorSpawned(actor);
-				AddSpawns.Emplace(npc);
-
-                //액터 자동 소멸 콜백을 연결하여 관리 대상 동기화를 맞춤
-				actor->OnDestroyed.AddDynamic(this, &UGsSpawnComponent::CallbackActorDeSpawn);
-			}
-		}
-	}
-
-	return npc;
-}
-
-UGsGameObjectBase* UGsSpawnComponent::SpawnProjectile(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
-{
-	auto projectile = NewObject<UGsGameObjectProjectile>();
-	projectile->Initialize();
-
-	if (auto actor = TGsSpawn::BPClass(GetWorld(), Uclass, Pos, Rot))
-	{
-		AddSpawns.Emplace(projectile);
-		projectile->ActorSpawned(actor);
-		actor->OnDestroyed.AddDynamic(this, &UGsSpawnComponent::CallbackActorDeSpawn);
-
-
-		//충돌 처리
-		if (UPrimitiveComponent* collider = actor->FindComponentByClass<UPrimitiveComponent>())
+		if (UPrimitiveComponent* collider = projectile->
+			GetActor()->FindComponentByClass<UPrimitiveComponent>())
 		{
 			collider->OnComponentHit.AddDynamic(this, &UGsSpawnComponent::CallbackCompHit);
 		}
+		return projectile;
 	}
-	return projectile;
+	return NULL;
 }
-
 
 void UGsSpawnComponent::DespawnObject(UGsGameObjectBase* Despawn)
 {
@@ -227,6 +170,7 @@ void UGsSpawnComponent::UpdateAddGameObject()
 	}
 }
 
+
 void UGsSpawnComponent::UpdateRemoveGameObject()
 {
 	if (0 < RemoveSpawns.Num())
@@ -248,6 +192,36 @@ void UGsSpawnComponent::UpdateRemoveGameObject()
 	}
 }
 
+
+FVector UGsSpawnComponent::CalcOnGround(UClass* Uclass, const FVector& Pos)
+{
+	//[Todo] Class UCharacterMovementComponent
+			//void UCharacterMovementComponent::FindFloor(const FVector& CapsuleLocation,
+			// FFindFloorResult& OutFloorResult, bool bCanUseCachedLocation, const FHitResult* DownwardSweepResult) const
+			//내부 구현을 참고 하여 개선한다.
+	FVector rayOri = Pos + FVector(0.f, 0.f, 1000.f);
+	FVector rayDes = rayOri + FVector(0.f, 0.f, -1.f)  * 1200.f;
+
+	FHitResult HitResult;
+	TArray<AActor*> actorsToIgnore;
+	//생성도 되기전에 얻어오는게 맞는지 모르것음...
+	if (AActor* castActor = Uclass->GetDefaultObject<AActor>())
+	{
+		UKismetSystemLibrary::LineTraceSingle(GetWorld(), rayOri, rayDes, UEngineTypes::ConvertToTraceType(ECC_WorldStatic),
+			false, actorsToIgnore, EDrawDebugTrace::ForDuration, HitResult, true, FLinearColor::Green, FLinearColor::Red);
+		if (HitResult.bBlockingHit)
+		{
+			FVector location = HitResult.Location + FVector(0.f, 0.f, 0.5f);
+			if (UCapsuleComponent* Capshule = castActor->FindComponentByClass<UCapsuleComponent>())
+			{
+				location.Z += Capshule->GetUnscaledCapsuleHalfHeight();
+			}
+
+			return location;
+		}
+	}
+	return Pos;
+}
 void UGsSpawnComponent::CallbackCompHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
@@ -268,6 +242,7 @@ void UGsSpawnComponent::CallbackCompHit(UPrimitiveComponent* HitComponent, AActo
 		}
 	}
 }
+
 
 void UGsSpawnComponent::CallbackActorDeSpawn(AActor* Despawn)
 {

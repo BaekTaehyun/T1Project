@@ -35,4 +35,12 @@ public:
 	virtual void Init() override;
 	virtual void Shutdown() override;
 	void Update();
+
+	// 개발모드인가
+	UFUNCTION(BlueprintPure, Category = "Lobby")
+	bool IsDevMode() const { return bIsDevMode; }
+
+protected:
+	// 개발모드
+	bool bIsDevMode; 
 };

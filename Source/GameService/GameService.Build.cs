@@ -21,6 +21,7 @@ public class GameService : ModuleRules
             "Sockets",
             "AIModule",
             "GameplayTasks",
+            "PhysXVehicles",
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {

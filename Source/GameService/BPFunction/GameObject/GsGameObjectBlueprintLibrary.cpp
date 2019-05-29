@@ -2,16 +2,18 @@
 
 
 #include "GsGameObjectBlueprintLibrary.h"
-#include "GameObject/GsGameObjectManager.h"
+#include "GameObject/GsSpawnComponent.h"
+#include "GameObject/ObjectClass/GsGameObjectLocal.h"
+#include "GameObject/ObjectClass/GsGameObjectNonPlayer.h"
 
 void UGsGameObjectBlueprintLibrary::SpawnPlayer(TSubclassOf<ACharacter> ActorClass, const FVector& StartPos, const FVector& Offset)
 {
-	GGameObj()->SpawnPlayer(ActorClass.Get(), StartPos + Offset, FRotator(0.f, 0.f, 0.f));
+	GGameObj()->SpawnObject<UGsGameObjectLocal>(ActorClass.Get(), StartPos + Offset, FRotator(0.f, 0.f, 0.f));
 }
 
 AActor* UGsGameObjectBlueprintLibrary::SpawnOnGround(TSubclassOf<AActor> ActorClass, const FVector& StartPos, const FVector& Offset)
 {
-	return Cast<AActor>(GGameObj()->SpawnNpc(ActorClass.Get(), StartPos, FRotator(0.f, 0.f, 0.f)));
+	return Cast<AActor>(GGameObj()->SpawnObject<UGsGameObjectNonPlayer>(ActorClass.Get(), StartPos, FRotator(0.f, 0.f, 0.f)));
 }
 
 UGsGameObjectBase* UGsGameObjectBlueprintLibrary::FindGameObject(UObject* WorldContextObject, EGsGameObjectType ObjectType)
