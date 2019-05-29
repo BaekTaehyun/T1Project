@@ -60,7 +60,7 @@ void UGsLobbyComponent::OnEnterAssetDownloadStage()
 	AGsUIManager* UIManager = GetUIManager();
 	if (nullptr != UIManager)
 	{
-		UIManager->PushByKeyName(FName(TEXT("WindowAssetDownload")));
+		WindowAssetDownload = UIManager->PushByKeyName(FName(TEXT("WindowAssetDownload")));
 
 #pragma todo("yjchoung: Test Code")
 		// TEST: 다운로드 시작
@@ -73,7 +73,7 @@ void UGsLobbyComponent::OnEnterServerSelectStage()
 	AGsUIManager* UIManager = GetUIManager();
 	if (nullptr != UIManager)
 	{
-		UIManager->PushByKeyName(FName(TEXT("WindowServerSelect")));
+		WindowServerSelect = UIManager->PushByKeyName(FName(TEXT("WindowServerSelect")));
 	}
 }
 
@@ -94,8 +94,7 @@ void UGsLobbyComponent::OnLoginComplete()
 
 void UGsLobbyComponent::OnLoadGameScene()
 {
-	GSLOG(Warning, TEXT("AGsGameModeLobby : OnLoadGameScene"));
-	
+	GSLOG(Warning, TEXT("AGsGameModeLobby : OnLoadGameScene"));	
 	
 	AGsGameModeLobby* GameMode = GetGameModeLobby();
 	if (nullptr != GameMode)
@@ -126,18 +125,10 @@ void UGsLobbyComponent::SetAccountLogin(bool InComplete)
 
 	if (bIsAccountLoginComplete)
 	{
-		AGsUIManager* UIManager = GetUIManager();
-		if (nullptr != UIManager)
+		if (WindowServerSelect.IsValid() &&
+			WindowServerSelect.Get()->IsInViewport())
 		{
-			auto WidgetClass = UIManager->GetWidgetClass(FName(TEXT("WindowServerSelect")));
-			if (nullptr != WidgetClass)
-			{
-				auto* TargetWidget = UIManager->GetCachedWidget(WidgetClass.Get()->GetPathName());
-				if (nullptr != TargetWidget)
-				{
-					IGsUIEventInterface::Execute_UIEvent_AccountLoginComplete(TargetWidget);
-				}
-			}
+			IGsUIEventInterface::Execute_UIEvent_AccountLoginComplete(WindowServerSelect.Get());
 		}
 	}
 }
@@ -154,18 +145,10 @@ void UGsLobbyComponent::SetSelectedServer(int32 InServerID)
 {
 	SelectedServerID = InServerID;
 
-	AGsUIManager* UIManager = GetUIManager();
-	if (nullptr != UIManager)
+	if (WindowServerSelect.IsValid() &&
+		WindowServerSelect.Get()->IsInViewport())
 	{
-		auto WidgetClass = UIManager->GetWidgetClass(FName("WindowServerSelect"));
-		if (nullptr != WidgetClass)
-		{
-			auto* TargetWidget = UIManager->GetCachedWidget(WidgetClass.Get()->GetPathName());
-			if (nullptr != TargetWidget)
-			{
-				IGsUIEventInterface::Execute_UIEvent_ServerSelectComplete(TargetWidget, InServerID);
-			}
-		}
+		IGsUIEventInterface::Execute_UIEvent_ServerSelectComplete(WindowServerSelect.Get(), InServerID);
 	}
 }
 
@@ -177,11 +160,18 @@ void UGsLobbyComponent::TryGameLogin()
 
 AGsGameModeLobby* UGsLobbyComponent::GetGameModeLobby()
 {
+	if (GameModeLobby.IsValid())
+	{
+		return GameModeLobby.Get();
+	}
+
 	AActor* Owner = GetOwner();
 	if (nullptr != Owner)
 	{
-		return Cast<AGsGameModeLobby>(Owner);
+		GameModeLobby = Cast<AGsGameModeLobby>(Owner);
+		return GameModeLobby.Get();
 	}
+
 	return nullptr;
 }
 
@@ -218,17 +208,9 @@ void UGsLobbyComponent::OnRepeatTestTimer()
 		GMessage()->GetStage().SendMessage(MessageLobby::Stage::ASSETDOWN_COMPLETE);
 	}
 
-	AGsUIManager* UIManager = GetUIManager();
-	if (nullptr != UIManager)
+	if (WindowAssetDownload.IsValid() &&
+		WindowAssetDownload.Get()->IsInViewport())
 	{
-		auto WidgetClass = UIManager->GetWidgetClass(FName(TEXT("WindowAssetDownload")));
-		if (nullptr != WidgetClass)
-		{
-			auto* TargetWidget = UIManager->GetCachedWidget(WidgetClass.Get()->GetPathName());
-			if (nullptr != TargetWidget)
-			{
-				IGsUIEventInterface::Execute_UIEvent_ChangeDownloadRate(TargetWidget, DownloadRate);
-			}
-		}
+		IGsUIEventInterface::Execute_UIEvent_ChangeDownloadRate(WindowAssetDownload.Get(), DownloadRate);
 	}
 }

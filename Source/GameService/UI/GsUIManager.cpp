@@ -31,44 +31,31 @@ void AGsUIManager::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 }
 
-void AGsUIManager::PushByKeyName(FName InKey, class UGsUIParameter* InParam)
+TWeakObjectPtr<UGsUIWidgetBase> AGsUIManager::PushByKeyName(FName InKey, class UGsUIParameter* InParam)
 {
 	auto WidgetClass = GetWidgetClass(InKey);
-	
-	Push(WidgetClass, InParam);
+
+	return PushInter(WidgetClass, InParam);
 }
 
 void AGsUIManager::Push(TSubclassOf<UGsUIWidgetBase> InClass, UGsUIParameter* InParam)
 {
+	// 블루프린트에 리턴 포인터 제공하지 않기 위해 함수 분리
+	PushInter(InClass, InParam);
+}
+
+UGsUIWidgetBase* AGsUIManager::PushInter(TSubclassOf<UGsUIWidgetBase> InClass, class UGsUIParameter* InParam)
+{
 	if (nullptr == InClass)
 	{
 		GSLOG(Error, TEXT("UIWidget class is null"));
-		return;
+		return nullptr;
 	}
 
-	FName Key = FName(*InClass.Get()->GetPathName());
-
-	// 개선: 널리턴하면 무조건 에러 뱉어서 검사를 넣었음. 다른 함수 써야하는지 확인필요 
-	UGsUIWidgetBase* Widget = nullptr;
-	if (CachedWidgets.Contains(Key))
-	{
-		Widget = *CachedWidgets.Find(Key);
-	}
-
+	UGsUIWidgetBase* Widget = CreateWidgetInter(InClass);
 	if (nullptr == Widget)
 	{
-		// 개선: PC 얻어오는 과정
-		APlayerController* PC = GEngine->GetFirstLocalPlayerController(GetWorld());
-		if (nullptr != PC)
-		{
-			Widget = CreateWidget<UGsUIWidgetBase>(PC, InClass);
-			if (nullptr == Widget)
-			{
-				return;
-			}
-
-			CachedWidgets.Add(Key, Widget);
-		}
+		return nullptr;
 	}
 
 	if (Widget->IsStackUI())
@@ -77,41 +64,39 @@ void AGsUIManager::Push(TSubclassOf<UGsUIWidgetBase> InClass, UGsUIParameter* In
 	}
 	else
 	{
-		PushUnstack(Widget, InParam);
+		PushNoStack(Widget, InParam);
 	}
+
+	return Widget;
 }
 
 void AGsUIManager::PushStack(UGsUIWidgetBase* InWidget, UGsUIParameter* InParameters)
 {
-	StackedWidgets.Add(InWidget);
-	InWidget->OnPush(InParameters); // 위젯에 이벤트 발생시킴
-
 	// 창을 덮는 객체이면 이전 창들을 Hide
 	if (InWidget->IsWindow())
 	{
-		for (int32 i = StackedWidgets.Num() - 1; i >= 0; --i)
+		for (int32 i = Stack.Num() - 1; i >= 0; --i)
 		{
-			UGsUIWidgetBase* Widget = StackedWidgets[i];
-			if (nullptr == Widget)
-			{
-				continue;
-			}
-
-			if (Widget->IsInViewport())
+			TWeakObjectPtr<UGsUIWidgetBase> Widget = Stack[i];
+			if (Widget.IsValid() &&
+				Widget.Get()->IsInViewport())
 			{
 				Widget->RemoveFromParent();
 			}
 		}
 	}
 
+	Stack.Add(InWidget);
+	InWidget->OnPush(InParameters); // 위젯에 이벤트 발생시킴
+
 	AddToViewport(InWidget);
 }
 
-void AGsUIManager::PushUnstack(UGsUIWidgetBase* InWidget, UGsUIParameter* InParameters)
+void AGsUIManager::PushNoStack(UGsUIWidgetBase* InWidget, UGsUIParameter* InParameters)
 {
 	AddToViewport(InWidget);
 
-	UnstackedWidgets.Add(InWidget);
+	NoStack.Add(InWidget);
 }
 
 void AGsUIManager::Pop(UGsUIWidgetBase* InWidget)
@@ -127,38 +112,39 @@ void AGsUIManager::Pop(UGsUIWidgetBase* InWidget)
 	}
 	else
 	{
-		PopUnstack(InWidget);
+		PopNoStack(InWidget);
 	}
 }
 
 void AGsUIManager::PopStack(UGsUIWidgetBase* InWidget)
 {
-	InWidget->RemoveFromParent();
-
 	// 같은 객체가 스택에 존재할 경우엔 가장 위의 것을 지운다
-	for (int32 i = StackedWidgets.Num() - 1; i >= 0; --i)
+	for (int32 i = Stack.Num() - 1; i >= 0; --i)
 	{
-		UGsUIWidgetBase* Widget = StackedWidgets[i];
-
-		if (Widget == InWidget)
+		TWeakObjectPtr<UGsUIWidgetBase> Widget = Stack[i];
+		if (Widget.Get() == InWidget)
 		{
-			StackedWidgets.RemoveAt(i);
+			Stack.RemoveAt(i);
 			break;
 		}
 	}
 
+	InWidget->RemoveFromParent();
+
+	UsingWidgets.Remove(InWidget);
+
 	// 지워진게 윈도우이면 이전 창들을 열어주는 처리를 한다
 	if (InWidget->IsWindow())
 	{
-		TArray<UGsUIWidgetBase*> TopWidgets;
+		TArray<TWeakObjectPtr<UGsUIWidgetBase>> TopWidgets;
 
-		for (int32 i = StackedWidgets.Num() - 1; i >= 0; --i)
+		for (int32 i = Stack.Num() - 1; i >= 0; --i)
 		{
-			UGsUIWidgetBase* Widget = StackedWidgets[i];
+			TWeakObjectPtr<UGsUIWidgetBase> Widget = Stack[i];
 
 			TopWidgets.Add(Widget);
 
-			if (Widget->IsWindow())
+			if (Widget.Get()->IsWindow())
 			{
 				break;
 			}
@@ -167,65 +153,58 @@ void AGsUIManager::PopStack(UGsUIWidgetBase* InWidget)
 		// 순서대로 불러야 Depth 문제가 없으므로 역순으로 다시 불러준다
 		for (int32 i = TopWidgets.Num() - 1; i >= 0; --i)
 		{
-			UGsUIWidgetBase* Widget = TopWidgets[i];
+			TWeakObjectPtr<UGsUIWidgetBase> Widget = TopWidgets[i];
 
-			if (false == Widget->IsInViewport())
+			if (false == Widget.Get()->IsInViewport())
 			{
-				AddToViewport(Widget);
+				AddToViewport(Widget.Get());
 			}
 		}
 	}
 	else
 	{
 		// 최상단 객체가 닫혀있다면 켜준다. (같은 객체가 스택에 있을 경우 꺼져있을 수 있음)
-		UGsUIWidgetBase* Widget = StackedWidgets.Last();
-		if (nullptr != Widget &&
-			false == Widget->IsInViewport())
+		TWeakObjectPtr<UGsUIWidgetBase> Widget = Stack.Last();
+		if (Widget.IsValid() &&
+			false == Widget.Get()->IsInViewport())
 		{
-			AddToViewport(Widget);
+			AddToViewport(Widget.Get());
 		}
 	}
 }
 
-void AGsUIManager::PopUnstack(UGsUIWidgetBase* InWidget)
+void AGsUIManager::PopNoStack(UGsUIWidgetBase* InWidget)
 {
 	InWidget->RemoveFromParent();
 
 	// 같은 객체가 들어올 경우, 먼저 들어온 것부터 지운다
-	for (int32 i = 0, maxCount = UnstackedWidgets.Num(); i < maxCount; ++i)
+	for (int32 i = 0, maxCount = NoStack.Num(); i < maxCount; ++i)
 	{
-		UGsUIWidgetBase* Widget = UnstackedWidgets[i];
-
-		if (Widget == InWidget)
+		TWeakObjectPtr<UGsUIWidgetBase> Widget = NoStack[i];
+		if (Widget.Get() == InWidget)
 		{
-			Widget = nullptr;
-			UnstackedWidgets.RemoveAt(i);
+			NoStack.RemoveAt(i);
 			break;
 		}
 	}
 }
 
-UGsUIWidgetBase* AGsUIManager::StackPeek()
+TWeakObjectPtr<UGsUIWidgetBase> AGsUIManager::StackPeek()
 {
-	if (0 == StackedWidgets.Num())
+	if (0 == Stack.Num())
 	{
 		return nullptr;
 	}
 
-	return StackedWidgets.Last();
-}
-
-UGsUIWidgetBase* AGsUIManager::GetCachedWidget(FString InPathName)
-{
-	return *CachedWidgets.Find(FName(*InPathName));
+	return Stack.Last();
 }
 
 void AGsUIManager::RemoveAllStack()
 {
-	for (int32 i = StackedWidgets.Num() - 1; i >= 0; --i)
+	for (int32 i = Stack.Num() - 1; i >= 0; --i)
 	{
-		UGsUIWidgetBase* Widget = StackedWidgets[i];
-		if (nullptr == Widget)
+		TWeakObjectPtr<UGsUIWidgetBase> Widget = Stack[i];
+		if (false == Widget.IsValid())
 		{
 			continue;
 		}
@@ -234,34 +213,49 @@ void AGsUIManager::RemoveAllStack()
 		{
 			Widget->RemoveFromParent();
 		}
-	}
 
-	StackedWidgets.Empty();
+		UsingWidgets.Remove(Widget.Get());
+	}	
+
+	Stack.Empty();
 }
 
-void AGsUIManager::RemoveAllTray()
+void AGsUIManager::RemoveAllNoStack()
 {
-	for (auto* Widget : UnstackedWidgets)
+	for (auto Widget : NoStack)
 	{
-		if (nullptr == Widget)
+		if (Widget.IsValid())
 		{
-			continue;
-		}
+			if (Widget.Get()->IsInViewport())
+			{
+				Widget.Get()->RemoveFromParent();
+			}
 
-		if (Widget->IsInViewport())
-		{
-			Widget->RemoveFromParent();
+			UsingWidgets.Remove(Widget.Get());
 		}
 	}
 
-	UnstackedWidgets.Empty();
+	NoStack.Empty();
 }
 
 void AGsUIManager::RemoveAll()
 {
-	RemoveAllStack();
-	RemoveAllTray();
+	for (auto* Widget : UsingWidgets)
+	{
+		if (nullptr != Widget)
+		{
+			if (Widget->IsInViewport())
+			{
+				Widget->RemoveFromParent();
+			}
 
+			Widget = nullptr;
+		}
+	}
+
+	Stack.Empty();
+	NoStack.Empty();
+	UsingWidgets.Empty();
 	CachedWidgets.Empty();
 }
 
@@ -318,7 +312,53 @@ void AGsUIManager::AddToViewport(UGsUIWidgetBase* InWidget)
 	InWidget->AddToViewport(InWidget->GetManagedZOrder());
 }
 
-//void AGsUIManager::TestForceGC()
-//{
-//	GetWorld()->ForceGarbageCollection(true);
-//}
+UGsUIWidgetBase* AGsUIManager::CreateWidgetInter(TSubclassOf<UGsUIWidgetBase> InClass)
+{
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	if (nullptr == PC)
+	{
+		return nullptr;
+	}
+
+	FName Key = FName(*InClass.Get()->GetPathName());
+
+	// 캐싱 해둔 위젯 검사
+	UGsUIWidgetBase* Widget = nullptr;
+	if (CachedWidgets.Contains(Key))
+	{
+		Widget = *CachedWidgets.Find(Key);
+
+		// 쓰고 있으면 새로생성
+		if (UsingWidgets.Contains(Widget))
+		{
+			Widget = CreateWidget<UGsUIWidgetBase>(PC, InClass);
+			if (nullptr == Widget)
+			{
+				return nullptr;
+			}
+		}
+	}
+	else
+	{
+		Widget = CreateWidget<UGsUIWidgetBase>(PC, InClass);
+		if (nullptr == Widget)
+		{
+			return nullptr;
+		}
+
+		CachedWidgets.Add(Key, Widget);
+	}
+
+	UsingWidgets.Add(Widget);
+
+	return Widget;
+}
+
+void AGsUIManager::Back()
+{
+	TWeakObjectPtr<UGsUIWidgetBase> TargetWidget = StackPeek();
+	if (TargetWidget.IsValid())
+	{
+		Pop(TargetWidget.Get());
+	}
+}

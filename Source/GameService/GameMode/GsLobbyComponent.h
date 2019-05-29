@@ -84,4 +84,8 @@ protected:
 
 	// 선택된 서버
 	int32 SelectedServerID;
+
+	TWeakObjectPtr<class AGsGameModeLobby> GameModeLobby;
+	TWeakObjectPtr<class UGsUIWidgetBase> WindowAssetDownload;
+	TWeakObjectPtr<class UGsUIWidgetBase> WindowServerSelect;
 };
