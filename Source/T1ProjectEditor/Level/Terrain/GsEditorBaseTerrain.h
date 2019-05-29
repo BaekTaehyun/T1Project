@@ -33,13 +33,26 @@ protected:
 	virtual void OnConstruction(const FTransform& in_transform) override;
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
-		void AddPillar(UGsEditorPillarComp* in_pillar);
+		void RegisterPillar(UGsEditorPillarComp* in_pillar);
 	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
-		void AddPlane(UGsEditorTerrainPlaneComp* in_plane);
+		void RegisterPlane(UGsEditorTerrainPlaneComp* in_plane);
+
+	FVector GetCenterBetweenPoints(int32 in_start, int32 in_end);
+	int32 GetUpperIndex(int32 in_start, int32 in_end);
+
+	//create
+	bool TryCreate(int32 in_start, int32 in_end, int32 in_index = -1);
+	bool TryCreatePillar(int32 in_index = -1, FVector in_location = FVector::ZeroVector);
+	bool TryCreatePlane();
+
+	//remove	
+	bool TryRemovePlane();	
 
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	virtual void Draw();
+	void AddPillar(int32 in_start, int32 in_end);
+	void RemovePillar(int32 in_index);
 
 };

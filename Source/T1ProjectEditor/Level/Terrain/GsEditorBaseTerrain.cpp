@@ -99,7 +99,7 @@ void AGsEditorBaseTerrain::Draw()
 	}	
 }
 
-void AGsEditorBaseTerrain::AddPillar(UGsEditorPillarComp* in_pillar)
+void AGsEditorBaseTerrain::RegisterPillar(UGsEditorPillarComp* in_pillar)
 {
 	if (in_pillar)
 	{
@@ -108,11 +108,153 @@ void AGsEditorBaseTerrain::AddPillar(UGsEditorPillarComp* in_pillar)
 	}	
 }
 
-void AGsEditorBaseTerrain::AddPlane(UGsEditorTerrainPlaneComp* in_plane)
+void AGsEditorBaseTerrain::RegisterPlane(UGsEditorTerrainPlaneComp* in_plane)
 {
 	if (in_plane)
 	{
 		_PlaneArray.Add(in_plane);
 		in_plane->_Parent = this;
 	}
+}
+
+void AGsEditorBaseTerrain::AddPillar(int32 in_start, int32 in_end)
+{	
+	if (_PillarArray.IsValidIndex(in_start)
+		&& _PillarArray.IsValidIndex(in_end))
+	{
+		int32 last = _PillarArray.Num() - 1;		
+
+		if ((in_start == last && in_end == 0)
+			|| (in_end == last && in_start == 0))
+		{
+			TryCreate(in_start, in_end, -1);
+		}
+		else
+		{
+			int32 size = FMath::Abs(in_start - in_end);
+
+			if (1 == size)
+			{												
+				int32 upper = GetUpperIndex(in_start, in_end);
+				
+				TryCreate(in_start, in_end, upper);
+			}
+		}		
+	}		
+}
+
+FVector AGsEditorBaseTerrain::GetCenterBetweenPoints(int32 in_start, int32 in_end)
+{
+	if (_PillarArray.IsValidIndex(in_start)
+		&& _PillarArray.IsValidIndex(in_end))
+	{
+		FVector start = _PillarArray[in_start]->GetComponentLocation();
+		FVector end = _PillarArray[in_end]->GetComponentLocation();
+
+		return ((start + end) / 2.0f);
+	}
+
+	return FVector::ZeroVector;
+}
+
+bool AGsEditorBaseTerrain::TryCreatePillar(int32 in_index, FVector in_location)
+{
+	UGsEditorPillarComp* pillar = NewObject<UGsEditorPillarComp>();
+
+	if (pillar)
+	{
+		pillar->SetWorldLocation(in_location);
+
+		if (-1 == in_index)
+		{
+			_PillarArray.Add(pillar);
+		}
+		else
+		{
+			_PillarArray.Insert(pillar, in_index);
+		}
+		
+		pillar->RegisterComponent();
+
+		return true;
+	}
+
+	return false;
+}
+
+bool AGsEditorBaseTerrain::TryCreate(int32 in_start, int32 in_end, int32 in_index)
+{
+	FVector center = GetCenterBetweenPoints(in_start, in_end);
+
+	if (TryCreatePillar(in_index, center))
+	{
+		if (TryCreatePlane())
+		{
+			Draw();
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool AGsEditorBaseTerrain::TryCreatePlane()
+{
+	UGsEditorTerrainPlaneComp* plane = NewObject<UGsEditorTerrainPlaneComp>();
+
+	if (plane)
+	{
+		_PlaneArray.Add(plane);
+		plane->RegisterComponent();
+
+		return true;
+	}
+
+	return false;
+}
+
+int32 AGsEditorBaseTerrain::GetUpperIndex(int32 in_start, int32 in_end)
+{
+	if (in_start < in_end)
+	{		
+		return in_end;
+	}
+	else
+	{
+		return in_start;		
+	}	
+}
+
+void AGsEditorBaseTerrain::RemovePillar(int32 in_index)
+{
+	if (_PillarArray.IsValidIndex(in_index))
+	{
+		int32 last = _PillarArray.Num() - 1;
+
+		UGsEditorPillarComp* pillar = _PillarArray[in_index];
+
+		if (pillar)
+		{			
+			_PillarArray.RemoveAt(in_index);
+			pillar->UnregisterComponent();			
+
+			TryRemovePlane();
+		}
+	}
+}
+
+bool AGsEditorBaseTerrain::TryRemovePlane()
+{
+	UGsEditorTerrainPlaneComp* comp = _PlaneArray.Last();
+	_PlaneArray.Remove(comp);
+
+	if (comp)
+	{
+		comp->UnregisterComponent();
+
+		return true;
+	}
+
+	return false;
 }

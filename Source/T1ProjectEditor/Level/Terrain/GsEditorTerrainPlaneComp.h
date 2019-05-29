@@ -18,6 +18,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorPillarComp")
 		AGsEditorBaseTerrain* _Parent;
 
+private:
+	UPROPERTY()
+		UGsEditorPillarComp* _Start;
+	UPROPERTY()
+		UGsEditorPillarComp* _End;
+
 public:
 	// Sets default values for this component's properties
 	UGsEditorTerrainPlaneComp();
