@@ -293,9 +293,7 @@ TSubclassOf<UGsUIWidgetBase> AGsUIManager::GetWidgetClass(FName InKey)
 	if (TableRow->WidgetClass.IsPending())
 	{
 		FStreamableManager& AssetMgr = UAssetManager::GetStreamableManager();
-		const FSoftObjectPath& AssetRef = TableRow->WidgetClass.ToStringReference();
-
-		TableRow->WidgetClass =	AssetMgr.SynchronousLoad(AssetRef);
+		TableRow->WidgetClass = AssetMgr.LoadSynchronous(TableRow->WidgetClass, true);
 	}
 
 	return TableRow->WidgetClass.Get();
