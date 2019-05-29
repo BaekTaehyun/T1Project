@@ -7,6 +7,9 @@
 #include "GameObject/State/GsFSMManager.h"
 #include "GameObject/State/GsStateLocal.h"
 #include "GameObject/Movement/GsMovementLocal.h"
+#include "GameObject/GsSpawnComponent.h"
+#include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
+#include "Message/GsMessageManager.h"
 
 //[Todo]타겟 클래스 설정 방식에 좀더 좋은 구조를 생각해볼것
 void UGsInputBindingLocalPlayer::Initialize()
@@ -34,6 +37,7 @@ void UGsInputBindingLocalPlayer::SetBinding(UInputComponent* input)
 	input->BindAction<FOnAttack1>("LocalAttack1", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttack1, 1);
 	input->BindAction<FOnAttack1>("LocalAttack2", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttack1, 2);
 	input->BindAction<FOnAttack1>("LocalAttack3", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttack1, 3);
+	input->BindAction("LocalAction", IE_Released, this, &UGsInputBindingLocalPlayer::OnAction);
 
 	//Movement
 	input->BindAction("LocalMoveForward", IE_Pressed, this, &UGsInputBindingLocalPlayer::OnMoveForward);
@@ -61,6 +65,24 @@ void UGsInputBindingLocalPlayer::OnAttack1(int32 slot)
 	if (auto skill = Target->GetSkill())
 	{
 		skill->UseSKill(slot);
+	}
+}
+
+//테스트 탈것 처리
+//근처에 탈것이 있는지 찾는다
+#include "GameObject/Event/GsGameObjectEventLocal.h"
+void UGsInputBindingLocalPlayer::OnAction()
+{
+	if (auto findVehicle = GGameObj()->FindObject(EGsGameObjectType::Vehicle))
+	{
+		//탑승 정보 Send
+		GSCHECK(GMessage());
+
+		//임시 데이터 생성
+		auto sendParam = Target->GetEvent()->GetCastParam< GsGameObjectEventParamVehicleRide>(MessageGameObject::Action::VehicleRide);		
+		sendParam->Target = Cast<UGsGameObjectWheelVehicle>(findVehicle);
+		sendParam->Passenger = Target;
+		GMessage()->GetGo().SendMessage(MessageGameObject::Action::VehicleRide, *sendParam);
 	}
 }
 

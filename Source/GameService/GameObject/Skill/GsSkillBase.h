@@ -46,7 +46,7 @@ struct FGsRunSKillInfo
 
 	UAnimMontage* GetAni()
 	{
-		return Data->ResAni;
+		return Data->ResAni.Get();
 	}
 
 	bool IsEnd()

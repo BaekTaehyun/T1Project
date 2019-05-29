@@ -3,6 +3,7 @@
 
 #include "GsGameModeBase.h"
 #include "GameService.h"
+#include "GameObject/GsSpawnComponent.h"
 
 AGsGameModeBase::AGsGameModeBase()
 {
@@ -35,9 +36,8 @@ void AGsGameModeBase::PostLogin(APlayerController * newPlayer)
 void AGsGameModeBase::StartPlay()
 {
 	GSLOG(Warning, TEXT("StartPlay"));
-
-	Super::StartPlay();
-}
+Super::StartPlay();_SpawnComponent = NewObject<UGsSpawnComponent>(this, NAME_None, RF_Transient);
+	_SpawnComponent->RegisterComponent();}
 
 void AGsGameModeBase::Tick(float deltaSeconds)
 {

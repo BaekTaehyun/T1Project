@@ -1,7 +1,10 @@
 #include "GsCameraModeFollow.h"
 #include "GameService.h"
-#include "../../T1Project/T1Player.h"
 #include "GsCameraModeManager.h"
+#include "GameFramework/Character.h"
+#include "GameFrameWork/SpringArmComponent.h"
+#include "GameFrameWork/CharacterMovementComponent.h"
+//#include "../../T1Project/T1Player.h"
 
 GsCameraModeFollow::GsCameraModeFollow() 
 {
@@ -35,6 +38,7 @@ void GsCameraModeFollow::Enter(ACharacter* In_char, GsCameraModeManager* In_mng)
 		return;
 	}
 
+#ifdef CAM_MODE
 	GsCameraModeBase::Enter(In_char, In_mng);
 	AT1Player* player = Cast<AT1Player>(In_char);
 	if (player == nullptr)
@@ -68,6 +72,8 @@ void GsCameraModeFollow::Enter(ACharacter* In_char, GsCameraModeManager* In_mng)
 	player->GetCharacterMovement()->bOrientRotationToMovement = true;
 	player->GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	player->GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
+
+#endif
 	
 	GSLOG(Warning, TEXT("GsCameraModeFollow ACharacter Enter"));
 }
@@ -78,7 +84,7 @@ void GsCameraModeFollow::Exit(ACharacter* In_char)
 	{
 		return;
 	}
-
+#ifdef CAM_MODE
 	GsCameraModeBase::Exit(In_char);
 	AT1Player* player = Cast<AT1Player>(In_char);
 	if (player == nullptr)
@@ -92,7 +98,7 @@ void GsCameraModeFollow::Exit(ACharacter* In_char)
 	player->FunctionLeftRight = nullptr;
 	player->FunctionLookUp = nullptr;
 	player->FunctionTurn = nullptr;
-
+#endif 
 	GSLOG(Warning, TEXT("GsCameraModeFollow ACharacter exit"));
 }
 // 업데이터(인자로 캐릭터)

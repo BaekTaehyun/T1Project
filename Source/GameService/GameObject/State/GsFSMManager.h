@@ -18,8 +18,8 @@ class GAMESERVICE_API FGsFSMManager
 public:
 	DECLARE_DELEGATE_OneParam(FGsStateChangeFailed, uint8/* State Id*/);
 
-	FORCEINLINE IGsStateBase* CurrentState() const { return Current; }
-	FORCEINLINE IGsStateBase* PrevState() const	{ return Prev; }
+	FORCEINLINE IGsStateBase* CurrentState() const	{ return Current; }
+	FORCEINLINE IGsStateBase* PrevState() const		{ return Prev; }
 	bool IsState(int StateID) const;
 
 	template <class State>
@@ -29,8 +29,8 @@ public:
 	//[Todo]
 	//나중에 Update만이라도 캐스팅을 피하게 작업해보기....ㅠ
 	//현재는 의미없는 템플릿..
-	template <class tChar>
-	void Update(tChar* Owner, float Delta);
+	//template <class tChar>
+	void Update(UGsGameObjectBase* Owner, float Delta);
 
 	//스테이트 타입값 기반 상태 제어 처리
 	//ChangeState() 호출은 상태 클래스 내에서만 가능하도록 Private 선언
@@ -63,15 +63,6 @@ void FGsFSMManager::Initialize(UGsGameObjectBase* owner)
 	Prev = nullptr;
 	Current = tState::GetInstance();
 	ChangeState(Current);
-}
-
-template <class tChar>
-void FGsFSMManager::Update(tChar* Owner, float Delta)
-{
-	if (nullptr != Current)
-	{
-		Current->Update(Owner, Delta);
-	}
 }
 
 template <typename tStateType>

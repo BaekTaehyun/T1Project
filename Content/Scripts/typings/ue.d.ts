@@ -10227,374 +10227,6 @@ declare class AnimGraphNode_WheelHandler extends AnimGraphNode_SkeletalControlBa
 	static C(Other: UObject | any): AnimGraphNode_WheelHandler;
 }
 
-declare class SQLTable { 
-	Header: string;
-	ColumnTypes: string[];
-	Columns: string[];
-	Footer: string;
-	Lock: boolean;
-	clone() : SQLTable;
-	static C(Other: UObject | any): SQLTable;
-}
-
-declare type ESQLRuntimeMode = 'SynchronousTask' | 'BackgroundTask' | 'ESQLRuntimeMode_MAX';
-declare var ESQLRuntimeMode : { SynchronousTask:'SynchronousTask',BackgroundTask:'BackgroundTask',ESQLRuntimeMode_MAX:'ESQLRuntimeMode_MAX', };
-declare class SQLVersion { 
-	CurrentVersion: string;
-	TargetVersions: string[];
-	clone() : SQLVersion;
-	static C(Other: UObject | any): SQLVersion;
-}
-
-declare type ESQLoadScreenMode = 'BackgroundBlur' | 'SplashScreen' | 'MoviePlayer' | 'NoLoadScreen' | 'ESQLoadScreenMode_MAX';
-declare var ESQLoadScreenMode : { BackgroundBlur:'BackgroundBlur',SplashScreen:'SplashScreen',MoviePlayer:'MoviePlayer',NoLoadScreen:'NoLoadScreen',ESQLoadScreenMode_MAX:'ESQLoadScreenMode_MAX', };
-declare type ESQLType = 'Unknown' | 'Integer' | 'Text' | 'Float' | 'ESQLType_MAX';
-declare var ESQLType : { Unknown:'Unknown',Integer:'Integer',Text:'Text',Float:'Float',ESQLType_MAX:'ESQLType_MAX', };
-declare type ESQLReadMode = 'Map' | 'Set' | 'Array' | 'Boolean' | 'Integer' | 'Float' | 'Enum' | 'Name' | 'Text' | 'String' | 'Struct' | 'Vector2D' | 'Vector3D' | 'Rotator' | 'Color' | 'FloatCurve' | 'TimeStamp' | 'ObjectPtr' | 'ESQLReadMode_MAX';
-declare var ESQLReadMode : { Map:'Map',Set:'Set',Array:'Array',Boolean:'Boolean',Integer:'Integer',Float:'Float',Enum:'Enum',Name:'Name',Text:'Text',String:'String',Struct:'Struct',Vector2D:'Vector2D',Vector3D:'Vector3D',Rotator:'Rotator',Color:'Color',FloatCurve:'FloatCurve',TimeStamp:'TimeStamp',ObjectPtr:'ObjectPtr',ESQLReadMode_MAX:'ESQLReadMode_MAX', };
-declare class SQLField { 
-	Name: string;
-	Type: ESQLType;
-	Cast: ESQLReadMode;
-	float: any;
-	text: string;
-	Integer: any;
-	Data: number[];
-	clone() : SQLField;
-	static C(Other: UObject | any): SQLField;
-}
-
-declare class SQLRow { 
-	DB: string;
-	ID: string;
-	Values: SQLField[];
-	PreviewValues: string[];
-	PreviewTypes: string[];
-	clone() : SQLRow;
-	static C(Other: UObject | any): SQLRow;
-}
-
-declare class SQLPreview { 
-	Rows: SQLRow[];
-	clone() : SQLPreview;
-	static C(Other: UObject | any): SQLPreview;
-}
-
-declare type ESQLThreadSafety = 'IsCurrentlyThreadSafe' | 'IsPreparingToSaveOrLoad' | 'AsynchronousLoading' | 'AsynchronousSaving' | 'ESQLThreadSafety_MAX';
-declare var ESQLThreadSafety : { IsCurrentlyThreadSafe:'IsCurrentlyThreadSafe',IsPreparingToSaveOrLoad:'IsPreparingToSaveOrLoad',AsynchronousLoading:'AsynchronousLoading',AsynchronousSaving:'AsynchronousSaving',ESQLThreadSafety_MAX:'ESQLThreadSafety_MAX', };
-declare type ESQLResult = 'OK' | 'ERROR' | 'INTERNAL' | 'PERM' | 'ABORT' | 'BUSY' | 'LOCKED' | 'NOMEM' | 'READONLY' | 'INTERRUPT' | 'IOERR' | 'CORRUPT' | 'NOTFOUND' | 'FULL' | 'CANTOPEN' | 'PROTOCOL' | 'EMPTY' | 'SCHEMA' | 'TOOBIG' | 'CONSTRAINT' | 'MISMATCH' | 'MISUSE' | 'NOLFS' | 'AUTH' | 'FORMAT' | 'RANGE' | 'NOTADB' | 'NOTICE' | 'WARNING' | 'ROW' | 'DONE' | 'QUEUED' | 'ESQLResult_MAX';
-declare var ESQLResult : { OK:'OK',ERROR:'ERROR',INTERNAL:'INTERNAL',PERM:'PERM',ABORT:'ABORT',BUSY:'BUSY',LOCKED:'LOCKED',NOMEM:'NOMEM',READONLY:'READONLY',INTERRUPT:'INTERRUPT',IOERR:'IOERR',CORRUPT:'CORRUPT',NOTFOUND:'NOTFOUND',FULL:'FULL',CANTOPEN:'CANTOPEN',PROTOCOL:'PROTOCOL',EMPTY:'EMPTY',SCHEMA:'SCHEMA',TOOBIG:'TOOBIG',CONSTRAINT:'CONSTRAINT',MISMATCH:'MISMATCH',MISUSE:'MISUSE',NOLFS:'NOLFS',AUTH:'AUTH',FORMAT:'FORMAT',RANGE:'RANGE',NOTADB:'NOTADB',NOTICE:'NOTICE',WARNING:'WARNING',ROW:'ROW',DONE:'DONE',QUEUED:'QUEUED',ESQLResult_MAX:'ESQLResult_MAX', };
-declare type ESQLSaveMode = 'Insert' | 'Update' | 'ESQLSaveMode_MAX';
-declare var ESQLSaveMode : { Insert:'Insert',Update:'Update',ESQLSaveMode_MAX:'ESQLSaveMode_MAX', };
-declare class SQLite extends UObject { 
-	DB_TABLE: SQLTable;
-	DB_MODE: ESQLRuntimeMode;
-	DB_FILE: string;
-	DBS_UpdateCondition: string;
-	DBL_SelectCondition: string;
-	Debug: boolean;
-	DBS_QUEUE: any;
-	DBL_QUEUE: any;
-	DB_VERSION: SQLVersion;
-	DB_VERSIONS: any;
-	DB_REDIRECTORS: any;
-	LoadScreenMode: ESQLoadScreenMode;
-	FeedbackSAVE: string;
-	FeedbackLOAD: string;
-	BackBlurPower: number;
-	SplashImage: SoftObjectPath;
-	SplashMovie: SoftObjectPath;
-	ProgressBarOnMovie: boolean;
-	PauseGameOnLoad: boolean;
-	ProgressBarTint: LinearColor;
-	SplashStretch: EStretch;
-	FeedbackFont: SlateFontInfo;
-	DB_DataPreview: SQLPreview;
-	EVENT_OnBeginDataSAVE: UnrealEngineMulticastDelegate<(Database: SQLite) => void>;
-	EVENT_OnProgressDataSAVE: UnrealEngineMulticastDelegate<(Database: SQLite, Progress: number) => void>;
-	EVENT_OnFinishDataSAVE: UnrealEngineMulticastDelegate<(Database: SQLite, Success: boolean) => void>;
-	EVENT_OnBeginDataLOAD: UnrealEngineMulticastDelegate<(Database: SQLite) => void>;
-	EVENT_OnProgressDataLOAD: UnrealEngineMulticastDelegate<(Database: SQLite, Progress: number, Data: SQLRow) => void>;
-	EVENT_OnFinishDataLOAD: UnrealEngineMulticastDelegate<(Database: SQLite, Success: boolean) => void>;
-	ThreadChangedDelegate: UnrealEngineDelegate<(ThreadState: ESQLThreadSafety) => void>;
-	static Load(ResourceName: string): SQLite;
-	static Find(Outer: UObject, ResourceName: string): SQLite;
-	static GetDefaultObject(): SQLite;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLite;
-	DB_UPDATE_Vector3D_Array(RowID: string,ColumnName: string,Values: Vector[]): ESQLResult;
-	DB_UPDATE_Vector3D(RowID: string,ColumnName: string,Value: Vector): ESQLResult;
-	DB_UPDATE_Vector2D_Array(RowID: string,ColumnName: string,Values: Vector2D[]): ESQLResult;
-	DB_UPDATE_Vector2D(RowID: string,ColumnName: string,Value: Vector2D): ESQLResult;
-	DB_UPDATE_Text_Array(RowID: string,ColumnName: string,Values: string[]): ESQLResult;
-	DB_UPDATE_Text(RowID: string,ColumnName: string,Value: string): ESQLResult;
-	DB_UPDATE_String_Array(RowID: string,ColumnName: string,Values: string[]): ESQLResult;
-	DB_UPDATE_String(RowID: string,ColumnName: string,Value: string): ESQLResult;
-	DB_UPDATE_Rotator_Array(RowID: string,ColumnName: string,Values: Rotator[]): ESQLResult;
-	DB_UPDATE_Rotator(RowID: string,ColumnName: string,Value: Rotator): ESQLResult;
-	DB_UPDATE_Object_Array(RowID: string,ColumnName: string,Values: UObject[]): ESQLResult;
-	DB_UPDATE_Object(RowID: string,ColumnName: string,Obj: UObject): ESQLResult;
-	DB_UPDATE_Name_Array(RowID: string,ColumnName: string,Values: string[]): ESQLResult;
-	DB_UPDATE_Name(RowID: string,ColumnName: string,Value: string): ESQLResult;
-	DB_UPDATE_Integer_Array(RowID: string,ColumnName: string,Values: number[]): ESQLResult;
-	DB_UPDATE_Integer(RowID: string,ColumnName: string,Value: number): ESQLResult;
-	DB_UPDATE_Float_Array(RowID: string,ColumnName: string,Values: number[]): ESQLResult;
-	DB_UPDATE_Float(RowID: string,ColumnName: string,Value: number): ESQLResult;
-	DB_UPDATE_Date(RowID: string,ColumnName: string,Value: DateTime): ESQLResult;
-	DB_UPDATE_Color(RowID: string,ColumnName: string,Value: Color): ESQLResult;
-	DB_UPDATE_Byte_Array(RowID: string,ColumnName: string,Values: number[]): ESQLResult;
-	DB_UPDATE_Byte(RowID: string,ColumnName: string,Value: number): ESQLResult;
-	DB_UPDATE_Boolean_Array(RowID: string,ColumnName: string,Values: boolean[]): ESQLResult;
-	DB_UPDATE_Boolean(RowID: string,ColumnName: string,Value: boolean): ESQLResult;
-	DB_UnpackObjectDATA(UObject: UObject,Data: SQLRow,Log: boolean): void;
-	DB_UnpackComponentDATA(Component: ActorComponent,Data: SQLRow,Log: boolean): void;
-	DB_UnpackActorDATA(Actor: Actor,Data: SQLRow,Log: boolean): void;
-	DB_SELECT_Vector3Ds(ColumnName: string): Vector[];
-	DB_SELECT_Vector3D_Array(RowID: string,ColumnName: string): Vector[];
-	DB_SELECT_Vector3D(RowID: string,ColumnName: string): Vector;
-	DB_SELECT_Vector2Ds(ColumnName: string): Vector2D[];
-	DB_SELECT_Vector2D_Array(RowID: string,ColumnName: string): Vector2D[];
-	DB_SELECT_Vector2D(RowID: string,ColumnName: string): Vector2D;
-	DB_SELECT_Texts(ColumnName: string): string[];
-	DB_SELECT_Text_Array(RowID: string,ColumnName: string): string[];
-	DB_SELECT_Text(RowID: string,ColumnName: string): string;
-	DB_SELECT_Strings(ColumnName: string): string[];
-	DB_SELECT_String_Array(RowID: string,ColumnName: string): string[];
-	DB_SELECT_String(RowID: string,ColumnName: string): string;
-	DB_SELECT_Row(RowID: string): SQLRow;
-	DB_SELECT_Rotators(ColumnName: string): Rotator[];
-	DB_SELECT_Rotator_Array(RowID: string,ColumnName: string): Rotator[];
-	DB_SELECT_Rotator(RowID: string,ColumnName: string): Rotator;
-	DB_SELECT_Objects(Context: UObject,ColumnName: string): UObject[];
-	DB_SELECT_Object_Array(Context: UObject,RowID: string,ColumnName: string): UObject[];
-	DB_SELECT_Object(Context: UObject,RowID: string,ColumnName: string): UObject;
-	DB_SELECT_Names(ColumnName: string): string[];
-	DB_SELECT_Name_Array(RowID: string,ColumnName: string): string[];
-	DB_SELECT_Name(RowID: string,ColumnName: string): string;
-	DB_SELECT_Integers(ColumnName: string): number[];
-	DB_SELECT_Integer_Array(RowID: string,ColumnName: string): number[];
-	DB_SELECT_Integer(RowID: string,ColumnName: string): number;
-	DB_SELECT_IDs(): string[];
-	DB_SELECT_Floats(ColumnName: string): number[];
-	DB_SELECT_Float_Array(RowID: string,ColumnName: string): number[];
-	DB_SELECT_Float(RowID: string,ColumnName: string): number;
-	DB_SELECT_Dates(ColumnName: string): DateTime[];
-	DB_SELECT_Date(RowID: string,ColumnName: string): DateTime;
-	DB_SELECT_Colors(ColumnName: string): Color[];
-	DB_SELECT_Color(RowID: string,ColumnName: string): Color;
-	DB_SELECT_Bytes(ColumnName: string): number[];
-	DB_SELECT_Byte_Array(RowID: string,ColumnName: string): number[];
-	DB_SELECT_Byte(RowID: string,ColumnName: string): number;
-	DB_SELECT_Booleans(ColumnName: string): boolean[];
-	DB_SELECT_Boolean_Array(RowID: string,ColumnName: string): boolean[];
-	DB_SELECT_Boolean(RowID: string,ColumnName: string): boolean;
-	DB_Save(Context: UObject,Mode: ESQLSaveMode): void;
-	DB_PrepareToSave(Database: SQLite,Mode: ESQLSaveMode): void;
-	DB_PrepareToLoad(Database: SQLite): void;
-	DB_OnProgressSave__Threaded(Database: SQLite,Progress: number): void;
-	DB_OnProgressSave(Database: SQLite,Progress: number): void;
-	DB_OnProgressLoad__Threaded(Database: SQLite,Data: SQLRow,Progress: number): void;
-	DB_OnProgressLoad(Database: SQLite,Progress: number,Data: SQLRow): void;
-	DB_OnGlobalSaveProgressReport__Threaded(Progress: number): void;
-	DB_OnGlobalLoadProgressReport__Threaded(Progress: number): void;
-	DB_OnFinishSave__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishSave(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad(Database: SQLite,Success: boolean): void;
-	DB_OnBeginSave(Database: SQLite): void;
-	DB_OnBeginLoad(Database: SQLite): void;
-	DB_OBJ_ImmediateSAVE(UObject: UObject): void;
-	DB_OBJ_ImmediateLOAD(UObject: UObject): void;
-	DB_Load(Context: UObject): void;
-	DB_GetVersion(): string;
-	DB_GenerateSQL_Object_UPDATE(UObject: UObject): string;
-	DB_GenerateSQL_Object_SELECT(UObject: UObject): string;
-	DB_GenerateSQL_Object_INSERT(UObject: UObject): string;
-	DB_GenerateSQL_Object_DELETE(UObject: UObject): string;
-	DB_GenerateSQL_Component_UPDATE(Component: ActorComponent): string;
-	DB_GenerateSQL_Component_SELECT(Component: ActorComponent): string;
-	DB_GenerateSQL_Component_INSERT(Component: ActorComponent): string;
-	DB_GenerateSQL_Component_DELETE(Component: ActorComponent): string;
-	DB_GenerateSQL_Actor_UPDATE(Actor: Actor): string;
-	DB_GenerateSQL_Actor_SELECT(Actor: Actor): string;
-	DB_GenerateSQL_Actor_INSERT(Actor: Actor): string;
-	DB_GenerateSQL_Actor_DELETE(Actor: Actor): string;
-	DB_ExecuteCommand(SQL: string): ESQLResult;
-	DB_EnqueueSAVE(SQL: string): void;
-	DB_EnqueueLOAD(SQL: string): void;
-	DB_DoSaveProgressReport(Database: SQLite,Progress: number): void;
-	DB_DoLoadProgressReport(Database: SQLite,Progress: number): void;
-	DB_DELETE_Row(RowID: string): ESQLResult;
-	DB_CMP_ImmediateSAVE(Component: ActorComponent): void;
-	DB_CMP_ImmediateLOAD(Component: ActorComponent): void;
-	DB_ACT_ImmediateSAVE(Actor: Actor): void;
-	DB_ACT_ImmediateLOAD(Actor: Actor): void;
-	static C(Other: UObject | any): SQLite;
-}
-
-declare class SQLiteData extends Interface { 
-	static Load(ResourceName: string): SQLiteData;
-	static Find(Outer: UObject, ResourceName: string): SQLiteData;
-	static GetDefaultObject(): SQLiteData;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLiteData;
-	DB_PrepareToSave(Database: SQLite,Mode: ESQLSaveMode): void;
-	DB_PrepareToLoad(Database: SQLite): void;
-	DB_OnProgressSave__Threaded(Database: SQLite,Progress: number): void;
-	DB_OnProgressSave(Database: SQLite,Progress: number): void;
-	DB_OnProgressLoad__Threaded(Database: SQLite,Data: SQLRow,Progress: number): void;
-	DB_OnProgressLoad(Database: SQLite,Progress: number,Data: SQLRow): void;
-	DB_OnGlobalSaveProgressReport__Threaded(Progress: number): void;
-	DB_OnGlobalLoadProgressReport__Threaded(Progress: number): void;
-	DB_OnFinishSave__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishSave(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad(Database: SQLite,Success: boolean): void;
-	DB_OnBeginSave(Database: SQLite): void;
-	DB_OnBeginLoad(Database: SQLite): void;
-	static C(Other: UObject | any): SQLiteData;
-}
-
-declare class SQLiteDriver extends SQLiteData { 
-	static Load(ResourceName: string): SQLiteDriver;
-	static Find(Outer: UObject, ResourceName: string): SQLiteDriver;
-	static GetDefaultObject(): SQLiteDriver;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLiteDriver;
-	DB_Save(Context: UObject,Mode: ESQLSaveMode): void;
-	DB_Load(Context: UObject): void;
-	static C(Other: UObject | any): SQLiteDriver;
-}
-
-declare class SQLReflector extends UObject { 
-	static Load(ResourceName: string): SQLReflector;
-	static Find(Outer: UObject, ResourceName: string): SQLReflector;
-	static GetDefaultObject(): SQLReflector;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLReflector;
-	static NewONamedbjectInstance(Context: UObject,Class: UnrealEngineClass,Name: string): UObject;
-	static NewObjectInstance(Context: UObject,Class: UnrealEngineClass): UObject;
-	static GetClassDefaultObject(Class: UnrealEngineClass): UObject;
-	static C(Other: UObject | any): SQLReflector;
-}
-
-declare class SQL extends SQLReflector { 
-	static Load(ResourceName: string): SQL;
-	static Find(Outer: UObject, ResourceName: string): SQL;
-	static GetDefaultObject(): SQL;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQL;
-	static StringToMD5(string: string): string;
-	static SanitizeString(string: string): string;
-	static MakeObjectDBID(Obj: UObject): string;
-	static MakeComponentDBID(CMP: ActorComponent): string;
-	static MakeActorDBID(Actor: Actor): string;
-	static GetThreadSafety(): ESQLThreadSafety;
-	static GetSavesDone(): number;
-	static GetSaveProgress(): number;
-	static GetPlayerNetworkID(PlayerController: PlayerController,ID?: string,AppendPort?: boolean): {ID: string, $: boolean};
-	static GetLoadsDone(): number;
-	static GetLoadProgress(): number;
-	static C(Other: UObject | any): SQL;
-}
-
-declare class SQL_CheckThreadSafety extends BlueprintAsyncActionBase { 
-	Callback: UnrealEngineDelegate<(ThreadState: ESQLThreadSafety) => void>;
-	TimerHandle: TimerHandle;
-	Target: SQLite;
-	World: World;
-	Timer: number;
-	Repeat: boolean;
-	ThreadSafe: UnrealEngineMulticastDelegate<() => void>;
-	AsyncLoading: UnrealEngineMulticastDelegate<() => void>;
-	AsyncSaving: UnrealEngineMulticastDelegate<() => void>;
-	static Load(ResourceName: string): SQL_CheckThreadSafety;
-	static Find(Outer: UObject, ResourceName: string): SQL_CheckThreadSafety;
-	static GetDefaultObject(): SQL_CheckThreadSafety;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQL_CheckThreadSafety;
-	Execute(): void;
-	static C(Other: UObject | any): SQL_CheckThreadSafety;
-}
-
-declare class SQLite_Settings extends UObject { 
-	DeepLogs: boolean;
-	static Load(ResourceName: string): SQLite_Settings;
-	static Find(Outer: UObject, ResourceName: string): SQLite_Settings;
-	static GetDefaultObject(): SQLite_Settings;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLite_Settings;
-	static C(Other: UObject | any): SQLite_Settings;
-}
-
-declare class SQLSerializable_OBJ extends UObject { 
-	Debug: boolean;
-	static Load(ResourceName: string): SQLSerializable_OBJ;
-	static Find(Outer: UObject, ResourceName: string): SQLSerializable_OBJ;
-	static GetDefaultObject(): SQLSerializable_OBJ;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLSerializable_OBJ;
-	DB_PrepareToSave(Database: SQLite,Mode: ESQLSaveMode): void;
-	DB_PrepareToLoad(Database: SQLite): void;
-	DB_OnProgressSave__Threaded(Database: SQLite,Progress: number): void;
-	DB_OnProgressSave(Database: SQLite,Progress: number): void;
-	DB_OnProgressLoad__Threaded(Database: SQLite,Data: SQLRow,Progress: number): void;
-	DB_OnProgressLoad(Database: SQLite,Progress: number,Data: SQLRow): void;
-	DB_OnGlobalSaveProgressReport__Threaded(Progress: number): void;
-	DB_OnGlobalLoadProgressReport__Threaded(Progress: number): void;
-	DB_OnFinishSave__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishSave(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad(Database: SQLite,Success: boolean): void;
-	DB_OnBeginSave(Database: SQLite): void;
-	DB_OnBeginLoad(Database: SQLite): void;
-	static C(Other: UObject | any): SQLSerializable_OBJ;
-}
-
-declare class SQLSerializable_CMP extends ActorComponent { 
-	Debug: boolean;
-	static Load(ResourceName: string): SQLSerializable_CMP;
-	static Find(Outer: UObject, ResourceName: string): SQLSerializable_CMP;
-	static GetDefaultObject(): SQLSerializable_CMP;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLSerializable_CMP;
-	DB_PrepareToSave(Database: SQLite,Mode: ESQLSaveMode): void;
-	DB_PrepareToLoad(Database: SQLite): void;
-	DB_OnProgressSave__Threaded(Database: SQLite,Progress: number): void;
-	DB_OnProgressSave(Database: SQLite,Progress: number): void;
-	DB_OnProgressLoad__Threaded(Database: SQLite,Data: SQLRow,Progress: number): void;
-	DB_OnProgressLoad(Database: SQLite,Progress: number,Data: SQLRow): void;
-	DB_OnGlobalSaveProgressReport__Threaded(Progress: number): void;
-	DB_OnGlobalLoadProgressReport__Threaded(Progress: number): void;
-	DB_OnFinishSave__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishSave(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad(Database: SQLite,Success: boolean): void;
-	DB_OnBeginSave(Database: SQLite): void;
-	DB_OnBeginLoad(Database: SQLite): void;
-	static C(Other: UObject | any): SQLSerializable_CMP;
-}
-
-declare class SQLSerializable extends Actor { 
-	Debug: boolean;
-	static GetDefaultObject(): SQLSerializable;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLSerializable;
-	DB_PrepareToSave(Database: SQLite,Mode: ESQLSaveMode): void;
-	DB_PrepareToLoad(Database: SQLite): void;
-	DB_OnProgressSave__Threaded(Database: SQLite,Progress: number): void;
-	DB_OnProgressSave(Database: SQLite,Progress: number): void;
-	DB_OnProgressLoad__Threaded(Database: SQLite,Data: SQLRow,Progress: number): void;
-	DB_OnProgressLoad(Database: SQLite,Progress: number,Data: SQLRow): void;
-	DB_OnGlobalSaveProgressReport__Threaded(Progress: number): void;
-	DB_OnGlobalLoadProgressReport__Threaded(Progress: number): void;
-	DB_OnFinishSave__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishSave(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad(Database: SQLite,Success: boolean): void;
-	DB_OnBeginSave(Database: SQLite): void;
-	DB_OnBeginLoad(Database: SQLite): void;
-	static C(Other: UObject | any): SQLSerializable;
-}
-
-declare class SQLoadScreenHUD extends HUD { 
-	OnBeginLoadScreen: UnrealEngineMulticastDelegate<() => void>;
-	OnFinishLoadScreen: UnrealEngineMulticastDelegate<() => void>;
-	static GetDefaultObject(): SQLoadScreenHUD;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLoadScreenHUD;
-	static C(Other: UObject | any): SQLoadScreenHUD;
-}
-
 declare type ETaskEvent = 'START_DOWNLOAD' | 'DOWNLOAD_UPDATE' | 'STOP' | 'DOWNLOAD_COMPLETED' | 'ERROR_OCCUR' | 'ETaskEvent_MAX';
 declare var ETaskEvent : { START_DOWNLOAD:'START_DOWNLOAD',DOWNLOAD_UPDATE:'DOWNLOAD_UPDATE',STOP:'STOP',DOWNLOAD_COMPLETED:'DOWNLOAD_COMPLETED',ERROR_OCCUR:'ERROR_OCCUR',ETaskEvent_MAX:'ETaskEvent_MAX', };
 declare class TaskInformation { 
@@ -10634,8 +10266,8 @@ declare class FileDownloadManager extends UObject {
 
 declare type EGsStateUpperBase = 'None' | 'Idle' | 'Attack' | 'UpperBaseMax' | 'EGsStateUpperBase_MAX';
 declare var EGsStateUpperBase : { None:'None',Idle:'Idle',Attack:'Attack',UpperBaseMax:'UpperBaseMax',EGsStateUpperBase_MAX:'EGsStateUpperBase_MAX', };
-declare type EGsStateBase = 'None' | 'Spawn' | 'Idle' | 'ForwardWalk' | 'BackwardWalk' | 'SideWalk' | 'Run' | 'Beaten' | 'Die' | 'BaseMax' | 'EGsStateBase_MAX';
-declare var EGsStateBase : { None:'None',Spawn:'Spawn',Idle:'Idle',ForwardWalk:'ForwardWalk',BackwardWalk:'BackwardWalk',SideWalk:'SideWalk',Run:'Run',Beaten:'Beaten',Die:'Die',BaseMax:'BaseMax',EGsStateBase_MAX:'EGsStateBase_MAX', };
+declare type EGsStateBase = 'None' | 'Spawn' | 'Idle' | 'ForwardWalk' | 'BackwardWalk' | 'SideWalk' | 'Run' | 'Ride' | 'Beaten' | 'Die' | 'BaseMax' | 'EGsStateBase_MAX';
+declare var EGsStateBase : { None:'None',Spawn:'Spawn',Idle:'Idle',ForwardWalk:'ForwardWalk',BackwardWalk:'BackwardWalk',SideWalk:'SideWalk',Run:'Run',Ride:'Ride',Beaten:'Beaten',Die:'Die',BaseMax:'BaseMax',EGsStateBase_MAX:'EGsStateBase_MAX', };
 declare class GsAnimInstanceState extends AnimInstance { 
 	static Load(ResourceName: string): GsAnimInstanceState;
 	static Find(Outer: UObject, ResourceName: string): GsAnimInstanceState;
@@ -10704,40 +10336,48 @@ declare class GsGameInstance extends GameInstance {
 	static Find(Outer: UObject, ResourceName: string): GsGameInstance;
 	static GetDefaultObject(): GsGameInstance;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameInstance;
+	IsDevMode(): boolean;
 	static C(Other: UObject | any): GsGameInstance;
 }
 
-declare class GsGameObjectManager extends Actor { 
+declare class GsSpawnComponent extends ActorComponent { 
 	Spawns: GsGameObjectBase[];
-	static GetDefaultObject(): GsGameObjectManager;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectManager;
+	static Load(ResourceName: string): GsSpawnComponent;
+	static Find(Outer: UObject, ResourceName: string): GsSpawnComponent;
+	static GetDefaultObject(): GsSpawnComponent;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsSpawnComponent;
 	CallbackCompHit(HitComponent: PrimitiveComponent,OtherActor: Actor,OtherComp: PrimitiveComponent,NormalImpulse: Vector,Hit: HitResult): void;
 	CallbackActorDeSpawn(Despawn: Actor): void;
-	static C(Other: UObject | any): GsGameObjectManager;
+	static C(Other: UObject | any): GsSpawnComponent;
 }
 
 declare class GsGameModeBase extends GameModeBase { 
-	_gameObjManager: GsGameObjectManager;
+	_SpawnComponent: GsSpawnComponent;
 	static GetDefaultObject(): GsGameModeBase;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameModeBase;
 	static C(Other: UObject | any): GsGameModeBase;
 }
 
-declare class GsGameModeLobby extends GsGameModeBase { 
-	bIsDevMode: boolean;
-	bIsAccountLoginComplete: boolean;
-	SelectedServerID: number;
-	static GetDefaultObject(): GsGameModeLobby;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameModeLobby;
+declare class GsLobbyComponent extends ActorComponent { 
+	static Load(ResourceName: string): GsLobbyComponent;
+	static Find(Outer: UObject, ResourceName: string): GsLobbyComponent;
+	static GetDefaultObject(): GsLobbyComponent;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsLobbyComponent;
 	TrySelectServer(InServerID: number): void;
 	TryGameLogin(): void;
 	TryDevAccountLogin(InName: string,InPassword: string): void;
 	TryAccountLogin(): void;
 	SetSelectedServer(InServerID: number): void;
 	SetAccountLogin(InComplete: boolean): void;
-	IsDevMode(): boolean;
 	IsAccountLoginComplete(): boolean;
 	GetSelectedServer(): number;
+	static C(Other: UObject | any): GsLobbyComponent;
+}
+
+declare class GsGameModeLobby extends GsGameModeBase { 
+	LobbyComponent: GsLobbyComponent;
+	static GetDefaultObject(): GsGameModeLobby;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameModeLobby;
 	static C(Other: UObject | any): GsGameModeLobby;
 }
 
@@ -10828,7 +10468,7 @@ declare class GsGameObjectNonPlayer extends GsGameObjectDynamic {
 	static Find(Outer: UObject, ResourceName: string): GsGameObjectNonPlayer;
 	static GetDefaultObject(): GsGameObjectNonPlayer;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectNonPlayer;
-	GetNpc(): GsNpcPawn;
+	GetNpcPawn(): GsNpcPawn;
 	static C(Other: UObject | any): GsGameObjectNonPlayer;
 }
 
@@ -10845,6 +10485,33 @@ declare class GsGameObjectProjectile extends GsGameObjectBase {
 	static GetDefaultObject(): GsGameObjectProjectile;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectProjectile;
 	static C(Other: UObject | any): GsGameObjectProjectile;
+}
+
+declare class GsInputBindingVehicle extends GsInputBindingBase { 
+	static Load(ResourceName: string): GsInputBindingVehicle;
+	static Find(Outer: UObject, ResourceName: string): GsInputBindingVehicle;
+	static GetDefaultObject(): GsInputBindingVehicle;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsInputBindingVehicle;
+	static C(Other: UObject | any): GsInputBindingVehicle;
+}
+
+declare class GsWheelVehicle extends WheeledVehicle { 
+	SPRINGARM: SpringArmComponent;
+	Camera: CameraComponent;
+	InputBinder: GsInputBindingVehicle;
+	static GetDefaultObject(): GsWheelVehicle;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsWheelVehicle;
+	static C(Other: UObject | any): GsWheelVehicle;
+}
+
+declare class GsGameObjectWheelVehicle extends GsGameObjectBase { 
+	Actor: GsWheelVehicle;
+	static Load(ResourceName: string): GsGameObjectWheelVehicle;
+	static Find(Outer: UObject, ResourceName: string): GsGameObjectWheelVehicle;
+	static GetDefaultObject(): GsGameObjectWheelVehicle;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectWheelVehicle;
+	GetWhellVehicle(): GsWheelVehicle;
+	static C(Other: UObject | any): GsGameObjectWheelVehicle;
 }
 
 declare class GsLevelScriptActor extends LevelScriptActor { 
@@ -10894,7 +10561,7 @@ declare type EGsPartsType = 'HAIR' | 'FACE' | 'HEAD' | 'BODY' | 'SHOULDER' | 'GL
 declare var EGsPartsType : { HAIR:'HAIR',FACE:'FACE',HEAD:'HEAD',BODY:'BODY',SHOULDER:'SHOULDER',GLOVE:'GLOVE',LEG:'LEG',FOOT:'FOOT',EGsPartsType_MAX:'EGsPartsType_MAX', };
 declare class GsPartsDataBase { 
 	Type: EGsPartsType;
-	Mesh: SkeletalMesh;
+	Path: SoftObjectPath;
 	clone() : GsPartsDataBase;
 	static C(Other: UObject | any): GsPartsDataBase;
 }
@@ -10948,6 +10615,12 @@ declare class GsTargetPoint extends TargetPoint {
 	static C(Other: UObject | any): GsTargetPoint;
 }
 
+declare class GsTestGameMode extends GameModeBase { 
+	static GetDefaultObject(): GsTestGameMode;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsTestGameMode;
+	static C(Other: UObject | any): GsTestGameMode;
+}
+
 declare class GsUIEventInterface extends Interface { 
 	static Load(ResourceName: string): GsUIEventInterface;
 	static Find(Outer: UObject, ResourceName: string): GsUIEventInterface;
@@ -10968,6 +10641,8 @@ declare class GsUIParameter extends UObject {
 }
 
 declare class GsUIWidgetBase extends UserWidget { 
+	bNotUseManagedZOrder: boolean;
+	AddZOrder: number;
 	static Load(ResourceName: string): GsUIWidgetBase;
 	static Find(Outer: UObject, ResourceName: string): GsUIWidgetBase;
 	static GetDefaultObject(): GsUIWidgetBase;
@@ -10981,11 +10656,12 @@ declare class GsUIWidgetBase extends UserWidget {
 
 declare class GsUIManager extends HUD { 
 	CachedWidgets: any;
+	StackedWidgets: GsUIWidgetBase[];
+	UnstackedWidgets: GsUIWidgetBase[];
 	WidgetClassTable: DataTable;
 	static GetDefaultObject(): GsUIManager;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIManager;
 	StackPeek(): GsUIWidgetBase;
-	RemoveAll(): void;
 	PushByKeyName(InKey: string,InParam: GsUIParameter): void;
 	Push(InClass: UnrealEngineClass,InParam: GsUIParameter): void;
 	Pop(InWidget: GsUIWidgetBase): void;

@@ -4,10 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "GameObject/GsGameObjectManager.h"
-
 #include "GsGameModeBase.generated.h"
 
+class UGsSpawnComponent;
 /**
  * 게임의 틀을 잡아주는 역활
    1. 플레이어 점검
@@ -30,7 +29,7 @@ public:
 	virtual void StartPlay() override;
 	virtual void Tick(float deltaSeconds);
 
-private:
+protected:
 	UPROPERTY(Transient, VisibleInstanceOnly, Meta = (AllowPrivateAccess = true))
-	AGsGameObjectManager*	_gameObjManager;
+	UGsSpawnComponent*	_SpawnComponent;
 };

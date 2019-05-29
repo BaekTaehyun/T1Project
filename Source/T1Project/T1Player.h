@@ -12,7 +12,7 @@
 
 #include "T1Player.generated.h"
 
-#define CAM_MODE
+//#define CAM_MODE
 
 class USpringArmComponent;
 class UCameraComponent;

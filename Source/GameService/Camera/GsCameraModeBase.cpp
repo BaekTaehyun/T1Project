@@ -1,5 +1,7 @@
 #include "GsCameraModeBase.h"
-#include "../../T1Project/T1Player.h"
+#include "GameFrameWork/SpringArmComponent.h"
+#include "GameFrameWork/CharacterMovementComponent.h"
+//#include "../../T1Project/T1Player.h"
 #include "GsCameraModeManager.h"
 #include "GsCamModeData.h"
 #include "../UTIL/GsText.h"
@@ -7,6 +9,7 @@
 // 상태 전환(인자로 캐릭터)
 void GsCameraModeBase::Enter(ACharacter* In_char, GsCameraModeManager* In_mng)
 {
+#ifdef CAM_MODE
 	AT1Player* player = Cast<AT1Player>(In_char);
 	if (player == nullptr)
 	{
@@ -47,13 +50,14 @@ void GsCameraModeBase::Enter(ACharacter* In_char, GsCameraModeManager* In_mng)
 		}
 	}
 
-
-	GSLOG(Warning, TEXT("GsCameraModeBase ACharacter Enter nowMode: %s"), 
+	GSLOG(Warning, TEXT("GsCameraModeBase ACharacter Enter nowMode: %s"),
 		*EnumToString(EGsControlMode, nowMode));
+#endif
 }
 // 상태 종료(인자로 캐릭터)
 void GsCameraModeBase::Exit(ACharacter* In_char)
 {
+#ifdef CAM_MODE
 	AT1Player* player = Cast<AT1Player>(In_char);
 	if (player == nullptr)
 	{
@@ -64,12 +68,13 @@ void GsCameraModeBase::Exit(ACharacter* In_char)
 	// 바인딩 해제
 	player->FunctionZoomIn = nullptr;
 	player->FunctionZoomOut = nullptr;
-
+#endif
 	GSLOG(Warning, TEXT("GsCameraModeBase ACharacter Exit"));
 }
 // 업데이터(인자로 캐릭터)
 void GsCameraModeBase::Update(ACharacter* In_char, float In_deltaTime)
 {
+#ifdef CAM_MODE
 	AT1Player* player = Cast<AT1Player>(In_char);
 	if (player == nullptr)
 	{
@@ -80,7 +85,7 @@ void GsCameraModeBase::Update(ACharacter* In_char, float In_deltaTime)
 	player->SpringArm->TargetArmLength = FMath::FInterpTo(
 		player->SpringArm->TargetArmLength, 
 		_armLengthTo, In_deltaTime, ArmLengthSpeed);
-
+#endif
 #ifdef PRINT_LOG
 	GSLOG(Warning, TEXT("GsCameraModeBase ACharacter Update"));
 #endif
