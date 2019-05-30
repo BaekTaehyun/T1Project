@@ -48,6 +48,12 @@ void UGsLobbyComponent::OnEnterAssetDownloadStage()
 		UGsGameInstance* GameInstance = Cast<UGsGameInstance>(GameMode->GetGameInstance());
 		if (nullptr != GameInstance)
 		{
+			// 즉시시작 플래그가 켜져있으면 바로 인게임으로 보낸다
+			if (GameInstance->IsImmediateStart())
+			{
+				GMessage()->GetStage().SendMessage(MessageLobby::Stage::ENTER_INGAME);
+			}
+
 			// DevMode면 다운로드 끝났다고 처리하고 넘긴다
 			if (GameInstance->IsDevMode())
 			{
@@ -177,10 +183,10 @@ AGsGameModeLobby* UGsLobbyComponent::GetGameModeLobby()
 
 AGsUIManager* UGsLobbyComponent::GetUIManager()
 {
-	AGsGameModeLobby* GameModeLobby = GetGameModeLobby();
-	if (nullptr != GameModeLobby)
+	AGsGameModeLobby* GameMode = GetGameModeLobby();
+	if (nullptr != GameMode)
 	{
-		return GameModeLobby->GetUIManager();
+		return GameMode->GetUIManager();
 	}
 
 	return nullptr;

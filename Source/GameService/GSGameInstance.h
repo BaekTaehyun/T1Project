@@ -37,10 +37,19 @@ public:
 	void Update();
 
 	// 개발모드인가
-	UFUNCTION(BlueprintPure, Category = "Lobby")
+	UFUNCTION(BlueprintPure, Category = "Dev")
 	bool IsDevMode() const { return bIsDevMode; }
+
+	// 즉시시작 모드인가
+	UFUNCTION(BlueprintPure, Category = "Dev")
+	bool IsImmediateStart() const { return bImmediateStart; }
 
 protected:
 	// 개발모드
-	bool bIsDevMode; 
+	UPROPERTY(EditDefaultsOnly, Category = "Dev")
+	bool bIsDevMode;
+
+	// 즉시시작
+	UPROPERTY(EditDefaultsOnly, Category = "Dev")
+	bool bImmediateStart;
 };

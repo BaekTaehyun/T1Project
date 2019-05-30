@@ -20,6 +20,7 @@ UGsGameInstance::UGsGameInstance()
 	GSLOG_S(Warning);
 
 	bIsDevMode = false;
+	bImmediateStart = false;
 }
 
 // 플레이모드(즉 실제게임)에서만 호출
