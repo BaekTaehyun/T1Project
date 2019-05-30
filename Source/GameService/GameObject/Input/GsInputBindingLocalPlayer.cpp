@@ -7,7 +7,7 @@
 #include "GameObject/State/GsFSMManager.h"
 #include "GameObject/State/GsStateLocal.h"
 #include "GameObject/Movement/GsMovementLocal.h"
-#include "GameObject/GsGameObjectManager.h"
+#include "GameObject/GsSpawnComponent.h"
 #include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
 #include "Message/GsMessageManager.h"
 
@@ -73,7 +73,7 @@ void UGsInputBindingLocalPlayer::OnAttack1(int32 slot)
 #include "GameObject/Event/GsGameObjectEventLocal.h"
 void UGsInputBindingLocalPlayer::OnAction()
 {
-	if (auto findVehicle = GGameObj()->FindObject(EGsGameObjectType::Vehicle))
+	if (auto findVehicle = GSpawner()->FindObject(EGsGameObjectType::Vehicle))
 	{
 		//탑승 정보 Send
 		GSCHECK(GMessage());

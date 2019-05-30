@@ -12,7 +12,7 @@ class GAMESERVICE_API FGsSkillBase
 {
 public:
 	virtual void Initialize(class UGsGameObjectBase* Owner);
-	virtual void DeInitialize();
+	virtual void Finalize();
     virtual void Update(float Delta);
 
 	virtual void LoadData(const TCHAR * Path);

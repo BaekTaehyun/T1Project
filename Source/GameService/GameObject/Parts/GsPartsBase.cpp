@@ -20,6 +20,11 @@ void FGsPartsBase::Initialize(UGsGameObjectBase* owner)
 
 void FGsPartsBase::Finalize()
 {	
+	for (auto el : Parts)
+	{
+		el.Get()->Mesh = NULL;
+	}
+	Parts.Reset();
 }
 
 void FGsPartsBase::LoadData(const TCHAR * Path)
@@ -88,7 +93,8 @@ void FGsPartsBase::RemoveParts(EGsPartsType Type)
 			return Type == data.Get()->Type;
 		}))
 	{
-		findParts->Get()->Mesh.Reset();
+		findParts->Get()->Mesh = NULL;
+		//이렇게만 하면 리스트에서 제거되는지 확인 필요..
 		findParts->Reset();
 	}
 }
@@ -106,7 +112,7 @@ void FGsPartsBase::Attach()
 			{
 				if (auto mesh = el.Get()->Path.ResolveObject())
 				{
-					el.Get()->SetMesh(MakeShareable(Cast<USkeletalMesh>(mesh)));
+					el.Get()->SetMesh(Cast<USkeletalMesh>(mesh));
 				}
 			}
 

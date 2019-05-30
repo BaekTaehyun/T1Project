@@ -10,9 +10,14 @@
 #include "Runtime/Engine/Classes/Engine/LevelScriptActor.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Runtime/Engine/Public/TimerManager.h"
+#include "GameFramework/PlayerStart.h"
 #include "GameService/Level/TargetPoint/PlayerSpawnPoint.h"
 #include "GameService/Level/LevelScriptActor/GsLevelScriptActor.h"
 #include "GameService/Character/GsPlayer.h"
+#include "GameObject/ActorExtend/GsLocalCharacter.h"
+#include "GameObject/GsSpawnComponent.h"
+#include "GameObject/ObjectClass/GsGameObjectLocal.h"
+
 
 AGsGameModeWorld::AGsGameModeWorld()
 {
@@ -28,6 +33,13 @@ void AGsGameModeWorld::StartToLeaveMap()
 		world->GetTimerManager().ClearTimer(_ClosestLevelLoadingTimer);
 		world->GetTimerManager().ClearTimer(_VisibleLevelsLoadingTimer);
 	}
+}
+
+void AGsGameModeWorld::StartPlay()
+{
+	Super::StartPlay();
+
+	SpawnPlayer();
 }
 
 void AGsGameModeWorld::TeleportPlayer(FString in_tag, bool in_waitAllLoad)
@@ -183,23 +195,40 @@ void AGsGameModeWorld::SetPlayerUnspawnedState()
 	}
 }
 
+void AGsGameModeWorld::SpawnPlayer()
+{
+	UWorld* world = GetWorld();
+
+	if (world)
+	{
+		//캐릭터 스폰
+		//임시로 스폰 포지션을 찾음
+		TArray<AActor*> startPos;
+		UGameplayStatics::GetAllActorsOfClass(world, APlayerStart::StaticClass(), startPos);
+
+		FString path = TEXT("Blueprint'/Game/Blueprint/GameObject/BP_LocalCharacter.BP_LocalCharacter'");
+		if (auto loadObject = StaticLoadObject(UObject::StaticClass(), nullptr, *path))
+		{
+			if (UBlueprint* castBP = Cast<UBlueprint>(loadObject))
+			{
+				auto Local = GSpawner()->SpawnObject<UGsGameObjectLocal>(castBP->GeneratedClass, 
+					startPos.Top()->GetActorLocation(), FRotator::ZeroRotator);
+				if (NULL != Local)
+				{
+					auto controller = UGameplayStatics::GetPlayerController(world, 0);
+					controller->Possess(Local->GetLocalCharacter());
+				}
+			}
+		}
+	}
+}
+
 void AGsGameModeWorld::SetPlayerSpawendState()
 {
 	UWorld* world = GetWorld();
 
 	if (world)
 	{
-		ACharacter* character = UGameplayStatics::GetPlayerCharacter(world, 0);
-
-		if (character)
-		{
-			AGsPlayer* player = Cast<AGsPlayer>(character);
-
-			if (player)
-			{
-				player->SetPlayerSpawnState(true);
-			}
-		}
 	}
 }
 

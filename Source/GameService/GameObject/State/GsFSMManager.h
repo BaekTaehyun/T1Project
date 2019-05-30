@@ -24,7 +24,7 @@ public:
 
 	template <class State>
 	void Initialize(UGsGameObjectBase* Owner);		//시작 State정의
-	void DeInitialize();
+	void Finalize();
 
 	//[Todo]
 	//나중에 Update만이라도 캐스팅을 피하게 작업해보기....ㅠ

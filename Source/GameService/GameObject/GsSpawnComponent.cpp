@@ -1,4 +1,4 @@
-﻿#include "GsGameObjectManager.h"
+﻿#include "GsSpawnComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -9,23 +9,24 @@
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 #include "GameObject/ObjectClass/GsGameObjectNonPlayer.h"
 #include "GameObject/ObjectClass/GsGameObjectProjectile.h"
-#include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
-#include "../Class/GsSpawn.h"
+#include "Class/GsSpawn.h"
 
-AGsGameObjectManager::AGsGameObjectManager()
+UGsSpawnComponent::UGsSpawnComponent(const class FObjectInitializer &OBJ) : Super(OBJ)
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = true;
+	//InitializeComponent 함수를 호출하고 싶을때 다음과 같은 플레그가 설정되어야 호출됩니다.
+	bWantsInitializeComponent = true;
 }
 
-AGsGameObjectManager::~AGsGameObjectManager()
+UGsSpawnComponent::~UGsSpawnComponent()
 {
-	GSLOG(Warning, TEXT("~AGsGameObjectManager()"));
+	GSLOG(Warning, TEXT("~UGsSpawnComponent()"));
 }
 
-
-void AGsGameObjectManager::Initialize()
-{
-	TGsSingleton::InitInstance(this);
+void UGsSpawnComponent::InitializeComponent()
+{	
+	Super::InitializeComponent();
+	UGsSpawnerSingle::InitInstance(this);
 
 	Spawns.Empty();
 	AddSpawns.Empty();
@@ -37,10 +38,13 @@ void AGsGameObjectManager::Initialize()
 	{
 		TypeSpawns.Emplace(el);
 	}
-	AddToRoot();
+
+	
+	PrimaryComponentTick.SetTickFunctionEnable(true);
 }
 
-void AGsGameObjectManager::Finalize()
+
+void UGsSpawnComponent::UninitializeComponent()
 {
 	for (auto el : Spawns)
 	{
@@ -51,24 +55,33 @@ void AGsGameObjectManager::Finalize()
 	AddSpawns.Empty();
 	RemoveSpawns.Empty();
 	Spawns.Empty();
+
+	PrimaryComponentTick.SetTickFunctionEnable(false);
+
+	UGsSpawnerSingle::RemoveInstance();
 }
 
-void AGsGameObjectManager::Tick(float Delta)
-{
-	Super::Tick(Delta);
 
+void UGsSpawnComponent::TickComponent(float DeltaTime, enum ELevelTick TickType,
+	FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	//대상 리스트 제거
 	UpdateRemoveGameObject();
 	//대상 추가
 	UpdateAddGameObject();
+
+	//위 함수가 제거되면 기존 Update로직으로 이동
 	//스폰 오브젝트 업데이트
 	for (auto el : Spawns)
 	{
-		el->Update(Delta);
+		el->Update(DeltaTime);
 	}
 }
 
-UGsGameObjectBase* AGsGameObjectManager::FindObject(AActor* Actor, EGsGameObjectType Type)
+
+
+UGsGameObjectBase* UGsSpawnComponent::FindObject(AActor* Actor, EGsGameObjectType Type)
 {
 	if (Type == EGsGameObjectType::Base)
 	{
@@ -97,57 +110,36 @@ UGsGameObjectBase* AGsGameObjectManager::FindObject(AActor* Actor, EGsGameObject
 	return NULL;
 }
 
-UGsGameObjectBase* AGsGameObjectManager::FindObject(EGsGameObjectType Type)
+
+UGsGameObjectBase* UGsSpawnComponent::FindObject(EGsGameObjectType Type)
 {
     return TypeSpawns[Type].Num() > 0 ? TypeSpawns[Type].Top() : NULL;
 }
 
-TArray<UGsGameObjectBase*> AGsGameObjectManager::FindObjects(EGsGameObjectType Type)
+
+TArray<UGsGameObjectBase*> UGsSpawnComponent::FindObjectArray(EGsGameObjectType Type)
 {
 	return TypeSpawns[Type];
 }
 
-UGsGameObjectBase* AGsGameObjectManager::SpawnPlayer(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
-{
-	return SpawnObject<UGsGameObjectLocal>(Uclass, Pos, Rot);
-}
 
-UGsGameObjectBase* AGsGameObjectManager::SpawnNpc(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
+template <>
+UGsGameObjectProjectile* UGsSpawnComponent::SpawnObject(UClass* Uclass, const FVector& Pos, const FRotator& Rot, bool IsOnGround)
 {
-	return SpawnObject<UGsGameObjectNonPlayer>(Uclass, Pos, Rot, true);
-}
-
-UGsGameObjectBase* AGsGameObjectManager::SpawnProjectile(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
-{
-	if (auto projectile = SpawnObject<UGsGameObjectProjectile>(Uclass, Pos, Rot))
+	if (auto projectile = NewObject<UGsGameObjectProjectile>())
 	{
-		//충돌 처리
-		if (UPrimitiveComponent* collider = projectile->GetActor()->FindComponentByClass<UPrimitiveComponent>())
+		SpawnObjectInternal(projectile, Uclass, Pos, Rot, IsOnGround);
+		if (UPrimitiveComponent* collider = projectile->
+			GetActor()->FindComponentByClass<UPrimitiveComponent>())
 		{
-			collider->OnComponentHit.AddDynamic(this, &AGsGameObjectManager::CallbackCompHit);
+			collider->OnComponentHit.AddDynamic(this, &UGsSpawnComponent::CallbackCompHit);
 		}
 		return projectile;
 	}
 	return NULL;
 }
 
-UGsGameObjectBase* AGsGameObjectManager::SpawnVehicle(UClass* Uclass, const FVector& Pos, const FRotator& Rot)
-{
-	return SpawnObject<UGsGameObjectWheelVehicle>(Uclass, Pos, Rot);
-}
-
-void AGsGameObjectManager::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-void AGsGameObjectManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-	Super::EndPlay(EndPlayReason);
-	RemoveFromRoot();
-}
-
-void AGsGameObjectManager::DespawnObject(UGsGameObjectBase* Despawn)
+void UGsSpawnComponent::DespawnObject(UGsGameObjectBase* Despawn)
 {
 	if (Spawns.Contains(Despawn))
 	{
@@ -159,7 +151,8 @@ void AGsGameObjectManager::DespawnObject(UGsGameObjectBase* Despawn)
 	}
 }
 
-void AGsGameObjectManager::UpdateAddGameObject()
+
+void UGsSpawnComponent::UpdateAddGameObject()
 {
 	//대상 추가
 	if (0 < AddSpawns.Num())
@@ -180,7 +173,9 @@ void AGsGameObjectManager::UpdateAddGameObject()
 	}
 }
 
-void AGsGameObjectManager::UpdateRemoveGameObject()
+
+
+void UGsSpawnComponent::UpdateRemoveGameObject()
 {
 	if (0 < RemoveSpawns.Num())
 	{
@@ -201,10 +196,12 @@ void AGsGameObjectManager::UpdateRemoveGameObject()
 	}
 }
 
-FVector AGsGameObjectManager::CalcOnGround(UClass* Uclass, const FVector& Pos)
+
+FVector UGsSpawnComponent::CalcOnGround(UClass* Uclass, const FVector& Pos)
 {
 	//[Todo] Class UCharacterMovementComponent
-			//void UCharacterMovementComponent::FindFloor(const FVector& CapsuleLocation, FFindFloorResult& OutFloorResult, bool bCanUseCachedLocation, const FHitResult* DownwardSweepResult) const
+			//void UCharacterMovementComponent::FindFloor(const FVector& CapsuleLocation,
+			// FFindFloorResult& OutFloorResult, bool bCanUseCachedLocation, const FHitResult* DownwardSweepResult) const
 			//내부 구현을 참고 하여 개선한다.
 	FVector rayOri = Pos + FVector(0.f, 0.f, 1000.f);
 	FVector rayDes = rayOri + FVector(0.f, 0.f, -1.f)  * 1200.f;
@@ -229,8 +226,7 @@ FVector AGsGameObjectManager::CalcOnGround(UClass* Uclass, const FVector& Pos)
 	}
 	return Pos;
 }
-
-void AGsGameObjectManager::CallbackCompHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+void UGsSpawnComponent::CallbackCompHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (OtherActor)
@@ -251,7 +247,7 @@ void AGsGameObjectManager::CallbackCompHit(UPrimitiveComponent* HitComponent, AA
 	}
 }
 
-void AGsGameObjectManager::CallbackActorDeSpawn(AActor* Despawn)
+void UGsSpawnComponent::CallbackActorDeSpawn(AActor* Despawn)
 {
 	//관리 대상인가 찾음
 	if (auto findObj = FindObject(Despawn))

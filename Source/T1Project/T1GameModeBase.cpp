@@ -6,6 +6,8 @@
 #include "T1Project.h"
 #include "ConstructorHelpers.h"
 
+#include "GameService/Camera/GsCameraModeManager.h"
+
 #define USE_DUMMY false
 
 AT1GameModeBase::AT1GameModeBase()
@@ -24,6 +26,13 @@ AT1GameModeBase::AT1GameModeBase()
 		DefaultPawnClass = BP_DUMMY_C.Class;
 	}
 #endif
+
+	// 카메라 매니져 만들기
+	if (GsCameraModeSingle::Instance == nullptr)
+	{
+		GsCameraModeManager* mng = new GsCameraModeManager();
+		mng->Initialize();
+	}
 
 }
 

@@ -4,7 +4,6 @@
 #include "GsUIWidgetBase.h"
 #include "GsUIParameter.h"
 #include "GsUIEventInterface.h"
-//#include "UI/GsUIPopup.h"
 #include "UObject/ConstructorHelpers.h"
 #include "GsUIPathTable.h"
 #include "Engine/StreamableManager.h"
@@ -84,19 +83,6 @@ void AGsUIManager::Push(TSubclassOf<UGsUIWidgetBase> InClass, UGsUIParameter* In
 
 void AGsUIManager::PushStack(UGsUIWidgetBase* InWidget, UGsUIParameter* InParameters)
 {
-	// FIX: 로직 개선 필요
-	// 동일 객체가 최상단일 경우, 다시 추가하지 않는다.
-	UGsUIWidgetBase* TopWidget = StackPeek();
-	if (TopWidget == InWidget)
-	{
-		if (false == InWidget->IsInViewport())
-		{
-			InWidget->AddToViewport();
-		}
-
-		return;
-	}
-
 	StackedWidgets.Add(InWidget);
 	InWidget->OnPush(InParameters); // 위젯에 이벤트 발생시킴
 
@@ -117,25 +103,13 @@ void AGsUIManager::PushStack(UGsUIWidgetBase* InWidget, UGsUIParameter* InParame
 			}
 		}
 	}
-	
-	/*
-	// TEST: ZOrder문제 수정 위한 테스트
-	if (InWidget->IsA<UGsUIPopup>())
-	{
-		InWidget->AddToViewport(DefaultPopupZOrder);
-	}
-	else
-	{
-		InWidget->AddToViewport();
-	}
-	*/
-	InWidget->AddToViewport();
+
+	AddToViewport(InWidget);
 }
 
 void AGsUIManager::PushUnstack(UGsUIWidgetBase* InWidget, UGsUIParameter* InParameters)
 {
-	//InWidget->AddToViewport(DefaultTrayZOrder);
-	InWidget->AddToViewport();
+	AddToViewport(InWidget);
 
 	UnstackedWidgets.Add(InWidget);
 }
@@ -161,7 +135,7 @@ void AGsUIManager::PopStack(UGsUIWidgetBase* InWidget)
 {
 	InWidget->RemoveFromParent();
 
-	// 스택에 같은 객체가 반복될 경우 모두 지워지는 것을 막기 위해 가장 위의 것만 지우도록 처리
+	// 같은 객체가 스택에 존재할 경우엔 가장 위의 것을 지운다
 	for (int32 i = StackedWidgets.Num() - 1; i >= 0; --i)
 	{
 		UGsUIWidgetBase* Widget = StackedWidgets[i];
@@ -195,11 +169,20 @@ void AGsUIManager::PopStack(UGsUIWidgetBase* InWidget)
 		{
 			UGsUIWidgetBase* Widget = TopWidgets[i];
 
-			// FIX: 방금 지운 Remove한 객체와 같으면 제대로 동작하지 않음. 수정필요
 			if (false == Widget->IsInViewport())
 			{
-				Widget->AddToViewport();
+				AddToViewport(Widget);
 			}
+		}
+	}
+	else
+	{
+		// 최상단 객체가 닫혀있다면 켜준다. (같은 객체가 스택에 있을 경우 꺼져있을 수 있음)
+		UGsUIWidgetBase* Widget = StackedWidgets.Last();
+		if (nullptr != Widget &&
+			false == Widget->IsInViewport())
+		{
+			AddToViewport(Widget);
 		}
 	}
 }
@@ -208,13 +191,14 @@ void AGsUIManager::PopUnstack(UGsUIWidgetBase* InWidget)
 {
 	InWidget->RemoveFromParent();
 
-	// 같은 객체가 반복될 경우 모두 지워지는 것을 막기 위해 가장 위의 것만 지우도록 처리
-	for (int32 i = UnstackedWidgets.Num() - 1; i >= 0; --i)
+	// 같은 객체가 들어올 경우, 먼저 들어온 것부터 지운다
+	for (int32 i = 0, maxCount = UnstackedWidgets.Num(); i < maxCount; ++i)
 	{
 		UGsUIWidgetBase* Widget = UnstackedWidgets[i];
 
 		if (Widget == InWidget)
 		{
+			Widget = nullptr;
 			UnstackedWidgets.RemoveAt(i);
 			break;
 		}
@@ -309,9 +293,7 @@ TSubclassOf<UGsUIWidgetBase> AGsUIManager::GetWidgetClass(FName InKey)
 	if (TableRow->WidgetClass.IsPending())
 	{
 		FStreamableManager& AssetMgr = UAssetManager::GetStreamableManager();
-		const FSoftObjectPath& AssetRef = TableRow->WidgetClass.ToStringReference();
-
-		TableRow->WidgetClass =	AssetMgr.SynchronousLoad(AssetRef);
+		TableRow->WidgetClass = AssetMgr.LoadSynchronous(TableRow->WidgetClass, true);
 	}
 
 	return TableRow->WidgetClass.Get();
@@ -326,3 +308,17 @@ FGsTableUIPath* AGsUIManager::GetTableRow(FName InKey)
 
 	return nullptr;
 }
+
+void AGsUIManager::AddToViewport(UGsUIWidgetBase* InWidget)
+{
+	// 일반 AddToViewport 시 ZOrder + 10된 값이 들어간다. UUserWidget::AddToScreen 참고.
+	// 같은 ZOrder이면 이미 존재하는 것 다음에 Insert 된다. SOverlay::AddSlot 참고.
+	// Window < Popup < Tray 뎁스 보장을 위해 GetManagedZOrder() 를 통해 타입별 기본값을 달리한다.
+	// 기본값: Window: 10, Popup: 100, Tray: 500
+	InWidget->AddToViewport(InWidget->GetManagedZOrder());
+}
+
+//void AGsUIManager::TestForceGC()
+//{
+//	GetWorld()->ForceGarbageCollection(true);
+//}

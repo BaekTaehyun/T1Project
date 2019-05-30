@@ -9,7 +9,7 @@ void FGsSkillBase::Initialize(UGsGameObjectBase* owner)
 	Owner = owner;
 }
 
-void FGsSkillBase::DeInitialize()
+void FGsSkillBase::Finalize()
 {
 	if (CurrentSkillData)
 	{

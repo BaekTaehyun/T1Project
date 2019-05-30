@@ -49,7 +49,7 @@ USkeletalMesh* FGsPartsLocal::MergeParts() const
 
 		for (auto el : Parts)
 		{
-			mergeMeshes.Add(el.Get()->Mesh.Get());
+			mergeMeshes.Add(el.Get()->Mesh);
 		}
 
 		if (mergeMeshes.Num() > 1)

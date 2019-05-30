@@ -25,6 +25,9 @@ private:
 	
 public:
 	AGsGameModeWorld();
+
+	virtual void StartPlay() override;
+
 	virtual void StartToLeaveMap();
 	virtual void TeleportPlayer(FString in_tag, bool in_waitAllLoad = false);	
 
@@ -36,4 +39,6 @@ private:
 	void SetPlayerUnspawnedState();
 	void SetPlayerSpawendState();
 	ULevelStreaming* GetClosestLevel();
+
+	void SpawnPlayer();
 };

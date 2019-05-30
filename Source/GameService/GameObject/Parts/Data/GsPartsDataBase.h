@@ -28,7 +28,7 @@ struct GAMESERVICE_API FGsCPartsData
 {
 	EGsPartsType Type;
 	FSoftObjectPath Path;
-	TSharedPtr<USkeletalMesh> Mesh;
+	USkeletalMesh* Mesh;
 
 	FGsCPartsData(EGsPartsType type, FSoftObjectPath path)
 	{
@@ -36,7 +36,7 @@ struct GAMESERVICE_API FGsCPartsData
 		Path = path;
 	}
 
-	void SetMesh(TSharedPtr<USkeletalMesh> mesh)
+	void SetMesh(USkeletalMesh* mesh)
 	{
 		Mesh = mesh;
 	}

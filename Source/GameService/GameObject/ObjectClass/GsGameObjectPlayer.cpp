@@ -20,8 +20,16 @@ void UGsGameObjectPlayer::Finalize()
 {
 	Super::Finalize();
 
-	if (UpperFsm)	{ delete UpperFsm; }
-	if (Skill)		{ delete Skill; }
+	if (UpperFsm)	
+	{ 
+		UpperFsm->Finalize();
+		delete UpperFsm; 
+	}
+	if (Skill)		
+	{ 
+		Skill->Finalize();
+		delete Skill; 
+	}
 }
 
 void UGsGameObjectPlayer::Update(float Delta)

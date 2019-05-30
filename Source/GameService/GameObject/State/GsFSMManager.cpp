@@ -4,7 +4,7 @@
 #include "Runtime/Engine/Public/TimerManager.h"
 #include "GsStateBase.h"
 
-void FGsFSMManager::DeInitialize()
+void FGsFSMManager::Finalize()
 {
 }
 
