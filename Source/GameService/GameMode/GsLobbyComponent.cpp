@@ -6,7 +6,6 @@
 #include "Message/GsMessageManager.h"
 #include "Message/GsMessageLobby.h"
 #include "GsGameModeLobby.h"
-#include "Message/GsMessageManager.h"
 #include "UI/GsUIManager.h"
 #include "GameService.h"
 #include "GSGameInstance.h"

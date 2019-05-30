@@ -17,6 +17,10 @@ AGsGameModeBase::AGsGameModeBase()
 	PrimaryActorTick.bCanEverTick = true;*/
 }
 
+AGsGameModeBase::~AGsGameModeBase()
+{
+}
+
 void AGsGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {
 	Super::InitGame(MapName, Options, ErrorMessage);
@@ -35,13 +39,10 @@ void AGsGameModeBase::PostLogin(APlayerController * newPlayer)
 
 void AGsGameModeBase::StartPlay()
 {
-	Super::StartPlay();
-
 	GSLOG(Warning, TEXT("StartPlay"));
-	
+	Super::StartPlay();
 	_SpawnComponent = NewObject<UGsSpawnComponent>(this, NAME_None, RF_Transient);
-	_SpawnComponent->RegisterComponent();
-}
+	_SpawnComponent->RegisterComponent();}
 
 void AGsGameModeBase::Tick(float deltaSeconds)
 {

@@ -18,6 +18,7 @@ class GAMESERVICE_API AGsGameModeBase : public AGameModeBase
 	GENERATED_BODY()	
 public:
 	AGsGameModeBase();
+	virtual ~AGsGameModeBase();
 
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
 

@@ -11,6 +11,7 @@
 #include "GameObject/ObjectClass/GsGameObjectProjectile.h"
 #include "Class/GsSpawn.h"
 
+
 UGsSpawnComponent::UGsSpawnComponent(const class FObjectInitializer &OBJ) : Super(OBJ)
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -122,8 +123,7 @@ TArray<UGsGameObjectBase*> UGsSpawnComponent::FindObjectArray(EGsGameObjectType 
 	return TypeSpawns[Type];
 }
 
-
-template <>
+template<>
 UGsGameObjectProjectile* UGsSpawnComponent::SpawnObject(UClass* Uclass, const FVector& Pos, const FRotator& Rot, bool IsOnGround)
 {
 	if (auto projectile = NewObject<UGsGameObjectProjectile>())
@@ -138,6 +138,7 @@ UGsGameObjectProjectile* UGsSpawnComponent::SpawnObject(UClass* Uclass, const FV
 	}
 	return NULL;
 }
+
 
 void UGsSpawnComponent::DespawnObject(UGsGameObjectBase* Despawn)
 {

@@ -10,6 +10,7 @@
 #include "GsSpawnComponent.generated.h"
 
 class UGsGameObjectBase;
+class UGsGameObjectProjectile;
 
 UCLASS()
 class GAMESERVICE_API UGsSpawnComponent : 
@@ -21,16 +22,18 @@ public:
 	virtual ~UGsSpawnComponent();
 
 	virtual void InitializeComponent() override;
-	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType,
+		FActorComponentTickFunction* ThisTickFunction) override;
+
 	virtual void UninitializeComponent() override;
 
     UGsGameObjectBase* FindObject(EGsGameObjectType Type);
 	UGsGameObjectBase* FindObject(class AActor*, EGsGameObjectType type = EGsGameObjectType::Base);
 	TArray<UGsGameObjectBase*> FindObjectArray(EGsGameObjectType Type);
 		
-	//이 메서드는 아직 GameObject타입별 후처리에대한 처리가 지원되지 않음
 	template<class tGameobject>
-	tGameobject* SpawnObject(UClass* Uclass, const FVector& Pos, const FRotator& Rot, bool IsOnGround = false)
+	tGameobject* SpawnObject(UClass* Uclass, const FVector& Pos,
+		const FRotator& Rot, bool IsOnGround = false)
 	{
 		if (auto object = NewObject<tGameobject>())
 		{
@@ -38,11 +41,19 @@ public:
 		}
 		return NULL;
 	}
+
+	//bak1210 : template 특수화의 경우 일반적으로 cpp에서 처리해도 무방하나 언리얼 유니티 빌드의 문제로 같은 함수가 다른 obj에 묶여
+	//			심볼충돌의 경우가 있다.. 이를 방지하기 위해 다른 파일에 함께묶이는 현상을 제거하기위해 명시적으로 선언
+	template <>
+	UGsGameObjectProjectile* SpawnObject(UClass* Uclass, const FVector& Pos,
+		const FRotator& Rot, bool IsOnGround);
+
 	void DespawnObject(UGsGameObjectBase* Despawn);
 
 protected:
 	template<class tGameobject>
-	tGameobject* SpawnObjectInternal(tGameobject* Instance, UClass* Uclass, const FVector& Pos, const FRotator& Rot, bool IsOnGround = false)
+	tGameobject* SpawnObjectInternal(tGameobject* Instance, UClass* Uclass,
+		const FVector& Pos, const FRotator& Rot, bool IsOnGround = false)
 	{
 		Instance->Initialize();
 		FVector spawnPos = Pos;
@@ -84,10 +95,12 @@ private:
 	TArray<UGsGameObjectBase*> RemoveSpawns;
 };
 
-
 typedef TGsSingleton<UGsSpawnComponent>	UGsSpawnerSingle;
 UGsSpawnComponent* UGsSpawnerSingle::Instance = NULL;
 #define GSpawner() UGsSpawnerSingle::Instance
+
+
+
 
 
 
