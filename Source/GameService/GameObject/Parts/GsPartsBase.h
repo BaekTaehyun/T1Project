@@ -38,6 +38,7 @@ protected:
 	void Attach();
 	//template<typename T = EGsPartsType, typename... T2> 후처리용
 	void Detach();
+
 	virtual void Attached();
 	virtual void Detached();
 

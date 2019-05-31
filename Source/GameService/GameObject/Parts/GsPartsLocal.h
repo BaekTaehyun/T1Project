@@ -25,8 +25,10 @@ protected:
 private:
 	USkeletalMesh* MergeParts() const;
 
-	void ToMergeParams(const TArray<FSkelMeshMergeSectionMapping_BP>& InSectionMappings, TArray<FSkelMeshMergeSectionMapping>& OutSectionMappings);
-	void ToMergeParams(const TArray<FSkelMeshMergeUVTransformMapping>& InUVTransformsPerMesh, TArray<FSkelMeshMergeUVTransforms>& OutUVTransformsPerMesh);
+	void ToMergeParams(const TArray<FSkelMeshMergeSectionMapping_BP>& InSectionMappings,
+		TArray<FSkelMeshMergeSectionMapping>& OutSectionMappings);
+	void ToMergeParams(const TArray<FSkelMeshMergeUVTransformMapping>& InUVTransformsPerMesh,
+		TArray<FSkelMeshMergeUVTransforms>& OutUVTransformsPerMesh);
 
 	USkeletalMesh* MergeToParams(const FSkeletalMeshMergeParams& Params);
 

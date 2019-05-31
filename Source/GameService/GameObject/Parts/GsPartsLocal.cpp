@@ -74,7 +74,8 @@ USkeletalMesh* FGsPartsLocal::MergeParts() const
 	return NULL;
 }
 
-void FGsPartsLocal::ToMergeParams(const TArray<FSkelMeshMergeSectionMapping_BP>& InSectionMappings, TArray<FSkelMeshMergeSectionMapping>& OutSectionMappings)
+void FGsPartsLocal::ToMergeParams(const TArray<FSkelMeshMergeSectionMapping_BP>& InSectionMappings,
+	TArray<FSkelMeshMergeSectionMapping>& OutSectionMappings)
 {
 	if (InSectionMappings.Num() > 0)
 	{
@@ -86,7 +87,8 @@ void FGsPartsLocal::ToMergeParams(const TArray<FSkelMeshMergeSectionMapping_BP>&
 	}
 }
 
-void FGsPartsLocal::ToMergeParams(const TArray<FSkelMeshMergeUVTransformMapping>& InUVTransformsPerMesh, TArray<FSkelMeshMergeUVTransforms>& OutUVTransformsPerMesh)
+void FGsPartsLocal::ToMergeParams(const TArray<FSkelMeshMergeUVTransformMapping>& InUVTransformsPerMesh,
+	TArray<FSkelMeshMergeUVTransforms>& OutUVTransformsPerMesh)
 {
 	if (InUVTransformsPerMesh.Num() > 0)
 	{
@@ -149,7 +151,8 @@ USkeletalMesh* FGsPartsLocal::MergeToParams(const FSkeletalMeshMergeParams& Para
 			}
 		}
 	}
-	FSkeletalMeshMerge Merger(BaseMesh, MeshesToMergeCopy, SectionMappings, Params.StripTopLODS, BufferAccess, UvTransforms.GetData());
+	FSkeletalMeshMerge Merger(BaseMesh, MeshesToMergeCopy, SectionMappings,
+		Params.StripTopLODS, BufferAccess, UvTransforms.GetData());
 	if (!Merger.DoMerge())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Merge failed!"));
@@ -185,9 +188,12 @@ USkeletalMesh* FGsPartsLocal::MergeToParams(const FSkeletalMeshMergeParams& Para
 		UniqueSkelSockets.Append(SkelSockets);
 		int32 Total = SkelSockets.Num() + SkelMeshSockets.Num();
 		int32 UniqueTotal = UniqueSkelMeshSockets.Num() + UniqueSkelSockets.Num();
-		UE_LOG(LogTemp, Warning, TEXT("SkelMeshSocketCount: %d | SkelSocketCount: %d | Combined: %d"), SkelMeshSockets.Num(), SkelSockets.Num(), Total);
-		UE_LOG(LogTemp, Warning, TEXT("SkelMeshSocketCount: %d | SkelSocketCount: %d | Combined: %d"), UniqueSkelMeshSockets.Num(), UniqueSkelSockets.Num(), UniqueTotal);
-		UE_LOG(LogTemp, Warning, TEXT("Found Duplicates: %s"), *((Total != UniqueTotal) ? FString("True") : FString("False")));
+		UE_LOG(LogTemp, Warning, TEXT("SkelMeshSocketCount: %d | SkelSocketCount: %d | Combined: %d"),
+			SkelMeshSockets.Num(), SkelSockets.Num(), Total);
+		UE_LOG(LogTemp, Warning, TEXT("SkelMeshSocketCount: %d | SkelSocketCount: %d | Combined: %d"),
+			UniqueSkelMeshSockets.Num(), UniqueSkelSockets.Num(), UniqueTotal);
+		UE_LOG(LogTemp, Warning, TEXT("Found Duplicates: %s"),
+			*((Total != UniqueTotal) ? FString("True") : FString("False")));
 	}
 	return BaseMesh;
 }
