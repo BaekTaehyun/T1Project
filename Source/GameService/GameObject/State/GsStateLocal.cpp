@@ -2,9 +2,12 @@
 
 #include "GsStateLocal.h"
 #include "GsFSMManager.h"
+#include "Kismet/GameplayStatics.h"
 #include "GameObject/Skill/GsSKillLocal.h"
 #include "GameObject/Movement/GsMovementBase.h"
-#include "GameObject/Component/Animation/GsAnimInstanceState.h"
+#include "GameObject/Component/GsAnimInstanceState.h"
+#include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
+#include "GameObject/ActorExtend/GsWheelVehicle.h"
 
 
 /// FStateSpawn ///
@@ -316,12 +319,31 @@ bool FGsStateRide::OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateI
 void FGsStateRide::OnEnter(UGsGameObjectLocal* Owner)
 {
 	//피직 정보 끄기
-	Owner->GetLocalCharacter()->DisableComponentsSimulatePhysics();
+	Owner->GetLocalCharacter()->DisableCollision();
+
+	//컨트롤러 변경
+	if (auto controller = UGameplayStatics::GetPlayerController(Owner->GetWorld(), 0))
+	{
+		controller->UnPossess();
+		controller->Possess(Owner->GetVehicle()->GetWhellVehicle());
+	}
 }
 
 void FGsStateRide::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
 {
 
+}
+
+void FGsStateRide::OnExit(UGsGameObjectLocal* Owner)
+{
+	//컨트롤러 원복
+	if (auto controller = UGameplayStatics::GetPlayerController(Owner->GetWorld(), 0))
+	{
+		controller->UnPossess();
+		controller->Possess(Owner->GetLocalCharacter());
+	}
+
+	Owner->GetLocalCharacter()->EnableCollision();
 }
 
 ///FStateUpperIdle///

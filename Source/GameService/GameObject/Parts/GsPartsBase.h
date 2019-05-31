@@ -19,6 +19,10 @@ public:
 	virtual void Finalize();
 	virtual void LoadData(const TCHAR * Path);
 
+	//가변 템플릿 사용
+	//관련 참고 링크 정보 : 
+	//https://lusain.tistory.com/3
+	//https://docs.microsoft.com/en-us/cpp/cpp/ellipses-and-variadic-templates?view=vs-2019
 	template<typename T = EGsPartsType, typename... T2>
 	void Attach(const T& Type, const T2&... Types);
 	

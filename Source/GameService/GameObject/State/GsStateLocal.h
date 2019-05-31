@@ -118,6 +118,7 @@ public:
 	virtual bool OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID) override;
 	virtual void OnEnter(UGsGameObjectLocal* Owner) override;
 	virtual void OnUpdate(UGsGameObjectLocal* Owner, float Delta) override;
+	virtual void OnExit(UGsGameObjectLocal* Owner) override;
 };
 
 //Uppper

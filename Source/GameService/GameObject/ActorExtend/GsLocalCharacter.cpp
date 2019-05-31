@@ -37,6 +37,7 @@ void AGsLocalCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	Animation = Cast<UGsAnimInstanceState>(GetMesh()->GetAnimInstance());
+	RestoreCollisionType = GetCapsuleComponent()->GetCollisionEnabled();
 }
 
 // Called when the game starts or when spawned
@@ -59,20 +60,13 @@ void AGsLocalCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	InputBinder->SetBinding(PlayerInputComponent);
 }
 
-void AGsLocalCharacter::DisableComponentsSimulatePhysics()
+void AGsLocalCharacter::EnableCollision()
 {
-	/*
-	TInlineComponentArray<UPrimitiveComponent*> Components;
-	GetComponents(Components);
+	GetCapsuleComponent()->SetCollisionEnabled(RestoreCollisionType);
+}
 
-	for (UPrimitiveComponent* Component : Components)
-	{
-		Component->SetSimulatePhysics(false);
-	}*/
-
+void AGsLocalCharacter::DisableCollision()
+{
+	RestoreCollisionType = GetCapsuleComponent()->GetCollisionEnabled();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	//GetCharacterMovement()->DisableMovement();
-	//GetCharacterMovement()->bEnablePhysicsInteraction = false;
-	//GetCharacterMovement()->SetComponentTickEnabled(false);
 }

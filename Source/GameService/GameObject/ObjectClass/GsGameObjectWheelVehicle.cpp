@@ -8,6 +8,17 @@
 EGsGameObjectType UGsGameObjectWheelVehicle::GetObjectType() const	{ return EGsGameObjectType::Vehicle; }
 AActor* UGsGameObjectWheelVehicle::GetActor() const					{ return GetWhellVehicle(); }
 AGsWheelVehicle* UGsGameObjectWheelVehicle::GetWhellVehicle() const { return (Actor->IsValidLowLevel()) ? Actor : NULL; }
+TArray<class UGsGameObjectPlayer*> UGsGameObjectWheelVehicle::GetPassengers() const { return Passengers; }
+
+void UGsGameObjectWheelVehicle::SetPassenger(UGsGameObjectPlayer* Passenger)
+{
+	Passengers.AddUnique(Passenger);
+}
+
+void UGsGameObjectWheelVehicle::RemovePassenger(UGsGameObjectPlayer* Passenger)
+{
+	Passengers.Remove(Passenger);
+}
 
 void UGsGameObjectWheelVehicle::Initialize()
 {
@@ -19,6 +30,8 @@ void UGsGameObjectWheelVehicle::Initialize()
 void UGsGameObjectWheelVehicle::Finalize()
 {
 	Super::Finalize();
+
+	Passengers.Reset();
 }
 
 void UGsGameObjectWheelVehicle::ActorSpawned(AActor* Spawn)
@@ -34,14 +47,3 @@ void UGsGameObjectWheelVehicle::ActorSpawned(AActor* Spawn)
 		Actor->GetInputBinder()->Initialize(this);
 	}
 }
-
-void UGsGameObjectWheelVehicle::AttachGameObject(UGsGameObjectBase* Go, FName SocketName)
-{
-	auto vehicleActor = GetWhellVehicle();
-	if (auto meshComponent = GetWhellVehicle()->GetMesh())
-	{
-		vehicleActor->AttachToActor(Go->GetActor(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), SocketName);
-	}
-}
-
-

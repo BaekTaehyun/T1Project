@@ -18,18 +18,22 @@ public:
 	virtual void Initialize() override;
 	virtual void Finalize() override;
 
+public:
 	virtual EGsGameObjectType GetObjectType() const override;
 	virtual AActor* GetActor() const override;
 	UFUNCTION(BlueprintCallable, Category = "GameObject")
 	virtual AGsWheelVehicle* GetWhellVehicle() const;
+	TArray<class UGsGameObjectPlayer*> GetPassengers() const;
+	void SetPassenger(UGsGameObjectPlayer* Passenger);
+	void RemovePassenger(UGsGameObjectPlayer* Passenger);
 
 public:
 	virtual void ActorSpawned(AActor* Spawn) override;
 
-	//[임시] 탑승자 정보 처리
-	void AttachGameObject(UGsGameObjectBase* Go, FName SocketName);
-
 protected:
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = GameObject, Meta = (AllowPrivateAccess = true))
 	AGsWheelVehicle* Actor;
+
+	//탑승자 정보
+	TArray<class UGsGameObjectPlayer*> Passengers;
 };
