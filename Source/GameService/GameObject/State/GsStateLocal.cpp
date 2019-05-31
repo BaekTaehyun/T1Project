@@ -148,6 +148,7 @@ void FGsStateForwardWalk::OnEnter(UGsGameObjectLocal* Owner)
 
 void FGsStateForwardWalk::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
 {
+	Super::OnUpdate(Owner, Delta);
 }
 
 
@@ -197,6 +198,7 @@ void FGsStateBackwardWalk::OnEnter(UGsGameObjectLocal* Owner)
 
 void FGsStateBackwardWalk::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
 {
+	Super::OnUpdate(Owner, Delta);
 }
 
 
@@ -243,6 +245,7 @@ void FGsStateSideWalk::OnEnter(UGsGameObjectLocal* Owner)
 
 void FGsStateSideWalk::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
 {
+	Super::OnUpdate(Owner, Delta);
 }
 
 /// FStateRun ///
@@ -285,6 +288,7 @@ void FGsStateRun::OnEnter(UGsGameObjectLocal* Owner)
 
 void FGsStateRun::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
 {
+	Super::OnUpdate(Owner, Delta);
 }
 
 
@@ -331,7 +335,7 @@ void FGsStateRide::OnEnter(UGsGameObjectLocal* Owner)
 
 void FGsStateRide::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
 {
-
+	Super::OnUpdate(Owner, Delta);
 }
 
 void FGsStateRide::OnExit(UGsGameObjectLocal* Owner)
@@ -432,6 +436,7 @@ void FGsStateAttack::OnEnter(UGsGameObjectLocal* Owner)
 
 void FGsStateAttack::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
 {
+	Super::OnUpdate(Owner, Delta);
 	auto skillMgr = Owner->GetSkill();
 	skillMgr->RunSkillNode(Delta);
 }

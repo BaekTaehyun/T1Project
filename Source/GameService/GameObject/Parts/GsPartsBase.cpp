@@ -106,7 +106,7 @@ void FGsPartsBase::Attach()
 	for (auto el : Parts) { Streams.Emplace(el.Get()->Path); }
 
 	UAssetManager::GetStreamableManager().RequestAsyncLoad(
-		Streams, [=]() {
+		Streams, [&]() {
 			//이부분 개선 필요..
 			for (auto el : Parts)
 			{

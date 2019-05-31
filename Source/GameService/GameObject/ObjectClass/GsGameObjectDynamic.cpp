@@ -44,5 +44,5 @@ void UGsGameObjectDynamic::Update(float Delta)
 	Super::Update(Delta);
 
 	if (Fsm)        { Fsm->Update(this, Delta); }
-    if (Movement)   { Movement->Update(Delta); }
+    //if (Movement)   { Movement->Update(Delta); }
 }
