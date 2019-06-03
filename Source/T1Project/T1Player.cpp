@@ -142,12 +142,13 @@ void AT1Player::BeginPlay()
 	{
 		CurWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, WeaponSocket);
 	}*/
-
+#ifdef CAM_MODE
 	// 캐릭터 세팅
 	if (GsCameraModeSingle::Instance != nullptr)
 	{
 		GsCameraModeSingle::Instance->SetCharacter(this);
 	}
+#endif
 }
 
 void AT1Player::CreateUI()

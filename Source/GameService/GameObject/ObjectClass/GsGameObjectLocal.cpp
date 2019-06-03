@@ -11,6 +11,9 @@
 #include "Runtime/Engine/Classes/GameFramework/Controller.h"
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
 
+#include "../../Camera/GsCameraModeManager.h"
+#include "EngineMinimal.h"
+
 //프로퍼티
 EGsGameObjectType	UGsGameObjectLocal::GetObjectType() const		{ return EGsGameObjectType::LocalPlayer; }
 AActor*				UGsGameObjectLocal::GetActor() const			{ return GetLocalCharacter(); }
@@ -75,6 +78,12 @@ void UGsGameObjectLocal::ActorSpawned(AActor* Spawn)
 
         //모든 파츠 장착
         Parts->AttachAll();
+
+		// 캐릭터 세팅
+		if (GsCameraModeSingle::Instance != nullptr)
+		{
+			GsCameraModeSingle::Instance->SetCharacter(this);
+		}		
 	}
 }
 
@@ -83,6 +92,11 @@ void UGsGameObjectLocal::Update(float delta)
 	Super::Update(delta);
 
 	if (UpperFsm) { UpperFsm->Update(this, delta); }
+
+	if (GsCameraModeSingle::Instance != nullptr)
+	{
+		GsCameraModeSingle::Instance->Update(delta);
+	}
 }
 
 void UGsGameObjectLocal::RegistEvent()

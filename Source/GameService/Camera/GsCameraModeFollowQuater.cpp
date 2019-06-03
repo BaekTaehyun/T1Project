@@ -1,7 +1,7 @@
 #include "GsCameraModeFollowQuater.h"
 #include "GsCameraModeManager.h"
 
-GsCameraModeFollowQuater::GsCameraModeFollowQuater():GsCameraModeFollow(EGsControlMode::Quater)
+GsCameraModeFollowQuater::GsCameraModeFollowQuater():GsCameraModeFollowBase(EGsControlMode::Quater)
 {
 	GSLOG(Warning, TEXT("GsCameraModeFollowerQuater construrctor"));
 }

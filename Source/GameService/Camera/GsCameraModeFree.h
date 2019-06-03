@@ -1,16 +1,16 @@
 #pragma once
 
-#include "GsCameraModeFollow.h"
+#include "GsCameraModeFreeBase.h"
 
 //----------------------------------
 // follow free 모드
 //----------------------------------
 
-class GsCameraModeFollowFree :public GsCameraModeFollow
+class GsCameraModeFree :public GsCameraModeFreeBase
 {
 public:
-	GsCameraModeFollowFree();
-	virtual ~GsCameraModeFollowFree();
+	GsCameraModeFree();
+	virtual ~GsCameraModeFree();
 
 	// 다음 스텝 진행
 	virtual void NextStep(class GsCameraModeManager* In_mng) override;

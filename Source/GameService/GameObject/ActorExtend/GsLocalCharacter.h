@@ -31,6 +31,7 @@ class GAMESERVICE_API AGsLocalCharacter : public ACharacter
 public:
 	FORCEINLINE UGsAnimInstanceState* GetAnim() const { return Animation; }
 	FORCEINLINE UGsInputBindingLocalPlayer* GetInputBinder() const { return InputBinder; }
+	FORCEINLINE USpringArmComponent* GetSpringArm() const{ return CameraBoom; }
 
 public:
 	// Sets default values for this character's properties

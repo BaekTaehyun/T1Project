@@ -41,6 +41,7 @@ void AGsGameModeWorld::StartToLeaveMap()
 void AGsGameModeWorld::StartPlay()
 {
 	Super::StartPlay();
+	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 
 	SpawnPlayer();
 

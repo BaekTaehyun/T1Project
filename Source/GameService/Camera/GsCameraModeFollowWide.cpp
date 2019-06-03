@@ -1,7 +1,7 @@
 #include "GsCameraModeFollowWide.h"
 #include "GsCameraModeManager.h"
 
-GsCameraModeFollowWide::GsCameraModeFollowWide():GsCameraModeFollow(EGsControlMode::Wide)
+GsCameraModeFollowWide::GsCameraModeFollowWide():GsCameraModeFollowBase(EGsControlMode::Wide)
 {
 	GSLOG(Warning, TEXT("GsCameraModeFollowWide constructor"));
 }

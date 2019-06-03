@@ -2,7 +2,7 @@
 #include "GsCameraModeManager.h"
 #include "GsControlMode.h"
 
-GsCameraModeFollowAction::GsCameraModeFollowAction() : GsCameraModeFollow(EGsControlMode::Action)
+GsCameraModeFollowAction::GsCameraModeFollowAction() : GsCameraModeFollowBase(EGsControlMode::Action)
 {
 	GSLOG(Warning, TEXT("GsCameraModeFollowAction construct"));
 }

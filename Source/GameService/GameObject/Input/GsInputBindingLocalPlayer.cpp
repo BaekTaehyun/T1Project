@@ -11,6 +11,7 @@
 #include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
 #include "Message/GsMessageManager.h"
 
+#include "../../Camera/GsCameraModeManager.h"
 //[Todo]타겟 클래스 설정 방식에 좀더 좋은 구조를 생각해볼것
 void UGsInputBindingLocalPlayer::Initialize()
 {
@@ -49,6 +50,26 @@ void UGsInputBindingLocalPlayer::SetBinding(UInputComponent* input)
 	input->BindAxis("LocalMoveRotate", this, &UGsInputBindingLocalPlayer::OnMoveRotateYaw);
 	input->BindAxis("LocalTurn", this, &UGsInputBindingLocalPlayer::OnMoveRotateYaw);
 	input->BindAxis("LocalLookUp", this, &UGsInputBindingLocalPlayer::OnMoveRotatePitch);
+
+
+	input->BindAction(TEXT("ZoomIn"),
+		EInputEvent::IE_Pressed,
+		this,
+		&UGsInputBindingLocalPlayer::OnZoomIn);
+
+	input->BindAction(TEXT("ZoomOut"),
+		EInputEvent::IE_Pressed,
+		this,
+		&UGsInputBindingLocalPlayer::OnZoomOut);
+
+	input->BindAction(TEXT("ViewChange"), EInputEvent::IE_Pressed,
+		this, &UGsInputBindingLocalPlayer::OnViewChange);
+
+	
+	input->BindAction(TEXT("TouchOff"), EInputEvent::IE_Released, this, 
+		&UGsInputBindingLocalPlayer::OnTouchRelease);
+	input->BindAction(TEXT("TouchOn"), EInputEvent::IE_Pressed, this,
+		&UGsInputBindingLocalPlayer::OnTouchPress);
 }
 
 void UGsInputBindingLocalPlayer::OnAttachParts(EGsPartsType Type)
@@ -88,46 +109,81 @@ void UGsInputBindingLocalPlayer::OnAction()
 
 void UGsInputBindingLocalPlayer::OnMoveStop()
 {
+#ifdef CAM_MODE
+	if (FunctionMoveStop != nullptr)
+	{
+		FunctionMoveStop();
+	}
+#else
     if (auto movement = Target->GetMovement())
     {
         movement->Stop();
     }
+#endif
 }
 
 void UGsInputBindingLocalPlayer::OnMoveForward()
 {
+#ifdef CAM_MODE
+	if (FunctionMoveForward != nullptr)
+	{
+		FunctionMoveForward();
+	}
+#else
     if (auto movement = Target->GetMovement())
     {
         FVector dir = FRotationMatrix(Target->GetLocalCharacter()->Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
         movement->Move(dir, EGsGameObjectMoveDirType::Forward, 10.0f);
     }
+#endif
 }
 
 void UGsInputBindingLocalPlayer::OnMoveBackward()
 {
+#ifdef CAM_MODE
+	if (FunctionMoveBackward != nullptr)
+	{
+		FunctionMoveBackward();
+	}
+#else
     if (auto movement = Target->GetMovement())
     {
         FVector dir = FRotationMatrix(Target->GetLocalCharacter()->Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
         movement->Move(dir, EGsGameObjectMoveDirType::Backward, -5.f);
     }
+#endif
 }
 
 void UGsInputBindingLocalPlayer::OnMoveLeft()
 {
+#ifdef CAM_MODE
+	if (FunctionMoveLeft != nullptr)
+	{
+		FunctionMoveLeft();
+	}
+#else
     if (auto movement = Target->GetMovement())
     {
         FVector dir = FRotationMatrix(Target->GetLocalCharacter()->Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
         movement->Move(dir, EGsGameObjectMoveDirType::SideStep, -5.f);
     }
+#endif
 }
 
 void UGsInputBindingLocalPlayer::OnMoveRight()
 {
+#ifdef CAM_MODE
+	if (FunctionMoveRight != nullptr)
+	{
+		FunctionMoveRight();
+	}
+#else
     if (auto movement = Target->GetMovement())
     {
         FVector dir = FRotationMatrix(Target->GetLocalCharacter()->Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
         movement->Move(dir, EGsGameObjectMoveDirType::SideStep, 5.f);
     }
+#endif
 }
 
 void UGsInputBindingLocalPlayer::OnMoveRotate(float Value)
@@ -144,4 +200,49 @@ void UGsInputBindingLocalPlayer::OnMoveRotateYaw(float Value)
 void UGsInputBindingLocalPlayer::OnMoveRotatePitch(float Value)
 {
 	Target->GetLocalCharacter()->AddControllerPitchInput(Value);
+}
+
+// 터치 시작(pc는 좌클릭)
+void UGsInputBindingLocalPlayer::OnTouchPress()
+{
+	if (FunctionTouchPress != nullptr)
+	{
+		FunctionTouchPress();
+	}
+
+	GSLOG(Error, TEXT("OnTouchPress"));
+}
+// 터치 끝(pc는 좌클릭)
+void UGsInputBindingLocalPlayer::OnTouchRelease()
+{
+	if (FunctionTouchRelease != nullptr)
+	{
+		FunctionTouchRelease();
+	}
+
+	GSLOG(Error, TEXT("OnTouchRelease"));
+}
+// 줌인
+void UGsInputBindingLocalPlayer::OnZoomIn()
+{
+	if (FunctionZoomIn != nullptr)
+	{
+		FunctionZoomIn();
+	}
+}
+// 줌아웃
+void UGsInputBindingLocalPlayer::OnZoomOut()
+{
+	if (FunctionZoomOut != nullptr)
+	{
+		FunctionZoomOut();
+	}
+}
+// 카메로 모드 변경
+void UGsInputBindingLocalPlayer::OnViewChange()
+{
+	if (GsCameraModeSingle::Instance != nullptr)
+	{
+		GsCameraModeSingle::Instance->NextStep();
+	}
 }

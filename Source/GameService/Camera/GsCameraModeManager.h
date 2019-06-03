@@ -7,7 +7,7 @@
 #include "GsControlMode.h"
 #include "GsCameraModeBase.h"
 
-
+#define NEW_CAM_CHAR
 
 //--------------------------------------------------------------
 // 카메라 모드 할당관리자
@@ -27,6 +27,7 @@ public:
 // 인자 변환 enter, exit, update에서 ACharacter 넘기기위해서 별도로 만듬...
 //--------------------------------------------------------------
 struct FGsCamModeData;
+class UGsGameObjectLocal;
 class GAMESERVICE_API GsCameraModeManager :
 	public GSTMap<EGsControlMode, GsCameraModeBase, GsCameraModeAllocator>,
 	public TGsSingleton<GsCameraModeManager>
@@ -45,13 +46,14 @@ class GAMESERVICE_API GsCameraModeManager :
 	StateEvent				_onLeaveState;
 
 
-	// 컨트롤 할 캐릭터
-	ACharacter* _character;
-
+	// 내 캐릭터
+	UGsGameObjectLocal* LocalPlayer;
 	// 테이블 데이터
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	class UDataTable* CamModeData;
 
+	// 카메라 자동 회전 커브 데이터	
+	UCurveFloat* CamAutoRotCurveData;
 	// 모드별 데이터
 	TMap<EGsControlMode, FGsCamModeData*> _mapModeData;
 protected:
@@ -68,7 +70,7 @@ public:
 	StateEvent& OnEnterState()  { return _onEnterState; }
 	StateEvent& OnLeaveState()  { return _onLeaveState; }
 
-	ACharacter* GetCharacter(){ return _character; }
+	UCurveFloat* GetCurveData() { return CamAutoRotCurveData; }
 	//------------------------------------------------------------------------------
 	virtual void RemoveAll()
 	{
@@ -76,7 +78,7 @@ public:
 
 		if (_currentState.IsValid())
 		{
-			_currentState.Get()->Exit(_character);
+			_currentState.Get()->Exit(LocalPlayer);
 			_currentState = NULL;
 		}
 
@@ -95,7 +97,7 @@ public:
 	virtual void Initialize();
 
 	// 캐릭터 세팅(초기화와 시점이 다를수 있음...)
-	void SetCharacter(ACharacter* In_char);
+	void SetCharacter(UGsGameObjectLocal* In_char);
 
 	// 상태 변경(각 스테이트한테 캐릭터를 인자로 넘기는 버전)
 	void ChangeState(EGsControlMode In_state);
