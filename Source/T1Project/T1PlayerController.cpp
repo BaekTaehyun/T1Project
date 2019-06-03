@@ -20,6 +20,6 @@ void AT1PlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	//플레이 누를때마다 언리얼 뷰포트를 누르지 않아도 되도록 설정
-	FInputModeGameOnly InputMode;
-	SetInputMode(InputMode);
+	/*FInputModeGameOnly InputMode;
+	SetInputMode(InputMode);*/
 }
