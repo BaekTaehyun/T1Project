@@ -3,3 +3,8 @@
 
 #include "GsUITray.h"
 
+
+void UGsUITray::OnClickImage()
+{
+	UE_LOG(LogTemp, Log, TEXT("Call OnClickImage() !!! "));
+}
