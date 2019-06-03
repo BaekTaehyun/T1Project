@@ -157,7 +157,7 @@ void GsCameraModeBase::Exit(UGsGameObjectLocal* In_char)
 	GSLOG(Warning, TEXT("GsCameraModeBase ACharacter Exit"));
 }
 // 업데이터(인자로 캐릭터)
-void GsCameraModeBase::Update(UGsGameObjectLocal* In_char, float In_deltaTime)
+void GsCameraModeBase::Update(UGsGameObjectLocal* In_char, float In_deltaTime, GsCameraModeManager* In_mng)
 {
 #ifdef NEW_CAM_CHAR
 	if (In_char == nullptr)

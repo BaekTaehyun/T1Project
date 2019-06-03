@@ -49,7 +49,7 @@ public:
 	virtual ~GsCameraModeFollowBase();
 
 	// 업데이터(인자로 캐릭터)
-	virtual void Update(UGsGameObjectLocal* In_char, float In_deltaTime) override;
+	virtual void Update(UGsGameObjectLocal* In_char, float In_deltaTime, GsCameraModeManager* In_mng) override;
 
 	// 위,아래 이동 처리
 	virtual void UpDown(float NewAxisValue, UGsGameObjectLocal* In_char) override;

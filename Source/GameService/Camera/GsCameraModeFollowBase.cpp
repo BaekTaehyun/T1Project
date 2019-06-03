@@ -19,9 +19,9 @@ GsCameraModeFollowBase::~GsCameraModeFollowBase()
 }
 
 // 업데이터(인자로 캐릭터)
-void GsCameraModeFollowBase::Update(UGsGameObjectLocal* In_char, float In_deltaTime)
+void GsCameraModeFollowBase::Update(UGsGameObjectLocal* In_char, float In_deltaTime, GsCameraModeManager* In_mng)
 {
-	GsCameraModeFreeBase::Update(In_char, In_deltaTime);
+	GsCameraModeFreeBase::Update(In_char, In_deltaTime, In_mng);
 
 
 #ifdef TEST_LOG
@@ -32,6 +32,7 @@ void GsCameraModeFollowBase::Update(UGsGameObjectLocal* In_char, float In_deltaT
 		bTouchOn);
 #endif
 
+	
 	// 입력이 있다면
 	// 터치는 안되어있어야함
 	if ((_currentXInput != 0.0f || _currentYInput != 0) && (bTouchOn == false))
@@ -85,11 +86,12 @@ void GsCameraModeFollowBase::Update(UGsGameObjectLocal* In_char, float In_deltaT
 					_currentAutoRotInput,
 					_targetAutoRotInput, In_deltaTime, AutoRotIntpSpeed);
 
+#ifdef TEST_LOG
 			GSLOG(Warning,
 				TEXT("_targetAutoRotInput: %f, _currentAutoRotInput: %f"),
 				_targetAutoRotInput,
 				_currentAutoRotInput);
-#ifdef NEW_CAM_CHAR
+#endif
 			if (In_char == nullptr)
 			{
 				GSLOG(Error, TEXT("In_char == nullptr"));
@@ -102,10 +104,26 @@ void GsCameraModeFollowBase::Update(UGsGameObjectLocal* In_char, float In_deltaT
 				return;
 			}
 
-			localChar->AddControllerYawInput(_currentAutoRotInput);
-#else
-			In_char->AddControllerYawInput(_currentAutoRotInput);
-#endif
+			UCurveFloat* curve = In_mng->GetCurveData();
+
+			// 커브 처리
+			float progressRate =
+				_currentAutoRotInput / _targetAutoRotInput;
+
+			float curveVal = 0.0f;
+			if (curve == nullptr)
+			{
+				GSLOG(Error, TEXT("curve is nullptr"));
+			}
+			else
+			{
+				curveVal = curve->GetFloatValue(progressRate);
+			}
+
+			// 커브값을 곱함
+			float curveMulVal = _currentAutoRotInput * curveVal;
+
+			localChar->AddControllerYawInput(curveMulVal);
 		}
 	}
 	// 없으면

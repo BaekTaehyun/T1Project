@@ -60,6 +60,13 @@ void GsCameraModeManager::Initialize()
 
 	CamModeData = TBL.Object;
 
+
+	ConstructorHelpers::FObjectFinder<UCurveFloat> CURV(
+		TEXT("/Game/Game/Camera/CamModeCurve.CamModeCurve"));
+
+	CamAutoRotCurveData = CURV.Object;
+
+
 	TArray<EGsControlMode> arrMode;
 
 	arrMode.Add(EGsControlMode::Free);
@@ -146,7 +153,7 @@ void GsCameraModeManager::Update(float In_deltaTime)
 {
 	if (_currentState.IsValid())
 	{
-		_currentState.Get()->Update(LocalPlayer, In_deltaTime);
+		_currentState.Get()->Update(LocalPlayer, In_deltaTime, this);
 	}
 }
 // 다음 스텝으로 진행
