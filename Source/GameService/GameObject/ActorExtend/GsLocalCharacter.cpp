@@ -43,6 +43,7 @@ void AGsLocalCharacter::PostInitializeComponents()
 void AGsLocalCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
 // Called every frame

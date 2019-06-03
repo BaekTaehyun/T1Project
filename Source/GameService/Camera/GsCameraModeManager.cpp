@@ -4,7 +4,7 @@
 #include "GsCamModeData.h"
 
 // 모드 클래스
-#include "GsCameraModeFollowFree.h"
+#include "GsCameraModeFree.h"
 #include "GsCameraModeFollowQuater.h"
 #include "GsCameraModeFollowWide.h"
 #include "GsCameraModeFollowAction.h"
@@ -17,7 +17,7 @@ GsCameraModeBase* GsCameraModeAllocator::Alloc(EGsControlMode In_mode)
 {
 	if (In_mode == EGsControlMode::Free)
 	{
-		return new GsCameraModeFollowFree();
+		return new GsCameraModeFree();
 	}
 	else if (In_mode == EGsControlMode::Quater)
 	{
@@ -105,10 +105,10 @@ void GsCameraModeManager::Initialize()
 }
 
 // 캐릭터 세팅
-void GsCameraModeManager::SetCharacter(ACharacter* In_char)
+void GsCameraModeManager::SetCharacter(UGsGameObjectLocal* In_char)
 {
 	// 캐릭터 할당
-	_character = In_char;
+	LocalPlayer = In_char;
 
 	// 기본으로 프리로 세팅
 	ChangeState(EGsControlMode::Free);
@@ -124,7 +124,7 @@ void GsCameraModeManager::ChangeState(EGsControlMode In_state)
 
 	if (_currentState.IsValid())
 	{
-		_currentState.Get()->Exit(_character);
+		_currentState.Get()->Exit(LocalPlayer);
 		_onLeaveState.Broadcast(_currentState.Get()->GetType());
 		GSLOG(Warning, TEXT("GSTStateMng : exit state [%s] Exit"), 
 			*EnumToString(EGsControlMode, _currentState.Get()->GetType()));
@@ -134,7 +134,7 @@ void GsCameraModeManager::ChangeState(EGsControlMode In_state)
 
 	if (_currentState.IsValid())
 	{
-		_currentState.Get()->Enter(_character, this);
+		_currentState.Get()->Enter(LocalPlayer, this);
 		_onEnterState.Broadcast(_currentState.Get()->GetType());
 		GSLOG(Warning, TEXT("`GSTStateMng : enter state [%s] Enter"), 			
 			*EnumToString(EGsControlMode, _currentState.Get()->GetType()));
@@ -146,7 +146,7 @@ void GsCameraModeManager::Update(float In_deltaTime)
 {
 	if (_currentState.IsValid())
 	{
-		_currentState.Get()->Update(_character, In_deltaTime);
+		_currentState.Get()->Update(LocalPlayer, In_deltaTime);
 	}
 }
 // 다음 스텝으로 진행

@@ -3,12 +3,15 @@
 #include "GsControlMode.h"
 #include "../Class/GsState.h"
 
+#define NEW_CAM_CHAR
 
 //----------------------------------------------------------------------
 // 카메라 모드 기반
 //----------------------------------------------------------------------
 
 class GsCameraModeManager;
+class UGsGameObjectLocal;
+
 class GsCameraModeBase : public TGsState<EGsControlMode>
 {
 public :
@@ -20,20 +23,30 @@ public :
 	virtual void Update() override {};
 
 	// 상태 전환(인자로 캐릭터)
-	virtual void Enter(ACharacter* In_char, GsCameraModeManager* In_mng);
+	virtual void Enter(UGsGameObjectLocal* In_char, GsCameraModeManager* In_mng);
 	// 상태 종료(인자로 캐릭터)
-	virtual void Exit(ACharacter* In_char);
+	virtual void Exit(UGsGameObjectLocal* In_char);
 	// 업데이터(인자로 캐릭터)
-	virtual void Update(ACharacter* In_char, float In_deltaTime);
+	virtual void Update(UGsGameObjectLocal* In_char, float In_deltaTime);
 
 	// 위,아래 이동 처리
-	virtual void UpDown(float NewAxisValue, ACharacter* In_char) {}
+	virtual void UpDown(float NewAxisValue, UGsGameObjectLocal* In_char) {}
 	// 좌,우 이동 처리
-	virtual void LeftRight(float NewAxisValue, ACharacter* In_char) {}
+	virtual void LeftRight(float NewAxisValue, UGsGameObjectLocal* In_char) {}
+	// 앞 이동 처리
+	virtual void MoveForward(UGsGameObjectLocal* In_char) {}
+	// 뒤 이동 처리
+	virtual void MoveBackward(UGsGameObjectLocal* In_char) {}
+	// 좌 이동 처리
+	virtual void MoveLeft(UGsGameObjectLocal* In_char) {}
+	// 우 이동 처리
+	virtual void MoveRight(UGsGameObjectLocal* In_char) {}
+	// 이동 정지
+	virtual void MoveStop(UGsGameObjectLocal* In_char);
 	// 위, 아래 카메라 회전
-	virtual void LookUp(float NewAxisValue, ACharacter* In_char) {}
+	virtual void LookUp(float NewAxisValue, UGsGameObjectLocal* In_char) {}
 	// 좌, 우 카메라 회전
-	virtual void Turn(float NewAxisValue, ACharacter* In_char) {}
+	virtual void Turn(float NewAxisValue, UGsGameObjectLocal* In_char) {}
 	// 줌인
 	virtual void ZoomIn();
 	// 줌아웃

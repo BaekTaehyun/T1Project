@@ -1,12 +1,12 @@
 #pragma once
-#include "GsCameraModeFollow.h"
+#include "GsCameraModeFollowBase.h"
 
 //---------------------
 // follow action ¸ðµå
 //----------------------
 
 
-class GsCameraModeFollowAction :public GsCameraModeFollow
+class GsCameraModeFollowAction :public GsCameraModeFollowBase
 {
 public:
 	GsCameraModeFollowAction();
