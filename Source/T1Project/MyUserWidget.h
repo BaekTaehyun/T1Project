@@ -40,6 +40,7 @@ public:
 
 private:
 	int m_NumTest;
+	TArray<UUserWidget*> m_UserWidgetArray;
 	
 
 	

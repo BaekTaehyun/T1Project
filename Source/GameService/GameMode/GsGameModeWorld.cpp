@@ -19,6 +19,7 @@
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 #include "GSGameInstance.h"
 #include "UI/GsGlobalUIManager.h"
+#include "UI/GsUIManager.h"
 
 
 AGsGameModeWorld::AGsGameModeWorld()
@@ -48,6 +49,56 @@ void AGsGameModeWorld::StartPlay()
 	{
 		Inst->GetGlobalUI()->ShowLoading(false);
 	}
+
+	AGsGameModeWorld::LoadTrayHud();
+}
+
+void AGsGameModeWorld::LoadTrayHud()
+{
+	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+
+	APlayerController* LocalPC = GetWorld()->GetFirstPlayerController();
+	if (nullptr != LocalPC)
+	{
+		AHUD* _hud = LocalPC->GetHUD();
+		if (nullptr == _hud)
+		{
+			UE_LOG(LogTemp, Log, TEXT("LoadTrayHud - _hud is nullptr !!"));
+			return;
+		}
+
+		AGsUIManager* _cast = Cast<AGsUIManager>(_hud);
+		if (nullptr != _cast)
+		{
+			_cast->PushByKeyName(FName(TEXT("MyTrayHud")));
+			UE_LOG(LogTemp, Log, TEXT("LoadTrayHud - PushByKeyName() !!!!!"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Log, TEXT("LoadTrayHud - _cast is nullptr !!"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("LoadTrayHud - LocalPC is nullptr !!"));
+	}
+
+	/*
+	UE_LOG(LogTemp, Log, TEXT("_isLoaded Success !!"));
+	if (nullptr != GetWorld())
+	{
+		GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+		UUserWidget* _createWidget = CreateWidget(GetWorld()->GetFirstPlayerController(), _isLoaded);
+		if (nullptr == _createWidget)
+		{
+			UE_LOG(LogTemp, Log, TEXT("_createWidget is nullptr !!"));
+		}
+		else
+		{
+			_createWidget->AddToViewport();
+		}
+	}
+	*/
 }
 
 void AGsGameModeWorld::TeleportPlayer(FString in_tag, bool in_waitAllLoad)

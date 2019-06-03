@@ -23,4 +23,9 @@ public:
 
 protected:
 	virtual int32 GetManagedDefaultZOrder() const override { return 500; }	
+
+public :
+
+	UFUNCTION(BlueprintCallable)
+	void OnClickImage();
 };

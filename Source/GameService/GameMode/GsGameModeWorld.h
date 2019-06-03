@@ -41,4 +41,7 @@ private:
 	ULevelStreaming* GetClosestLevel();
 
 	void SpawnPlayer();
+
+private:
+	void LoadTrayHud();
 };
