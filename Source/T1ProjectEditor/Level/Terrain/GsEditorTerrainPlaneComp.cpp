@@ -2,7 +2,7 @@
 
 
 #include "GsEditorTerrainPlaneComp.h"
-#include "./GsEditorPillarComp.h"
+#include "./GsEditorTerrainPillarComp.h"
 #include "./GsEditorBaseTerrain.h"
 #include "Runtime/Engine/Classes/Materials/Material.h"
 #include "Runtime/Engine/Classes/Materials/MaterialInstanceDynamic.h"
@@ -13,30 +13,12 @@ UGsEditorTerrainPlaneComp::UGsEditorTerrainPlaneComp()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
+
+	// ...
 	bWantsOnUpdateTransform = true;
-	// ...
 }
 
-
-// Called when the game starts
-void UGsEditorTerrainPlaneComp::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// ...
-
-}
-
-
-// Called every frame
-void UGsEditorTerrainPlaneComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
-
-void UGsEditorTerrainPlaneComp::Draw(UGsEditorPillarComp* in_start, UGsEditorPillarComp* in_end)
+void UGsEditorTerrainPlaneComp::Draw(UGsEditorTerrainPillarComp* in_start, UGsEditorTerrainPillarComp* in_end)
 {
 	if (in_start && in_end)
 	{			

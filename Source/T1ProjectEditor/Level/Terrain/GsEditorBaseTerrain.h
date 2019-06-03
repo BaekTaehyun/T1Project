@@ -6,8 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "GsEditorBaseTerrain.generated.h"
 
-class UGsEditorPillarComp;
+class UGsEditorTerrainPillarComp;
 class UGsEditorTerrainPlaneComp;
+class UMaterial;
 
 UCLASS()
 class T1PROJECTEDITOR_API AGsEditorBaseTerrain : public AActor
@@ -16,13 +17,17 @@ class T1PROJECTEDITOR_API AGsEditorBaseTerrain : public AActor
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
-		TArray<UGsEditorPillarComp*> _PillarArray;
+		TArray<UGsEditorTerrainPillarComp*> _PillarArray;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		TArray<UGsEditorTerrainPlaneComp*> _PlaneArray;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		UMaterial* _PillarMaterial;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		UMaterial* _PlaneMaterial;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
+		FIntPoint _InsertRange;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
+		int32 _RemoveIndex;
 
 public:
 	// Sets default values for this actor's properties
@@ -33,7 +38,7 @@ protected:
 	virtual void OnConstruction(const FTransform& in_transform) override;
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
-		void RegisterPillar(UGsEditorPillarComp* in_pillar);
+		void RegisterPillar(UGsEditorTerrainPillarComp* in_pillar);
 	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
 		void RegisterPlane(UGsEditorTerrainPlaneComp* in_plane);
 
@@ -49,10 +54,11 @@ protected:
 	bool TryRemovePlane();	
 
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	// Called every frame	
 	virtual void Draw();
+	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
 	void AddPillar(int32 in_start, int32 in_end);
+	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
 	void RemovePillar(int32 in_index);
 
 };

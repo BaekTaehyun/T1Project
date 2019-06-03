@@ -1,46 +1,28 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GsEditorPillarComp.h"
+#include "GsEditorTerrainPillarComp.h"
 #include "./GsEditorBaseTerrain.h"
 #include "Runtime/Engine/Classes/Materials/Material.h"
 #include "Runtime/Engine/Classes/Materials/MaterialInstanceDynamic.h"
 
 // Sets default values for this component's properties
-UGsEditorPillarComp::UGsEditorPillarComp()
+UGsEditorTerrainPillarComp::UGsEditorTerrainPillarComp()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+	bWantsOnUpdateTransform = true;
 }
 
-
-// Called when the game starts
-void UGsEditorPillarComp::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// ...
-	
-}
-
-
-// Called every frame
-void UGsEditorPillarComp::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
-
-void UGsEditorPillarComp::Draw()
+void UGsEditorTerrainPillarComp::Draw()
 {
 	FVector v1, v2, v3, v4, v5, v6, v7, v8;
 	float factor = 10.0f;
 	FVector height = FVector(0, 0, 100);
-	
+
 	v1 = FVector(-1, -1, 0) * factor;
 	v2 = FVector(1, -1, 0) * factor;
 	v3 = FVector(1, 1, 0) * factor;
@@ -81,7 +63,7 @@ void UGsEditorPillarComp::Draw()
 
 	//back
 	AddTriangle(3, 2, 6, triangles);
-	AddTriangle(3, 6, 7, triangles);	
+	AddTriangle(3, 6, 7, triangles);
 
 	//Right
 	AddTriangle(4, 6, 5, triangles);
@@ -144,7 +126,7 @@ void UGsEditorPillarComp::Draw()
 	}
 }
 
-void UGsEditorPillarComp::OnUpdateTransform(EUpdateTransformFlags UpdateTransfo, ETeleportType Teleport)
+void UGsEditorTerrainPillarComp::OnUpdateTransform(EUpdateTransformFlags UpdateTransfo, ETeleportType Teleport)
 {
 	if (_Parent)
 	{
@@ -152,9 +134,10 @@ void UGsEditorPillarComp::OnUpdateTransform(EUpdateTransformFlags UpdateTransfo,
 	}
 }
 
-void UGsEditorPillarComp::AddTriangle(int32 v1, int32 v2, int32 v3, TArray<int32>& in_triangleArray)
+void UGsEditorTerrainPillarComp::AddTriangle(int32 v1, int32 v2, int32 v3, TArray<int32>& in_triangleArray)
 {
 	in_triangleArray.Add(v1);
 	in_triangleArray.Add(v2);
 	in_triangleArray.Add(v3);
 }
+

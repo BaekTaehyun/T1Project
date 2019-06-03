@@ -4,35 +4,26 @@
 
 #include "CoreMinimal.h"
 #include "ProceduralMeshComponent.h"
-#include "GsEditorPillarComp.generated.h"
+#include "GsEditorTerrainPillarComp.generated.h"
 
 class AGsEditorBaseTerrain;
 
-UCLASS(Blueprintable, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class T1PROJECTEDITOR_API UGsEditorPillarComp : public UProceduralMeshComponent
+UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class T1PROJECTEDITOR_API UGsEditorTerrainPillarComp : public UProceduralMeshComponent
 {
 	GENERATED_BODY()
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorPillarComp")
 		AGsEditorBaseTerrain* _Parent;
-	/*UPROPERTY()
-	UGsEditorPillarComp* _Start;
-	UPROPERTY()
-	UGsEditorPillarComp* _End;*/
 
-public:
+public:	
 	// Sets default values for this component's properties
-	UGsEditorPillarComp();
+	UGsEditorTerrainPillarComp();
 	void Draw();
-
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-public:
 	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void OnUpdateTransform(EUpdateTransformFlags UpdateTransfo, ETeleportType Teleport) override;
 	void AddTriangle(int32 v1, int32 v2, int32 v3, TArray<int32>& in_triangleArray);
+
+		
 };

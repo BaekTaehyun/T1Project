@@ -7,7 +7,7 @@
 #include "GsEditorTerrainPlaneComp.generated.h"
 
 class AGsEditorBaseTerrain;
-class UGsEditorPillarComp;
+class UGsEditorTerrainPillarComp;
 
 UCLASS(Blueprintable, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class T1PROJECTEDITOR_API UGsEditorTerrainPlaneComp : public UProceduralMeshComponent
@@ -20,22 +20,14 @@ public:
 
 private:
 	UPROPERTY()
-		UGsEditorPillarComp* _Start;
+		UGsEditorTerrainPillarComp* _Start;
 	UPROPERTY()
-		UGsEditorPillarComp* _End;
+		UGsEditorTerrainPillarComp* _End;
 
 public:
 	// Sets default values for this component's properties
 	UGsEditorTerrainPlaneComp();
-
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-public:
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	void Draw(UGsEditorPillarComp* in_start, UGsEditorPillarComp* in_end);
+	void Draw(UGsEditorTerrainPillarComp* in_start, UGsEditorTerrainPillarComp* in_end);
 	virtual void OnUpdateTransform(EUpdateTransformFlags UpdateTransfo, ETeleportType Teleport) override;
 
 };
