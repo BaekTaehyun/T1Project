@@ -12,6 +12,7 @@ UGsGameObjectBase::~UGsGameObjectBase()
 EGsGameObjectType	UGsGameObjectBase::GetObjectType() const      { return EGsGameObjectType::Base; }
 uint32				UGsGameObjectBase::GetObjectTypeMask() const  { return ObjectType; }
 AActor*				UGsGameObjectBase::GetActor() const           { return NULL; }
+UWorld*				UGsGameObjectBase::GetWorld() const			  { return GetActor()->GetWorld(); }
 //
 
 bool UGsGameObjectBase::IsObjectType(EGsGameObjectType Type)

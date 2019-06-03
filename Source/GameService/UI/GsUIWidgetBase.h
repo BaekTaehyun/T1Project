@@ -28,8 +28,17 @@ public:
 	// 윈도우 타입(화면을 다 가리는 타입. GsUIWindow 상속객체)인가
 	virtual bool IsWindow() const { return false; }
 
+	// 레벨 로드 시 파괴되지 않는 UI인가
+	virtual bool IsNondestructiveWidget() const { return false; }
+
+
 	UFUNCTION(BlueprintCallable, Category = "GsManaged")
 	virtual void Close();
+
+	// FName을 구분자로 쓸 수 있는 메시지를 보냄
+	UFUNCTION(BlueprintNativeEvent, Category = "GsManaged", meta = (DisplayName = "OnMessage"))
+	void OnMessage(FName InKey, UGsUIParameter* InParam = nullptr);
+	virtual void OnMessage_Implementation(FName InKey, UGsUIParameter* InParam = nullptr);
 
 	UFUNCTION(BlueprintCallable, Category = "GsManaged")
 	class AGsUIManager* GetUIManager();
@@ -40,11 +49,6 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, Category = "GsManaged", meta = (DisplayName = "OnPush"))
 	void OnPush(UGsUIParameter* InParam = nullptr);
 	virtual void OnPush_Implementation(UGsUIParameter* InParam = nullptr);
-
-	// FName을 구분자로 쓸 수 있는 메시지를 보냄
-	UFUNCTION(BlueprintNativeEvent, Category = "GsManaged", meta = (DisplayName = "OnMessage"))
-	void OnMessage(FName InKey, UGsUIParameter* InParam = nullptr);
-	virtual void OnMessage_Implementation(FName InKey, UGsUIParameter* InParam = nullptr);
 
 	// Window < Popup < Tray 뎁스 보장을 위한 값. 자손 클래스에서 값 부여(Window: 10, Popup: 100, Tray: 500)
 	virtual int32 GetManagedDefaultZOrder() const { return 0; }

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "GameObject/Component/Animation/GsAnimInstanceState.h"
+#include "GameObject/Component/GsAnimInstanceState.h"
 #include "GsNpcPawn.generated.h"
 
 class UCapsuleComponent;

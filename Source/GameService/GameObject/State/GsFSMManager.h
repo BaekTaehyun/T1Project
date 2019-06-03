@@ -21,6 +21,11 @@ public:
 	FORCEINLINE IGsStateBase* CurrentState() const	{ return Current; }
 	FORCEINLINE IGsStateBase* PrevState() const		{ return Prev; }
 	bool IsState(int StateID) const;
+	template<typename tType>
+	bool IsState(tType StateType) const
+	{
+		return (nullptr != Current && static_cast<tType>(Current->GetStateID()) == StateType);
+	}
 
 	template <class State>
 	void Initialize(UGsGameObjectBase* Owner);		//시작 State정의

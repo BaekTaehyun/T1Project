@@ -7,7 +7,7 @@
 
 #include "Util/GsText.h"
 #include "GsFSMManager.h"
-#include "GameObject/Component/Animation/GsAnimInstanceState.h"
+#include "GameObject/Component/GsAnimInstanceState.h"
 #include "GameObject/ObjectClass/GsGameObjectBase.h"
 
 /**

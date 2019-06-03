@@ -25,8 +25,13 @@ public:
 	virtual AActor* GetActor() const override;
 	virtual class FGsFSMManager* GetUpperFSM() const;
 	virtual class FGsSkillBase* GetSkill() const;
+	class UGsGameObjectWheelVehicle* GetVehicle() const;
+	void SetVehicle(class UGsGameObjectWheelVehicle* Vehicle);
 
 protected:
 	FGsFSMManager* UpperFsm;          //상체 Fsm
 	FGsSkillBase* Skill;
+
+	//탈것 정보
+	class UGsGameObjectWheelVehicle* Vehicle;
 };

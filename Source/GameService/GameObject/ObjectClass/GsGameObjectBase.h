@@ -39,6 +39,8 @@ public:
     UFUNCTION(BlueprintCallable, Category = "GameObject")
 	virtual AActor* GetActor() const;
 
+	virtual UWorld* GetWorld() const override;
+
     //BP에서 간략한 접근을 위해 기본 TM정보 제공
     UFUNCTION(BlueprintCallable, Category = "GameObject")
     virtual FVector GetLocation() const;

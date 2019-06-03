@@ -9,6 +9,7 @@
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 #include "GameObject/ObjectClass/GsGameObjectNonPlayer.h"
 #include "GameObject/ObjectClass/GsGameObjectProjectile.h"
+#include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
 #include "Class/GsSpawn.h"
 
 
@@ -80,8 +81,6 @@ void UGsSpawnComponent::TickComponent(float DeltaTime, enum ELevelTick TickType,
 	}
 }
 
-
-
 UGsGameObjectBase* UGsSpawnComponent::FindObject(AActor* Actor, EGsGameObjectType Type)
 {
 	if (Type == EGsGameObjectType::Base)
@@ -121,6 +120,20 @@ UGsGameObjectBase* UGsSpawnComponent::FindObject(EGsGameObjectType Type)
 TArray<UGsGameObjectBase*> UGsSpawnComponent::FindObjectArray(EGsGameObjectType Type)
 {
 	return TypeSpawns[Type];
+}
+
+UGsGameObjectBase* UGsSpawnComponent::SpawnObject(EGsGameObjectType Type, UClass* Uclass, const FVector& Pos,  const FRotator& Rot)
+{
+	switch (Type)
+	{
+	case EGsGameObjectType::NonPlayer:
+		return SpawnObject<UGsGameObjectNonPlayer>(Uclass, Pos, Rot, true);
+	case EGsGameObjectType::Vehicle:
+		return SpawnObject<UGsGameObjectWheelVehicle>(Uclass, Pos, Rot);
+	case EGsGameObjectType::LocalPlayer:
+		return SpawnObject<UGsGameObjectLocal>(Uclass, Pos, Rot);
+	}
+	return NULL;
 }
 
 template<>

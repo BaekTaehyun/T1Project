@@ -23,6 +23,7 @@ protected:
 	void OnMoveForward();
 	void OnMoveBackward();
 	void OnMoveRight(float Val);
+	void OnAction();
 
 protected:
 	class UGsGameObjectWheelVehicle* Target;

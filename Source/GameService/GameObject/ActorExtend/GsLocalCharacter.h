@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "GameObject/Component/Animation/GsAnimInstanceState.h"
+#include "GameObject/Component/GsAnimInstanceState.h"
+#include "GameService.h"
 #include "GsLocalCharacter.generated.h"
 
 /**
@@ -41,10 +42,15 @@ public:
     // Called to bind functionality to input
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void DisableComponentsSimulatePhysics();
+#pragma todo("by: CapsuleComponent 비활성 방식 R&D 필요")
+	void EnableCollision();
+	void DisableCollision();
 
 protected:
 	virtual void PostInitializeComponents() override;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+private:
+	ECollisionEnabled::Type RestoreCollisionType;
 };

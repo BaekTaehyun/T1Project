@@ -32,7 +32,8 @@ void FGsMovementLocal::Update(float Delta)
     {
         //임시 이동 구현 코드들...
         //내캐릭터 이동방향은 컨트롤러의 회전에 따라 동적 변경
-        Direction = FRotationMatrix(Local->GetLocalCharacter()->Controller->GetControlRotation()).GetScaledAxis(MoveDirType == EGsGameObjectMoveDirType::SideStep ? EAxis::Y : EAxis::X);
+        Direction = FRotationMatrix(Local->GetLocalCharacter()->
+			Controller->GetControlRotation()).GetScaledAxis(MoveDirType == EGsGameObjectMoveDirType::SideStep ? EAxis::Y : EAxis::X);
         Local->GetLocalCharacter()->AddMovementInput(Direction, MoveSpeed);
 
         if (MoveDirType == EGsGameObjectMoveDirType::Forward && CHECK_FLAG_TYPE(MoveType, EGsGameObjectMoveType::Walk))

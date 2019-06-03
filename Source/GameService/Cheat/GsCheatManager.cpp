@@ -4,6 +4,9 @@
 #include "GsCheatManager.h"
 #include "GameMode/GsGameModeWorld.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
+#include "GameObject/GsSpawnComponent.h"
+#include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
+#include "GameObject/ObjectClass/GsGameObjectLocal.h"
 
 void UGsCheatManager::TeleportPlayer(FString in_tag)
 {	
@@ -23,4 +26,26 @@ void UGsCheatManager::TeleportPlayer(FString in_tag)
 			}
 		}		
 	}	
+}
+
+void UGsCheatManager::SpawnGameObject(EGsGameObjectType Type, TSubclassOf<AActor> ActorClass, int SpawnCount, const FVector& StartPos)
+{
+	check(GSpawner());
+
+	FVector spawnPos = StartPos;
+	FVector offset = FVector::ZeroVector;
+
+	if (auto findobj = GSpawner()->FindObject(EGsGameObjectType::LocalPlayer))
+
+	for (int i = 0; i < SpawnCount; ++i)
+	{
+		auto myActor = Cast<UGsGameObjectLocal>(findobj)->GetActor();
+		FVector dir = myActor->GetActorForwardVector();
+		spawnPos = dir * 1000.f + myActor->GetActorLocation() + offset;
+
+		GSpawner()->SpawnObject(Type, ActorClass.Get(), spawnPos, FRotator::ZeroRotator);
+
+		offset.X = FMath::FRandRange(1.f, 1000.f);
+		offset.Y = FMath::FRandRange(1.f, 1000.f);
+	}
 }
