@@ -17,6 +17,8 @@
 #include "GameObject/ActorExtend/GsLocalCharacter.h"
 #include "GameObject/GsSpawnComponent.h"
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
+#include "GSGameInstance.h"
+#include "UI/GsGlobalUIManager.h"
 
 
 AGsGameModeWorld::AGsGameModeWorld()
@@ -40,6 +42,12 @@ void AGsGameModeWorld::StartPlay()
 	Super::StartPlay();
 
 	SpawnPlayer();
+
+	UGsGameInstance* Inst = Cast<UGsGameInstance>(GetWorld()->GetGameInstance());
+	if (nullptr != Inst)
+	{
+		Inst->GetGlobalUI()->ShowLoading(false);
+	}
 }
 
 void AGsGameModeWorld::TeleportPlayer(FString in_tag, bool in_waitAllLoad)

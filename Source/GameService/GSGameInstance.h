@@ -44,6 +44,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Dev")
 	bool IsImmediateStart() const { return bImmediateStart; }
 
+	UFUNCTION(BlueprintCallable, Category = "Dev")
+	class UGsGlobalUIManager* GetGlobalUI() const { return GlobalUIManager; }
+
 protected:
 	// 개발모드
 	UPROPERTY(EditDefaultsOnly, Category = "Dev")
@@ -52,4 +55,8 @@ protected:
 	// 즉시시작
 	UPROPERTY(EditDefaultsOnly, Category = "Dev")
 	bool bImmediateStart;
+
+	// 레벨 전환에도 파괴되지 않을 UI위젯들 관리
+	UPROPERTY()
+	class UGsGlobalUIManager* GlobalUIManager;
 };

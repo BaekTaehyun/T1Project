@@ -7,6 +7,7 @@
 #include "Message/GsMessageLobby.h"
 #include "GsGameModeLobby.h"
 #include "UI/GsUIManager.h"
+#include "UI/GsGlobalUIManager.h"
 #include "GameService.h"
 #include "GSGameInstance.h"
 
@@ -99,8 +100,14 @@ void UGsLobbyComponent::OnLoginComplete()
 
 void UGsLobbyComponent::OnLoadGameScene()
 {
-	GSLOG(Warning, TEXT("AGsGameModeLobby : OnLoadGameScene"));	
-	
+	GSLOG(Warning, TEXT("AGsGameModeLobby : OnLoadGameScene"));
+
+	UGsGameInstance* Inst = Cast<UGsGameInstance>(GetWorld()->GetGameInstance());
+	if (nullptr != Inst)
+	{
+		Inst->GetGlobalUI()->ShowLoading(true);
+	}
+
 	AGsGameModeLobby* GameMode = GetGameModeLobby();
 	if (nullptr != GameMode)
 	{
