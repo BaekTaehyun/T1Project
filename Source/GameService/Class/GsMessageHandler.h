@@ -5,9 +5,8 @@
 
 //------------------------------------------------------------------------------
 // 이벤트를 전달하기위한 기본객체클래스
-// 가변인자를 지원하는듯 보이지만 델리게이트의 인자분기를 중첩구성할수 없음
 //------------------------------------------------------------------------------
-template<typename T1, typename... ParamTypes>
+template<typename T1>
 class TGsMessageHandler
 {
 public:
@@ -28,7 +27,7 @@ public:
 
 	// 메시지 외부등록
 	// ex) GSFMessageSingle::Instance->GetSystem().AddRaw(MessageSystem::ID::RECONNECT_END, this, &FGsGameModeManager::OnReconnectionEnd);
-	template <typename UserClass, typename... VarTypes>
+	template <typename UserClass, typename... ParamTypes, typename... VarTypes>
 	FDelegateHandle AddRaw(T1 Message, UserClass* InUserObject,
 		typename TMemFunPtrType<false, UserClass, void(ParamTypes..., VarTypes...)>::Type InFunc, VarTypes... Vars)
 	{
@@ -38,7 +37,7 @@ public:
 		return Result;
 	}
 
-	template <typename UserClass, typename... VarTypes>
+	template <typename UserClass, typename... ParamTypes, typename... VarTypes>
 	inline FDelegateHandle AddUObject(T1 Message, UserClass* InUserObject,
 		typename TMemFunPtrType<false, UserClass, void(ParamTypes..., VarTypes...)>::Type InFunc, VarTypes... Vars)
 	{
@@ -67,7 +66,7 @@ public:
 		return Result;
 	}
 
-	template <typename... VarTypes>
+	template <typename... ParamTypes, typename... VarTypes>
 	inline FDelegateHandle AddStatic(T1 Message, 
 		typename TBaseStaticDelegateInstance<void(ParamTypes...), VarTypes...>::FFuncPtr InFunc, VarTypes... Vars)
 	{
@@ -87,7 +86,7 @@ public:
 		return Result;
 	}
 	
-	template <typename UserClass, typename... VarTypes>
+	template <typename UserClass, typename... ParamTypes, typename... VarTypes>
 	inline FDelegateHandle AddSP(T1 Message, const TSharedRef<UserClass, ESPMode::Fast>& InUserObjectRef,
 		typename TMemFunPtrType<false, UserClass, void(ParamTypes..., VarTypes...)>::Type InFunc, VarTypes... Vars)
 	{
@@ -131,7 +130,7 @@ public:
 	virtual void SendMessageAsync(T1&& id)
 	{
 		FScopeLock InsertLock(&CriticalSection);
-		_AsyncMessage.Add(std::move(id));
+		_AsyncMessage.Add(Forward<T1>(id));
 	}
 
 	virtual void Update()
@@ -149,6 +148,7 @@ public:
 		}
 	}
 };
+
 
 
 //------------------------------------------------------------------------------
@@ -190,7 +190,7 @@ public:
 	inline FDelegateHandle AddUObject(T1 Message, UserClass* InUserObject,
 		typename TMemFunPtrType<false, UserClass, void(T2&, VarTypes...)>::Type InFunc, VarTypes... Vars)
 	{
-		TGsMessageHandler<T1>::MessageType delFunc;
+		TGsMessageHandlerOneParam<T1, T2>::MessageType delFunc;
 		auto Result = delFunc.AddUObject(InUserObject, InFunc, Vars...);
 		_delieveryAddr.Add(Message, delFunc);
 		return Result;
@@ -199,7 +199,7 @@ public:
 	template<typename FunctorType, typename... VarTypes>
 	inline FDelegateHandle AddLambda(T1 Message, FunctorType&& InFunctor, VarTypes... Vars)
 	{
-		TGsMessageHandler<T1>::MessageType delFunc;
+		TGsMessageHandlerOneParam<T1, T2>::MessageType delFunc;
 		auto Result = delFunc.AddLambda(InFunctor, Vars...);
 		_delieveryAddr.Add(Message, delFunc);
 		return Result;
@@ -209,7 +209,7 @@ public:
 	inline FDelegateHandle AddUFunction(T1 Message, UObjectTemplate* InUserObject,
 		const FName& InFunctionName, VarTypes... Vars)
 	{
-		TGsMessageHandler<T1>::MessageType delFunc;
+		TGsMessageHandlerOneParam<T1, T2>::MessageType delFunc;
 		auto Result = delFunc.AddUFunction(InUserObject, InFunctionName, Vars...);
 		_delieveryAddr.Add(Message, delFunc);
 		return Result;
@@ -219,7 +219,7 @@ public:
 	inline FDelegateHandle AddStatic(T1 Message,
 		typename TBaseStaticDelegateInstance<void(T2&), VarTypes...>::FFuncPtr InFunc, VarTypes... Vars)
 	{
-		TGsMessageHandler<T1>::MessageType delFunc;
+		TGsMessageHandlerOneParam<T1, T2>::MessageType delFunc;
 		auto Result = delFunc.AddStatic(InFunc, Vars...);
 		_delieveryAddr.Add(Message, delFunc);
 		return Result;
@@ -229,7 +229,7 @@ public:
 	inline FDelegateHandle AddWeakLambda(T1 Message, UserClass* InUserObject,
 		FunctorType&& InFunctor, VarTypes... Vars)
 	{
-		TGsMessageHandler<T1>::MessageType delFunc;
+		TGsMessageHandlerOneParam<T1, T2>::MessageType delFunc;
 		auto Result = delFunc.AddWeakLambda(InUserObject, InFunctor, Vars...);
 		_delieveryAddr.Add(Message, delFunc);
 		return Result;
@@ -247,7 +247,7 @@ public:
 	inline FDelegateHandle AddSP(T1 Message, const TSharedRef<UserClass, ESPMode::Fast>& InUserObjectRef,
 		typename TMemFunPtrType<false, UserClass, void(T2&, VarTypes...)>::Type InFunc, VarTypes... Vars)
 	{
-		TGsMessageHandler<T1>::MessageType delFunc;
+		TGsMessageHandlerOneParam<T1, T2>::MessageType delFunc;
 		auto Result = delFunc.AddSP(InUserObjectRef, InFunc, Vars...);
 		_delieveryAddr.Add(Message, delFunc);
 		return Result;
@@ -287,7 +287,7 @@ public:
 	virtual void SendMessageAsync(T1&& id, T2&& inData)
 	{
 		FScopeLock InsertLock(&CriticalSection);
-		_AsyncMessage.Add(TGsMessage<T1, T2>(std::move(id), std::move(inData)));
+		_AsyncMessage.Add(TGsMessage<T1, T2>(id, inData));
 	}
 
 	virtual void Update()

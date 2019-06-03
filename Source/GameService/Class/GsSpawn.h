@@ -10,7 +10,7 @@ namespace TGsSpawn
 	static FORCEINLINE ActorClass* StaticClass(UWorld* World, const FVector& SpawnLocation, const FRotator& SpawnRotation)
 	{
 		if (NULL == World) return NULL;
-		return World->SpawnActor<ActorClass>(ActorClass::StaticClass(), Pos, Rot);
+		return World->SpawnActor<ActorClass>(ActorClass::StaticClass(), SpawnLocation, SpawnRotation);
 	}
 	/*
 	static ConstructorHelpers::FClassFinder<UAnimInstance> WARR_ANIM(	TEXT("/Game/InfinityBladeWarriors/Character/WarriorAnimBP.WarriorAnimBP_C"));
@@ -43,14 +43,14 @@ namespace TGsSpawn
 	// 세부 설정 배치용
 	template <typename ActorClass>
 	static FORCEINLINE ActorClass* Detail(UWorld* World, UClass* Class,
-		const FVector& SpawnLocation, const FRotator& SpawnRotation, const bool bNoCollisionFail = true,
+		const FVector& SpawnLocation, const FRotator& SpawnRotation, /*const bool bNoCollisionFail = true,*/
 		AActor* Owner = NULL, APawn* Instigator = NULL)
 	{
 		if (NULL == World) return NULL;
 		if (NULL == Class) return NULL;
 
 		FActorSpawnParameters SpawnParams;
-		SpawnParams.bNoCollisionFail = bNoCollisionFail;
+		/*SpawnParams.bNoCollisionFail = bNoCollisionFail;*/
 		SpawnParams.Owner = Owner;
 		SpawnParams.Instigator = Instigator;
 		SpawnParams.bDeferConstruction = false;

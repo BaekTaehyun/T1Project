@@ -35,7 +35,7 @@ public:
 	Packet(const PacketHeader* header, const void* data, uint32_t len)
 		: header_(*header)
 	{
-		(data);
+		//(data);
 		data_ = SimpleAllocator::Alloc<uint8_t>(len);
 		len_ = len;
 	}
@@ -89,7 +89,6 @@ public:
 #endif
 	}
 };
-FPacketPool* TGsPoolSingle<FPacketPool>::_instance = nullptr;
 
 #define GetPacketPool() TGsPoolSingle<FPacketPool>::GetInstance()
 

@@ -10,7 +10,7 @@ class TGsMessage
 	T2 _data;
 
 public:
-	TGsMessage(TGsMessage&& other) : _id(std::move(other._id)), _data(std::move(other._data))
+	TGsMessage(TGsMessage&& other) : _id(Forward<T1>(other._id)), _data(Forward<T2>(other._data))
 	{
 		GSLOG(Warning, TEXT("TGsMessage : TGsMessage(GSTMessage&& other)"));
 	}
@@ -18,7 +18,7 @@ public:
 	{
 		GSLOG(Warning, TEXT("TGsMessage : TGsMessage(const GSTMessage<T1, T2>& other)"));
 	}
-	TGsMessage(T1&& id, T2&& data) : _id(std::move(id)), _data(std::move(data))
+	TGsMessage(T1&& id, T2&& data) : _id(MoveTemp<T1>(id)), _data(MoveTemp<T2>(data))
 	{
 		GSLOG(Warning, TEXT("TGsMessage : TGsMessage(T1&& id, T2&& data)"));
 	}
@@ -31,25 +31,4 @@ public:
 	T1& GetId()	{ return _id; }
 	T2& GetData() { return _data; }
 };	
-
-//------------------------------------------------------------------------------
-// 메세지 온리 처리를 위한 클래스
-//------------------------------------------------------------------------------
-class FGsMessageNone
-{
-public:
-	FGsMessageNone()
-	{
-		GSLOG(Warning, TEXT("FGsMessageNone"));
-	};
-	
-	FGsMessageNone(const FGsMessageNone& other)
-	{
-		GSLOG(Warning, TEXT("FGsMessageNone(FGsMessageNone& other)"));
-	}
-	FGsMessageNone(FGsMessageNone&& other)
-	{
-		GSLOG(Warning, TEXT("FGsMessageNone(FGsMessageNone&& other)"));
-	}	
-};
 

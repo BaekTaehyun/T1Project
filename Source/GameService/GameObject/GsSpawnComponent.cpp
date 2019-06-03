@@ -12,6 +12,7 @@
 #include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
 #include "Class/GsSpawn.h"
 
+UGsSpawnComponent* TGsSingleton<UGsSpawnComponent>::Instance = nullptr;
 
 UGsSpawnComponent::UGsSpawnComponent(const class FObjectInitializer &OBJ) : Super(OBJ)
 {

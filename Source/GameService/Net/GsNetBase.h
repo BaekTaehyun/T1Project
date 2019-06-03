@@ -15,8 +15,8 @@ class FGsNetBase : public TGsState<FGsNet::Mode>, public SessionEventHandler
 {
 	FGsNet::NetConnectionData _connectionInfo;
 	std::shared_ptr<Session> session_;  // 서버 구조에 맞춤
-	TGsMessageHandlerOneParam <LeanPacket::Protocol, Packet*> _handler;
-	LeanPacket::Protocol _protocal;
+	TGsMessageHandlerOneParam <int, Packet*> _handler;
+	int _protocol;
 public:
 	FGsNetBase() : TGsState<FGsNet::Mode>(FGsNet::Mode::MAX) {}
 	FGsNetBase(FGsNet::Mode inMode) : TGsState<FGsNet::Mode>(inMode) {}

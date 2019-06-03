@@ -23,5 +23,5 @@ protected:
 
 	//행동 처리 메서드 모읍
 protected:
-	void OnVehicleRide(const class GsGameObjectEventParamBase& Param);
+	void OnVehicleRide(class GsGameObjectEventParamBase& Param);
 };

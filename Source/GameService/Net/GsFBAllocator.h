@@ -15,7 +15,7 @@ public:
 	}
 	void deallocate(uint8_t* p, size_t size) override
 	{
-		(size);
+		//(size);
 		SimpleAllocator::Free(p);
 	}
 
@@ -85,7 +85,7 @@ public:
 	template<typename T, size_t SIZE>
 	flatbuffers::Offset<flatbuffers::Vector<T>> createVector(const std::array<T, SIZE>& v, size_t size)
 	{
-		ASSERT_CRASH(size <= SIZE);
+		//ASSERT_CRASH(size <= SIZE);
 		return fbBuilder_.CreateVector(v.data(), size);
 	}
 

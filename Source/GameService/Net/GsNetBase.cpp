@@ -32,8 +32,8 @@ void FGsNetBase::Update()
 
 	for (auto packet : packets)
 	{
-		_protocal = (LeanPacket::Protocol)packet->header_.packetId;
-		_handler.SendMessage(_protocal, packet);
+		_protocol = (int)packet->header_.packetId;
+		_handler.SendMessage(_protocol, packet);
 		GetPacketPool()->Delete(packet);
 	}
 
