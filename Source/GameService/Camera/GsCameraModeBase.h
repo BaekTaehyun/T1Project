@@ -27,7 +27,7 @@ public :
 	// 상태 종료(인자로 캐릭터)
 	virtual void Exit(UGsGameObjectLocal* In_char);
 	// 업데이터(인자로 캐릭터)
-	virtual void Update(UGsGameObjectLocal* In_char, float In_deltaTime);
+	virtual void Update(UGsGameObjectLocal* In_char, float In_deltaTime, GsCameraModeManager* In_mng);
 
 	// 위,아래 이동 처리
 	virtual void UpDown(float NewAxisValue, UGsGameObjectLocal* In_char) {}

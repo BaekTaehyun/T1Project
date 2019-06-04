@@ -52,6 +52,8 @@ class GAMESERVICE_API GsCameraModeManager :
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	class UDataTable* CamModeData;
 
+	// 카메라 자동 회전 커브 데이터	
+	UCurveFloat* CamAutoRotCurveData;
 	// 모드별 데이터
 	TMap<EGsControlMode, FGsCamModeData*> _mapModeData;
 protected:
@@ -68,7 +70,7 @@ public:
 	StateEvent& OnEnterState()  { return _onEnterState; }
 	StateEvent& OnLeaveState()  { return _onLeaveState; }
 
-	
+	UCurveFloat* GetCurveData() { return CamAutoRotCurveData; }
 	//------------------------------------------------------------------------------
 	virtual void RemoveAll()
 	{

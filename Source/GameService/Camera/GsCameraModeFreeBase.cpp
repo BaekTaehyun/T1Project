@@ -171,9 +171,9 @@ void GsCameraModeFreeBase::Exit(UGsGameObjectLocal* In_char)
 	GSLOG(Warning, TEXT("GsCameraModeFreeBase  exit"));
 }
 // 업데이터(인자로 캐릭터)
-void GsCameraModeFreeBase::Update(UGsGameObjectLocal* In_char, float In_deltaTime)
+void GsCameraModeFreeBase::Update(UGsGameObjectLocal* In_char, float In_deltaTime, GsCameraModeManager* In_mng)
 {
-	GsCameraModeBase::Update(In_char, In_deltaTime);
+	GsCameraModeBase::Update(In_char, In_deltaTime, In_mng);
 
 }
 

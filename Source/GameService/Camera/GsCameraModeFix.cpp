@@ -172,14 +172,14 @@ void GsCameraModeFix::Exit(UGsGameObjectLocal* In_char)
 	GSLOG(Warning, TEXT("GsCameraModeFix ACharacter exit"));
 }
 // 업데이터(인자로 캐릭터)
-void GsCameraModeFix::Update(UGsGameObjectLocal* In_char, float In_deltaTime)
+void GsCameraModeFix::Update(UGsGameObjectLocal* In_char, float In_deltaTime, GsCameraModeManager* In_mng)
 {
 	if (In_char == nullptr)
 	{
 		return;
 	}
 
-	GsCameraModeBase::Update(In_char, In_deltaTime);
+	GsCameraModeBase::Update(In_char, In_deltaTime, In_mng);
 
 #ifdef NEW_CAM_CHAR
 	AGsLocalCharacter* localChar = In_char->GetLocalCharacter();
