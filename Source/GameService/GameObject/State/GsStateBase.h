@@ -29,7 +29,7 @@ public:
 	virtual bool IsSameState(int StateID);
 
 	//State의 전환은 이 메서드를 통해서만 전환
-	virtual void ProcessEvent(UGsGameObjectBase* Owner, uint8 StateID, FGsFSMManager::FGsStateChangeFailed const& FailDelegate = NULL) {}
+	virtual bool ProcessEvent(UGsGameObjectBase* Owner, uint8 StateID) { return false; }
 
 	virtual void Enter(UGsGameObjectBase* Owner) {}
 	virtual void ReEnter(UGsGameObjectBase* Owner) {}
@@ -70,21 +70,20 @@ protected:
 	//StateSingleton<T>& operator = (const StateSingleton<T>& rhs) = delete;
 
 private:
-	static std::unique_ptr<T> _instance;
-	static std::once_flag _flag1;
+	static TUniquePtr<T> _instance;
+	//static std::once_flag _flag1;
 
 public:
 	static T* GetInstance() {
-		std::call_once(_flag1, []() {
-			_instance.reset(new T);
-		});
-
-		return _instance.get();
+		if(false == _instance.IsValid())
+		{
+			_instance = TUniquePtr<T>(new T());
+		}
+		return _instance.Get();
 	}
 };
 
-template <typename T> std::unique_ptr<T> TGsStateSingleton<T>::_instance;
-template <typename T> std::once_flag TGsStateSingleton<T>::_flag1;
+template <typename T> TUniquePtr<T> TGsStateSingleton<T>::_instance;
 
 /**
 * [Todo] 
@@ -95,23 +94,10 @@ template <class tObject, class tState, typename tStateType>
 class GAMESERVICE_API FGsStateTargetBase : public TGsStateSingleton<tState>
 {
 public:
-	virtual void ProcessEvent(UGsGameObjectBase* Owner, uint8 StateID, FGsFSMManager::FGsStateChangeFailed const& FailDelegate = NULL) override
+	virtual bool ProcessEvent(UGsGameObjectBase* Owner, uint8 StateID) override
 	{
 		auto stateType = static_cast<tStateType>(StateID);
-		if (!OnProcessEvent(Cast<tObject>(Owner), stateType))
-		{
-			if (FailDelegate.IsBound())
-			{
-				FailDelegate.Execute(GetStateID());
-			}
-#if WITH_EDITOR
-			//스테이트 전환 실패 로그 메세지
-			FString stateName = (StateID > static_cast<uint8>(EGsStateUpperBase::None)) ?
-				FGsTextUtil::GetEnumValueAsString<tStateType>(TEXT("EGsStateUpperBase"), stateType) :
-				FGsTextUtil::GetEnumValueAsString<tStateType>(TEXT("EGsStateBase"), stateType);
-			UE_LOG(LogTemp, Warning, TEXT("[%s] State Changed failed!  Current State : [%s]"), *stateName, *Name());
-#endif
-		}
+		return OnProcessEvent(Cast<tObject>(Owner), stateType);
 	}
 	virtual void Enter(UGsGameObjectBase* Owner) override
 	{

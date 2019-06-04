@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GsStateBase.h"
+#include "GameObject/Component/GsAnimInstanceState.h"
 #include "GameObject/ActorExtend/GsLocalCharacter.h"
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 
@@ -17,13 +18,7 @@ protected:
 	}
 
 	//애님 블루프린트에 가장 최우선으로 상태를 전송해줘야한다.
-	virtual void OnEnter(UGsGameObjectLocal* Owner) override
-	{
-		if (auto anim = Owner->GetLocalCharacter()->GetAnim())
-		{
-			anim->ChangeState(GetStateID(), 0, GetAniRandomCount());
-		}
-	}
+	virtual void OnEnter(UGsGameObjectLocal* Owner) override;
 
 	virtual void OnReEnter(UGsGameObjectLocal* Owner) override
 	{
@@ -36,12 +31,21 @@ protected:
 	}
 };
 
+template< class tState, typename tStateType >
+void FGsStateSingleLocal<tState, tStateType >::OnEnter(UGsGameObjectLocal* Owner)
+{
+	if (auto anim = Owner->GetLocalCharacter()->GetAnim())
+	{
+		anim->ChangeState(GetStateID(), 0, GetAniRandomCount());
+	}
+}
+
 /**
  * 
  */
 class GAMESERVICE_API FGsStateSpawn : public FGsStateSingleLocal<FGsStateSpawn, EGsStateBase>
 {
-	typedef FGsStateSingleLocal Super;
+	typedef FGsStateSingleLocal<FGsStateSpawn, EGsStateBase> Super;
 
 public:
 	virtual int GetStateID() override;
@@ -55,7 +59,7 @@ protected:
 
 class GAMESERVICE_API FGsStateIdle : public FGsStateSingleLocal<FGsStateIdle, EGsStateBase>
 {
-	typedef FGsStateSingleLocal Super;
+	typedef FGsStateSingleLocal<FGsStateIdle, EGsStateBase> Super;
 
 public:
 	virtual int GetStateID() override;
@@ -71,7 +75,7 @@ protected:
 template<class tState>
 class GAMESERVICE_API FGsStateMoveBase : public FGsStateSingleLocal<tState, EGsStateBase>
 {
-	typedef FGsStateSingleLocal Super;
+	typedef FGsStateSingleLocal<tState, EGsStateBase> Super;
 
 protected:
 	virtual void OnUpdate(UGsGameObjectLocal* Owner, float Delta) override
@@ -84,7 +88,7 @@ protected:
 
 class GAMESERVICE_API FGsStateForwardWalk : public FGsStateMoveBase<FGsStateForwardWalk>
 {
-	typedef FGsStateMoveBase Super;
+	typedef FGsStateMoveBase<FGsStateForwardWalk> Super;
 
 public:
 	virtual int GetStateID() override;
@@ -98,7 +102,7 @@ protected:
 
 class GAMESERVICE_API FGsStateBackwardWalk : public FGsStateMoveBase<FGsStateBackwardWalk>
 {
-	typedef FGsStateMoveBase Super;
+	typedef FGsStateMoveBase<FGsStateBackwardWalk> Super;
 
 public:
 	virtual int GetStateID() override;
@@ -112,7 +116,7 @@ protected:
 
 class GAMESERVICE_API FGsStateSideWalk : public FGsStateMoveBase<FGsStateSideWalk>
 {
-	typedef FGsStateMoveBase Super;
+	typedef FGsStateMoveBase<FGsStateSideWalk> Super;
 
 public:
 	virtual int GetStateID() override;
@@ -140,7 +144,7 @@ protected:
 
 class GAMESERVICE_API FGsStateRide : public FGsStateSingleLocal<FGsStateRide, EGsStateBase>
 {
-	typedef FGsStateSingleLocal Super;
+	typedef FGsStateSingleLocal<FGsStateRide, EGsStateBase> Super;
 
 public:
 	virtual int GetStateID() override;
@@ -156,7 +160,7 @@ protected:
 //Uppper
 class GAMESERVICE_API FGsStateUpperIdle : public FGsStateSingleLocal<FGsStateUpperIdle, EGsStateUpperBase>
 {
-	typedef FGsStateSingleLocal Super;
+	typedef FGsStateSingleLocal<FGsStateUpperIdle, EGsStateUpperBase> Super;
 
 public:
 	virtual int GetStateID() override;
@@ -169,7 +173,7 @@ protected:
 
 class GAMESERVICE_API FGsStateAttack : public FGsStateSingleLocal<FGsStateAttack, EGsStateUpperBase>
 {
-	typedef FGsStateSingleLocal Super;
+	typedef FGsStateSingleLocal<FGsStateAttack, EGsStateUpperBase> Super;
 
 public:
 	virtual int GetStateID() override;
