@@ -4,8 +4,7 @@
 
 #include "GameObject/Define/GsGameObjectDefine.h"
 #include "GameObject/ObjectClass/GsGameObjectBase.h"
-
-class IGsStateBase;
+#include "GameObject/State/GsStateBase.h"
 
 /**
  * 상태 관리 매니져 클래스
@@ -75,7 +74,21 @@ void FGsFSMManager::ProcessEvent(tStateType StateID, FGsStateChangeFailed const&
 {
 	if (Current)
 	{
-		Current->ProcessEvent(Owner, static_cast<uint8>(StateID), FailDelegate);
+		if (false == Current->ProcessEvent(Owner, static_cast<uint8>(StateID)))
+		{
+			if (FailDelegate.IsBound())
+			{
+				FailDelegate.Execute(Current->GetStateID());
+			}
+#if WITH_EDITOR
+			//스테이트 전환 실패 로그 메세지
+			int id = Current->GetStateID();
+			FString stateName = (id > static_cast<uint8>(EGsStateUpperBase::None)) ?
+				FGsTextUtil::GetEnumValueAsString<tStateType>(TEXT("EGsStateUpperBase"), StateID) :
+				FGsTextUtil::GetEnumValueAsString<tStateType>(TEXT("EGsStateBase"), StateID);
+				UE_LOG(LogTemp, Warning, TEXT("[%s] State Changed failed!  Current State : [%s]"), *stateName, *Current->Name());
+#endif
+		}
 	}
 }
 

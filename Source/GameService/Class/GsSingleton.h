@@ -42,3 +42,6 @@ public:
 		}
 	}
 };
+
+template<typename T>
+T* TGsPoolSingle<T>::_instance = nullptr;

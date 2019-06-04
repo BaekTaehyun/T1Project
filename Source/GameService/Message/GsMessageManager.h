@@ -21,7 +21,7 @@ class FGsMessageManager :
 	typedef TGsMessageHandler<MessageLobby::Hive>	MHive;
 	typedef TGsMessageHandler<MessageLobby::Stage>	MStage;
 	//테스트 Gameobject 이벤트 처리용 메세지
-	typedef TGsMessageHandlerOneParam<MessageGameObject::Action, const class GsGameObjectEventParamBase&> MGameObject;
+	typedef TGsMessageHandlerOneParam<MessageGameObject::Action, class GsGameObjectEventParamBase&> MGameObject;
 	
 	MSystem	_system;
 	MNet	_net;

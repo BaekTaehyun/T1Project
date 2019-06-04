@@ -73,6 +73,5 @@ public:
 #endif
 	}
 };
-FBufferPool* TGsPoolSingle<FBufferPool>::_instance= nullptr;
 
 #define GetBufferPool() TGsPoolSingle<FBufferPool>::GetInstance()

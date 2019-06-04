@@ -44,11 +44,7 @@ public:
 		return NULL;
 	}
 
-	//bak1210 : template 특수화의 경우 일반적으로 cpp에서 처리해도 무방하나 언리얼 유니티 빌드의 문제로 같은 함수가 다른 obj에 묶여
-	//			심볼충돌의 경우가 있다.. 이를 방지하기 위해 다른 파일에 함께묶이는 현상을 제거하기위해 명시적으로 선언
-	template <>
-	UGsGameObjectProjectile* SpawnObject(UClass* Uclass, const FVector& Pos,
-		const FRotator& Rot, bool IsOnGround);
+	
 
 	void DespawnObject(UGsGameObjectBase* Despawn);
 
@@ -97,8 +93,13 @@ private:
 	TArray<UGsGameObjectBase*> RemoveSpawns;
 };
 
+//bak1210 : template 특수화의 경우 일반적으로 cpp에서 처리해도 무방하나 언리얼 유니티 빌드의 문제로 같은 함수가 다른 obj에 묶여
+	//			심볼충돌의 경우가 있다.. 이를 방지하기 위해 다른 파일에 함께묶이는 현상을 제거하기위해 명시적으로 선언
+template<>
+UGsGameObjectProjectile* UGsSpawnComponent::SpawnObject(UClass* Uclass,
+	const FVector& Pos, const FRotator& Rot, bool IsOnGround);
+
 typedef TGsSingleton<UGsSpawnComponent>	UGsSpawnerSingle;
-UGsSpawnComponent* UGsSpawnerSingle::Instance = NULL;
 #define GSpawner() UGsSpawnerSingle::Instance
 
 

@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GsStateBase.h"
+#include "GameObject/Component/GsAnimInstanceState.h"
 #include "GameObject/ActorExtend/GsNpcPawn.h"
 #include "GameObject/ObjectClass/GsGameObjectNonPlayer.h"
-
 
 template <class tState, typename tStateType>
 class GAMESERVICE_API FGsStateSingleNpc : public FGsStateTargetBase<UGsGameObjectNonPlayer, tState, tStateType>
@@ -18,14 +18,7 @@ protected:
 	}
 
 	//애님 블루프린트에 가장 최우선으로 상태를 전송해줘야한다.
-	virtual void OnEnter(UGsGameObjectNonPlayer* Owner) override
-	{
-		if (AGsNpcPawn* actor = Owner->GetNpcPawn())
-		{
-			auto anim = actor->GetAnim();
-			anim->ChangeState(GetStateID());
-		}
-	}
+	virtual void OnEnter(UGsGameObjectNonPlayer* Owner) override;
 
 	virtual void OnReEnter(UGsGameObjectNonPlayer* Owner) override
 	{
@@ -38,9 +31,18 @@ protected:
 	}
 };
 
+template< class tState, typename tStateType >
+void FGsStateSingleNpc<tState, tStateType >::OnEnter(UGsGameObjectNonPlayer* Owner)
+{
+	if (auto anim = Owner->GetNpcPawn()->GetAnim())
+	{
+		anim->ChangeState(GetStateID(), 0, GetAniRandomCount());
+	}
+}
+
 class GAMESERVICE_API FGsStateNpcSpawn : public FGsStateSingleNpc<FGsStateNpcSpawn, EGsStateBase>
 {
-	typedef FGsStateSingleNpc Super;
+	typedef FGsStateSingleNpc<FGsStateNpcSpawn, EGsStateBase> Super;
 
 public:
     virtual int GetStateID() override;
@@ -54,7 +56,7 @@ protected:
 
 class GAMESERVICE_API FGsStateNpcIdle : public FGsStateSingleNpc<FGsStateNpcIdle, EGsStateBase>
 {
-	typedef FGsStateSingleNpc Super;
+	typedef FGsStateSingleNpc<FGsStateNpcIdle, EGsStateBase> Super;
 
 public:
 	virtual int GetStateID() override;
@@ -69,7 +71,7 @@ protected:
 template<class tState>
 class GAMESERVICE_API FGsStateNpcMoveBase : public FGsStateSingleNpc<tState, EGsStateBase>
 {
-	typedef FGsStateSingleNpc Super;
+	typedef FGsStateSingleNpc<tState, EGsStateBase> Super;
 
 protected:
 	virtual void OnUpdate(UGsGameObjectNonPlayer* Owner, float Delta) override
@@ -82,7 +84,7 @@ protected:
 
 class GAMESERVICE_API FGsStateNpcWalk : public FGsStateNpcMoveBase<FGsStateNpcWalk>
 {
-	typedef FGsStateNpcMoveBase Super;
+	typedef FGsStateNpcMoveBase<FGsStateNpcWalk> Super;
 
 public:
     virtual int GetStateID() override;
@@ -95,7 +97,7 @@ protected:
 
 class GAMESERVICE_API FGsStateNpcBeaten : public FGsStateSingleNpc<FGsStateNpcBeaten, EGsStateBase>
 {
-	typedef FGsStateSingleNpc Super;
+	typedef FGsStateSingleNpc<FGsStateNpcBeaten, EGsStateBase> Super;
 
 public:
 	virtual int GetStateID() override;

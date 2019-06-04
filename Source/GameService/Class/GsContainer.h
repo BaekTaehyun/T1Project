@@ -26,7 +26,7 @@ public:
 	// 접근자 추가
 	TSharedRef<T> operator[](int index)
 	{
-		return _container.GetData()[i].ToSharedRef();
+		return _container.GetData()[index].ToSharedRef();
 	}
 	//----------------------------------------------------------------
 	const TArray<TSharedPtr<T>>& Get()
@@ -43,10 +43,12 @@ public:
 			{
 				a = NULL;
 			}
+#if WITH_EDITOR 
 			else
 			{
 				GSLOG(Error, TEXT("GSNArray : Ref Count Not 1, Reset Call %s"), typeid(T).name());
 			}
+#endif
 		}
 		_container.Empty();
 	}
@@ -75,10 +77,12 @@ public:
 		{
 			instance = NULL;
 		}
+#if WITH_EDITOR 
 		else
 		{
 			GSLOG(Error, TEXT("GSTArray : Ref Count Not 1, Reset Call %s"), typeid(T).name());
 		}
+#endif
 	}
 };
 
@@ -124,10 +128,12 @@ public:
 			{
 				a.Value = NULL;
 			}
+#if WITH_EDITOR 
 			else
 			{
 				GSLOG(Error, TEXT("GSTMap : Ref Count Not 1, Reset Call Key[%s] Value[%s]"), typeid(T1).name(), typeid(T2).name());
 			}
+#endif
 		}
 		_container.Empty();
 	}
@@ -140,7 +146,9 @@ public:
 			T2* instance = _allocator.Get()->Alloc(inKey);
 			if (nullptr == instance)
 			{
+#if WITH_EDITOR 
 				GSLOG(Error, TEXT("GSTMap : _allocator MakeInstance NULL, Call Key[%s] Value[%s]"), typeid(T1).name(), typeid(T2).name());
+#endif
 				return TSharedRef<T2>();
 			}
 			TSharedPtr<T2> shard_instance = MakeShareable(instance);
@@ -158,10 +166,12 @@ public:
 		{
 			instance = NULL;
 		}
+#if WITH_EDITOR 
 		else
 		{
 			GSLOG(Error, TEXT("GSTMap : Ref Count Not 1, Reset Call Key[%s] Value[%s]"), typeid(T1).name(), typeid(T2).name());
 		}
+#endif
 	}
 	//----------------------------------------------------------------
 	virtual TSharedRef<T2> Find(T1 inKey)

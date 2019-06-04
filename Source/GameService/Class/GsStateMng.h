@@ -46,7 +46,7 @@ public:
 			_currentState = NULL;
 		}
 		
-		Clear();
+		GSTMap<T1, TGsState, GSFGameModeAllocator>::Clear();
 	};
 
 	//------------------------------------------------------------------------------

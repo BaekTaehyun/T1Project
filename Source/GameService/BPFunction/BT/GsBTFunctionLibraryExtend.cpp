@@ -15,9 +15,11 @@
 #include "AIModule/Classes/BehaviorTree/Blackboard/BlackboardKeyType_Rotator.h"
 #include "GameObject/ObjectClass/GsGameObjectBase.h"
 #include "GameObject/GsSpawnComponent.h"
+#include "GameService.h"
 
 
-#define DEF_SETBLACKBOARDDATA(bc, name, p, v)       if(!p.##name.IsEmpty()) { bc->SetValueAs##name(*p.##name, v.##name); }
+#pragma todo("by : mobile platform build failed")
+#define DEF_SETBLACKBOARDDATA(bc, name, p, v)       if(!p.##name.IsEmpty()) { bc->SetValueAs##name(*(p.##name), v.##name); }
 #define DEF_SETREGBLACKBOARDDATA(bc, name, p, v)    if (!p.##name.IsEmpty()) { int key = sizeof(UBlackboardKeyType_##name); \
                                                     if (v<UBlackboardKeyType_##name>.Contains(key)) \
                                                         { bc->SetValueAs##name(*p.##name, v<UBlackboardKeyType_##name>[key]); } }
@@ -128,7 +130,7 @@ void UGsBTFunctionLibraryExtend::SetBlackboardData(UBTNode* NodeOwner, const FGs
 {
     if (UBlackboardComponent* bb = GetOwnersBlackboard(NodeOwner))
     {
-        DEF_SETBLACKBOARDDATA(bb, Object, Parser, Result);
+        /*DEF_SETBLACKBOARDDATA(bb, Object, Parser, Result);
         DEF_SETBLACKBOARDDATA(bb, Class, Parser, Result);
         DEF_SETBLACKBOARDDATA(bb, Enum, Parser, Result);
         DEF_SETBLACKBOARDDATA(bb, Int, Parser, Result);
@@ -137,7 +139,7 @@ void UGsBTFunctionLibraryExtend::SetBlackboardData(UBTNode* NodeOwner, const FGs
         DEF_SETBLACKBOARDDATA(bb, String, Parser, Result);
         DEF_SETBLACKBOARDDATA(bb, Name, Parser, Result);
         DEF_SETBLACKBOARDDATA(bb, Vector, Parser, Result);
-        DEF_SETBLACKBOARDDATA(bb, Rotator, Parser, Result);
+        DEF_SETBLACKBOARDDATA(bb, Rotator, Parser, Result);*/
     }
 }
 
@@ -145,7 +147,7 @@ void UGsBTFunctionLibraryExtend::SetBlackboardEmptyData(UBTNode* NodeOwner, cons
 {
     if (UBlackboardComponent* bb = GetOwnersBlackboard(NodeOwner))
     {
-        DEF_CLEARBLACKBOARDDATA(bb, Object, Parser);
+        /*DEF_CLEARBLACKBOARDDATA(bb, Object, Parser);
         DEF_CLEARBLACKBOARDDATA(bb, Class, Parser);
         DEF_CLEARBLACKBOARDDATA(bb, Enum, Parser);
         DEF_CLEARBLACKBOARDDATA(bb, Int, Parser);
@@ -154,7 +156,7 @@ void UGsBTFunctionLibraryExtend::SetBlackboardEmptyData(UBTNode* NodeOwner, cons
         DEF_CLEARBLACKBOARDDATA(bb, String, Parser);
         DEF_CLEARBLACKBOARDDATA(bb, Name, Parser);
         DEF_CLEARBLACKBOARDDATA(bb, Vector, Parser);
-        DEF_CLEARBLACKBOARDDATA(bb, Rotator, Parser);
+        DEF_CLEARBLACKBOARDDATA(bb, Rotator, Parser);*/
     }
 }
 
@@ -162,7 +164,7 @@ void UGsBTFunctionLibraryExtend::SetRegistBlackboardData(UBTNode* NodeOwner, con
 {
     if (UBlackboardComponent* bb = GetOwnersBlackboard(NodeOwner))
     {
-        DEF_SETREGBLACKBOARDDATA(bb, Object, Parser, BlackboardRegister);
+        /*DEF_SETREGBLACKBOARDDATA(bb, Object, Parser, BlackboardRegister);
         DEF_SETREGBLACKBOARDDATA(bb, Class, Parser, BlackboardRegister);
         DEF_SETREGBLACKBOARDDATA(bb, Enum, Parser, BlackboardRegister);
         DEF_SETREGBLACKBOARDDATA(bb, Int, Parser, BlackboardRegister);
@@ -171,7 +173,7 @@ void UGsBTFunctionLibraryExtend::SetRegistBlackboardData(UBTNode* NodeOwner, con
         DEF_SETREGBLACKBOARDDATA(bb, String, Parser, BlackboardRegister);
         DEF_SETREGBLACKBOARDDATA(bb, Name, Parser, BlackboardRegister);
         DEF_SETREGBLACKBOARDDATA(bb, Vector, Parser, BlackboardRegister);
-        DEF_SETREGBLACKBOARDDATA(bb, Rotator, Parser, BlackboardRegister);
+        DEF_SETREGBLACKBOARDDATA(bb, Rotator, Parser, BlackboardRegister);*/
     }
 }
 
