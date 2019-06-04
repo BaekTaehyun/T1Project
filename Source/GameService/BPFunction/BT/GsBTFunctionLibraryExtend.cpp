@@ -15,8 +15,10 @@
 #include "AIModule/Classes/BehaviorTree/Blackboard/BlackboardKeyType_Rotator.h"
 #include "GameObject/ObjectClass/GsGameObjectBase.h"
 #include "GameObject/GsSpawnComponent.h"
+#include "GameService.h"
 
 
+#pragma todo("by : mobile platform build failed")
 #define DEF_SETBLACKBOARDDATA(bc, name, p, v)       if(!p.##name.IsEmpty()) { bc->SetValueAs##name(*(p.##name), v.##name); }
 #define DEF_SETREGBLACKBOARDDATA(bc, name, p, v)    if (!p.##name.IsEmpty()) { int key = sizeof(UBlackboardKeyType_##name); \
                                                     if (v<UBlackboardKeyType_##name>.Contains(key)) \

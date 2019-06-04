@@ -71,10 +71,10 @@ void UGsGameObjectLocal::ActorSpawned(AActor* Spawn)
         Parts->LoadData(TEXT("GsPartsDataContainerBase'/Game/Resource/DataAsset/LocalParts.LocalParts'"));
 
 		Fsm = new FGsFSMManager();
-		Fsm->Initialize<FGsStateSpawn>(this);
+		Fsm->Initialize<FGsStateLocalSpawn>(this);
 
 		UpperFsm = new FGsFSMManager();
-		UpperFsm->Initialize<FGsStateUpperIdle>(this);
+		UpperFsm->Initialize<FGsStateLocalUpperIdle>(this);
 
         //모든 파츠 장착
         Parts->AttachAll();

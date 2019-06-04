@@ -4,179 +4,206 @@
 
 #include "CoreMinimal.h"
 #include "GsStateBase.h"
+#include "GameObject/Component/GsAnimInstanceState.h"
 #include "GameObject/ActorExtend/GsLocalCharacter.h"
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 
 template <class tState, typename tStateType>
-class GAMESERVICE_API FGsStateSingleLocal : public FGsStateTargetBase<UGsGameObjectLocal, tState, tStateType>
+class GAMESERVICE_API FGsStateSingleLocal : public TGsStateSingleton<tState>
 {
-protected:
-	virtual bool OnProcessEvent(UGsGameObjectLocal* Owner, tStateType StateID) override
+public:
+	virtual bool ProcessEvent(UGsGameObjectBase* Owner, uint8 StateID) override
 	{
-		return true;
+		return OnProcessEvent(Owner, static_cast<tStateType>(StateID));
 	}
 
 	//애님 블루프린트에 가장 최우선으로 상태를 전송해줘야한다.
-	virtual void OnEnter(UGsGameObjectLocal* Owner) override
+	virtual void Enter(UGsGameObjectBase* Owner) override
 	{
-		if (auto anim = Owner->GetLocalCharacter()->GetAnim())
+		auto my = Cast<UGsGameObjectLocal>(Owner);
+		if (auto anim = my->GetLocalCharacter()->GetAnim())
 		{
 			anim->ChangeState(GetStateID(), 0, GetAniRandomCount());
 		}
 	}
+	virtual void ReEnter(UGsGameObjectBase* Owner) override				{}
+	virtual void Update(UGsGameObjectBase* Owner, float Delta) override {}
+	virtual void Exit(UGsGameObjectBase* Owner) override				{}
 
-	virtual void OnReEnter(UGsGameObjectLocal* Owner) override
+protected:
+	virtual bool OnProcessEvent(UGsGameObjectBase* Owner, tStateType StateID)
 	{
+		return true;
 	}
-	virtual void OnUpdate(UGsGameObjectLocal* Owner, float Delta) override
-	{
-	}
-	virtual void OnExit(UGsGameObjectLocal* Owner) override
-	{
-	}
+
+//타이핑 실수 방지 내부 사용 메크로 정의
+#define ObjectBaseStateChange(State) ChangeState<State>(Cast<UGsGameObjectLocal>(Owner)->GetBaseFSM())
+#define ObjectUpperStateChange(State) ChangeState<State>(Cast<UGsGameObjectLocal>(Owner)->GetUpperFSM())
 };
 
 /**
- * 
- */
-class GAMESERVICE_API FGsStateSpawn : public FGsStateSingleLocal<FGsStateSpawn, EGsStateBase>
+* Local 스폰 상태 클래스
+*/
+class GAMESERVICE_API FGsStateLocalSpawn : public FGsStateSingleLocal<FGsStateLocalSpawn, EGsStateBase>
 {
-	typedef FGsStateSingleLocal Super;
+	typedef FGsStateSingleLocal<FGsStateLocalSpawn, EGsStateBase> Super;
 
 public:
-	virtual int GetStateID() override;
+	virtual uint8 GetStateID() override;
 	virtual FString Name() override;
 	virtual int GetAniRandomCount() override;
 
+	virtual void Enter(UGsGameObjectBase* Owner) override;
+
 protected:
-	virtual bool OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID) override;
-	virtual void OnEnter(UGsGameObjectLocal* Owner) override;
+	virtual bool OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID) override;
 };
 
-class GAMESERVICE_API FGsStateIdle : public FGsStateSingleLocal<FGsStateIdle, EGsStateBase>
+/**
+* Local 유휴 상태 클래스
+*/
+class GAMESERVICE_API FGsStateLocalIdle : public FGsStateSingleLocal<FGsStateLocalIdle, EGsStateBase>
 {
-	typedef FGsStateSingleLocal Super;
+	typedef FGsStateSingleLocal<FGsStateLocalIdle, EGsStateBase> Super;
 
 public:
-	virtual int GetStateID() override;
+	virtual uint8 GetStateID() override;
 	virtual FString Name() override;
 
 protected:
-	virtual bool OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID) override;
-	virtual void OnEnter(UGsGameObjectLocal* Owner) override;
+	virtual bool OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID) override;
 };
 
-//캐릭터는 전방 이동과 후방이동으로 분류
-//무브 관련 베이스 스테이트
+
+/**
+* Local 무브 관련 베이스 상태 클래스
+* 캐릭터는 전방, 측면, 후방이동으로 분류
+*/
 template<class tState>
-class GAMESERVICE_API FGsStateMoveBase : public FGsStateSingleLocal<tState, EGsStateBase>
+class GAMESERVICE_API FGsStateLocalMoveBase : public FGsStateSingleLocal<tState, EGsStateBase>
 {
-	typedef FGsStateSingleLocal Super;
+	typedef FGsStateSingleLocal<tState, EGsStateBase> Super;
 
-protected:
-	virtual void OnUpdate(UGsGameObjectLocal* Owner, float Delta) override
+public:
+	virtual void Update(UGsGameObjectBase* Owner, float Delta) override
 	{
-		Super::OnUpdate(Owner, Delta);
+		Super::Update(Owner, Delta);
 
-		Owner->GetMovement()->Update(Delta);
+		auto my = Cast<UGsGameObjectLocal>(Owner);
+		my->GetMovement()->Update(Delta);
 	}
+
+protected:
 };
 
-class GAMESERVICE_API FGsStateForwardWalk : public FGsStateMoveBase<FGsStateForwardWalk>
+/**
+* Local 전방 이동 상태 클래스
+*/
+class GAMESERVICE_API FGsStateLocalForwardWalk : public FGsStateLocalMoveBase<FGsStateLocalForwardWalk>
 {
-	typedef FGsStateMoveBase Super;
+	typedef FGsStateLocalMoveBase<FGsStateLocalForwardWalk> Super;
 
 public:
-	virtual int GetStateID() override;
+	virtual uint8 GetStateID() override;
 	virtual FString Name() override;
 
 protected:
-	virtual bool OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID) override;
-	virtual void OnEnter(UGsGameObjectLocal* Owner) override;
-	virtual void OnUpdate(UGsGameObjectLocal* Owner, float Delta) override;
+	virtual bool OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID) override;
 };
 
-class GAMESERVICE_API FGsStateBackwardWalk : public FGsStateMoveBase<FGsStateBackwardWalk>
+/**
+* Local 후방 이동 상태 클래스
+*/
+class GAMESERVICE_API FGsStateLocalBackwardWalk : public FGsStateLocalMoveBase<FGsStateLocalBackwardWalk>
 {
-	typedef FGsStateMoveBase Super;
+	typedef FGsStateLocalMoveBase<FGsStateLocalBackwardWalk> Super;
 
 public:
-	virtual int GetStateID() override;
+	virtual uint8 GetStateID() override;
 	virtual FString Name() override;
 
 protected:
-	virtual bool OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID) override;
-	virtual void OnEnter(UGsGameObjectLocal* Owner) override;
-	virtual void OnUpdate(UGsGameObjectLocal* Owner, float Delta) override;
+	virtual bool OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID) override;
 };
 
-class GAMESERVICE_API FGsStateSideWalk : public FGsStateMoveBase<FGsStateSideWalk>
+/**
+* Local 측면 이동 상태 클래스
+*/
+class GAMESERVICE_API FGsStateLocalSideWalk : public FGsStateLocalMoveBase<FGsStateLocalSideWalk>
 {
-	typedef FGsStateMoveBase Super;
+	typedef FGsStateLocalMoveBase<FGsStateLocalSideWalk> Super;
 
 public:
-	virtual int GetStateID() override;
+	virtual uint8 GetStateID() override;
 	virtual FString Name() override;
 
 protected:
-	virtual bool OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID) override;
-	virtual void OnEnter(UGsGameObjectLocal* Owner) override;
-	virtual void OnUpdate(UGsGameObjectLocal* Owner, float Delta) override;
+	virtual bool OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID) override;
 };
 
-class GAMESERVICE_API FGsStateRun : public FGsStateMoveBase<FGsStateRun>
+/**
+* Local 달리기 이동 상태 클래스
+*/
+class GAMESERVICE_API FGsStateLocalRun : public FGsStateLocalMoveBase<FGsStateLocalRun>
 {
-	typedef FGsStateMoveBase Super;
+	typedef FGsStateLocalMoveBase<FGsStateLocalRun> Super;
 
 public:
-	virtual int GetStateID() override;
+	virtual uint8 GetStateID() override;
 	virtual FString Name() override;
 
 protected:
-	virtual bool OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID) override;
-	virtual void OnEnter(UGsGameObjectLocal* Owner) override;
-	virtual void OnUpdate(UGsGameObjectLocal* Owner, float Delta) override;
+	virtual bool OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID) override;
 };
 
-class GAMESERVICE_API FGsStateRide : public FGsStateSingleLocal<FGsStateRide, EGsStateBase>
+class GAMESERVICE_API FGsStateLocalRide : public FGsStateSingleLocal<FGsStateLocalRide, EGsStateBase>
 {
-	typedef FGsStateSingleLocal Super;
+	typedef FGsStateSingleLocal<FGsStateLocalRide, EGsStateBase> Super;
 
 public:
-	virtual int GetStateID() override;
+	virtual uint8 GetStateID() override;
 	virtual FString Name() override;
 
+	virtual void Enter(UGsGameObjectBase* Owner) override;
+	virtual void Exit(UGsGameObjectBase* Owner) override;
+
 protected:
-	virtual bool OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateBase StateID) override;
-	virtual void OnEnter(UGsGameObjectLocal* Owner) override;
-	virtual void OnUpdate(UGsGameObjectLocal* Owner, float Delta) override;
-	virtual void OnExit(UGsGameObjectLocal* Owner) override;
+	virtual bool OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID) override;
 };
 
-//Uppper
-class GAMESERVICE_API FGsStateUpperIdle : public FGsStateSingleLocal<FGsStateUpperIdle, EGsStateUpperBase>
+/**
+* Local 상체 유휴 상태 클래스
+* 상체 상태 클래스
+*/
+class GAMESERVICE_API FGsStateLocalUpperIdle : public FGsStateSingleLocal<FGsStateLocalUpperIdle, EGsStateUpperBase>
 {
-	typedef FGsStateSingleLocal Super;
+	typedef FGsStateSingleLocal<FGsStateLocalUpperIdle, EGsStateUpperBase> Super;
 
 public:
-	virtual int GetStateID() override;
+	virtual uint8 GetStateID() override;
 	virtual FString Name() override;
 
+	virtual void Enter(UGsGameObjectBase* Owner) override;
+
 protected:
-	virtual bool OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateUpperBase StateID) override;
-	virtual void OnEnter(UGsGameObjectLocal* Owner) override;
+	virtual bool OnProcessEvent(UGsGameObjectBase* Owner, EGsStateUpperBase StateID) override;
 };
 
-class GAMESERVICE_API FGsStateAttack : public FGsStateSingleLocal<FGsStateAttack, EGsStateUpperBase>
+/**
+* Local 공격 상태 클래스
+* 상체 상태 클래스
+*/
+class GAMESERVICE_API FGsStateLocalAttack : public FGsStateSingleLocal<FGsStateLocalAttack, EGsStateUpperBase>
 {
-	typedef FGsStateSingleLocal Super;
+	typedef FGsStateSingleLocal<FGsStateLocalAttack, EGsStateUpperBase> Super;
 
 public:
-	virtual int GetStateID() override;
+	virtual uint8 GetStateID() override;
 	virtual FString Name() override;
 
+	virtual void Enter(UGsGameObjectBase* Owner) override;
+	virtual void Update(UGsGameObjectBase* Owner, float Delta) override;
+
 protected:
-	virtual bool OnProcessEvent(UGsGameObjectLocal* Owner, EGsStateUpperBase StateID) override;
-	virtual void OnEnter(UGsGameObjectLocal* Owner) override;
-	virtual void OnUpdate(UGsGameObjectLocal* Owner, float Delta) override;
+	virtual bool OnProcessEvent(UGsGameObjectBase* Owner, EGsStateUpperBase StateID) override;
 };
