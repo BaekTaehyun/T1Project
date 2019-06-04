@@ -130,6 +130,9 @@ void UGsEditorTerrainPillarComp::OnUpdateTransform(EUpdateTransformFlags UpdateT
 {
 	if (_Parent)
 	{
+		UE_LOG(LogTemp, Log, TEXT("Component location : %s"), *GetComponentLocation().ToString());
+
+		_Parent->_PointArray[_Index] = GetComponentLocation();
 		_Parent->Draw();
 	}
 }

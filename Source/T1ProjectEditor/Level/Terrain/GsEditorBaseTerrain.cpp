@@ -9,44 +9,105 @@
 #include "Editor/UnrealEd/Public/LevelEditorViewport.h"
 #include "Editor/UnrealEd/Public/Editor.h"
 #include "Editor/UnrealEd/Public/Kismet2/KismetEditorUtilities.h"
+#include "Editor/LevelEditor/Public/LevelEditor.h"
+#include "Runtime/Core/Public/Modules/ModuleManager.h"
+#include "Runtime/Slate/Public/Widgets/Docking/SDockTab.h"
+#include "Runtime/Engine/Classes/Components/SceneComponent.h"
+#include "Runtime/CoreUObject/Public/UObject/UObjectGlobals.h"
+#include "Runtime/Engine/Classes/Components/SplineComponent.h"
 
 // Sets default values
 AGsEditorBaseTerrain::AGsEditorBaseTerrain()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
+
+	_Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	_Root->SetRelativeLocation(FVector::ZeroVector);
+
+	_Spline = CreateDefaultSubobject<USplineComponent>(TEXT("Spline"));
+	_Spline->SetRelativeLocation(FVector::ZeroVector);
+
+	RootComponent = _Root;
 
 }
 
-void AGsEditorBaseTerrain::OnConstruction(const FTransform& in_transform)
+void AGsEditorBaseTerrain::InitPoints()
+{	
+	if (_Spline)
+	{
+		int num = _Spline->GetNumberOfSplinePoints();
+
+		if (num < 3)
+		{
+			FVector origin = GetActorLocation();
+
+			_Spline->ClearSplinePoints();
+
+			_Spline->AddSplinePoint(origin, ESplineCoordinateSpace::World);
+			_Spline->AddSplinePoint(origin + FVector(100, 0, 0), ESplineCoordinateSpace::World);
+			_Spline->AddSplinePoint(origin + FVector(0, 100, 0), ESplineCoordinateSpace::World);
+		}
+
+		_PointArray.Empty();
+		num = _Spline->GetNumberOfSplinePoints();
+
+		for (int i = 0; i < num; ++i)
+		{
+			_PointArray.Add(_Spline->GetLocationAtSplinePoint(i, ESplineCoordinateSpace::World));
+		}
+	}
+}
+
+void AGsEditorBaseTerrain::DestoryAllComponents()
 {
-	Super::OnConstruction(in_transform);
-
-	_PillarArray.Empty();
-
 	const TArray<UActorComponent*>& pillarArray = GetComponentsByClass(UGsEditorTerrainPillarComp::StaticClass());
 
 	for (UActorComponent* iter : pillarArray)
 	{
-		if (iter)
-		{
-			RegisterPillar(Cast<UGsEditorTerrainPillarComp>(iter));
-		}
+		iter->DestroyComponent();
 	}
 
-	_PlaneArray.Empty();
+	_PillarArray.Empty();
 
 	const TArray<UActorComponent*>& planeArray = GetComponentsByClass(UGsEditorTerrainPlaneComp::StaticClass());
 
 	for (UActorComponent* iter : planeArray)
 	{
-		if (iter)
-		{
-			RegisterPlane(Cast<UGsEditorTerrainPlaneComp>(iter));
-		}
+		iter->DestroyComponent();
 	}
 
-	Draw();
+	_PlaneArray.Empty();
+}
+
+void AGsEditorBaseTerrain::ConstructFence()
+{
+	for (int32 i = 0; i < _PointArray.Num(); ++i)
+	{
+		UGsEditorTerrainPillarComp* pillar = NewObject<UGsEditorTerrainPillarComp>(this);
+		pillar->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+		/*pillar->RegisterComponent();*/
+
+		//UGsEditorTerrainPillarComp* pillar = ConstructObject<UGsEditorTerrainPillarComp>(UGsEditorTerrainPillarComp::StaticClass(), this);
+
+		RegisterPillar(pillar, i);
+
+		pillar->SetWorldLocation(_PointArray[i]);
+	}
+
+	//Create pillar 
+	for (FVector& iter : _PointArray)
+	{
+		UGsEditorTerrainPlaneComp* plane = NewObject<UGsEditorTerrainPlaneComp>(this);
+		plane->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+		/*plane->RegisterComponent();*/
+
+		//UGsEditorTerrainPlaneComp* plane = ConstructObject<UGsEditorTerrainPlaneComp>(UGsEditorTerrainPillarComp::StaticClass(), this);
+
+		RegisterPlane(plane);
+	}
+
+	RegisterAllComponents();
 }
 
 // Called when the game starts or when spawned
@@ -59,11 +120,14 @@ void AGsEditorBaseTerrain::BeginPlay()
 
 void AGsEditorBaseTerrain::Draw()
 {
-	for (UGsEditorTerrainPillarComp* iter : _PillarArray)
+	for(int i = 0; i < _PointArray.Num(); ++i)	
 	{
-		if (iter)
+		UGsEditorTerrainPillarComp* pillar = _PillarArray[i];		
+
+		if (pillar)
 		{
-			iter->Draw();
+			pillar->SetWorldLocation(_PointArray[i]);
+			pillar->Draw();
 		}
 	}
 
@@ -99,12 +163,13 @@ void AGsEditorBaseTerrain::Draw()
 	}
 }
 
-void AGsEditorBaseTerrain::RegisterPillar(UGsEditorTerrainPillarComp* in_pillar)
+void AGsEditorBaseTerrain::RegisterPillar(UGsEditorTerrainPillarComp* in_pillar, int32 in_index)
 {
 	if (in_pillar)
 	{
 		_PillarArray.Add(in_pillar);
 		in_pillar->_Parent = this;
+		in_pillar->_Index = in_index;
 	}
 }
 
@@ -176,6 +241,27 @@ bool AGsEditorBaseTerrain::TryCreatePillar(int32 in_index, FVector in_location)
 		}
 		
 		//add pillar using sscss eidtor
+		//FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked< FLevelEditorModule >("LevelEditorModuel");
+
+		//TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+
+		//TSharedPtr<SDockTab> tab = LevelEditorTabManager->FindExistingLiveTab(FName("LevelEditorSelectionDetails"));
+
+		//if (tab.IsValid())
+		//{
+		//	TSharedPtr<SWidget> tabContent = tab->GetContent();
+
+		//	if (tabContent.IsValid())
+		//	{
+		//		//FString test = "name : " + tabContent->GetTypeAsString();
+
+		//		UE_LOG(LogTemp, Log, TEXT("name : %s"), *tabContent->GetTypeAsString());
+		//	}
+
+		//	//TSharedRef<SActorDetails> actorDetils = StaticCastSharedPtr<SActorDetails>(tabContent);
+
+		//	//if(actorDetils.IsValid())
+		//}
 
 		return true;					
 	}

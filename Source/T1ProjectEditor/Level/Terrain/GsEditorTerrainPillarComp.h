@@ -16,6 +16,8 @@ class T1PROJECTEDITOR_API UGsEditorTerrainPillarComp : public UProceduralMeshCom
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorPillarComp")
 		AGsEditorBaseTerrain* _Parent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorPillarComp")
+		int32 _Index;
 
 public:	
 	// Sets default values for this component's properties
