@@ -41,8 +41,6 @@ void GsCameraModeFreeBase::Enter(UGsGameObjectLocal* In_char, GsCameraModeManage
 	}
 
 	GsCameraModeBase::Enter(In_char, In_mng);
-#ifdef NEW_CAM_CHAR
-
 
 	AGsLocalCharacter* localChar = In_char->GetLocalCharacter();
 	if (localChar == nullptr)
@@ -83,41 +81,6 @@ void GsCameraModeFreeBase::Enter(UGsGameObjectLocal* In_char, GsCameraModeManage
 	localChar->GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
 
 
-#else
-	AGsCharacter* player = Cast<AGsCharacter>(In_char);
-	if (player == nullptr)
-	{
-		GSLOG(Error, TEXT("Cast<AGsCharacter> player == nullptr"));
-		return;
-	}
-
-	if (In_mng == nullptr)
-	{
-		GSLOG(Error, TEXT("GsCameraModeManager* In_mng"));
-		return;
-	}
-
-	// 바인딩 처리
-	// 람다 캡쳐를 레퍼런스(&)로 하고 포인터 받으면 다른주소를 넘겨줘서
-	// 실제 호출시 이상 상황 발생함....
-	// 포인터는 복사(=)로 캡쳐해야함....
-	player->FunctionUpDown = [=](float val) {UpDown(val, In_char); };
-	player->FunctionLeftRight = [=](float val) {LeftRight(val, In_char); };
-	player->FunctionLookUp = [=](float val) {LookUp(val, In_char); };
-	player->FunctionTurn = [=](float val) {Turn(val, In_char); };
-
-	player->SpringArm->bUsePawnControlRotation = true;
-	player->SpringArm->bInheritPitch = true;
-	player->SpringArm->bInheritRoll = true;
-	player->SpringArm->bInheritYaw = true;
-	player->SpringArm->bDoCollisionTest = true;
-	player->bUseControllerRotationYaw = false;
-
-	player->GetCharacterMovement()->bOrientRotationToMovement = true;
-	player->GetCharacterMovement()->bUseControllerDesiredRotation = false;
-	player->GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
-
-#endif
 
 	GSLOG(Warning, TEXT("GsCameraModeFreeBase  Enter"));
 }
@@ -130,7 +93,7 @@ void GsCameraModeFreeBase::Exit(UGsGameObjectLocal* In_char)
 	}
 
 	GsCameraModeBase::Exit(In_char);
-#ifdef NEW_CAM_CHAR
+
 	AGsLocalCharacter* localChar = In_char->GetLocalCharacter();
 	if (localChar == nullptr)
 	{
@@ -153,20 +116,7 @@ void GsCameraModeFreeBase::Exit(UGsGameObjectLocal* In_char)
 	inputBinding->FunctionMoveRight = nullptr;
 	inputBinding->FunctionLookUp = nullptr;
 	inputBinding->FunctionTurn = nullptr;
-#else
-	AGsCharacter* player = Cast<AGsCharacter>(In_char);
-	if (player == nullptr)
-	{
-		GSLOG(Error, TEXT("Cast<AGsCharacter> player == nullptr"));
-		return;
-	}
 
-	// 바인딩 해제
-	player->FunctionUpDown = nullptr;
-	player->FunctionLeftRight = nullptr;
-	player->FunctionLookUp = nullptr;
-	player->FunctionTurn = nullptr;
-#endif
 
 	GSLOG(Warning, TEXT("GsCameraModeFreeBase  exit"));
 }
@@ -180,25 +130,7 @@ void GsCameraModeFreeBase::Update(UGsGameObjectLocal* In_char, float In_deltaTim
 // 위,아래 이동 처리
 void GsCameraModeFreeBase::UpDown(float NewAxisValue, UGsGameObjectLocal* In_char)
 {
-#ifdef NEW_CAM_CHAR
 
-#else
-	if (In_char == nullptr ||
-		In_char->Controller == nullptr)
-	{
-		return;
-	}
-
-	// 값이 없어도 버림
-	if (NewAxisValue == 0)
-	{
-		return;
-	}
-
-	In_char->AddMovementInput(
-		FRotationMatrix(
-			In_char->GetControlRotation()).GetUnitAxis(EAxis::X), NewAxisValue);
-#endif
 
 
 	//GSLOG(Warning, TEXT("UpDown axisVal: %f"), NewAxisValue);
@@ -206,26 +138,7 @@ void GsCameraModeFreeBase::UpDown(float NewAxisValue, UGsGameObjectLocal* In_cha
 // 좌,우 이동 처리
 void GsCameraModeFreeBase::LeftRight(float NewAxisValue, UGsGameObjectLocal* In_char)
 {
-#ifdef NEW_CAM_CHAR
-#else
-	if (In_char == nullptr ||
-		In_char->Controller == nullptr)
-	{
-		return;
-	}
 
-	// 값이 없어도 버림
-	if (NewAxisValue == 0)
-	{
-		return;
-	}
-
-
-	In_char->AddMovementInput(
-		FRotationMatrix(
-			In_char->GetControlRotation()).GetUnitAxis(EAxis::Y), NewAxisValue);
-
-#endif
 	//GSLOG(Warning, TEXT("LeftRight axisVal: %f"), NewAxisValue);
 }
 
@@ -286,53 +199,22 @@ void GsCameraModeFreeBase::MoveRight(UGsGameObjectLocal* In_char)
 // 위, 아래 카메라 회전
 void GsCameraModeFreeBase::LookUp(float NewAxisValue, UGsGameObjectLocal* In_char)
 {
-#ifdef NEW_CAM_CHAR
+
 	if (In_char == nullptr)
 	{
 		return;
 	}
 	In_char->GetLocalCharacter()->AddControllerPitchInput(NewAxisValue);
 
-#else
-	if (In_char == nullptr ||
-		In_char->Controller == nullptr)
-	{
-		return;
-	}
-
-
-
-	// 값이 없어도 버림
-	if (NewAxisValue == 0)
-	{
-		return;
-	}
-
-	In_char->AddControllerPitchInput(NewAxisValue);
-#endif
 }
 // 좌, 우 카메라 회전
 void GsCameraModeFreeBase::Turn(float NewAxisValue, UGsGameObjectLocal* In_char)
 {
-#ifdef NEW_CAM_CHAR
+
 	if (In_char == nullptr)
 	{
 		return;
 	}
 	In_char->GetLocalCharacter()->AddControllerYawInput(NewAxisValue);
-#else
-	if (In_char == nullptr ||
-		In_char->Controller == nullptr)
-	{
-		return;
-	}
 
-	// 값이 없어도 버림
-	if (NewAxisValue == 0)
-	{
-		return;
-	}
-
-	In_char->AddControllerYawInput(NewAxisValue);
-#endif
 }

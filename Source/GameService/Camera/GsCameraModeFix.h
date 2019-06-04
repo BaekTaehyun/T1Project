@@ -46,6 +46,9 @@ public:
 	// 다음 스텝 진행
 	virtual void NextStep(GsCameraModeManager* In_mng) override;
 
+	// 이동 정지
+	virtual void MoveStop(UGsGameObjectLocal* In_char) override;
+
 	// 스프링 암 회전 보간 속도
 	const float ArmRotationSpeed = 10.0f;
 private:

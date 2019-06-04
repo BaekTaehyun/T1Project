@@ -24,5 +24,5 @@ void GsCameraModeFollowAction::NextStep(GsCameraModeManager* In_mng)
 	}
 
 	// 다음은 free다
-	In_mng->ChangeState(EGsControlMode::Fixed);
+	In_mng->ChangeState(EGsControlMode::Free);
 }

@@ -109,81 +109,43 @@ void UGsInputBindingLocalPlayer::OnAction()
 
 void UGsInputBindingLocalPlayer::OnMoveStop()
 {
-#ifdef CAM_MODE
 	if (FunctionMoveStop != nullptr)
 	{
 		FunctionMoveStop();
 	}
-#else
-    if (auto movement = Target->GetMovement())
-    {
-        movement->Stop();
-    }
-#endif
 }
 
 void UGsInputBindingLocalPlayer::OnMoveForward()
 {
-#ifdef CAM_MODE
+	GSLOG(Warning, TEXT("OnMoveForward"));
 	if (FunctionMoveForward != nullptr)
 	{
 		FunctionMoveForward();
 	}
-#else
-    if (auto movement = Target->GetMovement())
-    {
-        FVector dir = FRotationMatrix(Target->GetLocalCharacter()->Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
-        movement->Move(dir, EGsGameObjectMoveDirType::Forward, 10.0f);
-    }
-#endif
 }
 
 void UGsInputBindingLocalPlayer::OnMoveBackward()
 {
-#ifdef CAM_MODE
 	if (FunctionMoveBackward != nullptr)
 	{
 		FunctionMoveBackward();
 	}
-#else
-    if (auto movement = Target->GetMovement())
-    {
-        FVector dir = FRotationMatrix(Target->GetLocalCharacter()->Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
-        movement->Move(dir, EGsGameObjectMoveDirType::Backward, -5.f);
-    }
-#endif
 }
 
 void UGsInputBindingLocalPlayer::OnMoveLeft()
 {
-#ifdef CAM_MODE
 	if (FunctionMoveLeft != nullptr)
 	{
 		FunctionMoveLeft();
 	}
-#else
-    if (auto movement = Target->GetMovement())
-    {
-        FVector dir = FRotationMatrix(Target->GetLocalCharacter()->Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
-        movement->Move(dir, EGsGameObjectMoveDirType::SideStep, -5.f);
-    }
-#endif
 }
 
 void UGsInputBindingLocalPlayer::OnMoveRight()
 {
-#ifdef CAM_MODE
 	if (FunctionMoveRight != nullptr)
 	{
 		FunctionMoveRight();
 	}
-#else
-    if (auto movement = Target->GetMovement())
-    {
-        FVector dir = FRotationMatrix(Target->GetLocalCharacter()->Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
-        movement->Move(dir, EGsGameObjectMoveDirType::SideStep, 5.f);
-    }
-#endif
 }
 
 void UGsInputBindingLocalPlayer::OnMoveRotate(float Value)
@@ -241,6 +203,8 @@ void UGsInputBindingLocalPlayer::OnZoomOut()
 // 카메로 모드 변경
 void UGsInputBindingLocalPlayer::OnViewChange()
 {
+	GSLOG(Warning, TEXT("OnViewChange"));
+
 	if (GsCameraModeSingle::Instance != nullptr)
 	{
 		GsCameraModeSingle::Instance->NextStep();

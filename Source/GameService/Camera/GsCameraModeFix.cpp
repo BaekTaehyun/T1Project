@@ -46,37 +46,7 @@ void GsCameraModeFix::Enter(UGsGameObjectLocal* In_char, GsCameraModeManager* In
 		return;
 	}
 	GsCameraModeBase::Enter(In_char, In_mng);
-#ifndef NEW_CAM_CHAR	
-	AT1Player* player = Cast<AT1Player>(In_char);
-	if (player == nullptr)
-	{
-		GSLOG(Error, TEXT("Cast<AGsCharacter> player == nullptr"));
-		return;
-	}
 
-
-	// 바인딩 처리
-	// 람다 캡쳐를 레퍼런스(&)로 하고 포인터 받으면 다른주소를 넘겨줘서
-	// 실제 호출시 이상 상황 발생함....
-	// 포인터는 복사(=)로 캡쳐해야함....
-	player->FunctionUpDown = [=](float val) {UpDown(val, In_char); };
-	player->FunctionLeftRight = [=](float val) {LeftRight(val, In_char); };
-	player->FunctionLookUp = [=](float val) {LookUp(val, In_char); };
-	player->FunctionTurn = [=](float val) {Turn(val, In_char); };
-
-	_armRotationTo = FRotator(-45.0f, 0.0f, 0.0f);
-	// 값 세팅
-	player->SpringArm->bUsePawnControlRotation = false;
-	player->SpringArm->bInheritPitch = false;
-	player->SpringArm->bInheritRoll = false;
-	player->SpringArm->bInheritYaw = false;
-	player->SpringArm->bDoCollisionTest = false;
-	player->bUseControllerRotationYaw = false;
-
-	player->GetCharacterMovement()->bOrientRotationToMovement = false;
-	player->GetCharacterMovement()->bUseControllerDesiredRotation = true;
-	player->GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
-#else
 
 	AGsLocalCharacter* localChar = In_char->GetLocalCharacter();
 	if (localChar == nullptr)
@@ -117,7 +87,7 @@ void GsCameraModeFix::Enter(UGsGameObjectLocal* In_char, GsCameraModeManager* In
 	localChar->GetCharacterMovement()->bOrientRotationToMovement = false;
 	localChar->GetCharacterMovement()->bUseControllerDesiredRotation = true;
 	localChar->GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
-#endif
+
 
 	GSLOG(Warning, TEXT("GsCameraModeFix ACharacter Enter"));
 }
@@ -131,7 +101,6 @@ void GsCameraModeFix::Exit(UGsGameObjectLocal* In_char)
 	}
 	GsCameraModeBase::Exit(In_char);
 
-#ifdef NEW_CAM_CHAR
 	AGsLocalCharacter* localChar = In_char->GetLocalCharacter();
 	if (localChar == nullptr)
 	{
@@ -154,21 +123,7 @@ void GsCameraModeFix::Exit(UGsGameObjectLocal* In_char)
 	inputBinding->FunctionLookUp = nullptr;
 	inputBinding->FunctionTurn = nullptr;
 
-#else
-	GsCameraModeBase::Exit(In_char);
-	AT1Player* player = Cast<AT1Player>(In_char);
-	if (player == nullptr)
-	{
-		GSLOG(Error, TEXT("Cast<AGsCharacter> player == nullptr"));
-		return;
-	}
 
-	// 바인딩 해제
-	player->FunctionUpDown = nullptr;
-	player->FunctionLeftRight = nullptr;
-	player->FunctionLookUp = nullptr;
-	player->FunctionTurn = nullptr;
-#endif
 	GSLOG(Warning, TEXT("GsCameraModeFix ACharacter exit"));
 }
 // 업데이터(인자로 캐릭터)
@@ -181,7 +136,6 @@ void GsCameraModeFix::Update(UGsGameObjectLocal* In_char, float In_deltaTime, Gs
 
 	GsCameraModeBase::Update(In_char, In_deltaTime, In_mng);
 
-#ifdef NEW_CAM_CHAR
 	AGsLocalCharacter* localChar = In_char->GetLocalCharacter();
 	if (localChar == nullptr)
 	{
@@ -204,27 +158,7 @@ void GsCameraModeFix::Update(UGsGameObjectLocal* In_char, float In_deltaTime, Gs
 			movement->Move(_directionToMove, EGsGameObjectMoveDirType::Forward, 10.0f);
 		}
 	}
-#else
-	AT1Player* player = Cast<AT1Player>(In_char);
-	if (player == nullptr)
-	{
-		GSLOG(Error, TEXT("Cast<AGsCharacter> player == nullptr"));
-		return;
-	}
 
-	player->SpringArm->RelativeRotation = FMath::RInterpTo(
-		player->SpringArm->RelativeRotation, _armRotationTo,
-		In_deltaTime, ArmRotationSpeed);
-
-	if (_directionToMove.SizeSquared() > 0.0f)
-	{
-		player->GetController()->SetControlRotation(
-			FRotationMatrix::MakeFromX(_directionToMove).Rotator());
-
-		player->AddMovementInput(_directionToMove);
-	}
-
-#endif
 }
 
 // 위,아래 이동 처리
@@ -306,4 +240,13 @@ void GsCameraModeFix::NextStep(GsCameraModeManager* In_mng)
 
 	// 다음은 free다
 	In_mng->ChangeState(EGsControlMode::Free);
+}
+// 이동 정지
+void GsCameraModeFix::MoveStop(UGsGameObjectLocal* In_char)
+{
+	GsCameraModeBase::MoveStop(In_char);
+
+	_directionToMove.X = 0.0f;
+	_directionToMove.Y = 0.0f;
+
 }
