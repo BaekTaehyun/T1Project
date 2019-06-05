@@ -230,7 +230,7 @@ public:
 		FunctorType&& InFunctor, VarTypes... Vars)
 	{
 		TGsMessageHandlerOneParam<T1, T2>::MessageType delFunc;
-		auto Result = delFunc.AddWeakLambda(InUserObject, InFunctor, Vars...);
+		auto Result = delFunc.AddWeakLambda(InUserObject, InFunctor, Forward<VarTypes>(Vars)...);
 		_delieveryAddr.Add(Message, delFunc);
 		return Result;
 	}

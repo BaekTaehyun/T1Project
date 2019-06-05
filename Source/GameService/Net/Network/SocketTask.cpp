@@ -16,7 +16,7 @@ ConnectSocketTask::ConnectSocketTask(std::shared_ptr<Session> session, const cha
 
 bool ConnectSocketTask::onExecute(TaskExecuter* executer)
 {
-	(executer);
+	//(executer);
 	socket_ = ConnectFSocket(host_.c_str(), port_);
 	if (socket_ == nullptr)
 	{
@@ -197,7 +197,7 @@ bool CryptoMakerSocketTask::makeCrypto(Packet* packet)
 
 void CryptoMakerSocketTask::onEnd(TaskExecuter* executer)
 {
-	(executer);
+	//(executer);
 	session_->onConnected(isSucceed(), socket_,
 		std::make_shared<SendSocketTask>(session_, socket_, 4 * 1024, encrypter_),
 		std::make_shared<ReceiveSocketTask>(session_, socket_, 64 * 1024, decrypter_));
@@ -258,7 +258,7 @@ bool ReceiveSocketTask::onReceive()
 
 void ReceiveSocketTask::onEnd(TaskExecuter* executer)
 {
-	(executer);
+	//(executer);
 	if (isSucceed() == false)
 	{
 		session_->onError(socket_);
@@ -297,7 +297,7 @@ void ReceiveSocketTask::onEnd(TaskExecuter* executer)
 
 	if (session_->isConnected() == true)
 	{
-		TaskExecuter::GetInstance()->push(shared_from_this());
+		executer->push(shared_from_this());
 	}
 }
 
@@ -527,14 +527,14 @@ DisconnectSocketTask::DisconnectSocketTask(std::shared_ptr<Session> session, FSo
 
 bool DisconnectSocketTask::onExecute(TaskExecuter* executer)
 {
-	(executer);
+	//(executer);
 	socket_->Close();
 	return true;
 }
 
 void DisconnectSocketTask::onEnd(TaskExecuter* executer)
 {
-	(executer);
+	//(executer);
 	session_->onDisconnected(socket_);
 }
 

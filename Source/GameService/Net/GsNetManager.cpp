@@ -25,8 +25,9 @@ FGsNetBase* FGsNetAllocator::Alloc(FGsNet::Mode inMode)
 //------------------------------------------------------------------
 
 //------------------------------------------------------------------
+template<>
+FGsNetManager* GSFNetSingle::_instance = nullptr;
 
-FGsNetManager* GSFNetSingle::Instance = NULL;
 FGsNetManager::~FGsNetManager()
 {
 	int a = 0;
@@ -36,7 +37,7 @@ void FGsNetManager::Initialize()
 {
 	TGsSingleton::InitInstance(this);
 
-	constexpr std::initializer_list<FGsNet::Mode> allMode = { FGsNet::Mode::LOBBY, FGsNet::Mode::GAME };
+	const FGsNet::Mode allMode [] = { FGsNet::Mode::LOBBY, FGsNet::Mode::GAME };
 	for (auto& e : allMode)
 	{
 		MakeInstance(e);

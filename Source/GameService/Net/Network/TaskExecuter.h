@@ -13,7 +13,7 @@
 
 class TaskExecuter
 {
-	std::atomic_bool running_ = false;
+	std::atomic_bool running_ { false };
 	std::thread executer_;
 
 	std::mutex taskLock_;

@@ -40,4 +40,4 @@ public:
 };
 
 typedef TGsSingleton<FGsGameFlowManager> FGsGameFlowSingle;
-#define GMode() FGsGameFlowSingle::Instance
+#define GMode() FGsGameFlowSingle::Instance()

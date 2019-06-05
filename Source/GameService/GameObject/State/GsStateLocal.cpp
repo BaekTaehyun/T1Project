@@ -8,6 +8,15 @@
 #include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
 #include "GameObject/ActorExtend/GsWheelVehicle.h"
 
+template <class tstate, typename tStateType>
+void FGsStateSingleLocal<tstate, tStateType>::Enter(UGsGameObjectBase* Owner)
+{
+	auto my = Cast<UGsGameObjectLocal>(Owner);
+	if (auto anim = my->GetLocalCharacter()->GetAnim())
+	{
+		anim->ChangeState(GetStateID(), 0, GetAniRandomCount());
+	}
+}
 
 /// FStateSpawn ///
 uint8 FGsStateLocalSpawn::GetStateID()

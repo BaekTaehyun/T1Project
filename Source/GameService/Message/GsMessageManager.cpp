@@ -1,6 +1,7 @@
 #include "GsMessageManager.h"
 
-FGsMessageManager* FGsMessageSingle::Instance = NULL;
+template<>
+FGsMessageManager* FGsMessageSingle::_instance = nullptr;
 
 FGsMessageManager::~FGsMessageManager()
 {

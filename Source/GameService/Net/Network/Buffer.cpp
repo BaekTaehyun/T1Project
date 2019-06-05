@@ -19,6 +19,8 @@ namespace
 	}
 }
 
+template<>
+FBufferPool* TGsPoolSingle<FBufferPool>::_instance = nullptr;
 
 Buffer::Buffer(int32_t size)
 {

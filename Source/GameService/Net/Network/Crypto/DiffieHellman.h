@@ -10,7 +10,7 @@ class DiffieHellman
 public:
 
 	// The biggest n-bit prime
-	static constexpr uint64_t P64 = 18446744073709551557;
+	static constexpr uint64_t P64 = 18446744073709551557ULL;
 	static constexpr uint32_t P32 = 4294967291;
 	static constexpr uint16_t P16 = 65521;
 	static constexpr uint8_t P8 = 251;

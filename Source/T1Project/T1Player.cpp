@@ -205,6 +205,7 @@ void AT1Player::Tick(float DeltaTime)
 			AddMovementInput(DirectionToMove);
 		}
 	}
+
 }
 
 // Called to bind functionality to input
@@ -375,6 +376,7 @@ void AT1Player::CameraViewChange()
 	bool bFollow = CurrentCameraControlMode == ECameraControlMode::FOLLOW;
 	GetController()->SetControlRotation(bFollow ? GetActorRotation() : SpringArm->RelativeRotation);
 	SetCameraControlMode(bFollow ? ECameraControlMode::DIABLO : ECameraControlMode::FOLLOW);
+
 
 }
 

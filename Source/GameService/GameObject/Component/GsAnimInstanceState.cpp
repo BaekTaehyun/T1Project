@@ -47,9 +47,9 @@ int UGsAnimInstanceState::GetRandomIndex()
 	return RandomIndex;
 }
 
-void UGsAnimInstanceState::ChangeState(int State, int Min, int Max)
+void UGsAnimInstanceState::ChangeState(uint8 State, int Min, int Max)
 {
-	if (State >= (int)EGsStateUpperBase::None)
+	if (State >= (uint8)EGsStateUpperBase::None)
 	{
 		EGsStateUpperBase changeState = static_cast<EGsStateUpperBase>(State);
 		if (UpperStateType != changeState)

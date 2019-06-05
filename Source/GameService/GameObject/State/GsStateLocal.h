@@ -7,9 +7,10 @@
 #include "GameObject/Component/GsAnimInstanceState.h"
 #include "GameObject/ActorExtend/GsLocalCharacter.h"
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
+#include "GameObject/Movement/GsMovementBase.h"
 
-template <class tState, typename tStateType>
-class GAMESERVICE_API FGsStateSingleLocal : public TGsStateSingleton<tState>
+template <class tstate, typename tStateType>
+class GAMESERVICE_API FGsStateSingleLocal : public IGsStateBase, public TGsStateSingleton<tstate>
 {
 public:
 	virtual bool ProcessEvent(UGsGameObjectBase* Owner, uint8 StateID) override
@@ -18,14 +19,8 @@ public:
 	}
 
 	//애님 블루프린트에 가장 최우선으로 상태를 전송해줘야한다.
-	virtual void Enter(UGsGameObjectBase* Owner) override
-	{
-		auto my = Cast<UGsGameObjectLocal>(Owner);
-		if (auto anim = my->GetLocalCharacter()->GetAnim())
-		{
-			anim->ChangeState(GetStateID(), 0, GetAniRandomCount());
-		}
-	}
+	virtual void Enter(UGsGameObjectBase* Owner) override;
+	
 	virtual void ReEnter(UGsGameObjectBase* Owner) override				{}
 	virtual void Update(UGsGameObjectBase* Owner, float Delta) override {}
 	virtual void Exit(UGsGameObjectBase* Owner) override				{}
@@ -47,7 +42,7 @@ protected:
 */
 class GAMESERVICE_API FGsStateLocalSpawn : public FGsStateSingleLocal<FGsStateLocalSpawn, EGsStateBase>
 {
-	typedef FGsStateSingleLocal Super;	typedef FGsStateSingleLocal<FGsStateLocalSpawn, EGsStateBase> Super;
+	typedef FGsStateSingleLocal<FGsStateLocalSpawn, EGsStateBase> Super;
 
 public:
 	virtual uint8 GetStateID() override;
