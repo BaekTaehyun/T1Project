@@ -47,7 +47,6 @@ protected:
 */
 class GAMESERVICE_API FGsStateNpcSpawn : public FGsStateSingleNpc<FGsStateNpcSpawn>
 {
-	
 	typedef FGsStateSingleNpc<FGsStateNpcSpawn> Super;
 
 public:
@@ -65,7 +64,6 @@ protected:
 */
 class GAMESERVICE_API FGsStateNpcIdle : public FGsStateSingleNpc<FGsStateNpcIdle>
 {
-	
 	typedef FGsStateSingleNpc<FGsStateNpcIdle> Super;
 
 public:
@@ -82,7 +80,6 @@ protected:
 template<class tState>
 class GAMESERVICE_API FGsStateNpcMoveBase : public FGsStateSingleNpc<tState>
 {
-	
 	typedef FGsStateSingleNpc<tState> Super;
 
 public:
@@ -115,7 +112,6 @@ protected:
 */
 class GAMESERVICE_API FGsStateNpcBeaten : public FGsStateSingleNpc<FGsStateNpcBeaten>
 {
-	
 	typedef FGsStateSingleNpc<FGsStateNpcBeaten> Super;
 
 public:
