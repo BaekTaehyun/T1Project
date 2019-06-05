@@ -44,6 +44,8 @@ void UGsGameObjectWheelVehicle::ActorSpawned(AActor* Spawn)
 		Actor = Cast<AGsWheelVehicle>(Spawn);
 
 		//키입력 바인딩
-		Actor->GetInputBinder()->Initialize(this);
+		InputBinder = NewObject<UGsInputBindingVehicle>();
+		InputBinder->Initialize(this);
+		Actor->SetInputBinder(InputBinder);
 	}
 }

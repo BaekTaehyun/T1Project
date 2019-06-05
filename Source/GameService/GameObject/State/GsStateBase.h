@@ -46,17 +46,14 @@ protected:
 		if (Fsm) { return Fsm->ChangeState<tState>(); }
 		return false;
 	}
-
+	
 	template <class tState>
 	void ChangeDelayState(FGsFSMManager* Fsm, float Time)
 	{
 		if (Fsm) { Fsm->ChangeDelayState<tState>(Time); }
 	}
 
-	void ChangeDelayPrevState(FGsFSMManager* Fsm, float Time)
-	{
-		if (Fsm && Fsm->Prev) { Fsm->ChangeDelayPrevState(Time); }
-	}
+	void ChangeDelayPrevState(FGsFSMManager* Fsm, float Time);
 };
 
 template <class T>

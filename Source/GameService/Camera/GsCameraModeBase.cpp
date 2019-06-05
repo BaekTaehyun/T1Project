@@ -70,7 +70,7 @@ void GsCameraModeBase::Enter(UGsGameObjectLocal* In_char, GsCameraModeManager* I
 		return;
 	}
 
-	UGsInputBindingLocalPlayer* inputBinding = localChar->GetInputBinder();
+	UGsInputBindingLocalPlayer* inputBinding = Cast<UGsInputBindingLocalPlayer>(localChar->GetInputBinder());
 
 	if (inputBinding == nullptr)
 	{
@@ -130,7 +130,7 @@ void GsCameraModeBase::Exit(UGsGameObjectLocal* In_char)
 		return;
 	}
 
-	UGsInputBindingLocalPlayer* inputBinding = localChar->GetInputBinder();
+	UGsInputBindingLocalPlayer* inputBinding = Cast<UGsInputBindingLocalPlayer>(localChar->GetInputBinder());
 
 	if (inputBinding == nullptr)
 	{

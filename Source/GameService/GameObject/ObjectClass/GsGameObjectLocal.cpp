@@ -43,6 +43,11 @@ void UGsGameObjectLocal::Finalize()
 	{
 		delete Event;
 	}
+
+	if (InputBinder)
+	{
+		InputBinder = NULL;
+	}
 }
 
 void UGsGameObjectLocal::ActorSpawned(AActor* Spawn)
@@ -55,24 +60,31 @@ void UGsGameObjectLocal::ActorSpawned(AActor* Spawn)
 		Actor = Cast<AGsLocalCharacter>(Spawn);
 
 		//키입력 바인딩
-		Actor->GetInputBinder()->Initialize(this);
+		InputBinder = NewObject<UGsInputBindingLocalPlayer>();
+		InputBinder->Initialize(this);
+		Actor->SetInputBinder(InputBinder);
 
+		//무브먼트 생성
 		Movement = new FGsMovementLocal();
 		Movement->Initialize(this);
 
+		//스킬 핸들러 생성
 		Skill = new FGsSKillLocal();
 		Skill->Initialize(this);
 		//임시 데이터 적용
 		Skill->LoadData(TEXT("GsSkillDataContainerBase'/Game/Resource/DataAsset/LocalSkill.LocalSkill'"));
 
+		//파츠 핸들러 생성
         Parts = new FGsPartsLocal();
         Parts->Initialize(this);
         //임시 데이터 적용
         Parts->LoadData(TEXT("GsPartsDataContainerBase'/Game/Resource/DataAsset/LocalParts.LocalParts'"));
 
+		//FSM생성
 		Fsm = new FGsFSMManager();
 		Fsm->Initialize<FGsStateLocalSpawn>(this);
 
+		//상체 FSM생성
 		UpperFsm = new FGsFSMManager();
 		UpperFsm->Initialize<FGsStateLocalUpperIdle>(this);
 

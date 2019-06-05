@@ -11,6 +11,7 @@
 /**
 * 언리얼 엔진 로직 담당 Local캐릭터 전용 클래스
 * 로컬 BP제작시 이 클래스를 기반으로 제작
+* ACharacter 클래스를 상속받은 커스텀 ACharacter 클래스
 */
 UCLASS()
 class GAMESERVICE_API AGsLocalCharacter : public ACharacter
@@ -23,15 +24,16 @@ class GAMESERVICE_API AGsLocalCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 	//InputBinder
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	class UGsInputBindingLocalPlayer* InputBinder;
+	class UGsInputBindingBase* InputBinder;
 	//Anim
 	UGsAnimInstanceState* Animation;
 
 public:
-	FORCEINLINE UGsAnimInstanceState* GetAnim() const { return Animation; }
-	FORCEINLINE UGsInputBindingLocalPlayer* GetInputBinder() const { return InputBinder; }
-	FORCEINLINE USpringArmComponent* GetSpringArm() const{ return CameraBoom; }
+	FORCEINLINE UGsAnimInstanceState* GetAnim() const				{ return Animation; }
+	FORCEINLINE UGsInputBindingBase* GetInputBinder() const			{ return InputBinder; }
+	FORCEINLINE USpringArmComponent* GetSpringArm() const			{ return CameraBoom; }
+
+	FORCEINLINE void SetInputBinder(UGsInputBindingBase* Binder)	{ InputBinder = Binder; }
 
 public:
 	// Sets default values for this character's properties

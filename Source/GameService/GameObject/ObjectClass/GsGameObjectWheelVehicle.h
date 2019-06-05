@@ -33,6 +33,8 @@ public:
 protected:
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = GameObject, Meta = (AllowPrivateAccess = true))
 	AGsWheelVehicle* Actor;
+	UPROPERTY(Transient, VisibleInstanceOnly, Category = GameObject, Meta = (AllowPrivateAccess = true))
+	class UGsInputBindingVehicle* InputBinder;
 
 	//탑승자 정보
 	TArray<class UGsGameObjectPlayer*> Passengers;
