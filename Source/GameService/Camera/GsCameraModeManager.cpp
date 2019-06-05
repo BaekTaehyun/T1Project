@@ -44,18 +44,11 @@ GsCameraModeBase* GsCameraModeAllocator::Alloc(EGsControlMode In_mode)
 
 // 소멸자
 GsCameraModeManager* GsCameraModeSingle::Instance = nullptr;
-GsCameraModeManager::~GsCameraModeManager()
-{
-	GSLOG(Warning, TEXT("GsCameraModeManager destructor"));
-}
 
-// 초기화
-void GsCameraModeManager::Initialize()
+GsCameraModeManager::GsCameraModeManager() : GSTMap<EGsControlMode, GsCameraModeBase, GsCameraModeAllocator>() 
 {
-	TGsSingleton::InitInstance(this);
 	// 테이블 읽기
-
-	static ConstructorHelpers::FObjectFinder<UDataTable> TBL(
+	ConstructorHelpers::FObjectFinder<UDataTable> TBL(
 		TEXT("/Game/Game/Camera/CamModeData.CamModeData"));
 
 	CamModeData = TBL.Object;
@@ -65,8 +58,17 @@ void GsCameraModeManager::Initialize()
 		TEXT("/Game/Game/Camera/CamModeCurve.CamModeCurve"));
 
 	CamAutoRotCurveData = CURV.Object;
+}
+GsCameraModeManager::~GsCameraModeManager()
+{
+	GSLOG(Warning, TEXT("GsCameraModeManager destructor"));
+}
 
-
+// 초기화
+void GsCameraModeManager::Initialize()
+{
+	TGsSingleton::InitInstance(this);
+	
 	TArray<EGsControlMode> arrMode;
 
 	arrMode.Add(EGsControlMode::Free);

@@ -27,13 +27,6 @@ AT1GameModeBase::AT1GameModeBase()
 	}
 #endif
 
-	// 카메라 매니져 만들기
-	if (GsCameraModeSingle::Instance == nullptr)
-	{
-		GsCameraModeManager* mng = new GsCameraModeManager();
-		mng->Initialize();
-	}
-
 }
 
 void AT1GameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)

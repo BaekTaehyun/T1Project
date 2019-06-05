@@ -142,13 +142,6 @@ void AT1Player::BeginPlay()
 	{
 		CurWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, WeaponSocket);
 	}*/
-#ifdef CAM_MODE
-	// 캐릭터 세팅
-	if (GsCameraModeSingle::Instance != nullptr)
-	{
-		GsCameraModeSingle::Instance->SetCharacter(this);
-	}
-#endif
 }
 
 void AT1Player::CreateUI()
@@ -200,12 +193,6 @@ void AT1Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-#ifdef CAM_MODE
-	if (GsCameraModeSingle::Instance != nullptr)
-	{
-		GsCameraModeSingle::Instance->Update(DeltaTime);
-	}
-#else
 	SpringArm->TargetArmLength = FMath::FInterpTo(SpringArm->TargetArmLength, ArmLengthTo, DeltaTime, ArmLengthSpeed);
 
 	if (CurrentCameraControlMode == ECameraControlMode::DIABLO )
@@ -218,7 +205,6 @@ void AT1Player::Tick(float DeltaTime)
 			AddMovementInput(DirectionToMove);
 		}
 	}
-#endif
 }
 
 // Called to bind functionality to input
@@ -385,17 +371,10 @@ void AT1Player::Turn(float newAxisValue)
 
 void AT1Player::CameraViewChange()
 {
-#ifdef CAM_MODE
-	if (GsCameraModeSingle::Instance != nullptr)
-	{
-		GsCameraModeSingle::Instance->NextStep();
-	}
-#else
 
 	bool bFollow = CurrentCameraControlMode == ECameraControlMode::FOLLOW;
 	GetController()->SetControlRotation(bFollow ? GetActorRotation() : SpringArm->RelativeRotation);
 	SetCameraControlMode(bFollow ? ECameraControlMode::DIABLO : ECameraControlMode::FOLLOW);
-#endif
 
 }
 

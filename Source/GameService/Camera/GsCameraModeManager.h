@@ -62,7 +62,7 @@ protected:
 		return _currentState.ToSharedRef();
 	}
 public:
-	GsCameraModeManager() : GSTMap<EGsControlMode, GsCameraModeBase, GsCameraModeAllocator>() {};
+	GsCameraModeManager();
 	virtual ~GsCameraModeManager();
 
 	MainEvent& OnInit()  { return _onInit; }

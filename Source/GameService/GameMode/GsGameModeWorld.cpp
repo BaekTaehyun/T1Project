@@ -21,10 +21,19 @@
 #include "UI/GsGlobalUIManager.h"
 #include "UI/GsUIManager.h"
 
+#include "../Camera/GsCameraModeManager.h"
+
 
 AGsGameModeWorld::AGsGameModeWorld()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	// 카메라 매니져 만들기
+	if (GsCameraModeSingle::Instance == nullptr)
+	{
+		GsCameraModeManager* mng = new GsCameraModeManager();
+		mng->Initialize();
+	}
 }
 
 void AGsGameModeWorld::StartToLeaveMap()
