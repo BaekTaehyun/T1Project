@@ -10,7 +10,7 @@
 #include "GameObject/Movement/GsMovementBase.h"
 
 template <class tstate, typename tStateType>
-class GAMESERVICE_API FGsStateSingleLocal : public TGsStateSingleton<tstate>
+class GAMESERVICE_API FGsStateSingleLocal : public IGsStateBase, public TGsStateSingleton<tstate>
 {
 public:
 	virtual bool ProcessEvent(UGsGameObjectBase* Owner, uint8 StateID) override

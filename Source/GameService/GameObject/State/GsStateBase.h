@@ -19,7 +19,7 @@ public:
 	IGsStateBase();
 	virtual ~IGsStateBase();
 
-	virtual uint8 GetStateID() = 0;
+	virtual uint8 GetStateID() { return 0; }
 	virtual FString Name() = 0;
 
 	//애니메이션 랜덤 값 관련 처리이지만 테스트용 프로퍼티에 가깝다.(삭제될 메서드)
@@ -57,7 +57,7 @@ protected:
 };
 
 template <class T>
-class GAMESERVICE_API TGsStateSingleton : public IGsStateBase
+class GAMESERVICE_API TGsStateSingleton
 {
 protected:
 	TGsStateSingleton() = default;

@@ -13,17 +13,19 @@ class IGsStateBase;
 class GAMESERVICE_API FGsFSMManager
 {
 	//ChangeState() 메서드 접근 허용 클래스(유일)
-	friend class IGsStateBase;
+	friend IGsStateBase;
 
 public:
 	DECLARE_DELEGATE_OneParam(FGsStateChangeFailed, uint8/* State Id*/);
 
-	FORCEINLINE class IGsStateBase* CurrentState() const	{ return Current; }
-	FORCEINLINE class IGsStateBase* PrevState() const		{ return Prev; }
-	bool IsState(int StateID) const;
+	FORCEINLINE IGsStateBase* CurrentState() const	{ return Current; }
+	FORCEINLINE IGsStateBase* PrevState() const		{ return Prev; }
+	bool IsState(uint8 StateID) const;
+	bool IsState(EGsStateBase StateType) const;
+	bool IsState(EGsStateUpperBase StateType) const;
 
 	template <class tState>//시작 State정의
-	void Initialize(class UGsGameObjectBase* owner)
+	void Initialize(UGsGameObjectBase* owner)
 	{
 		Owner = owner;
 		Prev = nullptr;

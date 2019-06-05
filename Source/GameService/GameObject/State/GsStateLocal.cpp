@@ -17,6 +17,7 @@ void FGsStateSingleLocal<tstate, tStateType>::Enter(UGsGameObjectBase* Owner)
 		anim->ChangeState(GetStateID(), 0, GetAniRandomCount());
 	}
 }
+
 /// FStateSpawn ///
 uint8 FGsStateLocalSpawn::GetStateID()
 {

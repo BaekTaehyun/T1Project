@@ -3,6 +3,16 @@
 #include "GsStateNPC.h"
 #include "GsFSMManager.h"
 
+template <class tstate>
+void FGsStateSingleNpc<tstate>::Enter(UGsGameObjectBase* Owner)
+{
+	auto npc = Cast<UGsGameObjectNonPlayer>(Owner);
+	if (auto anim = npc->GetNpcPawn()->GetAnim())
+	{
+		anim->ChangeState(GetStateID(), 0, GetAniRandomCount());
+	}
+}
+
 uint8 FGsStateNpcSpawn::GetStateID()
 {
     return static_cast<uint8>(EGsStateBase::Spawn);

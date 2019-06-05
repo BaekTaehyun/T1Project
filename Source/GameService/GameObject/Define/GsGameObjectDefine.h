@@ -92,11 +92,11 @@ enum class  EGsStateUpperBase : uint8
 UENUM(BlueprintType, meta = (Bitflags))
 enum class EGsGameObjectMoveType : uint8
 {
-    None            = 0x000,
-    Walk            = 0x001,
-    Run             = 0x002,
-    Interpolation   = 0x004,      //추후 이동 동기화 관련 필요성이 있을지도...
-    Jump            = 0x008,      //미사용 가능성이 있음
+    None            = 0x00,
+    Walk            = 0x01,
+    Run             = 0x02,
+    Interpolation   = 0x04,      //추후 이동 동기화 관련 필요성이 있을지도...
+    Jump            = 0x08,      //미사용 가능성이 있음
 };
 
 /**

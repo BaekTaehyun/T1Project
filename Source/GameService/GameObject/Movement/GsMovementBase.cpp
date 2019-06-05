@@ -3,6 +3,11 @@
 
 #include "GsMovementBase.h"
 
+FGsMovementBase::~FGsMovementBase()
+{
+
+}
+
 void FGsMovementBase::Initialize(UGsGameObjectBase* owner)
 {
     Owner = owner;
@@ -23,7 +28,7 @@ bool FGsMovementBase::IsStop()
 
 bool FGsMovementBase::IsMove()
 {
-    uint8 moveflag;
+    uint8 moveflag = 0;
     SET_FLAG_TYPE(moveflag, EGsGameObjectMoveType::Run);
     SET_FLAG_TYPE(moveflag, EGsGameObjectMoveType::Walk);
     SET_FLAG_TYPE(moveflag, EGsGameObjectMoveType::Interpolation);

@@ -14,7 +14,7 @@
 * 
 */
 template <class tState>
-class GAMESERVICE_API FGsStateSingleNpc : public TGsStateSingleton<tState>
+class GAMESERVICE_API FGsStateSingleNpc : public IGsStateBase, public TGsStateSingleton<tState>
 {
 public:
 	virtual bool ProcessEvent(UGsGameObjectBase* Owner, uint8 StateID) override
@@ -23,14 +23,7 @@ public:
 	}
 
 	//애님 블루프린트에 가장 최우선으로 상태를 전송해줘야한다.
-	virtual void Enter(UGsGameObjectBase* Owner) override
-	{
-		auto npc = Cast<UGsGameObjectNonPlayer>(Owner);
-		if (auto anim = npc->GetNpcPawn()->GetAnim())
-		{
-			anim->ChangeState(GetStateID(), 0, GetAniRandomCount());
-		}
-	}
+	virtual void Enter(UGsGameObjectBase* Owner) override;
 	virtual void ReEnter(UGsGameObjectBase* Owner) override				{}
 	virtual void Update(UGsGameObjectBase* Owner, float Delta) override {}
 	virtual void Exit(UGsGameObjectBase* Owner) override				{}

@@ -5,14 +5,25 @@
 #include "Runtime/Engine/Public/TimerManager.h"
 #include "GsStateBase.h"
 #include "GameObject/State/GsStateBase.h"
+#include "GameObject/ObjectClass/GsGameObjectBase.h"
 
 void FGsFSMManager::Finalize()
 {
 }
 
-bool FGsFSMManager::IsState(int StateID) const
+bool FGsFSMManager::IsState(uint8 StateID) const
 {
 	return (nullptr != Current && Current->GetStateID() == StateID);
+}
+
+bool FGsFSMManager::IsState(EGsStateBase StateType) const
+{
+	return (nullptr != Current && Current->GetStateID() == static_cast<uint8>(StateType));
+}
+
+bool FGsFSMManager::IsState(EGsStateUpperBase StateType) const
+{
+	return (nullptr != Current && Current->GetStateID() == static_cast<uint8>(StateType));
 }
 
 void FGsFSMManager::Update(UGsGameObjectBase* owner, float Delta)

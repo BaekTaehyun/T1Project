@@ -11,6 +11,8 @@
 class GAMESERVICE_API FGsSkillBase
 {
 public:
+	virtual ~FGsSkillBase();
+
 	virtual void Initialize(class UGsGameObjectBase* Owner);
 	virtual void Finalize();
     virtual void Update(float Delta);

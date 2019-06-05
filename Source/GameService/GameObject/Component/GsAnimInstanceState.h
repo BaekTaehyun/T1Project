@@ -35,7 +35,7 @@ public:
 	//FSMManager에서 직접 참조하고 싶지만.. 아직 잘모르겠음..
 	//문제점1. AMyCharacter 객체 참조를 하려해도 에디터상 문제가 생김(CDO)
 	//문제점2. 애님 블루프린트 상태 파라미터 검사시 쓰레드 세이프 하지 않음(AMyCharacter 형변환 노드 사용시)
-	void ChangeState(int State, int Min = 0, int Max = 0);
+	void ChangeState(uint8 State, int Min = 0, int Max = 0);
 
 	void PlayUpperAni(UAnimMontage* Res);
 	void StopUpperAni(UAnimMontage* Res);
