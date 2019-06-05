@@ -19,6 +19,10 @@ class T1PROJECTEDITOR_API AGsEditorBaseTerrain : public AActor
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
+		FColor _PillarColor;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
+		FColor _PlaneColor;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		TArray<FVector> _PointArray;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		TArray<UGsEditorTerrainPillarComp*> _PillarArray;

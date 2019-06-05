@@ -18,7 +18,7 @@ UGsEditorTerrainPlaneComp::UGsEditorTerrainPlaneComp()
 	bWantsOnUpdateTransform = true;
 }
 
-void UGsEditorTerrainPlaneComp::Draw(UGsEditorTerrainPillarComp* in_start, UGsEditorTerrainPillarComp* in_end)
+void UGsEditorTerrainPlaneComp::Draw(UGsEditorTerrainPillarComp* in_start, UGsEditorTerrainPillarComp* in_end, FColor in_color)
 {
 	if (in_start && in_end)
 	{			
@@ -58,10 +58,15 @@ void UGsEditorTerrainPlaneComp::Draw(UGsEditorTerrainPillarComp* in_start, UGsEd
 		//normal
 		TArray<FVector> normals;
 
+		/*normals.Add(FVector(1, 0, 0));
 		normals.Add(FVector(1, 0, 0));
 		normals.Add(FVector(1, 0, 0));
-		normals.Add(FVector(1, 0, 0));
-		normals.Add(FVector(1, 0, 0));
+		normals.Add(FVector(1, 0, 0));*/
+
+		normals.Add(FVector(0, 0, 1));
+		normals.Add(FVector(0, 0, 1));
+		normals.Add(FVector(0, 0, 1));
+		normals.Add(FVector(0, 0, 1));
 
 		//uv0
 		TArray<FVector2D> uv;
@@ -85,15 +90,24 @@ void UGsEditorTerrainPlaneComp::Draw(UGsEditorTerrainPillarComp* in_start, UGsEd
 		vertexColors.Add(FLinearColor::Blue);
 		vertexColors.Add(FLinearColor::Blue);
 
-		CreateMeshSection_LinearColor(0, vertexs, triangles, normals, uv, vertexColors, tangents, true);
-		ContainsPhysicsTriMeshData(true);
+		CreateMeshSection_LinearColor(0, vertexs, triangles, normals, uv, vertexColors, tangents, false);
+
+		//Set Ignore collision
+		ContainsPhysicsTriMeshData(false);
+		SetCollisionEnabled(ECollisionEnabled::NoCollision);		
+		SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+		SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel14);
+		SetNotifyRigidBodyCollision(false);
+		SetGenerateOverlapEvents(false);
+
+		bCastShadowAsTwoSided = true;
 		
 		if (_Parent)
 		{
 			if (_Parent->_PlaneMaterial)
 			{
 				UMaterialInstanceDynamic* instanceMaterial = UMaterialInstanceDynamic::Create(_Parent->_PlaneMaterial, this);
-				instanceMaterial->SetVectorParameterValue(FName("Color"), FLinearColor(100.0f, 100.0f, 0.0f));
+				instanceMaterial->SetVectorParameterValue(FName("Color"), FLinearColor(in_color));
 				SetMaterial(0, instanceMaterial);
 			}			
 		}	

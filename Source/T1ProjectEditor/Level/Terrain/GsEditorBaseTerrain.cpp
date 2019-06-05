@@ -127,7 +127,7 @@ void AGsEditorBaseTerrain::Draw()
 		if (pillar)
 		{
 			pillar->SetWorldLocation(_PointArray[i]);
-			pillar->Draw();
+			pillar->Draw(_PillarColor);
 		}
 	}
 
@@ -145,7 +145,7 @@ void AGsEditorBaseTerrain::Draw()
 				{
 					if (_PillarArray[last] && _PillarArray[0])
 					{
-						_PlaneArray[last]->Draw(_PillarArray[last], _PillarArray[0]);
+						_PlaneArray[last]->Draw(_PillarArray[last], _PillarArray[0], _PlaneColor);
 					}
 				}
 			}
@@ -155,7 +155,7 @@ void AGsEditorBaseTerrain::Draw()
 				{
 					if (_PillarArray[i] && _PillarArray[i + 1])
 					{
-						_PlaneArray[i]->Draw(_PillarArray[i], _PillarArray[i + 1]);
+						_PlaneArray[i]->Draw(_PillarArray[i], _PillarArray[i + 1], _PlaneColor);
 					}
 				}
 			}

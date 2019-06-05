@@ -27,7 +27,7 @@ private:
 public:
 	// Sets default values for this component's properties
 	UGsEditorTerrainPlaneComp();
-	void Draw(UGsEditorTerrainPillarComp* in_start, UGsEditorTerrainPillarComp* in_end);
+	void Draw(UGsEditorTerrainPillarComp* in_start, UGsEditorTerrainPillarComp* in_end, FColor in_color);
 	virtual void OnUpdateTransform(EUpdateTransformFlags UpdateTransfo, ETeleportType Teleport) override;
 
 };
