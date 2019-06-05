@@ -4,6 +4,7 @@
 
 #include "GameObject/Define/GsGameObjectDefine.h"
 #include "GameObject/ObjectClass/GsGameObjectBase.h"
+#include "GameObject/State/GsStateBase.h"
 
 /**
  * 상태 관리 매니져 클래스

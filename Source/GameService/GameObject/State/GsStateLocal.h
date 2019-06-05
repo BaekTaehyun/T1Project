@@ -41,12 +41,21 @@ protected:
 #define ObjectUpperStateChange(State) ChangeState<State>(Cast<UGsGameObjectLocal>(Owner)->GetUpperFSM())
 };
 
+template< class tState, typename tStateType >
+void FGsStateSingleLocal<tState, tStateType >::OnEnter(UGsGameObjectLocal* Owner)
+{
+	if (auto anim = Owner->GetLocalCharacter()->GetAnim())
+	{
+		anim->ChangeState(GetStateID(), 0, GetAniRandomCount());
+	}
+}
+
 /**
 * Local 스폰 상태 클래스
 */
 class GAMESERVICE_API FGsStateLocalSpawn : public FGsStateSingleLocal<FGsStateLocalSpawn, EGsStateBase>
 {
-	typedef FGsStateSingleLocal<FGsStateLocalSpawn, EGsStateBase> Super;
+	typedef FGsStateSingleLocal Super;	typedef FGsStateSingleLocal<FGsStateLocalSpawn, EGsStateBase> Super;
 
 public:
 	virtual uint8 GetStateID() override;
@@ -64,6 +73,7 @@ protected:
 */
 class GAMESERVICE_API FGsStateLocalIdle : public FGsStateSingleLocal<FGsStateLocalIdle, EGsStateBase>
 {
+	
 	typedef FGsStateSingleLocal<FGsStateLocalIdle, EGsStateBase> Super;
 
 public:
@@ -101,6 +111,7 @@ protected:
 */
 class GAMESERVICE_API FGsStateLocalForwardWalk : public FGsStateLocalMoveBase<FGsStateLocalForwardWalk>
 {
+	
 	typedef FGsStateLocalMoveBase<FGsStateLocalForwardWalk> Super;
 
 public:
@@ -116,6 +127,7 @@ protected:
 */
 class GAMESERVICE_API FGsStateLocalBackwardWalk : public FGsStateLocalMoveBase<FGsStateLocalBackwardWalk>
 {
+	
 	typedef FGsStateLocalMoveBase<FGsStateLocalBackwardWalk> Super;
 
 public:
@@ -131,6 +143,7 @@ protected:
 */
 class GAMESERVICE_API FGsStateLocalSideWalk : public FGsStateLocalMoveBase<FGsStateLocalSideWalk>
 {
+	
 	typedef FGsStateLocalMoveBase<FGsStateLocalSideWalk> Super;
 
 public:
@@ -158,6 +171,7 @@ protected:
 
 class GAMESERVICE_API FGsStateLocalRide : public FGsStateSingleLocal<FGsStateLocalRide, EGsStateBase>
 {
+	
 	typedef FGsStateSingleLocal<FGsStateLocalRide, EGsStateBase> Super;
 
 public:
@@ -177,6 +191,7 @@ protected:
 */
 class GAMESERVICE_API FGsStateLocalUpperIdle : public FGsStateSingleLocal<FGsStateLocalUpperIdle, EGsStateUpperBase>
 {
+	
 	typedef FGsStateSingleLocal<FGsStateLocalUpperIdle, EGsStateUpperBase> Super;
 
 public:
@@ -195,6 +210,7 @@ protected:
 */
 class GAMESERVICE_API FGsStateLocalAttack : public FGsStateSingleLocal<FGsStateLocalAttack, EGsStateUpperBase>
 {
+	
 	typedef FGsStateSingleLocal<FGsStateLocalAttack, EGsStateUpperBase> Super;
 
 public:

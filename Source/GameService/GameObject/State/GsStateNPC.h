@@ -9,7 +9,6 @@
 #include "GameObject/ObjectClass/GsGameObjectNonPlayer.h"
 #include "GameObject/Movement/GsMovementBase.h"
 
-
 /**
 * NPC 관련 상태들은 상하체 분리 구조가 아닌걸 가정한다.
 * 
@@ -48,6 +47,7 @@ protected:
 */
 class GAMESERVICE_API FGsStateNpcSpawn : public FGsStateSingleNpc<FGsStateNpcSpawn>
 {
+	
 	typedef FGsStateSingleNpc<FGsStateNpcSpawn> Super;
 
 public:
@@ -65,6 +65,7 @@ protected:
 */
 class GAMESERVICE_API FGsStateNpcIdle : public FGsStateSingleNpc<FGsStateNpcIdle>
 {
+	
 	typedef FGsStateSingleNpc<FGsStateNpcIdle> Super;
 
 public:
@@ -81,6 +82,7 @@ protected:
 template<class tState>
 class GAMESERVICE_API FGsStateNpcMoveBase : public FGsStateSingleNpc<tState>
 {
+	
 	typedef FGsStateSingleNpc<tState> Super;
 
 public:
@@ -113,6 +115,7 @@ protected:
 */
 class GAMESERVICE_API FGsStateNpcBeaten : public FGsStateSingleNpc<FGsStateNpcBeaten>
 {
+	
 	typedef FGsStateSingleNpc<FGsStateNpcBeaten> Super;
 
 public:
