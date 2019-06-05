@@ -27,7 +27,8 @@ public class T1ProjectEditor : ModuleRules
                 "AppFramework",
 				//"T1ContentBrowserEditor",
                 "GameService",
-                "ProceduralMeshComponent"
+                "ProceduralMeshComponent",
+                "UMG"
             }
 		);
 

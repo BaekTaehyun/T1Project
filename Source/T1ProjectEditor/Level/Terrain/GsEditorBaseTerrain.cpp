@@ -15,12 +15,18 @@
 #include "Runtime/Engine/Classes/Components/SceneComponent.h"
 #include "Runtime/CoreUObject/Public/UObject/UObjectGlobals.h"
 #include "Runtime/Engine/Classes/Components/SplineComponent.h"
+#include "Runtime/UMG/Public/Components/WidgetComponent.h"
+#include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
+#include "Editor/UnrealEd/Classes/Editor/EditorEngine.h"
+#include "Runtime/Engine/Public/UnrealClient.h"
+#include "T1ProjectEditor/Widget/GsEditorTerrainWidget.h"
+#include "Runtime/UMG/Public/Components/TextBlock.h"
 
 // Sets default values
 AGsEditorBaseTerrain::AGsEditorBaseTerrain()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	_Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	_Root->SetRelativeLocation(FVector::ZeroVector);
@@ -29,13 +35,40 @@ AGsEditorBaseTerrain::AGsEditorBaseTerrain()
 	_Spline = CreateDefaultSubobject<USplineComponent>(TEXT("Spline"));
 	_Spline->SetRelativeLocation(FVector::ZeroVector);
 	_Spline->EditorUnselectedSplineSegmentColor = FColor::Blue;
-	_Spline->EditorSelectedSplineSegmentColor = FColor::Yellow;	
+	_Spline->EditorSelectedSplineSegmentColor = FColor::Yellow;
+
+	_Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
+	_Widget->SetWidget(_WidgetClass);
 
 	SetActorHiddenInGame(true);
 }
 
+bool AGsEditorBaseTerrain::ShouldTickIfViewportsOnly() const
+{
+	return true;
+}
+
+void AGsEditorBaseTerrain::Tick(float in_delta)
+{
+	Super::Tick(in_delta);
+
+#if WITH_EDITOR
+	if (_Widget)
+	{
+		FLevelEditorViewportClient* Client = (FLevelEditorViewportClient*)(GEditor->GetActiveViewport()->GetClient());
+
+		if (Client)
+		{
+			FRotator rot = UKismetMathLibrary::FindLookAtRotation(_Widget->GetComponentLocation(), Client->GetViewLocation());
+
+			_Widget->SetWorldRotation(rot);
+		}
+	}
+#endif
+}
+
 void AGsEditorBaseTerrain::InitPoints()
-{	
+{
 	if (_Spline)
 	{
 		int num = _Spline->GetNumberOfSplinePoints();
@@ -71,7 +104,7 @@ void AGsEditorBaseTerrain::DestoryAllComponents()
 		{
 			iter->UnregisterComponent();
 			iter->DestroyComponent();
-		}		
+		}
 	}
 
 	_PillarArray.Empty();
@@ -84,7 +117,7 @@ void AGsEditorBaseTerrain::DestoryAllComponents()
 		{
 			iter->UnregisterComponent();
 			iter->DestroyComponent();
-		}		
+		}
 	}
 
 	_PlaneArray.Empty();
@@ -92,22 +125,48 @@ void AGsEditorBaseTerrain::DestoryAllComponents()
 
 void AGsEditorBaseTerrain::Draw()
 {
-	UGsEditorTerrainPillarComp* pillar;
-	int num = _PointArray.Num();
+	DrawPlillar();
+	DrawPlane();
+	SetWidgetHegiht();
+	SetWidgetText();
+}
 
-	for(int i = 0; i < num; ++i)
+void AGsEditorBaseTerrain::RegisterPillar(UGsEditorTerrainPillarComp* in_pillar, int32 in_index)
+{
+	if (in_pillar)
 	{
-		pillar = _PillarArray[i];		
+		_PillarArray.Add(in_pillar);
+		in_pillar->_Parent = this;
+	}
+}
 
-		if (pillar)
-		{
-			pillar->SetWorldLocation(_PointArray[i]);
-			pillar->Draw(_PillarColor, _Height);
-		}
+void AGsEditorBaseTerrain::RegisterPlane(UGsEditorTerrainPlaneComp* in_plane)
+{
+	if (in_plane)
+	{
+		_PlaneArray.Add(in_plane);
+		in_plane->_Parent = this;
+	}
+}
+
+FVector AGsEditorBaseTerrain::GetCenterBetweenPoints(int32 in_start, int32 in_end)
+{
+	if (_PillarArray.IsValidIndex(in_start)
+		&& _PillarArray.IsValidIndex(in_end))
+	{
+		FVector start = _PillarArray[in_start]->GetComponentLocation();
+		FVector end = _PillarArray[in_end]->GetComponentLocation();
+
+		return ((start + end) / 2.0f);
 	}
 
-	num = _PillarArray.Num();
-	int last = num - 1;	
+	return FVector::ZeroVector;
+}
+
+void AGsEditorBaseTerrain::DrawPlane()
+{
+	int num = _PillarArray.Num();
+	int last = num - 1;
 
 	if (_PlaneArray.Num() > 0
 		&& _PlaneArray.IsValidIndex(last))
@@ -138,34 +197,46 @@ void AGsEditorBaseTerrain::Draw()
 	}
 }
 
-void AGsEditorBaseTerrain::RegisterPillar(UGsEditorTerrainPillarComp* in_pillar, int32 in_index)
+void AGsEditorBaseTerrain::DrawPlillar()
 {
-	if (in_pillar)
+	UGsEditorTerrainPillarComp* pillar;
+	int num = _PointArray.Num();
+
+	for (int i = 0; i < num; ++i)
 	{
-		_PillarArray.Add(in_pillar);
-		in_pillar->_Parent = this;		
+		pillar = _PillarArray[i];
+
+		if (pillar)
+		{
+			pillar->SetWorldLocation(_PointArray[i]);
+			pillar->Draw(_PillarColor, _Height);
+		}
 	}
 }
 
-void AGsEditorBaseTerrain::RegisterPlane(UGsEditorTerrainPlaneComp* in_plane)
+void AGsEditorBaseTerrain::SetWidgetHegiht()
 {
-	if (in_plane)
+	if (_Widget)
 	{
-		_PlaneArray.Add(in_plane);
-		in_plane->_Parent = this;
+		FVector pos = GetActorLocation() + FVector(0, 0, _Height + _WidgetHeight);
+		_Widget->SetWorldLocation(pos);				
 	}
 }
 
-FVector AGsEditorBaseTerrain::GetCenterBetweenPoints(int32 in_start, int32 in_end)
+void AGsEditorBaseTerrain::SetWidgetText()
 {
-	if (_PillarArray.IsValidIndex(in_start)
-		&& _PillarArray.IsValidIndex(in_end))
+	UUserWidget* widget = _Widget->GetUserWidgetObject();
+
+	if (widget)
 	{
-		FVector start = _PillarArray[in_start]->GetComponentLocation();
-		FVector end = _PillarArray[in_end]->GetComponentLocation();
+		UGsEditorTerrainWidget* terrainWidget = Cast<UGsEditorTerrainWidget>(widget);
 
-		return ((start + end) / 2.0f);
+		if (terrainWidget)
+		{
+			if (terrainWidget->_TextBlock)
+			{
+				terrainWidget->_TextBlock->SetText(FText::FromString(_Tag));
+			}
+		}
 	}
-
-	return FVector::ZeroVector;
 }

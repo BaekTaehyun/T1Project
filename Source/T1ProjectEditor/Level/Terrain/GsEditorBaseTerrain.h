@@ -11,6 +11,8 @@ class UGsEditorTerrainPlaneComp;
 class UMaterial;
 class USceneComponent;
 class USplineComponent;
+class UWidgetComponent;
+class UGsEditorTerrainWidget;
 
 UCLASS()
 class T1PROJECTEDITOR_API AGsEditorBaseTerrain : public AActor
@@ -21,6 +23,8 @@ public:
 	//Setting
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		float _Height = 100.0f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
+		float _WidgetHeight = 25.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		FColor _PillarColor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
@@ -32,21 +36,30 @@ public:
 
 	//Info
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
+		FString _Tag = "Terrain info";
+	UPROPERTY(BlueprintReadOnly, Category = "GsEditorBaseTerrain")
 		TArray<FVector> _PointArray;
 	UPROPERTY()
 		TArray<UGsEditorTerrainPillarComp*> _PillarArray;
 	UPROPERTY()
 		TArray<UGsEditorTerrainPlaneComp*> _PlaneArray;	
+
+	//Default components
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+		UGsEditorTerrainWidget* _WidgetClass;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "GsEditorBaseTerrain")	
 		USceneComponent* _Root;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GsEditorBaseTerrain")
 		USplineComponent* _Spline;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GsEditorBaseTerrain")
+		UWidgetComponent* _Widget;
 
 public:
 	// Sets default values for this actor's properties
 	AGsEditorBaseTerrain();
-	/*virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e) override;*/
-
+	virtual void Tick(float in_delta) override;
+	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
+		virtual void Draw();	
 protected:
 	//OnConstruction에서 컴포넌트를 생성하면 정상적으로 컴포넌트가 붙지 않는 문제가 있다. Construction Script에서 컴포넌트 생성할 것
 
@@ -59,10 +72,14 @@ protected:
 		void RegisterPillar(UGsEditorTerrainPillarComp* in_pillar, int32 in_index);
 	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
 		void RegisterPlane(UGsEditorTerrainPlaneComp* in_plane);
-	FVector GetCenterBetweenPoints(int32 in_start, int32 in_end);
+	FVector GetCenterBetweenPoints(int32 in_start, int32 in_end);		
+	virtual bool ShouldTickIfViewportsOnly() const override;
 
-public:
-	// Called every frame	
-	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
-		virtual void Draw();
+private:	
+	void DrawPlane();
+	void DrawPlillar();
+	void SetWidgetHegiht();
+	void SetWidgetText();
+
+
 };
