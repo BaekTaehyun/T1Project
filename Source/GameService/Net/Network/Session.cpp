@@ -130,7 +130,7 @@ void Session::onConnected(bool result, FSocket* socket, std::shared_ptr<SendSock
 
 void Session::start(FSocket* socket, std::shared_ptr<SendSocketTask> sender, std::shared_ptr<ReceiveSocketTask> receiver)
 {
-	(socket);
+	//(socket);
 	clear();
 
 	connected_ = true;

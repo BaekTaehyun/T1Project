@@ -312,11 +312,12 @@ ULevelStreaming* AGsGameModeWorld::GetClosestLevel()
 			FIntPoint worldOriginLocationXY = FIntPoint(world->OriginLocation.X, world->OriginLocation.Y);
 			FVector playerLocation = player->GetActorLocation();
 			ULevelStreaming* level = nullptr;
-
+#if WITH_EDITOR
 			for (FDistanceVisibleLevel& iter : VisibleLevels)
 			{	
 				if (iter.StreamingLevel)
 				{
+#pragma todo("LSH : Editer code call -> MobileBild Err")
 					const FWorldTileInfo& tile = world->WorldComposition->GetTileInfo(iter.StreamingLevel->GetWorldAssetPackageFName());
 
 					FIntPoint levelOffsetXY = FIntPoint(tile.AbsolutePosition.X, tile.AbsolutePosition.Y);
@@ -331,6 +332,7 @@ ULevelStreaming* AGsGameModeWorld::GetClosestLevel()
 					}
 				}				
 			}
+#endif
 
 #if WITH_EDITOR			
 			if (level)
