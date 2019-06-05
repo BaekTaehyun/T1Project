@@ -25,11 +25,11 @@ class GAMESERVICE_API AGsWheelVehicle : public AWheeledVehicle
 	UPROPERTY(Category = Camera, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* Camera;
 	//InputBinder
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	class UGsInputBindingVehicle* InputBinder;
+	class UGsInputBindingBase* InputBinder;
 
 public:
-	FORCEINLINE UGsInputBindingVehicle* GetInputBinder() const { return InputBinder; }
+	FORCEINLINE UGsInputBindingBase* GetInputBinder() const			{ return InputBinder; }
+	FORCEINLINE void SetInputBinder(UGsInputBindingBase* Binder)	{ InputBinder = Binder; }
 
 public:
 	AGsWheelVehicle();

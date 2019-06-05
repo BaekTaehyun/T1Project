@@ -5,7 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/InputComponent.h"
-#include "GameObject/Input/GsInputBindingVehicle.h"
+#include "GameObject/Input/GsInputBindingBase.h"
 
 AGsWheelVehicle::AGsWheelVehicle()
 {
@@ -25,13 +25,14 @@ AGsWheelVehicle::AGsWheelVehicle()
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 	Camera->bUsePawnControlRotation = false;
 	Camera->FieldOfView = 90.f;
-
-	InputBinder = CreateDefaultSubobject<UGsInputBindingVehicle>(TEXT("VehicleInputbinder"));
 }
 
 void AGsWheelVehicle::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	InputBinder->SetBinding(PlayerInputComponent);
+	if (InputBinder)
+	{
+		InputBinder->SetBinding(PlayerInputComponent);
+	}
 }

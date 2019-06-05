@@ -21,3 +21,8 @@ bool IGsStateBase::IsSameState(int StateID)
 {
 	return (GetStateID() == StateID);
 }
+void IGsStateBase::ChangeDelayPrevState(FGsFSMManager* Fsm, float Time)
+{
+	if (Fsm && Fsm->Prev) { Fsm->ChangeDelayPrevState(Time); }
+}
+

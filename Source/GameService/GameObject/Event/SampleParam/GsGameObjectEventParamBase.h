@@ -19,9 +19,6 @@ public:
 
 	virtual void Clear();
 
-	template<class tCast>
-	static tCast* ConstCast(const GsGameObjectEventParamBase& c) { return static_cast<tCast*>(const_cast<GsGameObjectEventParamBase*>(&c)); }
-
 public:
 	MessageGameObject::Action ActionType;
 	UGsGameObjectBase* Target;

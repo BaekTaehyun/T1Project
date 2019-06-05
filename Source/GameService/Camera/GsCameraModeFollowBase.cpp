@@ -211,7 +211,7 @@ void GsCameraModeFollowBase::Enter(UGsGameObjectLocal* In_char, GsCameraModeMana
 		return;
 	}
 
-	UGsInputBindingLocalPlayer* inputBinding = localChar->GetInputBinder();
+	UGsInputBindingLocalPlayer* inputBinding = Cast<UGsInputBindingLocalPlayer>(localChar->GetInputBinder());
 
 	if (inputBinding == nullptr)
 	{
@@ -246,7 +246,7 @@ void GsCameraModeFollowBase::Exit(UGsGameObjectLocal* In_char)
 		return;
 	}
 
-	UGsInputBindingLocalPlayer* inputBinding = localChar->GetInputBinder();
+	UGsInputBindingLocalPlayer* inputBinding = Cast<UGsInputBindingLocalPlayer>(localChar->GetInputBinder());
 
 	if (inputBinding == nullptr)
 	{

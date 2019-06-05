@@ -1,8 +1,10 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "GsFSMManager.h"
+#include "Util/GsText.h"
 #include "Runtime/Engine/Public/TimerManager.h"
 #include "GsStateBase.h"
+#include "GameObject/State/GsStateBase.h"
 
 void FGsFSMManager::Finalize()
 {
@@ -18,6 +20,27 @@ void FGsFSMManager::Update(UGsGameObjectBase* owner, float Delta)
 	if (Current)
 	{
 		Current->Update(owner, Delta);
+	}
+}
+
+void FGsFSMManager::ProcessEvent(uint8 StateID, FGsStateChangeFailed const& FailDelegate)
+{
+	if (Current)
+	{
+		if (false == Current->ProcessEvent(Owner, StateID))
+		{
+			if (FailDelegate.IsBound())
+			{
+				FailDelegate.Execute(Current->GetStateID());
+			}
+#if WITH_EDITOR
+			//스테이트 전환 실패 로그 메세지
+			FString stateName = (StateID > static_cast<uint8>(EGsStateUpperBase::None)) ?
+				EnumToString(EGsStateUpperBase, static_cast<EGsStateUpperBase>(StateID)) :
+				EnumToString(EGsStateBase, static_cast<EGsStateBase>(StateID));
+			UE_LOG(LogTemp, Warning, TEXT("[%s] State Changed failed!  Current State : [%s]"), *stateName, *Current->Name());
+#endif
+		}
 	}
 }
 

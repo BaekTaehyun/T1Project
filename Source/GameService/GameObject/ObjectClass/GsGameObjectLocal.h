@@ -41,5 +41,8 @@ private:
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = GameObject, Meta = (AllowPrivateAccess = true))
  	AGsLocalCharacter* Actor;
 
+	UPROPERTY(Transient, VisibleInstanceOnly, Category = GameObject, Meta = (AllowPrivateAccess = true))
+	class UGsInputBindingLocalPlayer* InputBinder;
+
 	FGsGameObjectEventBase* Event;
 };
