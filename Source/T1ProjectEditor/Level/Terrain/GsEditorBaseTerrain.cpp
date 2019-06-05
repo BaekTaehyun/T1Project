@@ -24,12 +24,14 @@ AGsEditorBaseTerrain::AGsEditorBaseTerrain()
 
 	_Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	_Root->SetRelativeLocation(FVector::ZeroVector);
+	RootComponent = _Root;
 
 	_Spline = CreateDefaultSubobject<USplineComponent>(TEXT("Spline"));
 	_Spline->SetRelativeLocation(FVector::ZeroVector);
+	_Spline->EditorUnselectedSplineSegmentColor = FColor::Blue;
+	_Spline->EditorSelectedSplineSegmentColor = FColor::Yellow;	
 
-	RootComponent = _Root;
-
+	SetActorHiddenInGame(true);
 }
 
 void AGsEditorBaseTerrain::InitPoints()
@@ -65,7 +67,11 @@ void AGsEditorBaseTerrain::DestoryAllComponents()
 
 	for (UActorComponent* iter : pillarArray)
 	{
-		iter->DestroyComponent();
+		if (iter)
+		{
+			iter->UnregisterComponent();
+			iter->DestroyComponent();
+		}		
 	}
 
 	_PillarArray.Empty();
@@ -74,65 +80,34 @@ void AGsEditorBaseTerrain::DestoryAllComponents()
 
 	for (UActorComponent* iter : planeArray)
 	{
-		iter->DestroyComponent();
+		if (iter)
+		{
+			iter->UnregisterComponent();
+			iter->DestroyComponent();
+		}		
 	}
 
 	_PlaneArray.Empty();
 }
 
-void AGsEditorBaseTerrain::ConstructFence()
-{
-	for (int32 i = 0; i < _PointArray.Num(); ++i)
-	{
-		UGsEditorTerrainPillarComp* pillar = NewObject<UGsEditorTerrainPillarComp>(this);
-		pillar->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
-		/*pillar->RegisterComponent();*/
-
-		//UGsEditorTerrainPillarComp* pillar = ConstructObject<UGsEditorTerrainPillarComp>(UGsEditorTerrainPillarComp::StaticClass(), this);
-
-		RegisterPillar(pillar, i);
-
-		pillar->SetWorldLocation(_PointArray[i]);
-	}
-
-	//Create pillar 
-	for (FVector& iter : _PointArray)
-	{
-		UGsEditorTerrainPlaneComp* plane = NewObject<UGsEditorTerrainPlaneComp>(this);
-		plane->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
-		/*plane->RegisterComponent();*/
-
-		//UGsEditorTerrainPlaneComp* plane = ConstructObject<UGsEditorTerrainPlaneComp>(UGsEditorTerrainPillarComp::StaticClass(), this);
-
-		RegisterPlane(plane);
-	}
-
-	RegisterAllComponents();
-}
-
-// Called when the game starts or when spawned
-void AGsEditorBaseTerrain::BeginPlay()
-{
-	Super::BeginPlay();
-
-	Destroy();
-}
-
 void AGsEditorBaseTerrain::Draw()
 {
-	for(int i = 0; i < _PointArray.Num(); ++i)	
+	UGsEditorTerrainPillarComp* pillar;
+	int num = _PointArray.Num();
+
+	for(int i = 0; i < num; ++i)
 	{
-		UGsEditorTerrainPillarComp* pillar = _PillarArray[i];		
+		pillar = _PillarArray[i];		
 
 		if (pillar)
 		{
 			pillar->SetWorldLocation(_PointArray[i]);
-			pillar->Draw(_PillarColor);
+			pillar->Draw(_PillarColor, _Height);
 		}
 	}
 
-	int num = _PillarArray.Num();
-	int last = num - 1;
+	num = _PillarArray.Num();
+	int last = num - 1;	
 
 	if (_PlaneArray.Num() > 0
 		&& _PlaneArray.IsValidIndex(last))
@@ -145,7 +120,7 @@ void AGsEditorBaseTerrain::Draw()
 				{
 					if (_PillarArray[last] && _PillarArray[0])
 					{
-						_PlaneArray[last]->Draw(_PillarArray[last], _PillarArray[0], _PlaneColor);
+						_PlaneArray[last]->Draw(_PillarArray[last], _PillarArray[0], _Height, _PlaneOuterColor, _PlaneInsideColor);
 					}
 				}
 			}
@@ -155,7 +130,7 @@ void AGsEditorBaseTerrain::Draw()
 				{
 					if (_PillarArray[i] && _PillarArray[i + 1])
 					{
-						_PlaneArray[i]->Draw(_PillarArray[i], _PillarArray[i + 1], _PlaneColor);
+						_PlaneArray[i]->Draw(_PillarArray[i], _PillarArray[i + 1], _Height, _PlaneOuterColor, _PlaneInsideColor);
 					}
 				}
 			}
@@ -168,8 +143,7 @@ void AGsEditorBaseTerrain::RegisterPillar(UGsEditorTerrainPillarComp* in_pillar,
 	if (in_pillar)
 	{
 		_PillarArray.Add(in_pillar);
-		in_pillar->_Parent = this;
-		in_pillar->_Index = in_index;
+		in_pillar->_Parent = this;		
 	}
 }
 
@@ -179,32 +153,6 @@ void AGsEditorBaseTerrain::RegisterPlane(UGsEditorTerrainPlaneComp* in_plane)
 	{
 		_PlaneArray.Add(in_plane);
 		in_plane->_Parent = this;
-	}
-}
-
-void AGsEditorBaseTerrain::AddPillar(int32 in_start, int32 in_end)
-{
-	if (_PillarArray.IsValidIndex(in_start)
-		&& _PillarArray.IsValidIndex(in_end))
-	{
-		int32 last = _PillarArray.Num() - 1;
-
-		if ((in_start == last && in_end == 0)
-			|| (in_end == last && in_start == 0))
-		{
-			TryCreate(in_start, in_end, -1);
-		}
-		else
-		{
-			int32 size = FMath::Abs(in_start - in_end);
-
-			if (1 == size)
-			{
-				int32 upper = GetUpperIndex(in_start, in_end);
-
-				TryCreate(in_start, in_end, upper);
-			}
-		}
 	}
 }
 
@@ -220,134 +168,4 @@ FVector AGsEditorBaseTerrain::GetCenterBetweenPoints(int32 in_start, int32 in_en
 	}
 
 	return FVector::ZeroVector;
-}
-
-bool AGsEditorBaseTerrain::TryCreatePillar(int32 in_index, FVector in_location)
-{
-	UGsEditorTerrainPillarComp* pillar = NewObject<UGsEditorTerrainPillarComp>();
-
-	if (pillar)
-	{
-		pillar->SetWorldLocation(in_location);
-		pillar->_Parent = this;
-
-		if (-1 == in_index)
-		{
-			_PillarArray.Add(pillar);
-		}
-		else
-		{
-			_PillarArray.Insert(pillar, in_index);
-		}
-		
-		//add pillar using sscss eidtor
-		//FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked< FLevelEditorModule >("LevelEditorModuel");
-
-		//TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
-
-		//TSharedPtr<SDockTab> tab = LevelEditorTabManager->FindExistingLiveTab(FName("LevelEditorSelectionDetails"));
-
-		//if (tab.IsValid())
-		//{
-		//	TSharedPtr<SWidget> tabContent = tab->GetContent();
-
-		//	if (tabContent.IsValid())
-		//	{
-		//		//FString test = "name : " + tabContent->GetTypeAsString();
-
-		//		UE_LOG(LogTemp, Log, TEXT("name : %s"), *tabContent->GetTypeAsString());
-		//	}
-
-		//	//TSharedRef<SActorDetails> actorDetils = StaticCastSharedPtr<SActorDetails>(tabContent);
-
-		//	//if(actorDetils.IsValid())
-		//}
-
-		return true;					
-	}
-
-	return false;
-}
-
-bool AGsEditorBaseTerrain::TryCreate(int32 in_start, int32 in_end, int32 in_index)
-{
-	FVector center = GetCenterBetweenPoints(in_start, in_end);
-
-	if (TryCreatePillar(in_index, center))
-	{
-		if (TryCreatePlane())
-		{
-			Draw();
-
-			return true;
-		}
-	}
-
-	return false;
-}
-
-bool AGsEditorBaseTerrain::TryCreatePlane()
-{
-	UGsEditorTerrainPlaneComp* plane = NewObject<UGsEditorTerrainPlaneComp>();
-
-	if (plane)
-	{
-		_PlaneArray.Add(plane);
-		plane->_Parent = this;
-
-		//add plane using sscss eidtor
-
-		return true;
-	}
-
-	return false;
-}
-
-int32 AGsEditorBaseTerrain::GetUpperIndex(int32 in_start, int32 in_end)
-{
-	if (in_start < in_end)
-	{
-		return in_end;
-	}
-	else
-	{
-		return in_start;
-	}
-}
-
-void AGsEditorBaseTerrain::RemovePillar(int32 in_index)
-{
-	if (_PillarArray.IsValidIndex(in_index))
-	{
-		int32 last = _PillarArray.Num() - 1;
-
-		UGsEditorTerrainPillarComp* pillar = _PillarArray[in_index];
-
-		if (pillar)
-		{
-			_PillarArray.RemoveAt(in_index);
-			
-			//Destory pillar using sscs editor	
-
-			if (TryRemovePlane())
-			{
-				Draw();
-			}
-		}
-	}
-}
-
-bool AGsEditorBaseTerrain::TryRemovePlane()
-{
-	UGsEditorTerrainPlaneComp* comp = _PlaneArray.Last();
-	_PlaneArray.Remove(comp);
-
-	if (comp)
-	{		
-		//Destory plane using sscs editor		
-
-		return true;
-	}
-
-	return false;
 }

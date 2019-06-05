@@ -11,27 +11,26 @@ UGsEditorTerrainPillarComp::UGsEditorTerrainPillarComp()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
 	bWantsOnUpdateTransform = true;
 }
 
-void UGsEditorTerrainPillarComp::Draw(FColor in_color)
+void UGsEditorTerrainPillarComp::Draw(FColor in_color, float in_height)
 {
 	FVector v1, v2, v3, v4, v5, v6, v7, v8;
-	float factor = 10.0f;
-	FVector height = FVector(0, 0, 100);
+	float factor = 10.0f;	
 
 	v1 = FVector(-1, -1, 0) * factor;
 	v2 = FVector(1, -1, 0) * factor;
 	v3 = FVector(1, 1, 0) * factor;
 	v4 = FVector(-1, 1, 0) * factor;
 
-	v5 = FVector(-1, -1, 0) * factor + height;
-	v6 = FVector(1, -1, 0) * factor + height;
-	v7 = FVector(1, 1, 0) * factor + height;
-	v8 = FVector(-1, 1, 0) * factor + height;
+	v5 = FVector(-1, -1, 0) * factor + FVector::FVector(0, 0, in_height);
+	v6 = FVector(1, -1, 0) * factor + FVector::FVector(0, 0, in_height);
+	v7 = FVector(1, 1, 0) * factor + FVector::FVector(0, 0, in_height);
+	v8 = FVector(-1, 1, 0) * factor + FVector::FVector(0, 0, in_height);
 
 	//vertex
 	TArray<FVector> vertexs;
@@ -80,11 +79,6 @@ void UGsEditorTerrainPillarComp::Draw(FColor in_color)
 	//normal
 	TArray<FVector> normals;
 
-	/*normals.Add(FVector(1, 0, 0));
-	normals.Add(FVector(1, 0, 0));
-	normals.Add(FVector(1, 0, 0));
-	normals.Add(FVector(1, 0, 0));*/
-
 	normals.Add(FVector(0, 0, 1));
 	normals.Add(FVector(0, 0, 1));
 	normals.Add(FVector(0, 0, 1));
@@ -126,14 +120,13 @@ void UGsEditorTerrainPillarComp::Draw(FColor in_color)
 	SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel14);
 	SetNotifyRigidBodyCollision(false);
 	SetGenerateOverlapEvents(false);
-
-	bCastShadowAsTwoSided = true;
+	SetCastShadow(true);	
 
 	if (_Parent)
 	{
-		if (_Parent->_PlaneMaterial)
+		if (_Parent->_Material)
 		{
-			UMaterialInstanceDynamic* instanceMaterial = UMaterialInstanceDynamic::Create(_Parent->_PlaneMaterial, this);
+			UMaterialInstanceDynamic* instanceMaterial = UMaterialInstanceDynamic::Create(_Parent->_Material, this);
 			instanceMaterial->SetVectorParameterValue(FName("Color"), FLinearColor(in_color));
 			SetMaterial(0, instanceMaterial);
 		}
@@ -144,9 +137,10 @@ void UGsEditorTerrainPillarComp::OnUpdateTransform(EUpdateTransformFlags UpdateT
 {
 	if (_Parent)
 	{
+#if WITH_EDITOR
 		UE_LOG(LogTemp, Log, TEXT("Component location : %s"), *GetComponentLocation().ToString());
+#endif
 
-		_Parent->_PointArray[_Index] = GetComponentLocation();
 		_Parent->Draw();
 	}
 }

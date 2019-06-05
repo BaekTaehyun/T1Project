@@ -18,68 +18,51 @@ class T1PROJECTEDITOR_API AGsEditorBaseTerrain : public AActor
 	GENERATED_BODY()
 
 public:
+	//Setting
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
+		float _Height = 100.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		FColor _PillarColor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
-		FColor _PlaneColor;
+		FColor _PlaneOuterColor;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
+		FColor _PlaneInsideColor;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
+		UMaterial* _Material;
+
+	//Info
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		TArray<FVector> _PointArray;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
+	UPROPERTY()
 		TArray<UGsEditorTerrainPillarComp*> _PillarArray;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
-		TArray<UGsEditorTerrainPlaneComp*> _PlaneArray;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
-		UMaterial* _PillarMaterial;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
-		UMaterial* _PlaneMaterial;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
-		FIntPoint _InsertRange;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
-		int32 _RemoveIndex;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
-	USceneComponent* _Root;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
-	USplineComponent* _Spline;
+	UPROPERTY()
+		TArray<UGsEditorTerrainPlaneComp*> _PlaneArray;	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "GsEditorBaseTerrain")	
+		USceneComponent* _Root;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GsEditorBaseTerrain")
+		USplineComponent* _Spline;
 
 public:
 	// Sets default values for this actor's properties
 	AGsEditorBaseTerrain();
+	/*virtual void PostEditChangeProperty(struct FPropertyChangedEvent& e) override;*/
 
 protected:
 	//OnConstruction에서 컴포넌트를 생성하면 정상적으로 컴포넌트가 붙지 않는 문제가 있다. Construction Script에서 컴포넌트 생성할 것
 
 	// Called when the game starts or when spawned
 	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
-	void InitPoints();
+		void InitPoints();
 	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
-	void DestoryAllComponents();
-	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
-	void ConstructFence();
-
-	virtual void BeginPlay() override;
+		void DestoryAllComponents();	
 	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
 		void RegisterPillar(UGsEditorTerrainPillarComp* in_pillar, int32 in_index);
 	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
 		void RegisterPlane(UGsEditorTerrainPlaneComp* in_plane);
-
 	FVector GetCenterBetweenPoints(int32 in_start, int32 in_end);
-	int32 GetUpperIndex(int32 in_start, int32 in_end);
-
-	//create
-	bool TryCreate(int32 in_start, int32 in_end, int32 in_index = -1);
-	bool TryCreatePillar(int32 in_index = -1, FVector in_location = FVector::ZeroVector);
-	bool TryCreatePlane();
-
-	//remove	
-	bool TryRemovePlane();	
 
 public:
 	// Called every frame	
 	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
-	virtual void Draw();
-	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
-	void AddPillar(int32 in_start, int32 in_end);
-	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
-	void RemovePillar(int32 in_index);
-
+		virtual void Draw();
 };
