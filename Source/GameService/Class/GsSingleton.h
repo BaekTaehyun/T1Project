@@ -4,24 +4,28 @@
 template<typename T>
 class GAMESERVICE_API TGsSingleton
 {
-public:
-	virtual ~TGsSingleton() {}
-	static T* Instance;
 protected:
+	static T* _instance;
+	virtual ~TGsSingleton() {}
 	static void InitInstance(T* inThis)
 	{
-		Instance = inThis;
+		_instance = inThis;
 	}
 	static void RemoveInstance()
 	{
-		Instance = NULL;
+		_instance = NULL;
+	}
+public:
+	static T* Instance()
+	{
+		return _instance;
 	}
 };
 
 // 풀링 객체를 위한 싱글톤 생성.. 다른용처로는 쓰지 않기
 // 소멸은 꼭 호출해주기
 template<typename T>
-class TGsPoolSingle
+class GAMESERVICE_API TGsPoolSingle
 {
 	static T* _instance;
 public:
@@ -43,5 +47,3 @@ public:
 	}
 };
 
-template<typename T>
-T* TGsPoolSingle<T>::_instance = nullptr;

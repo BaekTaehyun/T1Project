@@ -100,7 +100,7 @@ UGsGameObjectProjectile* UGsSpawnComponent::SpawnObject(UClass* Uclass,
 	const FVector& Pos, const FRotator& Rot, bool IsOnGround);
 
 typedef TGsSingleton<UGsSpawnComponent>	UGsSpawnerSingle;
-#define GSpawner() UGsSpawnerSingle::Instance
+#define GSpawner() UGsSpawnerSingle::Instance()
 
 
 

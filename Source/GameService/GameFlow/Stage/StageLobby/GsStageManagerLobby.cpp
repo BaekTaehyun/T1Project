@@ -41,7 +41,7 @@ void FGsStageManagerLobby::RemoveAll()
 }
 void FGsStageManagerLobby::InitState()
 {
-	constexpr std::initializer_list<FGsStageMode::Lobby> allMode =
+	const FGsStageMode::Lobby allMode[]=
 	{ 
 		FGsStageMode::Lobby::INTRO,
 		FGsStageMode::Lobby::ASSET_DOWNLOAD,

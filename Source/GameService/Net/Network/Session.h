@@ -50,7 +50,7 @@ class Session : public std::enable_shared_from_this<Session>
 
 
 	FSocket* socket_ = nullptr;
-	std::atomic_bool connected_ = false;
+	std::atomic_bool connected_{ false };
 
 	SessionEventHandler* handler_ = nullptr;
 	std::mutex eventLock_;

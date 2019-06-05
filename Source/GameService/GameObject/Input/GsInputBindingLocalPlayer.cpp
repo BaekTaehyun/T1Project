@@ -241,8 +241,8 @@ void UGsInputBindingLocalPlayer::OnZoomOut()
 // 카메로 모드 변경
 void UGsInputBindingLocalPlayer::OnViewChange()
 {
-	if (GsCameraModeSingle::Instance != nullptr)
+	if (GCamera() != nullptr)
 	{
-		GsCameraModeSingle::Instance->NextStep();
+		GCamera()->NextStep();
 	}
 }

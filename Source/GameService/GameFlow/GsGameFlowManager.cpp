@@ -21,7 +21,8 @@ FGsGameFlowBase* FGsGameFlowAllocator::Alloc(FGsGameFlow::Mode inMode)
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-FGsGameFlowManager* FGsGameFlowSingle::Instance = NULL;
+template<>
+FGsGameFlowManager* FGsGameFlowSingle::_instance = nullptr;
 
 FGsGameFlowManager::~FGsGameFlowManager()
 {
@@ -32,7 +33,7 @@ void FGsGameFlowManager::Initialize()
 {
 	TGsSingleton::InitInstance(this);
 
-	constexpr std::initializer_list<FGsGameFlow::Mode> allMode = { FGsGameFlow::Mode::LOBBY, FGsGameFlow::Mode::GAME };
+	const FGsGameFlow::Mode allMode[] = { FGsGameFlow::Mode::LOBBY, FGsGameFlow::Mode::GAME };
 	for (auto& e : allMode)
 	{
 		auto inst = MakeInstance(e);

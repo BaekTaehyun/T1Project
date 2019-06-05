@@ -144,9 +144,9 @@ void AT1Player::BeginPlay()
 	}*/
 #ifdef CAM_MODE
 	// 캐릭터 세팅
-	if (GsCameraModeSingle::Instance != nullptr)
+	if (GCamera() != nullptr)
 	{
-		GsCameraModeSingle::Instance->SetCharacter(this);
+		GCamera()->SetCharacter(this);
 	}
 #endif
 }
@@ -201,9 +201,9 @@ void AT1Player::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 #ifdef CAM_MODE
-	if (GsCameraModeSingle::Instance != nullptr)
+	if (GCamera() != nullptr)
 	{
-		GsCameraModeSingle::Instance->Update(DeltaTime);
+		GCamera()->Update(DeltaTime);
 	}
 #else
 	SpringArm->TargetArmLength = FMath::FInterpTo(SpringArm->TargetArmLength, ArmLengthTo, DeltaTime, ArmLengthSpeed);
@@ -386,9 +386,9 @@ void AT1Player::Turn(float newAxisValue)
 void AT1Player::CameraViewChange()
 {
 #ifdef CAM_MODE
-	if (GsCameraModeSingle::Instance != nullptr)
+	if (GCamera() != nullptr)
 	{
-		GsCameraModeSingle::Instance->NextStep();
+		GCamera()->NextStep();
 	}
 #else
 

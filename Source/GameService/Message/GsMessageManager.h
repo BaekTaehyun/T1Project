@@ -46,4 +46,4 @@ public:
 };
 
 typedef TGsSingleton<FGsMessageManager>	FGsMessageSingle;
-#define GMessage() FGsMessageSingle::Instance
+#define GMessage() FGsMessageSingle::Instance()

@@ -89,7 +89,8 @@ public:
 #endif
 	}
 };
-
+template<>
+FPacketPool* TGsPoolSingle<FPacketPool>::_instance = nullptr;
 #define GetPacketPool() TGsPoolSingle<FPacketPool>::GetInstance()
 
 inline Buffer* MakePacket(uint16_t packetId, const void* data, int32_t size)
@@ -120,7 +121,7 @@ inline const PacketHeader*	SeekPacketHeader(const Buffer* buffer)
 	return nullptr;
 }
 
-inline bool PopPacket(Buffer* buffer, ChaCha20Decrypter* decrypter, Packet*& packet )
+inline bool PopPacket(Buffer* buffer, ChaCha20Decrypter* decrypter, Packet*& packet)
 {
 	assert(packet == nullptr);
 

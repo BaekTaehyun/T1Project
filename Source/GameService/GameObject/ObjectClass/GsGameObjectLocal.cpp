@@ -92,9 +92,9 @@ void UGsGameObjectLocal::ActorSpawned(AActor* Spawn)
         Parts->AttachAll();
 
 		// 캐릭터 세팅
-		if (GsCameraModeSingle::Instance != nullptr)
+		if (GCamera() != nullptr)
 		{
-			GsCameraModeSingle::Instance->SetCharacter(this);
+			GCamera()->SetCharacter(this);
 		}		
 	}
 }
@@ -105,9 +105,9 @@ void UGsGameObjectLocal::Update(float delta)
 
 	if (UpperFsm) { UpperFsm->Update(this, delta); }
 
-	if (GsCameraModeSingle::Instance != nullptr)
+	if (GCamera() != nullptr)
 	{
-		GsCameraModeSingle::Instance->Update(delta);
+		GCamera()->Update(delta);
 	}
 }
 

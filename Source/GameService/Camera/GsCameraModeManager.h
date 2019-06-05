@@ -32,8 +32,6 @@ class GAMESERVICE_API GsCameraModeManager :
 	public GSTMap<EGsControlMode, GsCameraModeBase, GsCameraModeAllocator>,
 	public TGsSingleton<GsCameraModeManager>
 {
-	
-
 	TSharedPtr<GsCameraModeBase>	_currentState = NULL;
 
 	DECLARE_EVENT(GSTStateMng, MainEvent)
@@ -110,3 +108,4 @@ public:
 	FGsCamModeData* GetCamModeData(EGsControlMode In_mode);
 };
 typedef TGsSingleton<GsCameraModeManager> GsCameraModeSingle;
+#define GCamera() GsCameraModeSingle::Instance()

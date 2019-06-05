@@ -41,9 +41,9 @@ GsCameraModeBase* GsCameraModeAllocator::Alloc(EGsControlMode In_mode)
 //-------------------------------------------------
 // 카메라 모드 관리자
 //-------------------------------------------------
+template<>
+GsCameraModeManager* GsCameraModeSingle::_instance = nullptr;
 
-// 소멸자
-GsCameraModeManager* GsCameraModeSingle::Instance = nullptr;
 GsCameraModeManager::~GsCameraModeManager()
 {
 	GSLOG(Warning, TEXT("GsCameraModeManager destructor"));

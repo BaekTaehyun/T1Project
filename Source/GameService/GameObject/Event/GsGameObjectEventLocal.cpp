@@ -55,7 +55,7 @@ void FGsGameObjectEventLocal::OnVehicleRide(GsGameObjectEventParamBase& Param)
 	auto vehicleActor = vehicleGo->GetWhellVehicle();
 
 	//상태전환 : 추후 탑승과 하차를 분리하는게 좋아 보임
-	if (fsm->IsState(EGsStateBase::Ride))
+	if (fsm->IsState((int)EGsStateBase::Ride))
 	{
 		passengerGo->SetVehicle(NULL);
 		vehicleGo->RemovePassenger(passengerGo);
