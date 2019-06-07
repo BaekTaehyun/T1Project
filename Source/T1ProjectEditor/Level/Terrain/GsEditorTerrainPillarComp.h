@@ -8,6 +8,10 @@
 
 class AGsEditorBaseTerrain;
 
+//----------------------------------------------------------------
+// AGsEditorBaseTerrain의 포인트 좌표를 위한 펜스
+//----------------------------------------------------------------
+
 UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class T1PROJECTEDITOR_API UGsEditorTerrainPillarComp : public UProceduralMeshComponent
 {

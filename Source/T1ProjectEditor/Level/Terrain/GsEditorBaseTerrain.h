@@ -14,6 +14,9 @@ class USplineComponent;
 class UWidgetComponent;
 class UGsEditorTerrainWidget;
 
+//----------------------------------------------------------------
+// Scene 내 이벤트에 필요한 영역과 기능을 관리해주는 에디터용 액터
+//----------------------------------------------------------------
 UCLASS()
 class T1PROJECTEDITOR_API AGsEditorBaseTerrain : public AActor
 {

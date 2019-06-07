@@ -9,6 +9,9 @@
 class AGsEditorBaseTerrain;
 class UGsEditorTerrainPillarComp;
 
+//----------------------------------------------------------------
+// AGsEditorBaseTerrain의 포인트 사이가 연결됐다는 것을 표현하기 위한 평면
+//----------------------------------------------------------------
 UCLASS(Blueprintable, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class T1PROJECTEDITOR_API UGsEditorTerrainPlaneComp : public UProceduralMeshComponent
 {

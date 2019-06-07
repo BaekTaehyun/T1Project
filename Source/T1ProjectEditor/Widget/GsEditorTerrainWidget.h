@@ -11,6 +11,9 @@
  */
 class UTextBlock;
 
+//----------------------------------------------------------------
+// AGsEditorBaseTerrain의 태그 정보 표현
+//----------------------------------------------------------------
 UCLASS()
 class T1PROJECTEDITOR_API UGsEditorTerrainWidget : public UUserWidget
 {

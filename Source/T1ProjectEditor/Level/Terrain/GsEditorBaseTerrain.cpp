@@ -34,13 +34,12 @@ AGsEditorBaseTerrain::AGsEditorBaseTerrain()
 	_Spline->EditorSelectedSplineSegmentColor = FColor::Yellow;
 
 	_Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
-	_Widget->SetVisibility(false, false);
 
 	SetActorHiddenInGame(true);
 
 #if WITH_EDITOR
-	USelection::SelectObjectEvent.AddUObject(this, &AGsEditorBaseTerrain::OnSelectCallback);
-	USelection::SelectNoneEvent.AddUObject(this, &AGsEditorBaseTerrain::OnUnSelectCallback);
+	/*USelection::SelectObjectEvent.AddUObject(this, &AGsEditorBaseTerrain::OnSelectCallback);
+	USelection::SelectNoneEvent.AddUObject(this, &AGsEditorBaseTerrain::OnUnSelectCallback);*/
 #endif
 }
 
