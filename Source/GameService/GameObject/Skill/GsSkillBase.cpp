@@ -4,12 +4,17 @@
 #include "Data/GsSkillDataBase.h"
 #include "Container/GsSkillDataContainerBase.h"
 
+FGsSkillBase::~FGsSkillBase()
+{
+
+}
+
 void FGsSkillBase::Initialize(UGsGameObjectBase* owner)
 {
 	Owner = owner;
 }
 
-void FGsSkillBase::DeInitialize()
+void FGsSkillBase::Finalize()
 {
 	if (CurrentSkillData)
 	{

@@ -4,6 +4,7 @@
 #include "GameService.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "class/GsSpawn.h"
+#include "UI/GsUIManager.h"
 
 //-------------------------------------------------------------------------------
 // 게임초기화 순서
@@ -18,6 +19,9 @@
 UGsGameInstance::UGsGameInstance()
 {
 	GSLOG_S(Warning);
+
+	bIsDevMode = false;
+	bImmediateStart = false;
 }
 
 // 플레이모드(즉 실제게임)에서만 호출
@@ -29,11 +33,6 @@ void UGsGameInstance::Init()
 	_manage.InsertInstance(new FGsMessageManager());
 	_manage.InsertInstance(new FGsGameFlowManager());
 	_manage.InsertInstance(new FGsNetManager());
-	//_manage.InsertInstance(NewObject<UGsObjectSpawner>());
-
-	spawner = GetWorld()->SpawnActor<AGsGameObjectManager>();
-	spawner->Initialize();
-	
 
 	for(auto& mng : _manage.Get())
 	{
@@ -42,10 +41,17 @@ void UGsGameInstance::Init()
 
 	GetTimerManager().SetTimer(_manageTickHandle, this, &UGsGameInstance::Update, 0.5f, true, 0.0f);
 
+	if (nullptr == UIManager)
+	{
+		UIManager = NewObject<UGsUIManager>(this);
+		UIManager->Initialize();
+	}
 }
 
 void UGsGameInstance::Shutdown()
 {
+	UIManager = nullptr;
+
 	GetTimerManager().ClearTimer(_manageTickHandle);
 
 	for(auto& mng : _manage.Get())
@@ -62,7 +68,7 @@ void UGsGameInstance::Shutdown()
 
 void UGsGameInstance::Update()
 {
-	GSLOG_S(Warning);
+	//GSLOG_S(Warning);
 	for (auto& mng : _manage.Get())
 	{
 		if (mng.IsValid())
@@ -70,8 +76,6 @@ void UGsGameInstance::Update()
 			mng->Update();
 		}
 	}
-
-	spawner->Update();
 }
 
 

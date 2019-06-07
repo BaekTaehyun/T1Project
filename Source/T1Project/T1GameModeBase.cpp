@@ -6,6 +6,8 @@
 #include "T1Project.h"
 #include "ConstructorHelpers.h"
 
+#include "GameService/Camera/GsCameraModeManager.h"
+
 #define USE_DUMMY false
 
 AT1GameModeBase::AT1GameModeBase()

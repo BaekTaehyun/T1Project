@@ -4,6 +4,8 @@
 #include <cstdint>
 
 #include "AllocateHelper.h"
+#include "CoreMinimal.h"
+#include "../../Class/GsSingleton.h"
 
 
 class Buffer
@@ -18,16 +20,18 @@ public:
 	explicit Buffer(int32_t size);
 	~Buffer();
 
-	static void* operator new(size_t size)
+	/*static void* operator new(size_t size)
 	{
 		return SimpleAllocator::Alloc<Buffer>(size);
 	}
 	static void operator delete(void* ptr)
 	{
 		return SimpleAllocator::Free(ptr);
-	}
+	}*/
 
 	uint8_t* getBuffer() { return buffer_ + startPos_; }
+	const uint8_t* getBuffer() const { return buffer_ + startPos_; }
+
 	uint8_t* getEndBuffer() { return buffer_ + curPos_; }
 
 	int32_t getSize() const { return curPos_ - startPos_; }
@@ -44,3 +48,30 @@ public:
 	void clear();
 
 };
+
+
+class FBufferPool
+#ifdef __UNREAL__
+	: public TLockFreeClassAllocator<Buffer, 100>, TGsPoolSingle<FBufferPool>
+#endif
+{
+public:
+	Buffer* New(int32_t size)
+	{
+#ifdef __UNREAL__
+		return new (Allocate()) Buffer(size);
+#else
+		return new Buffer(size);
+#endif
+	}
+	void Delete(Buffer* in)
+	{
+#ifdef __UNREAL__
+		Free(in);
+#else
+		delete in;
+#endif
+	}
+};
+
+#define GetBufferPool() TGsPoolSingle<FBufferPool>::GetInstance()

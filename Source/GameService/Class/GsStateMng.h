@@ -11,6 +11,7 @@
 template<typename T1, class  TGsState, class GSFGameModeAllocator>
 class TGsStateMng : public GSTMap<T1, TGsState, GSFGameModeAllocator>
 {
+	typedef  GSTMap<T1, TGsState, GSFGameModeAllocator> Super;
 	TSharedPtr<TGsState>	_currentState = NULL;
 
 	DECLARE_EVENT(GSTStateMng, MainEvent)
@@ -46,7 +47,7 @@ public:
 			_currentState = NULL;
 		}
 		
-		Clear();
+		Super::Clear();
 	};
 
 	//------------------------------------------------------------------------------
@@ -59,7 +60,7 @@ public:
 	//------------------------------------------------------------------------------
 	void ChangeState(T1 inState)
 	{
-		auto instance = Find(inState);
+		auto instance = Super::Find(inState);
 
 		if (_currentState.IsValid())
 		{

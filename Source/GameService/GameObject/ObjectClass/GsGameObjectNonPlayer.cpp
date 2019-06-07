@@ -9,17 +9,14 @@
 #include "GameObject/State/GsStateNPC.h"
 
 EGsGameObjectType	UGsGameObjectNonPlayer::GetObjectType() const   { return EGsGameObjectType::NonPlayer; }
-AActor*				UGsGameObjectNonPlayer::GetActor() const        { return GetNpc(); }
-AGsNpcPawn*			UGsGameObjectNonPlayer::GetNpc() const			{ return Actor; }
+AActor*				UGsGameObjectNonPlayer::GetActor() const        { return GetNpcPawn(); }
+AGsNpcPawn*			UGsGameObjectNonPlayer::GetNpcPawn() const		{ return (Actor->IsValidLowLevel()) ? Actor : NULL; }
 
 void UGsGameObjectNonPlayer::Initialize()
 {
 	Super::Initialize();
 
-    SET_FLAG_TYPE(ObjectType, UGsGameObjectNonPlayer::GetObjectType());
-
-	Fsm = new FGsFSMManager();
-	Fsm->Initialize(this);
+    SET_FLAG_TYPE(ObjectType, UGsGameObjectNonPlayer::GetObjectType());	
 }
 
 void UGsGameObjectNonPlayer::Finalize()
@@ -31,7 +28,7 @@ void UGsGameObjectNonPlayer::OnHit(UGsGameObjectBase* Target)
 {
 	Super::OnHit(Target);
 
-	Fsm->ChangeState<FGsStateNpcBeaten>();
+	Fsm->ProcessEvent(EGsStateBase::Beaten);
 }
 
 void UGsGameObjectNonPlayer::ActorSpawned(AActor* Spawn)
@@ -46,7 +43,7 @@ void UGsGameObjectNonPlayer::ActorSpawned(AActor* Spawn)
         Movement = new FGsMovementNpc();
         Movement->Initialize(this);
 
-        //기본 상태 설정
-        Fsm->ChangeState<FGsStateNpcSpawn>();
+		Fsm = new FGsFSMManager();
+		Fsm->Initialize<FGsStateNpcSpawn>(this);
 	}
 }

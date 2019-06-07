@@ -10,13 +10,11 @@
  */
 class GAMESERVICE_API FGsSkillBase
 {
-protected:
-	typedef FGsSkillBase Super;
-
 public:
+	virtual ~FGsSkillBase();
 
 	virtual void Initialize(class UGsGameObjectBase* Owner);
-	virtual void DeInitialize();
+	virtual void Finalize();
     virtual void Update(float Delta);
 
 	virtual void LoadData(const TCHAR * Path);
@@ -50,7 +48,7 @@ struct FGsRunSKillInfo
 
 	UAnimMontage* GetAni()
 	{
-		return Data->ResAni;
+		return Data->ResAni.Get();
 	}
 
 	bool IsEnd()

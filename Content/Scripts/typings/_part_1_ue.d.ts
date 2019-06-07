@@ -911,7 +911,7 @@ declare class NullAudioCaptureProtocol extends MovieSceneAudioCaptureProtocolBas
 }
 
 declare class MasterAudioSubmixCaptureProtocol extends MovieSceneAudioCaptureProtocolBase { 
-	FileName: string;
+	Filename: string;
 	static Load(ResourceName: string): MasterAudioSubmixCaptureProtocol;
 	static Find(Outer: UObject, ResourceName: string): MasterAudioSubmixCaptureProtocol;
 	static GetDefaultObject(): MasterAudioSubmixCaptureProtocol;
@@ -1542,7 +1542,7 @@ declare class Exporter extends UObject {
 declare class AssetExportTask extends UObject { 
 	UObject: UObject;
 	Exporter: Exporter;
-	FileName: string;
+	Filename: string;
 	bSelected: boolean;
 	bReplaceIdentical: boolean;
 	bPrompt: boolean;
@@ -5246,7 +5246,7 @@ declare class AutomatedAssetImportData extends UObject {
 }
 
 declare class AssetImportTask extends UObject { 
-	FileName: string;
+	Filename: string;
 	DestinationPath: string;
 	DestinationName: string;
 	bReplaceExisting: boolean;
@@ -5280,7 +5280,7 @@ declare class Factory extends UObject {
 	static GetDefaultObject(): Factory;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): Factory;
 	ScriptFactoryCreateFile(InTask: AssetImportTask): boolean;
-	ScriptFactoryCanImport(FileName: string): boolean;
+	ScriptFactoryCanImport(Filename: string): boolean;
 	static C(Other: UObject | any): Factory;
 }
 
@@ -8521,7 +8521,7 @@ declare class ClothCollisionPrim_SphereConnection {
 }
 
 declare class ClothCollisionPrim_Convex { 
-	planes: Plane[];
+	Planes: Plane[];
 	BoneIndex: number;
 	clone() : ClothCollisionPrim_Convex;
 	static C(Other: UObject | any): ClothCollisionPrim_Convex;
@@ -11239,8 +11239,8 @@ declare class EditorLoadingAndSavingUtils extends UObject {
 	static NewMapFromTemplate(PathToTemplateLevel: string,bSaveExistingMap: boolean): World;
 	static NewBlankMap(bSaveExistingMap: boolean): World;
 	static LoadMapWithDialog(): World;
-	static LoadMap(FileName: string): World;
-	static ImportScene(FileName: string): void;
+	static LoadMap(Filename: string): World;
+	static ImportScene(Filename: string): void;
 	static GetDirtyMapPackages(OutDirtyPackages?: Package[]): {OutDirtyPackages: Package[]};
 	static GetDirtyContentPackages(OutDirtyPackages?: Package[]): {OutDirtyPackages: Package[]};
 	static ExportScene(bExportSelectedActorsOnly: boolean): void;
@@ -18295,10 +18295,10 @@ declare class KismetRenderingLibrary extends BlueprintFunctionLibrary {
 	static ReadRenderTargetRawPixel(WorldContextObject: UObject,TextureRenderTarget: TextureRenderTarget2D,X: number,Y: number): LinearColor;
 	static ReadRenderTargetPixel(WorldContextObject: UObject,TextureRenderTarget: TextureRenderTarget2D,X: number,Y: number): Color;
 	static MakeSkinWeightInfo(Bone0: number,Weight0: number,Bone1: number,Weight1: number,Bone2: number,Weight2: number,Bone3: number,Weight3: number): SkelMeshSkinWeightInfo;
-	static ImportFileAsTexture2D(WorldContextObject: UObject,FileName: string): Texture2D;
+	static ImportFileAsTexture2D(WorldContextObject: UObject,Filename: string): Texture2D;
 	static ImportBufferAsTexture2D(WorldContextObject: UObject,Buffer: number[]): Texture2D;
-	static ExportTexture2D(WorldContextObject: UObject,Texture: Texture2D,FilePath: string,FileName: string): void;
-	static ExportRenderTarget(WorldContextObject: UObject,TextureRenderTarget: TextureRenderTarget2D,FilePath: string,FileName: string): void;
+	static ExportTexture2D(WorldContextObject: UObject,Texture: Texture2D,FilePath: string,Filename: string): void;
+	static ExportRenderTarget(WorldContextObject: UObject,TextureRenderTarget: TextureRenderTarget2D,FilePath: string,Filename: string): void;
 	static EndDrawCanvasToRenderTarget(WorldContextObject: UObject,Context: DrawToRenderTargetContext): void;
 	static DrawMaterialToRenderTarget(WorldContextObject: UObject,TextureRenderTarget: TextureRenderTarget2D,Material: MaterialInterface): void;
 	static CreateRenderTarget2D(WorldContextObject: UObject,Width: number,Height: number,Format: ETextureRenderTargetFormat): TextureRenderTarget2D;
@@ -18597,8 +18597,8 @@ declare class KismetSystemLibrary extends BlueprintFunctionLibrary {
 	static DoesImplementInterface(TestObject: UObject,Interface: UnrealEngineClass): boolean;
 	static Delay(WorldContextObject: UObject,Duration: number,LatentInfo: LatentActionInfo): void;
 	static CreateCopyForUndoBuffer(ObjectToModify: UObject): void;
-	static ConvertToRelativePath(FileName: string): string;
-	static ConvertToAbsolutePath(FileName: string): string;
+	static ConvertToRelativePath(Filename: string): string;
+	static ConvertToAbsolutePath(Filename: string): string;
 	static Conv_SoftObjPathToSoftObjRef(SoftObjectPath: SoftObjectPath): UObject;
 	static Conv_SoftObjectReferenceToString(SoftObjectReference: UObject): string;
 	static Conv_SoftObjectReferenceToObject(softobject: UObject): UObject;
@@ -19703,7 +19703,7 @@ declare class MaterialExpressionMakeMaterialAttributes extends MaterialExpressio
 	WorldDisplacement: ExpressionInput;
 	TessellationMultiplier: ExpressionInput;
 	SubsurfaceColor: ExpressionInput;
-	Clearcoat: ExpressionInput;
+	ClearCoat: ExpressionInput;
 	ClearCoatRoughness: ExpressionInput;
 	AmbientOcclusion: ExpressionInput;
 	Refraction: ExpressionInput;

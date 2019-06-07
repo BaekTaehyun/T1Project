@@ -13,6 +13,8 @@
 class GAMESERVICE_API FGsMovementBase
 {
 public:
+	virtual ~FGsMovementBase();
+
     virtual void Initialize(UGsGameObjectBase* Owner);
 	virtual void Finalize();
     virtual void Update(float Delta);

@@ -19,10 +19,28 @@ struct GAMESERVICE_API FGsPartsDataBase
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	EGsPartsType Type;	//PartsType
 
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	USkeletalMesh* Mesh;
+	UPROPERTY(EditAnywhere, meta = (AllowedClasses="SkeletalMesh"))
+	FSoftObjectPath Path;
 };
 
+//게임에서 사용될 데이터 구조체
+struct GAMESERVICE_API FGsCPartsData
+{
+	EGsPartsType Type;
+	FSoftObjectPath Path;
+	USkeletalMesh* Mesh;
+
+	FGsCPartsData(EGsPartsType type, FSoftObjectPath path)
+	{
+		Type = type;
+		Path = path;
+	}
+
+	void SetMesh(USkeletalMesh* mesh)
+	{
+		Mesh = mesh;
+	}
+};
 
 //Mesh Merge 정보 구조체
 USTRUCT(BlueprintType)

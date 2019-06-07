@@ -9,27 +9,40 @@
 #include "GsGVSSelector.h"
 #include "JsonObjectConverter.h"
 
+
 GsDivergenceVersion::GsDivergenceVersion()
 {
 	_fileDownloadManager = NewObject<UFileDownloadManager>();
 
 	// 플랫폼 생성
-	_platform = MakeShareable(new GsGVSPlatform());
+	_platform = new GsGVSPlatform();
 	// 선택 생성
-	_selector = MakeShareable(new GsGVSSelector());
+	_selector = new GsGVSSelector();
 
 	UE_LOG(LogDivergenceVersion, Warning,
-		TEXT("DivergenceVersion construct 123"));
+		TEXT("DivergenceVersion construct 724"));
 }
 
 GsDivergenceVersion::~GsDivergenceVersion()
 {
+	// 포인터 해제
+	delete _platform;
+	_platform = nullptr;
+
+	delete _selector;
+	_selector = nullptr;
+
+	// Uobject 해제
+	_fileDownloadManager = NULL;
+
+	UE_LOG(LogDivergenceVersion, Warning,
+		TEXT("~GsDivergenceVersion()"));
 }
 // gvs 로드
 void GsDivergenceVersion::LoadGVS()
 {
 	FString path =
-		FPaths::GameContentDir() + FString("/Game/GVS");
+		FPaths::ProjectContentDir() + FString("/Game/GVS");
 
 	if (_fileDownloadManager != nullptr)
 	{
@@ -80,10 +93,10 @@ void GsDivergenceVersion::ParseGVS(const FString& In_filePath)
 		}
 
 		// 유효하지 않는 멤버 있다
-		if (_platform.IsValid() == false)
+		if (_platform == nullptr)
 		{
 			UE_LOG(LogDivergenceVersion, Error,
-				TEXT("_platform.IsValid() == false"));
+				TEXT("_platform == nullptr"));
 			return;
 		}
 
@@ -99,7 +112,7 @@ void GsDivergenceVersion::ParseGVS(const FString& In_filePath)
 		}			
 		
 		// 유효하지 않음
-		if (_selector.IsValid() == false)
+		if (_selector == nullptr)
 		{
 			return;
 		}
@@ -107,7 +120,7 @@ void GsDivergenceVersion::ParseGVS(const FString& In_filePath)
 		_selector->LoadClientVersion();
 
 		// select 채우기
-		_selector->DoSelect(_platform.Get());
+		_selector->DoSelect(_platform);
 
 		// 선택되지 않았으면
 		if (false == _selector->IsSelected())

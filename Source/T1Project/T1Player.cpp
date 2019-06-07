@@ -21,13 +21,14 @@
 #include "UserWidget.h"
 #include "MyUserWidget.h"
 
+#include "../GameService/Camera/GsCameraModeManager.h"
 
 // Sets default values
 AT1Player::AT1Player()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	
 	// 케릭터에게 카메라 세팅합니다.
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SPRINGARM"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("CAMERA"));
@@ -123,8 +124,7 @@ AT1Player::AT1Player()
 	AIControllerClass = AT1AIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
-	// Test
-	CreateUI();
+	
 }
 
 // Called when the game starts or when spawned
@@ -132,8 +132,8 @@ void AT1Player::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Test
-	DisplayObj();
+	// UI Test
+	CreateUI();
 
 	//bak1210 소켓에 기본클래스 할당하는 코드
 	/*FName WeaponSocket(TEXT("hand_rSocket"));
@@ -146,35 +146,29 @@ void AT1Player::BeginPlay()
 
 void AT1Player::CreateUI()
 {
-	static ConstructorHelpers::FClassFinder<UUserWidget> _myUserWidget(TEXT("/Game/Blueprint/Test_BluePrint.Test_BluePrint_C"));
-	if (_myUserWidget.Succeeded())
-	{
-		m_UserWidget = _myUserWidget.Class;
-		UE_LOG(LogTemp, Log, TEXT("_myUserWidget.Succeeded()  true"));
+	UBlueprintGeneratedClass* _isLoaded = LoadObject<UBlueprintGeneratedClass>(nullptr, TEXT("/Game/Blueprint/Test_BluePrint.Test_BluePrint_C"));
+	if (nullptr == _isLoaded)
+	{	
+		UE_LOG(LogTemp, Log, TEXT("_isLoaded is nullptr !!"));
 	}
-}
-
-void AT1Player::DisplayObj()
-{
-	if (nullptr == GetWorld())
+	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("GetWorld() is null"));
-	}
-	if (nullptr != GetWorld())
-	{
-		UUserWidget* _createWidget = CreateWidget(GetWorld()->GetFirstPlayerController(), m_UserWidget);
-		UMyUserWidget* _cast = Cast<UMyUserWidget>(_createWidget);
-		if (nullptr != _cast)
+		UE_LOG(LogTemp, Log, TEXT("_isLoaded Success !!"));
+		if (nullptr != GetWorld())
 		{
-			_cast->TestUI();
-		}
-		else
-		{
-			UE_LOG(LogTemp, Log, TEXT("_cast is null"));
+			GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+			UUserWidget* _createWidget = CreateWidget(GetWorld()->GetFirstPlayerController(), _isLoaded);
+			if (nullptr == _createWidget)
+			{
+				UE_LOG(LogTemp, Log, TEXT("_createWidget is nullptr !!"));
+			}
+			else
+			{
+				_createWidget->AddToViewport();
+			}
 		}
 	}
 }
-
 
 bool AT1Player::CanSetWeapon()
 {
@@ -232,6 +226,16 @@ void AT1Player::SetupPlayerInputComponent(UInputComponent* inputComponent)
 
 	InputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &AT1Player::Jump);
 	InputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AT1Player::Attack);
+
+	InputComponent->BindAction(TEXT("ZoomIn"),
+		EInputEvent::IE_Pressed,
+		this,
+		&AT1Player::ZoomIn);
+
+	InputComponent->BindAction(TEXT("ZoomOut"),
+		EInputEvent::IE_Pressed,
+		this,
+		&AT1Player::ZoomOut);
 }
 
 
@@ -298,6 +302,12 @@ void AT1Player::PossessedBy(AController* NewController)
 
 void AT1Player::UpDown(float newAxisValue)
 {
+#ifdef CAM_MODE
+	if (FunctionUpDown != nullptr)
+	{
+		FunctionUpDown(newAxisValue);
+	}
+#else
 	//바인딩된후 실제 이동처리
 	if (CurrentCameraControlMode == ECameraControlMode::FOLLOW)
 	{
@@ -307,11 +317,17 @@ void AT1Player::UpDown(float newAxisValue)
 	{
 		DirectionToMove.X = newAxisValue;
 	}
-	
+#endif
 }
 
 void AT1Player::LeftRight(float newAxisValue)
 {
+#ifdef CAM_MODE
+	if (FunctionLeftRight != nullptr)
+	{
+		FunctionLeftRight(newAxisValue);
+	}
+#else
 	if (CurrentCameraControlMode == ECameraControlMode::FOLLOW)
 	{
 		AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::Y), newAxisValue);
@@ -320,31 +336,64 @@ void AT1Player::LeftRight(float newAxisValue)
 	{
 		DirectionToMove.Y = newAxisValue;
 	}
-	
+#endif
 }
 
 void AT1Player::LookUp(float newAxisValue)
 {
+#ifdef CAM_MODE
+	if (FunctionLookUp != nullptr)
+	{
+		FunctionLookUp(newAxisValue);
+	}
+#else
 	if (CurrentCameraControlMode == ECameraControlMode::FOLLOW)
 	{
 		AddControllerPitchInput(newAxisValue);
 	}
+#endif
 	
 }
 
 void AT1Player::Turn(float newAxisValue)
 {
+#ifdef CAM_MODE
+	if (FunctionTurn != nullptr)
+	{
+		FunctionTurn(newAxisValue);
+	}
+#else
 	if (CurrentCameraControlMode == ECameraControlMode::FOLLOW)
 	{
 		AddControllerYawInput(newAxisValue);
 	}
+#endif
 }
 
 void AT1Player::CameraViewChange()
 {
+
 	bool bFollow = CurrentCameraControlMode == ECameraControlMode::FOLLOW;
 	GetController()->SetControlRotation(bFollow ? GetActorRotation() : SpringArm->RelativeRotation);
 	SetCameraControlMode(bFollow ? ECameraControlMode::DIABLO : ECameraControlMode::FOLLOW);
+
+
+}
+
+void AT1Player::ZoomIn()
+{
+	if (FunctionZoomIn != nullptr)
+	{
+		FunctionZoomIn();
+	}
+}
+
+void AT1Player::ZoomOut()
+{
+	if (FunctionZoomOut != nullptr)
+	{
+		FunctionZoomOut();
+	}
 }
 
 void AT1Player::SetCameraControlMode(ECameraControlMode inMode)

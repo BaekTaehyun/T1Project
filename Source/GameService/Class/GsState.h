@@ -18,7 +18,9 @@ public:
 	{
 		return _type;
 	}
-	
+	virtual void Init() {};
+	virtual void Close() {};
+
 	virtual void Enter() = 0;
 	virtual void Exit() = 0;
 	virtual void Update() = 0;

@@ -1,5 +1,7 @@
 #include "GsStageLobby_ServerSelect.h"
 #include "GameService.h"
+#include "Message/GsMessageManager.h"
+
 
 FGsStageLobby_ServerSelect::FGsStageLobby_ServerSelect() : FGsStageLobbyBase(FGsStageMode::Lobby::SERVER_SELECT)
 {
@@ -14,6 +16,8 @@ void FGsStageLobby_ServerSelect::Enter()
 {
 	FGsStageLobbyBase::Enter();
 	GSLOG(Warning, TEXT("FGsStageLobby_ServerSelect : Enter"));
+
+	GMessage()->GetStage().SendMessage(MessageLobby::Stage::ENTER_SERVERSELECT_STAGE);
 }
 
 void FGsStageLobby_ServerSelect::Exit()

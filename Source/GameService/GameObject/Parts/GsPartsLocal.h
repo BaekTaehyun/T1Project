@@ -18,15 +18,17 @@ class GAMESERVICE_API FGsPartsLocal : public FGsPartsBase
 public:
 	virtual void Initialize(UGsGameObjectBase* Owner) override;
 
-	virtual void Attach(EGsPartsType Type, ...) override;
-	virtual void Detach(EGsPartsType Type, ...) override;
-	virtual void AttachAll() override;
+protected:
+	virtual void Attached() override;
+	virtual void Detached() override;
 
 private:
 	USkeletalMesh* MergeParts() const;
 
-	void ToMergeParams(const TArray<FSkelMeshMergeSectionMapping_BP>& InSectionMappings, TArray<FSkelMeshMergeSectionMapping>& OutSectionMappings);
-	void ToMergeParams(const TArray<FSkelMeshMergeUVTransformMapping>& InUVTransformsPerMesh, TArray<FSkelMeshMergeUVTransforms>& OutUVTransformsPerMesh);
+	void ToMergeParams(const TArray<FSkelMeshMergeSectionMapping_BP>& InSectionMappings,
+		TArray<FSkelMeshMergeSectionMapping>& OutSectionMappings);
+	void ToMergeParams(const TArray<FSkelMeshMergeUVTransformMapping>& InUVTransformsPerMesh,
+		TArray<FSkelMeshMergeUVTransforms>& OutUVTransformsPerMesh);
 
 	USkeletalMesh* MergeToParams(const FSkeletalMeshMergeParams& Params);
 

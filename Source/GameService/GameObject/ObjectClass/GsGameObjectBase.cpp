@@ -12,7 +12,13 @@ UGsGameObjectBase::~UGsGameObjectBase()
 EGsGameObjectType	UGsGameObjectBase::GetObjectType() const      { return EGsGameObjectType::Base; }
 uint32				UGsGameObjectBase::GetObjectTypeMask() const  { return ObjectType; }
 AActor*				UGsGameObjectBase::GetActor() const           { return NULL; }
+UWorld*				UGsGameObjectBase::GetWorld() const			  { return GetActor()->GetWorld(); }
 //
+
+bool UGsGameObjectBase::IsObjectType(EGsGameObjectType Type)
+{
+	return CHECK_FLAG_TYPE(GetObjectTypeMask(), Type);
+}
 
 FVector UGsGameObjectBase::GetLocation() const
 {
@@ -32,6 +38,8 @@ FVector UGsGameObjectBase::GetScale() const
 void UGsGameObjectBase::Initialize()
 {
     SET_FLAG_TYPE(ObjectType, UGsGameObjectBase::GetObjectType());
+
+	RegistEvent();
 }
 
 void UGsGameObjectBase::Finalize()
@@ -57,4 +65,9 @@ void UGsGameObjectBase::ActorSpawned(AActor* Spawn)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s Actor Spawn Complete"), *Spawn->GetName());
 	}
+}
+
+void UGsGameObjectBase::RegistEvent()
+{
+
 }

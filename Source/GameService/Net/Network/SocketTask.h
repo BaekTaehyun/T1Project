@@ -9,6 +9,10 @@
 #include "SocketHelper.h"
 #include "Task.h"
 #include "Buffer.h"
+#include "IOOperator.h"
+
+#include "./Crypto/KeyExchange.h"
+#include "./Crypto/ChaCha20.h"
 
 
 class Session;
@@ -49,6 +53,49 @@ private:
 
 };
 
+class KeyExchangeSocketTask : public Task
+{
+	std::shared_ptr<Session> session_;
+	FSocket* socket_ = nullptr;
+
+	KeyExchange* keyExchange_ = nullptr;
+	OnePacketSender sender_;
+
+public:
+
+	KeyExchangeSocketTask(std::shared_ptr<Session> session, FSocket* socket);
+
+private:
+
+	bool onExecute(TaskExecuter* executer) override;
+	void onEnd(TaskExecuter* executer) override;
+
+};
+
+class CryptoMakerSocketTask : public Task
+{
+	std::shared_ptr<Session> session_;
+	FSocket* socket_ = nullptr;
+
+	KeyExchange* keyExchange_ = nullptr;
+	OnePacketReceiver receiver_;
+
+	ChaCha20Encrypter* encrypter_ = nullptr;
+	ChaCha20Decrypter* decrypter_ = nullptr;
+
+public:
+
+	CryptoMakerSocketTask(std::shared_ptr<Session> session, FSocket* socket, KeyExchange* keyExchange);
+
+private:
+
+	bool onExecute(TaskExecuter* executer) override;
+	void onEnd(TaskExecuter* executer) override;
+
+	bool makeCrypto(Packet* packet);
+
+};
+
 class ReceiveSocketTask : public Task
 {
 	std::shared_ptr<Session> session_;
@@ -56,9 +103,12 @@ class ReceiveSocketTask : public Task
 
 	Buffer buffer_;
 
+	ChaCha20Decrypter* decrypter_ = nullptr;
+
 public:
 
-	ReceiveSocketTask(std::shared_ptr<Session> session, FSocket* socket, int32_t bufferSize);
+	ReceiveSocketTask(std::shared_ptr<Session> session, FSocket* socket, int32_t bufferSize, ChaCha20Decrypter* decrypter);
+	~ReceiveSocketTask();
 
 private:
 
@@ -84,9 +134,11 @@ class SendSocketTask : public Task
 	std::deque<Buffer*> pending_;
 	Buffer buffer_;
 
+	ChaCha20Encrypter* encrypter_ = nullptr;
+
 public:
 
-	SendSocketTask(std::shared_ptr<Session> session, FSocket* socket, int32_t bufferSize);
+	SendSocketTask(std::shared_ptr<Session> session, FSocket* socket, int32_t bufferSize, ChaCha20Encrypter* encrypter);
 	~SendSocketTask();
 
 	bool send(uint16_t packetId, const void* data, int32_t size);
@@ -100,7 +152,7 @@ private:
 	bool onExecute(TaskExecuter* executer) override;
 	void onEnd(TaskExecuter* executer) override;
 
-	void onReadyToSend(Buffer* buffer);
+	bool onReadyToSend(Buffer* buffer);
 	bool onSend();
 
 };

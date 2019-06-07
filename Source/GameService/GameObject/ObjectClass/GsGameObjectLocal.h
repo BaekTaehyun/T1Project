@@ -23,17 +23,26 @@ public:
     virtual EGsGameObjectType GetObjectType() const override;
 	virtual AActor* GetActor() const override;
     UFUNCTION(BlueprintCallable, Category = "GameObject")
-	AGsLocalCharacter* GetLocal() const;
+	AGsLocalCharacter* GetLocalCharacter() const;
 
 	virtual class FGsFSMManager* GetBaseFSM() const override;
 	virtual class FGsFSMManager* GetUpperFSM() const override;
 	virtual class FGsSkillBase* GetSkill()  const override;
 	virtual class FGsPartsBase* GetParts() const override;
+	class FGsGameObjectEventBase* GetEvent() const;
 
 public:
 	virtual void ActorSpawned(AActor* Spawn) override;
 
+protected:
+	virtual void RegistEvent() override;
+
 private:
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = GameObject, Meta = (AllowPrivateAccess = true))
  	AGsLocalCharacter* Actor;
+
+	UPROPERTY(Transient, VisibleInstanceOnly, Category = GameObject, Meta = (AllowPrivateAccess = true))
+	class UGsInputBindingLocalPlayer* InputBinder;
+
+	FGsGameObjectEventBase* Event;
 };

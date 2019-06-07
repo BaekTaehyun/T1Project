@@ -7,7 +7,11 @@
 #include "GameObject/State/GsFSMManager.h"
 #include "GameObject/State/GsStateLocal.h"
 #include "GameObject/Movement/GsMovementLocal.h"
+#include "GameObject/GsSpawnComponent.h"
+#include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
+#include "Message/GsMessageManager.h"
 
+#include "../../Camera/GsCameraModeManager.h"
 //[Todo]타겟 클래스 설정 방식에 좀더 좋은 구조를 생각해볼것
 void UGsInputBindingLocalPlayer::Initialize()
 {
@@ -34,6 +38,7 @@ void UGsInputBindingLocalPlayer::SetBinding(UInputComponent* input)
 	input->BindAction<FOnAttack1>("LocalAttack1", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttack1, 1);
 	input->BindAction<FOnAttack1>("LocalAttack2", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttack1, 2);
 	input->BindAction<FOnAttack1>("LocalAttack3", IE_Released, this, &UGsInputBindingLocalPlayer::OnAttack1, 3);
+	input->BindAction("LocalAction", IE_Released, this, &UGsInputBindingLocalPlayer::OnAction);
 
 	//Movement
 	input->BindAction("LocalMoveForward", IE_Pressed, this, &UGsInputBindingLocalPlayer::OnMoveForward);
@@ -45,6 +50,26 @@ void UGsInputBindingLocalPlayer::SetBinding(UInputComponent* input)
 	input->BindAxis("LocalMoveRotate", this, &UGsInputBindingLocalPlayer::OnMoveRotateYaw);
 	input->BindAxis("LocalTurn", this, &UGsInputBindingLocalPlayer::OnMoveRotateYaw);
 	input->BindAxis("LocalLookUp", this, &UGsInputBindingLocalPlayer::OnMoveRotatePitch);
+
+
+	input->BindAction(TEXT("ZoomIn"),
+		EInputEvent::IE_Pressed,
+		this,
+		&UGsInputBindingLocalPlayer::OnZoomIn);
+
+	input->BindAction(TEXT("ZoomOut"),
+		EInputEvent::IE_Pressed,
+		this,
+		&UGsInputBindingLocalPlayer::OnZoomOut);
+
+	input->BindAction(TEXT("ViewChange"), EInputEvent::IE_Pressed,
+		this, &UGsInputBindingLocalPlayer::OnViewChange);
+
+	
+	input->BindAction(TEXT("TouchOff"), EInputEvent::IE_Released, this, 
+		&UGsInputBindingLocalPlayer::OnTouchRelease);
+	input->BindAction(TEXT("TouchOn"), EInputEvent::IE_Pressed, this,
+		&UGsInputBindingLocalPlayer::OnTouchPress);
 }
 
 void UGsInputBindingLocalPlayer::OnAttachParts(EGsPartsType Type)
@@ -64,62 +89,122 @@ void UGsInputBindingLocalPlayer::OnAttack1(int32 slot)
 	}
 }
 
+//테스트 탈것 처리
+//근처에 탈것이 있는지 찾는다
+#include "GameObject/Event/GsGameObjectEventLocal.h"
+void UGsInputBindingLocalPlayer::OnAction()
+{
+	if (auto findVehicle = GSpawner()->FindObject(EGsGameObjectType::Vehicle))
+	{
+		//탑승 정보 Send
+		GSCHECK(GMessage());
+
+		//임시 데이터 생성
+		auto sendParam = Target->GetEvent()->GetCastParam< GsGameObjectEventParamVehicleRide>(MessageGameObject::Action::VehicleRide);		
+		sendParam->Target = Cast<UGsGameObjectWheelVehicle>(findVehicle);
+		sendParam->Passenger = Target;
+		GMessage()->GetGo().SendMessage(MessageGameObject::Action::VehicleRide, *sendParam);
+	}
+}
+
 void UGsInputBindingLocalPlayer::OnMoveStop()
 {
-    if (auto movement = Target->GetMovement())
-    {
-        movement->Stop();
-    }
+	if (FunctionMoveStop != nullptr)
+	{
+		FunctionMoveStop();
+	}
 }
 
 void UGsInputBindingLocalPlayer::OnMoveForward()
 {
-    if (auto movement = Target->GetMovement())
-    {
-        FVector dir = FRotationMatrix(Target->GetLocal()->Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
-        movement->Move(dir, EGsGameObjectMoveDirType::Forward, 10.0f);
-    }
+	GSLOG(Warning, TEXT("OnMoveForward"));
+	if (FunctionMoveForward != nullptr)
+	{
+		FunctionMoveForward();
+	}
 }
 
 void UGsInputBindingLocalPlayer::OnMoveBackward()
 {
-    if (auto movement = Target->GetMovement())
-    {
-        FVector dir = FRotationMatrix(Target->GetLocal()->Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
-        movement->Move(dir, EGsGameObjectMoveDirType::Backward, -5.f);
-    }
+	if (FunctionMoveBackward != nullptr)
+	{
+		FunctionMoveBackward();
+	}
 }
 
 void UGsInputBindingLocalPlayer::OnMoveLeft()
 {
-    if (auto movement = Target->GetMovement())
-    {
-        FVector dir = FRotationMatrix(Target->GetLocal()->Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
-        movement->Move(dir, EGsGameObjectMoveDirType::SideStep, -5.f);
-    }
+	if (FunctionMoveLeft != nullptr)
+	{
+		FunctionMoveLeft();
+	}
 }
 
 void UGsInputBindingLocalPlayer::OnMoveRight()
 {
-    if (auto movement = Target->GetMovement())
-    {
-        FVector dir = FRotationMatrix(Target->GetLocal()->Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
-        movement->Move(dir, EGsGameObjectMoveDirType::SideStep, 5.f);
-    }
+	if (FunctionMoveRight != nullptr)
+	{
+		FunctionMoveRight();
+	}
 }
 
 void UGsInputBindingLocalPlayer::OnMoveRotate(float Value)
 {
-	FVector dir = FRotationMatrix(Target->GetLocal()->GetControlRotation()).GetScaledAxis(EAxis::Y);
-	Target->GetLocal()->AddMovementInput(dir, Value);
+	FVector dir = FRotationMatrix(Target->GetLocalCharacter()->GetControlRotation()).GetScaledAxis(EAxis::Y);
+	Target->GetLocalCharacter()->AddMovementInput(dir, Value);
 }
 
 void UGsInputBindingLocalPlayer::OnMoveRotateYaw(float Value)
 {
-	Target->GetLocal()->AddControllerYawInput(Value);
+	Target->GetLocalCharacter()->AddControllerYawInput(Value);
 }
 
 void UGsInputBindingLocalPlayer::OnMoveRotatePitch(float Value)
 {
-	Target->GetLocal()->AddControllerPitchInput(Value);
+	Target->GetLocalCharacter()->AddControllerPitchInput(Value);
+}
+
+// 터치 시작(pc는 좌클릭)
+void UGsInputBindingLocalPlayer::OnTouchPress()
+{
+	if (FunctionTouchPress != nullptr)
+	{
+		FunctionTouchPress();
+	}
+
+	GSLOG(Error, TEXT("OnTouchPress"));
+}
+// 터치 끝(pc는 좌클릭)
+void UGsInputBindingLocalPlayer::OnTouchRelease()
+{
+	if (FunctionTouchRelease != nullptr)
+	{
+		FunctionTouchRelease();
+	}
+
+	GSLOG(Error, TEXT("OnTouchRelease"));
+}
+// 줌인
+void UGsInputBindingLocalPlayer::OnZoomIn()
+{
+	if (FunctionZoomIn != nullptr)
+	{
+		FunctionZoomIn();
+	}
+}
+// 줌아웃
+void UGsInputBindingLocalPlayer::OnZoomOut()
+{
+	if (FunctionZoomOut != nullptr)
+	{
+		FunctionZoomOut();
+	}
+}
+// 카메로 모드 변경
+void UGsInputBindingLocalPlayer::OnViewChange()
+{
+	if (GCamera() != nullptr)
+	{
+		GCamera()->NextStep();
+	}
 }

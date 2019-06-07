@@ -2,188 +2,409 @@
 
 #include "GsStateLocal.h"
 #include "GsFSMManager.h"
+#include "Kismet/GameplayStatics.h"
 #include "GameObject/Skill/GsSKillLocal.h"
 #include "GameObject/Movement/GsMovementBase.h"
-#include "GameObject/Component/Animation/GsAnimInstanceState.h"
+#include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
+#include "GameObject/ActorExtend/GsWheelVehicle.h"
 
-
-/// FStateSpawn ///
-int FGsStateSpawn::GetStateID()
+template <class tstate, typename tStateType>
+void FGsStateSingleLocal<tstate, tStateType>::Enter(UGsGameObjectBase* Owner)
 {
-	return (int)EGsStateBase::Spawn;
+	auto my = Cast<UGsGameObjectLocal>(Owner);
+	if (auto anim = my->GetLocalCharacter()->GetAnim())
+	{
+		anim->ChangeState(GetStateID(), 0, GetAniRandomCount());
+	}
 }
 
-FString FGsStateSpawn::Name()
+/// FStateSpawn ///
+uint8 FGsStateLocalSpawn::GetStateID()
+{
+	return static_cast<uint8>(EGsStateBase::Spawn);
+}
+
+FString FGsStateLocalSpawn::Name()
 {
 	return TEXT("StateSpawn");
 }
 
-int FGsStateSpawn::GetAniRandomCount()
+int FGsStateLocalSpawn::GetAniRandomCount()
 {
 	return 2;
 }
 
-void FGsStateSpawn::OnEnter(UGsGameObjectLocal* Owner)
+bool FGsStateLocalSpawn::OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID)
 {
-	Super::OnEnter(Owner);
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
 
-	Owner->GetBaseFSM()->ChangeDelayState<FGsStateIdle>(1.5f);
+	switch (StateID)
+	{
+	case EGsStateBase::Idle:
+		ObjectBaseStateChange(FGsStateLocalIdle);
+		break;
+	default:
+		return false;
+	}
+
+	return true;
+}
+
+void FGsStateLocalSpawn::Enter(UGsGameObjectBase* Owner)
+{
+	Super::Enter(Owner);
+
+	//임시 처리
+	auto my = Cast<UGsGameObjectLocal>(Owner);
+	ChangeDelayState<FGsStateLocalIdle>(my->GetBaseFSM(), 1.5f);
 }
 
 /// FStateIdle ///
-int FGsStateIdle::GetStateID()
+uint8 FGsStateLocalIdle::GetStateID()
 {
-	return (int)EGsStateBase::Idle;
+	return static_cast<uint8>(EGsStateBase::Idle);
 }
 
-FString FGsStateIdle::Name()
+FString FGsStateLocalIdle::Name()
 {
 	return TEXT("StateIdle");
 }
 
-void FGsStateIdle::OnEnter(UGsGameObjectLocal* Owner)
+bool FGsStateLocalIdle::OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID)
 {
-	Super::OnEnter(Owner);
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	switch (StateID)
+	{
+	case EGsStateBase::ForwardWalk:
+		ObjectBaseStateChange(FGsStateLocalForwardWalk);
+		break;
+	case EGsStateBase::BackwardWalk:
+		ObjectBaseStateChange(FGsStateLocalBackwardWalk);
+		break;
+	case EGsStateBase::SideWalk:
+		ObjectBaseStateChange(FGsStateLocalSideWalk);
+		break;
+	case EGsStateBase::Run:
+		ObjectBaseStateChange(FGsStateLocalRun);
+		break;
+	case EGsStateBase::Ride:
+		ObjectBaseStateChange(FGsStateLocalRide);
+		break;
+	default:
+		return false;
+	}
+
+	return true;
 }
 
 /// FStateForwardWalk ///
-int FGsStateForwardWalk::GetStateID()
+uint8 FGsStateLocalForwardWalk::GetStateID()
 {
-	return (int)EGsStateBase::ForwardWalk;
+	return static_cast<uint8>(EGsStateBase::ForwardWalk);
 }
 
-FString FGsStateForwardWalk::Name()
+FString FGsStateLocalForwardWalk::Name()
 {
 	return TEXT("StateForwardWalk");
 }
 
-void FGsStateForwardWalk::OnEnter(UGsGameObjectLocal* Owner)
+bool FGsStateLocalForwardWalk::OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID)
 {
-	Super::OnEnter(Owner);
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	switch (StateID)
+	{
+	case EGsStateBase::Idle:
+		ObjectBaseStateChange(FGsStateLocalIdle);
+		break;
+	case EGsStateBase::BackwardWalk:
+		ObjectBaseStateChange(FGsStateLocalBackwardWalk);
+		break;
+	case EGsStateBase::SideWalk:
+		ObjectBaseStateChange(FGsStateLocalSideWalk);
+		break;
+	case EGsStateBase::Run:
+		ObjectBaseStateChange(FGsStateLocalRun);
+		break;
+	default:
+		return false;
+	}
+
+	return true;
 }
 
-void FGsStateForwardWalk::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
-{
-}
 
 /// FStateBackwardWalk ///
-int FGsStateBackwardWalk::GetStateID()
+uint8 FGsStateLocalBackwardWalk::GetStateID()
 {
-	return (int)EGsStateBase::BackwardWalk;
+	return static_cast<uint8>(EGsStateBase::BackwardWalk);
 }
 
-FString FGsStateBackwardWalk::Name()
+FString FGsStateLocalBackwardWalk::Name()
 {
 	return TEXT("StateBackwardWalk");
 }
 
-void FGsStateBackwardWalk::OnEnter(UGsGameObjectLocal* Owner)
+bool FGsStateLocalBackwardWalk::OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID)
 {
-	Super::OnEnter(Owner);
-}
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
 
-void FGsStateBackwardWalk::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
-{
+	switch (StateID)
+	{
+	case EGsStateBase::Idle:
+		ObjectBaseStateChange(FGsStateLocalIdle);
+		break;
+	case EGsStateBase::ForwardWalk:
+		ObjectBaseStateChange(FGsStateLocalForwardWalk);
+		break;
+	case EGsStateBase::SideWalk:
+		ObjectBaseStateChange(FGsStateLocalSideWalk);
+		break;
+	case EGsStateBase::Run:
+		ObjectBaseStateChange(FGsStateLocalRun);
+		break;
+	default:
+		return false;
+	}
+
+	return true;
 }
 
 /// FStateSideWalk ///
-int FGsStateSideWalk::GetStateID()
+uint8 FGsStateLocalSideWalk::GetStateID()
 {
-	return (int)EGsStateBase::SideWalk;
+	return static_cast<uint8>(EGsStateBase::SideWalk);
 }
 
-FString FGsStateSideWalk::Name()
+FString FGsStateLocalSideWalk::Name()
 {
 	return TEXT("StateSideWalk");
 }
 
-void FGsStateSideWalk::OnEnter(UGsGameObjectLocal* Owner)
+bool FGsStateLocalSideWalk::OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID)
 {
-	Super::OnEnter(Owner);
-}
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
 
-void FGsStateSideWalk::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
-{
+	switch (StateID)
+	{
+	case EGsStateBase::Idle:
+		ObjectBaseStateChange(FGsStateLocalIdle);
+		break;
+	case EGsStateBase::ForwardWalk:
+		ObjectBaseStateChange(FGsStateLocalForwardWalk);
+		break;
+	case EGsStateBase::BackwardWalk:
+		ObjectBaseStateChange(FGsStateLocalBackwardWalk);
+		break;
+	default:
+		return false;
+	}
+
+	return true;
 }
 
 /// FStateRun ///
-int FGsStateRun::GetStateID()
+uint8 FGsStateLocalRun::GetStateID()
 {
-	return (int)EGsStateBase::Run;
+	return static_cast<uint8>(EGsStateBase::Run);
 }
 
-FString FGsStateRun::Name()
+FString FGsStateLocalRun::Name()
 {
 	return TEXT("StateRun");
 }
 
-bool FGsStateRun::IsChange(int StateID)
+bool FGsStateLocalRun::OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID)
 {
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
 	switch (StateID)
 	{
-	case (int)EGsStateBase::ForwardWalk:
-		return true;
+	case EGsStateBase::Idle:
+		ObjectBaseStateChange(FGsStateLocalIdle);
+		break;
+	case EGsStateBase::ForwardWalk:
+		ObjectBaseStateChange(FGsStateLocalForwardWalk);
+		break;
+	default:
+		break;
 	}
-	return false;
+
+	return true;
 }
 
-void FGsStateRun::OnEnter(UGsGameObjectLocal* Owner)
+
+///FStateUpperRide///
+uint8 FGsStateLocalRide::GetStateID()
 {
-	Super::OnEnter(Owner);
+	return static_cast<uint8>(EGsStateBase::Ride);
 }
 
-void FGsStateRun::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
+FString FGsStateLocalRide::Name()
 {
+	return TEXT("StateRide");
+}
+
+bool FGsStateLocalRide::OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID)
+{
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	switch (StateID)
+	{
+	case EGsStateBase::Idle:
+		ObjectBaseStateChange(FGsStateLocalIdle);
+		break;
+	}
+
+	return true;
+}
+
+void FGsStateLocalRide::Enter(UGsGameObjectBase* Owner)
+{
+	Super::Enter(Owner);
+
+	//피직 정보 끄기
+	auto my = Cast<UGsGameObjectLocal>(Owner);
+	my->GetLocalCharacter()->DisableCollision();
+
+	//컨트롤러 변경
+	if (auto controller = UGameplayStatics::GetPlayerController(Owner->GetWorld(), 0))
+	{
+		controller->UnPossess();
+		controller->Possess(my->GetVehicle()->GetWhellVehicle());
+	}
+}
+
+void FGsStateLocalRide::Exit(UGsGameObjectBase* Owner)
+{
+	Super::Exit(Owner);
+
+	//컨트롤러 원복
+	auto my = Cast<UGsGameObjectLocal>(Owner);
+	if (auto controller = UGameplayStatics::GetPlayerController(Owner->GetWorld(), 0))
+	{
+		controller->UnPossess();
+		controller->Possess(my->GetLocalCharacter());
+	}
+
+	my->GetLocalCharacter()->EnableCollision();
 }
 
 ///FStateUpperIdle///
-int FGsStateUpperIdle::GetStateID()
+uint8 FGsStateLocalUpperIdle::GetStateID()
 {
-	return (int)EGsStateUpperBase::Idle;
+	return static_cast<uint8>(EGsStateUpperBase::Idle);
 }
 
-FString FGsStateUpperIdle::Name()
+FString FGsStateLocalUpperIdle::Name()
 {
 	return TEXT("StateUpperIdle");
 }
 
-void FGsStateUpperIdle::OnEnter(UGsGameObjectLocal* Owner)
+bool FGsStateLocalUpperIdle::OnProcessEvent(UGsGameObjectBase* Owner, EGsStateUpperBase StateID)
 {
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	switch (StateID)
+	{
+	case EGsStateUpperBase::Attack:
+		ObjectUpperStateChange(FGsStateLocalAttack);
+		break;
+	default:
+		return false;
+	}
+	
+	return true;
+}
+
+void FGsStateLocalUpperIdle::Enter(UGsGameObjectBase* Owner)
+{
+	Super::Enter(Owner);
+
+	auto my = Cast<UGsGameObjectLocal>(Owner);
 	//상체 애니 재생 정지
-	auto skillMgr = Owner->GetSkill();
+	auto skillMgr = my->GetSkill();
 	if (skillMgr->CurrentSkillData)
 	{
-		auto anim = Owner->GetLocal()->GetAnim();
+		auto anim = my->GetLocalCharacter()->GetAnim();
 		anim->StopUpperAni(skillMgr->CurrentSkillData->GetAni());
 	}
 }
 
 /// FStateAttack ///
-int FGsStateAttack::GetStateID()
+uint8 FGsStateLocalAttack::GetStateID()
 {
-	return (int)EGsStateUpperBase::Attack;
+	return static_cast<uint8>(EGsStateUpperBase::Attack);
 }
 
-FString FGsStateAttack::Name()
+FString FGsStateLocalAttack::Name()
 {
 	return TEXT("StateAttack");
 }
 
-void FGsStateAttack::OnEnter(UGsGameObjectLocal* Owner)
+bool FGsStateLocalAttack::OnProcessEvent(UGsGameObjectBase* Owner, EGsStateUpperBase StateID)
 {
-	Super::OnEnter(Owner);
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
 
-	auto skillMgr = Owner->GetSkill();
+	switch (StateID)
+	{
+	case EGsStateUpperBase::Idle:
+		ObjectUpperStateChange(FGsStateLocalUpperIdle);
+		break;
+	default:
+		return false;
+	}
+
+	return true;
+}
+
+void FGsStateLocalAttack::Enter(UGsGameObjectBase* Owner)
+{
+	Super::Enter(Owner);
+
+	auto my = Cast<UGsGameObjectLocal>(Owner);
+	auto skillMgr = my->GetSkill();
 	if (skillMgr->CurrentSkillData)
 	{
-		auto anim = Owner->GetLocal()->GetAnim();
+		auto anim = my->GetLocalCharacter()->GetAnim();
 		anim->PlayUpperAni(skillMgr->CurrentSkillData->GetAni());
 		skillMgr->OnSKillNode();
 	}
 }
 
-void FGsStateAttack::OnUpdate(UGsGameObjectLocal* Owner, float Delta)
+void FGsStateLocalAttack::Update(UGsGameObjectBase* Owner, float Delta)
 {
-	auto skillMgr = Owner->GetSkill();
+	Super::Update(Owner, Delta);
+
+	auto my = Cast<UGsGameObjectLocal>(Owner);
+	auto skillMgr = my->GetSkill();
 	skillMgr->RunSkillNode(Delta);
 }

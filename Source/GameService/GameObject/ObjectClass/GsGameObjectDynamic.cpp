@@ -22,9 +22,21 @@ void UGsGameObjectDynamic::Finalize()
 {
 	Super::Finalize();
 
-	if (Fsm)	    { delete Fsm; }
-	if (Parts)	    { delete Parts; }
-    if (Movement)   { delete Movement; }
+	if (Fsm)	    
+	{ 
+		Fsm->Finalize();
+		delete Fsm; 
+	}
+	if (Parts)
+	{ 
+		Parts->Finalize();
+		delete Parts; 
+	}
+    if (Movement)   
+	{ 
+		Movement->Finalize();
+		delete Movement; 
+	}
 }
 
 void UGsGameObjectDynamic::Update(float Delta)
@@ -32,5 +44,5 @@ void UGsGameObjectDynamic::Update(float Delta)
 	Super::Update(Delta);
 
 	if (Fsm)        { Fsm->Update(this, Delta); }
-    if (Movement)   { Movement->Update(Delta); }
+    //if (Movement)   { Movement->Update(Delta); }
 }

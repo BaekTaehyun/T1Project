@@ -1,4 +1,6 @@
 #pragma once
+#include <typeinfo>
+#include "LeanPacket_generated.h"
 
 class FGsNet
 {
@@ -20,3 +22,17 @@ public:
 	};
 };
 
+template<typename T>
+static const T* GetPacket(const void* buf, uint32_t len)
+{
+	const uint8_t* data = static_cast<const uint8_t*>(buf);
+	flatbuffers::Verifier verifier(data, len);
+	if (!verifier.VerifyBuffer<T>())
+	{
+#if WITH_EDITOR 
+		GSLOG(Error, TEXT(u8" %s Packet verifier failed"), typeid(T).name());
+#endif
+		return nullptr;
+	}
+	return flatbuffers::GetRoot<T>(data);
+}

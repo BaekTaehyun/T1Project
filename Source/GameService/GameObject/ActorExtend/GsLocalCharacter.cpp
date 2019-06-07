@@ -5,7 +5,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "GameObject/Input/GsInputBindingLocalPlayer.h"
+#include "Components/CapsuleComponent.h"
+#include "GameObject/Input/GsInputBindingBase.h"
 
 AGsLocalCharacter::~AGsLocalCharacter()
 {
@@ -28,7 +29,7 @@ AGsLocalCharacter::AGsLocalCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	InputBinder = CreateDefaultSubobject<UGsInputBindingLocalPlayer>(TEXT("CusomInputBinder"));
+	//InputBinder = CreateDefaultSubobject<UGsInputBindingLocalPlayer>(TEXT("CusomInputBinder"));
 }
 
 void AGsLocalCharacter::PostInitializeComponents()
@@ -36,12 +37,14 @@ void AGsLocalCharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 
 	Animation = Cast<UGsAnimInstanceState>(GetMesh()->GetAnimInstance());
+	RestoreCollisionType = GetCapsuleComponent()->GetCollisionEnabled();
 }
 
 // Called when the game starts or when spawned
 void AGsLocalCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
 // Called every frame
@@ -55,5 +58,19 @@ void AGsLocalCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	InputBinder->SetBinding(PlayerInputComponent);
+	if (InputBinder)
+	{
+		InputBinder->SetBinding(PlayerInputComponent);
+	}
+}
+
+void AGsLocalCharacter::EnableCollision()
+{
+	GetCapsuleComponent()->SetCollisionEnabled(RestoreCollisionType);
+}
+
+void AGsLocalCharacter::DisableCollision()
+{
+	RestoreCollisionType = GetCapsuleComponent()->GetCollisionEnabled();
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }

@@ -2,7 +2,7 @@
 #include "SocketAdapter.h"
 
 
-#ifndef USE_UNREAL4
+#ifndef __UNREAL__
 
 #include <ws2tcpip.h>
 

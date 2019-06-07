@@ -1,6 +1,5 @@
 #include "GsNetBase.h"
 #include "./flatbuffers/flatbuffers.h"
-
 #include "../UTIL/GsText.h"
 
 // connection 贸府甫 茄促.
@@ -30,11 +29,12 @@ void FGsNetBase::Update()
 	session->processIOEvent();
 
 	auto packets = session->popAll();
+
 	for (auto packet : packets)
 	{
-		assert(packet->header_.packetId == 1);
-
-		delete packet;
+		_protocol = (int)packet->header_.packetId;
+		_handler.SendMessage(_protocol, packet);
+		GetPacketPool()->Delete(packet);
 	}
 
 	packets.clear();
@@ -42,7 +42,7 @@ void FGsNetBase::Update()
 };
 
 //技记 按眉 积己贸府
-void FGsNetBase::Init(FGsNet::NetConnectionData&& indata)
+void FGsNetBase::InitConnection(FGsNet::NetConnectionData&& indata)
 {
 	_connectionInfo = std::move(indata);
 
@@ -51,18 +51,28 @@ void FGsNetBase::Init(FGsNet::NetConnectionData&& indata)
 
 bool FGsNetBase::Connect(FString inAddr, uint16 inPort)
 {
-	if (nullptr == session_) return false;
+	if (nullptr == session_)
+		return false;
+
 	return session_->connect(TOstring(inAddr).c_str(), inPort);
 }
 
 void FGsNetBase::Disconnct()
 {
-	if (nullptr == session_) return;
+	if (nullptr == session_)
+		return;
+
 	session_->disconnect();
 }
 
-void FGsNetBase::Send(LeanPacket::Protocol inProtocol, FlatBufferBuilder& inbuilder)
+//FBBuilder fbBuilder;
+//auto offset = StoS::CreateAccountValidationRequest(fbBuilder.get(), accountDbId);
+//fbBuilder.get().Finish(offset);
+void FGsNetBase::Send(LeanPacket::Protocol inProtocol, FBBuilder& inbuilder)
 {
+	if (nullptr == session_)
+		return;
 
+	session_->send((uint16_t)inProtocol, inbuilder.getBuffer(), inbuilder.size());
 }
 

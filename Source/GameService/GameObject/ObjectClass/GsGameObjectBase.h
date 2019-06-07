@@ -32,10 +32,14 @@ public:
     virtual EGsGameObjectType GetObjectType() const;
 	//타입 조합값 얻기
 	virtual uint32 GetObjectTypeMask() const;
+	//포함되는 타입인가 확인
+	virtual bool IsObjectType(EGsGameObjectType Type);
 
 	//기본적인 Actor클래스 얻기
     UFUNCTION(BlueprintCallable, Category = "GameObject")
 	virtual AActor* GetActor() const;
+
+	virtual UWorld* GetWorld() const override;
 
     //BP에서 간략한 접근을 위해 기본 TM정보 제공
     UFUNCTION(BlueprintCallable, Category = "GameObject")
@@ -49,6 +53,13 @@ public:
 public:
 	//스폰 완료시 호출
 	virtual void ActorSpawned(AActor* Spawn);
+
+	///-------------------------------------------------------
+	//추후 GameObject Event 관련 처리 클래스용 함수들
+	///-------------------------------------------------------
+protected:
+	virtual void RegistEvent();
+	///-------------------------------------------------------
 
 //맴버 변수
 protected:

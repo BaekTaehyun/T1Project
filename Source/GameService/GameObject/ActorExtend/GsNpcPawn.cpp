@@ -4,7 +4,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
-#include "GameObject/Component/Animation/GsAnimInstanceState.h"
+#include "GameObject/Component/GsAnimInstanceState.h"
 
 // Sets default values
 AGsNpcPawn::AGsNpcPawn()

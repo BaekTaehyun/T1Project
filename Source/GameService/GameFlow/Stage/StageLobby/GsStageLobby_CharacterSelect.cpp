@@ -1,5 +1,7 @@
 #include "GsStageLobby_CharacterSelect.h"
 #include "GameService.h"
+#include "Message/GsMessageManager.h"
+
 
 FGsStageLobby_CharacterSelect::FGsStageLobby_CharacterSelect() : FGsStageLobbyBase(FGsStageMode::Lobby::CAHRACTER_SELECT)
 {
@@ -14,6 +16,8 @@ void FGsStageLobby_CharacterSelect::Enter()
 {
 	FGsStageLobbyBase::Enter();
 	GSLOG(Warning, TEXT("GSFStageLobby_CharacterSelect : Enter"));
+
+	GMessage()->GetStage().SendMessage(MessageLobby::Stage::ENTER_CHARACTERSELECT_STAGE);
 }
 
 void FGsStageLobby_CharacterSelect::Exit()

@@ -4,12 +4,14 @@
 
 #include "CoreMinimal.h"
 #include <mutex>
-#include "GameObject/Define/GsGameObjectDefine.h"
+
+#include "Util/GsText.h"
+#include "GsFSMManager.h"
+#include "GameObject/Component/GsAnimInstanceState.h"
 #include "GameObject/ObjectClass/GsGameObjectBase.h"
-#include "GameObject/Component/Animation/GsAnimInstanceState.h"
 
 /**
- *
+ * State 객체의 기본이 되는 Abstruct클래스 
  */
 class GAMESERVICE_API IGsStateBase
 {
@@ -17,22 +19,45 @@ public:
 	IGsStateBase();
 	virtual ~IGsStateBase();
 
-	virtual int GetStateID() = 0;
+	virtual uint8 GetStateID() { return 0; }
 	virtual FString Name() = 0;
+
+	//애니메이션 랜덤 값 관련 처리이지만 테스트용 프로퍼티에 가깝다.(삭제될 메서드)
 	virtual int GetAniRandomCount() { return 0; }
 
 	//체인지 가능 or 불가능(Black List | White List) 상태 정의
-	virtual bool IsChange(int StateID);
+	//ProcessEvent에서 처리로 변경하여 삭제
+	//virtual bool IsChange(int StateID);
 	virtual bool IsSameState(int StateID);
 
-	virtual void Enter(UGsGameObjectBase* Owner) {}
-	virtual void ReEnter(UGsGameObjectBase* Owner) {}
-	virtual void Update(UGsGameObjectBase* Owner, float Delta) {}
-	virtual void Exit(UGsGameObjectBase* Owner) {}
+	//State의 전환은 이 메서드를 통해서만 전환
+	virtual bool ProcessEvent(UGsGameObjectBase* Owner, uint8 StateID) { return false; }
+
+	virtual void Enter(UGsGameObjectBase* Owner)				{}
+	virtual void ReEnter(UGsGameObjectBase* Owner)				{}
+	virtual void Update(UGsGameObjectBase* Owner, float Delta)	{}
+	virtual void Exit(UGsGameObjectBase* Owner)					{}
+
+	//FSM상태 전환 접근 메서드
+protected:
+	template <class tState>
+	bool ChangeState(FGsFSMManager* Fsm)
+	{
+		if (Fsm) { return Fsm->ChangeState<tState>(); }
+		return false;
+	}
+	
+	template <class tState>
+	void ChangeDelayState(FGsFSMManager* Fsm, float Time)
+	{
+		if (Fsm) { Fsm->ChangeDelayState<tState>(Time); }
+	}
+
+	void ChangeDelayPrevState(FGsFSMManager* Fsm, float Time);
 };
 
 template <class T>
-class TGsStateSingleton : public IGsStateBase
+class GAMESERVICE_API TGsStateSingleton
 {
 protected:
 	TGsStateSingleton() = default;
@@ -40,57 +65,17 @@ protected:
 	//StateSingleton<T>& operator = (const StateSingleton<T>& rhs) = delete;
 
 private:
-	static std::unique_ptr<T> _instance;
-	static std::once_flag _flag1;
+	static TUniquePtr<T> _instance;
+	//static std::once_flag _flag1;
 
 public:
 	static T* GetInstance() {
-		std::call_once(_flag1, []() {
-			_instance.reset(new T);
-		});
-
-		return _instance.get();
+		if(false == _instance.IsValid())
+		{
+			_instance = TUniquePtr<T>(new T());
+		}
+		return _instance.Get();
 	}
 };
 
-template <typename T> std::unique_ptr<T> TGsStateSingleton<T>::_instance;
-template <typename T> std::once_flag TGsStateSingleton<T>::_flag1;
-
-/**
-* [Todo] 
-* FSM의 상태 클래스들은 자주 호출되고, 싱글톤 객체이므로 다중상속에 의한 캐스팅보다(Owner->cast())
-* 추후 템플릿 구현으로 수정
-*/
-template <class T, class U>
-class GAMESERVICE_API FGsStateTargetBase : public TGsStateSingleton<U>
-{
-public:
-	virtual void Enter(UGsGameObjectBase* Owner) override
-	{
-		//T* castOwner = static_cast<T*>(Owner->cast());
-		OnEnter(Cast<T>(Owner));
-	}
-	virtual void ReEnter(UGsGameObjectBase* Owner) override
-	{
-		//T* castOwner = static_cast<T*>(Owner->cast());
-		OnReEnter(Cast<T>(Owner));
-	}
-	virtual void Update(UGsGameObjectBase* Owner, float Delta) override
-	{
-		//T* castOwner = static_cast<T*>(Owner->cast());
-		OnUpdate(Cast<T>(Owner), Delta);
-	}
-	virtual void Exit(UGsGameObjectBase* Owner) override
-	{
-		//T* castOwner = static_cast<T*>(Owner->cast());
-		OnExit(Cast<T>(Owner));
-	}
-
-protected:
-	virtual void OnEnter(T* Owner) = 0;
-	virtual void OnReEnter(T* Owner) = 0;
-	virtual void OnUpdate(T* Owner, float Delta) = 0;
-	virtual void OnExit(T* Owner) = 0;
-};
-
-
+template <typename T> TUniquePtr<T> TGsStateSingleton<T>::_instance;

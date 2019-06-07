@@ -6,10 +6,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GameService/Character/GsPlayer.h"
+#include "UserWidget.h"
 
 //#include "DataActorComponent.h"
 
 #include "T1Player.generated.h"
+
+//#define CAM_MODE
 
 class USpringArmComponent;
 class UCameraComponent;
@@ -87,14 +90,30 @@ public:
 
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess = true))
 	float AttackRadius;
-
 	
+
+	// UpDown 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void(float In_newAxisValue)> FunctionUpDown;
+	// LeftRight 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void(float In_newAxisValue)> FunctionLeftRight;
+	// LookUp 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void(float In_newAxisValue)> FunctionLookUp;
+	// Turn 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void(float In_newAxisValue)> FunctionTurn;
+
+	// ZoomIn 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void()> FunctionZoomIn;
+	// ZoomOut 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void()> FunctionZoomOut;
 private:
 	// 프로젝트 옵션에 인풋과 매칭되는 함수
 	void UpDown(float newAxisValue);
 	void LeftRight(float newAxisValue);
 	void Turn(float newAxisValue);
 	void LookUp(float newAxisValue);
+
+	void ZoomIn();
+	void ZoomOut();
 
 	void CameraViewChange();
 	void SetCameraControlMode(ECameraControlMode inControlMode);
@@ -107,8 +126,6 @@ private:
 	void AttackCheck();
 
 	void CreateUI();
-	void DisplayObj();
-	TSubclassOf<UUserWidget> m_UserWidget;
 
 	/*
 		언리얼에서 델리게이트는 C++객체에서만 사용하는 델리게이트와 C++, 블루프린트 객체가 모두 사용할수 있는 델리게이트로 나눈다.
@@ -137,4 +154,5 @@ private:
 
 	UPROPERTY()
 	class UT1AnimInstance* T1Anim;
+
 };

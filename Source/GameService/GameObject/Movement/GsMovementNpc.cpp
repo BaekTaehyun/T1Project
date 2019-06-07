@@ -15,10 +15,10 @@ void FGsMovementNpc::Initialize(UGsGameObjectBase* owner)
     Npc = Cast<UGsGameObjectNonPlayer>(owner);
     if (Npc)
     {
-        PawnMovement = Npc->GetNpc()->GetPawnMovement();
-
-        AController* controller = Npc->GetNpc()->GetController();
-        if (AAIController* Ai = Cast< AAIController>(controller))
+		auto pawn = Npc->GetNpcPawn();
+        PawnMovement = pawn->GetPawnMovement();
+        auto controller = pawn->GetController();
+        if (auto Ai = Cast< AAIController>(controller))
         {
             //이동 동기화용 델리게이트 연결
             PathComponent = Ai->FindComponentByClass<UPathFollowingComponent>();
@@ -56,18 +56,18 @@ void FGsMovementNpc::Update(float Delta)
 void FGsMovementNpc::UpdateState(EPathFollowingStatus::Type Type)
 {
     //상태 전환
-    FGsFSMManager* fsm = Npc->GetBaseFSM();
+    auto fsm = Npc->GetBaseFSM();
     switch (Type)
     {
     case EPathFollowingStatus::Idle:
-        fsm->ChangeState<FGsStateNpcIdle>();
+		fsm->ProcessEvent(EGsStateBase::Idle);
         break;
     case EPathFollowingStatus::Waiting:
         break;
     case EPathFollowingStatus::Paused:
         break;
     case EPathFollowingStatus::Moving:
-        fsm->ChangeState<FGsStateNpcWalk>();
+		fsm->ProcessEvent(EGsStateBase::ForwardWalk);
         break;
     }
 }

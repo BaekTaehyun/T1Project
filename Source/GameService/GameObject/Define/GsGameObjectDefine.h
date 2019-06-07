@@ -16,7 +16,7 @@
 #define CHECK_FLAG_TYPE(Type, Flag)     (((Type) & static_cast<uint8>(Flag)) > 0)
 #define SET_FLAG_TYPE(Type, Flag)       (Type |= static_cast<uint8>(Flag))
 #define REMOVE_FLAG_TYPE(Type, Flag)    (Type &= ~static_cast<uint8>(Flag))
-#define CLEAR_FLAG_TYPE(Type)           (Type = 0x000)
+#define CLEAR_FLAG_TYPE(Type)           (Type = 0x00)
 
 
 //UENUM이 uint8밖에 지원하지 않는다 Base 타입은 None으로 두어 일단 하나의 여분을 챙겨둔다.
@@ -26,15 +26,15 @@
 UENUM(BlueprintType, meta = (Bitflags))
 enum class EGsGameObjectType : uint8
 {
-	Base		= 0x000,		// All  hierarchy : 0
-	Static		= 0x001,		//hierarchy : 1
-	Projectile	= 0x002,		//hierarchy : 1
-	Vehicle		= 0x004,		//hierarchy : 1
-	Dynamic		= 0x008,		//hierarchy : 1
-	Player		= 0x010,		//hierarchy : 2
-	NonPlayer	= 0x020,		//hierarchy : 2
-	OtherPlayer = 0x040,		//hierarchy : 3
-	LocalPlayer = 0x080,		//hierarchy : 3
+	Base		= 0x00,		// All  hierarchy : 0
+	Static		= 0x01,		//hierarchy : 1
+	Projectile	= 0x02,		//hierarchy : 1
+	Vehicle		= 0x04,		//hierarchy : 1
+	Dynamic		= 0x08,		//hierarchy : 1
+	Player		= 0x10,		//hierarchy : 2
+	NonPlayer	= 0x20,		//hierarchy : 2
+	OtherPlayer = 0x40,		//hierarchy : 3
+	LocalPlayer = 0x80,		//hierarchy : 3
 };
 
 ENUM_CLASS_FLAGS(EGsGameObjectType);
@@ -62,11 +62,14 @@ enum class EGsStateBase : uint8
 	SideWalk,
 	Run,
 
+	Ride,
+
 	Beaten,
 	Die,
 
 	BaseMax,
 };
+
 
 /**
 * Upper State Define
@@ -89,11 +92,11 @@ enum class  EGsStateUpperBase : uint8
 UENUM(BlueprintType, meta = (Bitflags))
 enum class EGsGameObjectMoveType : uint8
 {
-    None            = 0x000,
-    Walk            = 0x001,
-    Run             = 0x002,
-    Interpolation   = 0x004,      //추후 이동 동기화 관련 필요성이 있을지도...
-    Jump            = 0x008,      //미사용 가능성이 있음
+    None            = 0x00,
+    Walk            = 0x01,
+    Run             = 0x02,
+    Interpolation   = 0x04,      //추후 이동 동기화 관련 필요성이 있을지도...
+    Jump            = 0x08,      //미사용 가능성이 있음
 };
 
 /**

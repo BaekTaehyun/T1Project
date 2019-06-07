@@ -10,12 +10,7 @@ namespace
 	{
 		std::mt19937_64 mt(std::random_device{}());
 		std::uniform_int_distribution<uint64_t> dist;
-
-		uint64_t a = dist(mt);
-		uint64_t b = dist(mt);
-		uint64_t c = dist(mt);
-		uint64_t d = dist(mt);
-		return a << 48 | b << 32 | c << 16 | d;
+		return dist(mt);
 	}
 
 	std::vector<uint8_t> to_bytes(uint64_t a)

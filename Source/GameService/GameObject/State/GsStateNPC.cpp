@@ -3,9 +3,19 @@
 #include "GsStateNPC.h"
 #include "GsFSMManager.h"
 
-int FGsStateNpcSpawn::GetStateID()
+template <class tstate>
+void FGsStateSingleNpc<tstate>::Enter(UGsGameObjectBase* Owner)
 {
-    return (int)EGsStateBase::Spawn;
+	auto npc = Cast<UGsGameObjectNonPlayer>(Owner);
+	if (auto anim = npc->GetNpcPawn()->GetAnim())
+	{
+		anim->ChangeState(GetStateID(), 0, GetAniRandomCount());
+	}
+}
+
+uint8 FGsStateNpcSpawn::GetStateID()
+{
+    return static_cast<uint8>(EGsStateBase::Spawn);
 }
 
 FString FGsStateNpcSpawn::Name()
@@ -13,17 +23,28 @@ FString FGsStateNpcSpawn::Name()
     return TEXT("StateNpcSpawn");
 }
 
-void FGsStateNpcSpawn::OnEnter(UGsGameObjectNonPlayer* Owner)
+bool FGsStateNpcSpawn::OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID)
 {
-	Super::OnEnter(Owner);
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
 
-    Owner->GetBaseFSM()->ChangeDelayState<FGsStateNpcIdle>(1.5f);
+	return true;
+}
+
+void FGsStateNpcSpawn::Enter(UGsGameObjectBase* Owner)
+{
+	Super::Enter(Owner);
+
+	auto npc = Cast<UGsGameObjectNonPlayer>(Owner);
+    ChangeDelayState<FGsStateNpcIdle>(npc->GetBaseFSM(), 1.5f);
 }
 
 
-int FGsStateNpcIdle::GetStateID()
+uint8 FGsStateNpcIdle::GetStateID()
 {
-	return (int)EGsStateBase::Idle;
+	return static_cast<uint8>(EGsStateBase::Idle);
 }
 
 FString FGsStateNpcIdle::Name()
@@ -31,14 +52,33 @@ FString FGsStateNpcIdle::Name()
 	return TEXT("StateNpcIdle");
 }
 
-void FGsStateNpcIdle::OnEnter(UGsGameObjectNonPlayer* Owner)
+bool FGsStateNpcIdle::OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID)
 {
-	Super::OnEnter(Owner);
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	auto npc = Cast<UGsGameObjectNonPlayer>(Owner);
+
+	switch (StateID)
+	{
+	case EGsStateBase::ForwardWalk:
+		ChangeState<FGsStateNpcWalk>(npc->GetBaseFSM());
+		break;
+	case EGsStateBase::Beaten:
+		ChangeState<FGsStateNpcBeaten>(npc->GetBaseFSM());
+		break;
+	default:
+		return false;
+	}
+
+	return true;
 }
 
-int FGsStateNpcWalk::GetStateID()
+uint8 FGsStateNpcWalk::GetStateID()
 {
-    return (int)EGsStateBase::ForwardWalk;
+    return static_cast<uint8>(EGsStateBase::ForwardWalk);
 }
 
 FString FGsStateNpcWalk::Name()
@@ -46,15 +86,32 @@ FString FGsStateNpcWalk::Name()
     return TEXT("StateNpcWalk");
 }
 
-void FGsStateNpcWalk::OnEnter(UGsGameObjectNonPlayer* Owner)
+bool FGsStateNpcWalk::OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID)
 {
-    Super::OnEnter(Owner);
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	auto npc = Cast<UGsGameObjectNonPlayer>(Owner);
+	switch (StateID)
+	{
+	case EGsStateBase::Idle:
+		ChangeState<FGsStateNpcIdle>(npc->GetBaseFSM());
+		break;
+	case EGsStateBase::Beaten:
+		ChangeState<FGsStateNpcBeaten>(npc->GetBaseFSM());
+		break;
+	default:
+		return false;
+	}
+
+	return true;
 }
 
-
-int FGsStateNpcBeaten::GetStateID()
+uint8 FGsStateNpcBeaten::GetStateID()
 {
-	return (int)EGsStateBase::Beaten;
+	return static_cast<uint8>(EGsStateBase::Beaten);
 }
 
 FString FGsStateNpcBeaten::Name()
@@ -62,10 +119,34 @@ FString FGsStateNpcBeaten::Name()
 	return TEXT("StateNpcBeaten");
 }
 
-void FGsStateNpcBeaten::OnEnter(UGsGameObjectNonPlayer* Owner)
+bool FGsStateNpcBeaten::OnProcessEvent(UGsGameObjectBase* Owner, EGsStateBase StateID)
 {
-	Super::OnEnter(Owner);
+	if (false == Super::OnProcessEvent(Owner, StateID))
+	{
+		return false;
+	}
+
+	auto npc = Cast<UGsGameObjectNonPlayer>(Owner);
+	switch (StateID)
+	{
+	case EGsStateBase::Idle:
+		ChangeState<FGsStateNpcIdle>(npc->GetBaseFSM());
+		break;
+	case EGsStateBase::ForwardWalk:
+		ChangeState<FGsStateNpcWalk>(npc->GetBaseFSM());
+		break;
+	default:
+		return false;
+	}
+
+	return true;
+}
+
+void FGsStateNpcBeaten::Enter(UGsGameObjectBase* Owner)
+{
+	Super::Enter(Owner);
 
 	//임의로 상태전환 시간 설정
-	Owner->GetBaseFSM()->ChangeDelayPrevState(2.f);
+	auto npc = Cast<UGsGameObjectNonPlayer>(Owner);
+	ChangeDelayPrevState(npc->GetBaseFSM(), 2.f);
 }

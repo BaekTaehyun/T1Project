@@ -31,4 +31,4 @@ public:
 };
 
 typedef TGsSingleton<FGsNetManager>	GSFNetSingle;
-#define GNet()	GSFNetSingle::Instance
+#define GNet()	GSFNetSingle::Instance()

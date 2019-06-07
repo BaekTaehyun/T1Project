@@ -2,9 +2,8 @@
 #pragma once
 
 
-#define USE_UNREAL4
 
-#ifdef USE_UNREAL4
+#ifdef __UNREAL__
 
 #include "CoreMinimal.h"
 #include "Sockets.h"
