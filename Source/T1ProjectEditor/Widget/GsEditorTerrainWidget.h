@@ -18,6 +18,6 @@ class T1PROJECTEDITOR_API UGsEditorTerrainWidget : public UUserWidget
 
 public:
 	UPROPERTY(meta = (BindWidget))
-		UTextBlock* _TextBlock;
+		UTextBlock* _ContentsText;
 	
 };

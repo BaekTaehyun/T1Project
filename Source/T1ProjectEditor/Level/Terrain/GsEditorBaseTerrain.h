@@ -72,8 +72,13 @@ protected:
 		void RegisterPillar(UGsEditorTerrainPillarComp* in_pillar, int32 in_index);
 	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
 		void RegisterPlane(UGsEditorTerrainPlaneComp* in_plane);
-	FVector GetCenterBetweenPoints(int32 in_start, int32 in_end);		
+	FVector GetCenterBetweenPoints(int32 in_start, int32 in_end);
+
+#if WITH_EDITOR
 	virtual bool ShouldTickIfViewportsOnly() const override;
+	void OnSelectCallback(UObject* in_object);
+	void OnUnSelectCallback();	
+#endif
 
 private:	
 	void DrawPlane();

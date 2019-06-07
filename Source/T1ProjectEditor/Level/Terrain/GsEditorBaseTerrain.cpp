@@ -4,14 +4,6 @@
 #include "GsEditorBaseTerrain.h"
 #include "./GsEditorTerrainPillarComp.h"
 #include "./GsEditorTerrainPlaneComp.h"
-#include "Editor/UnrealEd/Classes/Editor/EditorEngine.h"
-#include "Editor.h"
-#include "Editor/UnrealEd/Public/LevelEditorViewport.h"
-#include "Editor/UnrealEd/Public/Editor.h"
-#include "Editor/UnrealEd/Public/Kismet2/KismetEditorUtilities.h"
-#include "Editor/LevelEditor/Public/LevelEditor.h"
-#include "Runtime/Core/Public/Modules/ModuleManager.h"
-#include "Runtime/Slate/Public/Widgets/Docking/SDockTab.h"
 #include "Runtime/Engine/Classes/Components/SceneComponent.h"
 #include "Runtime/CoreUObject/Public/UObject/UObjectGlobals.h"
 #include "Runtime/Engine/Classes/Components/SplineComponent.h"
@@ -21,6 +13,10 @@
 #include "Runtime/Engine/Public/UnrealClient.h"
 #include "T1ProjectEditor/Widget/GsEditorTerrainWidget.h"
 #include "Runtime/UMG/Public/Components/TextBlock.h"
+#include "Runtime/Engine/Classes/Engine/Selection.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "Editor/UnrealEd/Classes/Editor/EditorEngine.h"
+#include "Editor/UnrealEd/Public/LevelEditorViewport.h"
 
 // Sets default values
 AGsEditorBaseTerrain::AGsEditorBaseTerrain()
@@ -38,15 +34,22 @@ AGsEditorBaseTerrain::AGsEditorBaseTerrain()
 	_Spline->EditorSelectedSplineSegmentColor = FColor::Yellow;
 
 	_Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
-	_Widget->SetWidget(_WidgetClass);
+	_Widget->SetVisibility(false, false);
 
 	SetActorHiddenInGame(true);
+
+#if WITH_EDITOR
+	USelection::SelectObjectEvent.AddUObject(this, &AGsEditorBaseTerrain::OnSelectCallback);
+	USelection::SelectNoneEvent.AddUObject(this, &AGsEditorBaseTerrain::OnUnSelectCallback);
+#endif
 }
 
+#if WITH_EDITOR
 bool AGsEditorBaseTerrain::ShouldTickIfViewportsOnly() const
 {
 	return true;
 }
+#endif
 
 void AGsEditorBaseTerrain::Tick(float in_delta)
 {
@@ -55,13 +58,16 @@ void AGsEditorBaseTerrain::Tick(float in_delta)
 #if WITH_EDITOR
 	if (_Widget)
 	{
-		FLevelEditorViewportClient* Client = (FLevelEditorViewportClient*)(GEditor->GetActiveViewport()->GetClient());
-
-		if (Client)
+		if (_Widget->bVisible)
 		{
-			FRotator rot = UKismetMathLibrary::FindLookAtRotation(_Widget->GetComponentLocation(), Client->GetViewLocation());
+			FLevelEditorViewportClient* Client = (FLevelEditorViewportClient*)(GEditor->GetActiveViewport()->GetClient());
 
-			_Widget->SetWorldRotation(rot);
+			if (Client)
+			{
+				FRotator rot = UKismetMathLibrary::FindLookAtRotation(_Widget->GetComponentLocation(), Client->GetViewLocation());
+
+				_Widget->SetWorldRotation(rot);
+			}
 		}
 	}
 #endif
@@ -219,7 +225,7 @@ void AGsEditorBaseTerrain::SetWidgetHegiht()
 	if (_Widget)
 	{
 		FVector pos = GetActorLocation() + FVector(0, 0, _Height + _WidgetHeight);
-		_Widget->SetWorldLocation(pos);				
+		_Widget->SetWorldLocation(pos);
 	}
 }
 
@@ -233,10 +239,37 @@ void AGsEditorBaseTerrain::SetWidgetText()
 
 		if (terrainWidget)
 		{
-			if (terrainWidget->_TextBlock)
+			if (terrainWidget->_ContentsText)
 			{
-				terrainWidget->_TextBlock->SetText(FText::FromString(_Tag));
+				terrainWidget->_ContentsText->SetText(FText::FromString(_Tag));
 			}
 		}
 	}
 }
+
+#if WITH_EDITOR
+void AGsEditorBaseTerrain::OnSelectCallback(UObject* in_object)
+{
+	if (_Widget)
+	{
+		if (this == in_object)
+		{
+			_Widget->SetVisibility(true, true);
+			UE_LOG(LogTemp, Log, TEXT("Select : %s"), *GetName());
+		}
+		else
+		{
+			_Widget->SetVisibility(false, true);
+			UE_LOG(LogTemp, Log, TEXT("Unelect : %s"), *GetName());
+		}
+	}
+}
+
+void AGsEditorBaseTerrain::OnUnSelectCallback()
+{
+	if (_Widget)
+	{
+		_Widget->SetVisibility(false, true);
+	}	
+}
+#endif
