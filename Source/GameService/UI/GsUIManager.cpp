@@ -88,12 +88,13 @@ void UGsUIManager::PopByKeyName(FName InKey)
 		return;
 	}
 
+	FName keyName = FName(*tableRow->WidgetClass.Get()->GetName());
 	if (tableRow->bNotDestroy)
 	{
-		UIControllerNotDestroy->RemoveWidget(InKey);
+		UIControllerNotDestroy->RemoveWidget(keyName);
 	}
 
-	UIControllerNormal->RemoveWidget(InKey);
+	UIControllerNormal->RemoveWidget(keyName);
 }
 
 UGsUIWidgetBase* UGsUIManager::PushInter(FName InKey, UGsUIParameter* InParam)
@@ -167,7 +168,6 @@ void UGsUIManager::OnChangeLevel()
 {
 	ShowLoading();
 	
-	// UI »èÁ¦
 	UIControllerNormal->RemoveAll();
 }
 
@@ -190,8 +190,9 @@ void UGsUIManager::HideLoading()
 		LoadingWidget.Get()->OnMessage(FName(TEXT("FadeOut")));
 	}
 }
-
+/*
 void UGsUIManager::TestGC()
 {
 	GEngine->ForceGarbageCollection();
 }
+*/

@@ -14,7 +14,6 @@ void UGsUIController::BeginDestroy()
 
 UGsUIWidgetBase* UGsUIController::CreateOrFind(UWorld* InOwner, TSubclassOf<UGsUIWidgetBase> InClass)
 {
-	//FName Key = FName(*InClass.Get()->GetPathName());
 	FName Key = FName(*InClass.Get()->GetName());
 
 	UGsUIWidgetBase* outWidget = nullptr;
@@ -29,16 +28,12 @@ UGsUIWidgetBase* UGsUIController::CreateOrFind(UWorld* InOwner, TSubclassOf<UGsU
 			if (outWidget->CanMultipleInstance())
 			{
 				outWidget = CreateWidget<UGsUIWidgetBase>(InOwner, InClass);
-				UsingWidgetArray.Add(outWidget);
-				//AddWidget();
-
-				GSLOG(Error, TEXT("Create Name: %s, ID: %d"), *outWidget->GetName(), outWidget->GetUniqueID());
+				UsingWidgetArray.Add(outWidget); 
 			}
 		}
 		else
 		{
 			UsingWidgetArray.Add(outWidget);
-			//AddWidget();
 		}
 	}
 	else
@@ -66,7 +61,6 @@ void UGsUIController::AddWidget(UGsUIWidgetBase* InWidget, UGsUIParameter* InPar
 {	
 	if (InWidget->IsStackUI())
 	{
-		// FIX: 네이밍
 		PushStack(InWidget, InParameters);
 	}
 	else
@@ -116,7 +110,6 @@ void UGsUIController::RemoveWidget(UGsUIWidgetBase* InWidget)
 {
 	if (InWidget->IsStackUI())
 	{
-		// FIX: 네이밍
 		PopStack(InWidget);
 	}
 	else
@@ -226,7 +219,6 @@ void UGsUIController::Back()
 	if (nullptr != topWidget)
 	{
 		RemoveWidget(topWidget);
-		//PopStack(topWidget);
 	}
 }
 

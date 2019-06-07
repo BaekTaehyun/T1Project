@@ -2,14 +2,10 @@
 
 
 #include "GsUIControllerNotDestroy.h"
-//#include "GsUINonDestructiveWidget.h"
 
 
 UGsUIWidgetBase* UGsUIControllerNotDestroy::CreateOrFind(UGameInstance* InOwner, TSubclassOf<UGsUIWidgetBase> InClass)
 {
-	//Super::CreateOrFind(); // 재정의한 내용이므로 부르지 않는다
-
-	//FName Key = FName(*InClass.Get()->GetPathName());
 	FName Key = FName(*InClass.Get()->GetName());
 
 	UGsUIWidgetBase* outWidget = nullptr;
@@ -86,17 +82,15 @@ void UGsUIControllerNotDestroy::AddToViewport(UGsUIWidgetBase* InWidget)
 
 void UGsUIControllerNotDestroy::RemoveUsingWidget(UGsUIWidgetBase* InWidget)
 {
-	// 파괴되지 않을 항목인데 인스턴싱이 되게 했을경우, 계속 삭제가 안될 것이므로 위험하다.
-	// 따라서 맵에 캐싱해둔 오브젝트를 제외하고는 파괴시킨다.
-
+	// CachedWidgetMap에 캐싱해둔 위젯을 제외하고는 파괴시킨다
 	if (InWidget->IsCachedWidget())
 	{
-		// FIX: 캐시된 항목은 지우지 않는다. RemoveFromParent 불러도 소용 없으므로 가려주기만 함
+		// 캐시된 항목은 지우지 않는다. 
+		// RemoveFromParent가 호출 안되게 처리되었으므로 Hide 만 진행한다
 		InWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 	else
 	{
-		// 캐시 이외에 인스턴싱 된 항목은 파괴 시킨다
 		InWidget->SetEnableAutoDestroy(true);
 
 		if (InWidget->IsInViewport())
