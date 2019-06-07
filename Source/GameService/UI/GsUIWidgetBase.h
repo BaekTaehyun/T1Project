@@ -19,8 +19,11 @@ class GAMESERVICE_API UGsUIWidgetBase : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-
 	UGsUIWidgetBase(const FObjectInitializer& ObjectInitializer);
+
+	virtual void NativeOnInitialized() override;
+	virtual void RemoveFromParent() override;
+	virtual void BeginDestroy() override;
 
 	// 스택 관리되는 UI인가
 	virtual bool IsStackUI() const { return false; }
@@ -29,8 +32,13 @@ public:
 	virtual bool IsWindow() const { return false; }
 
 	// 레벨 로드 시 파괴되지 않는 UI인가
-	virtual bool IsNondestructiveWidget() const { return false; }
+	virtual bool IsNondestructiveWidget() const { return bNotDestroy; }
 
+	// 중복 생성이 가능한 위젯
+	virtual bool CanMultipleInstance() const { return bCanMultipleInstance; }
+
+	// UIController에서 캐싱하고 있는 위젯 
+	bool IsCachedWidget() const { return bIsCachedWidget; }
 
 	UFUNCTION(BlueprintCallable, Category = "GsManaged")
 	virtual void Close();
@@ -41,8 +49,8 @@ public:
 	virtual void OnMessage_Implementation(FName InKey, UGsUIParameter* InParam = nullptr);
 
 	UFUNCTION(BlueprintCallable, Category = "GsManaged")
-	class AGsUIManager* GetUIManager();
-	
+	class UGsUIManager* GetUIManager();
+
 protected:
 	//스택에 푸쉬할 때 부르며, 초기화 데이터를 넘길 수 있음.
 	//주의: OnInitialized 뒤에 불리지만 Construct 보다 전에 불리므로 Slate 세팅과 관련된 처리를 여기서 하면 안됨.
@@ -53,6 +61,15 @@ protected:
 	// Window < Popup < Tray 뎁스 보장을 위한 값. 자손 클래스에서 값 부여(Window: 10, Popup: 100, Tray: 500)
 	virtual int32 GetManagedDefaultZOrder() const { return 0; }
 	virtual int32 GetManagedZOrder() const;
+
+	// 현재 Visibility 상태를 백업 후 Hidden 상태로 전환
+	virtual void Hide();
+	
+	// 이전 백업해둔 상태로 돌림
+	virtual void Unhide();
+
+	// 주의: 초기화, 파괴시에만 사용할 것. 초기화 시 bNotDestroy 에 의해 설정. 씬전환 시 파괴처리여부.
+	void SetEnableAutoDestroy(bool bInEnableAutoDestroy);
 	
 protected:
 	// Window, Popup, Tray 순서보장 관리를 받지 않고 강제로 세팅하고 싶을 경우 true로 설정
@@ -64,9 +81,22 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "GsManaged")
 	int32 AddZOrder;
 
+	// 레벨 전환 시 파괴할 오브젝트인가
+	UPROPERTY(EditDefaultsOnly, Category = "GsManaged")
+	bool bNotDestroy;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GsManaged")
+	bool bCanMultipleInstance;
+
 private:
 	// 스택 중복 처리를 막는다
 	bool bStackProcessed;
+	ESlateVisibility BackupVisibility;
+	bool bIsCachedWidget;
+	bool bEnableAutoDestroy;
+
+	friend class UGsUIController;
+	friend class UGsUIControllerNotDestroy;
 
 	/*
 	// 이하는 UserWidget에서 제공되는 함수로, 용도에 맞게 상속받아 사용할 것.
@@ -88,5 +118,4 @@ private:
 	// RefCount가 0이되어 실제 파괴될 때 불린다. 별도 BP이벤트는 제공하지 않는다.
 	virtual void BeginDestroy() override;
 	*/
-	friend class AGsUIManager;
 };

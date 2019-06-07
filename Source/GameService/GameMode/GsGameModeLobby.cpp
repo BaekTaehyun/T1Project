@@ -6,6 +6,7 @@
 #include "Message/GsMessageManager.h"
 #include "UI/GsUIManager.h"
 #include "GsLobbyComponent.h"
+#include "GSGameInstance.h"
 
 
 AGsGameModeLobby::AGsGameModeLobby()
@@ -21,10 +22,10 @@ void AGsGameModeLobby::StartPlay()
 	Super::StartPlay();
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 	// FIX: 준비가 되었다고 메시지를 쏘고 해당 State이면 재생해야할 듯
-	AGsUIManager* UIManager = GetUIManager();
+	UGsUIManager* UIManager = GetUIManager();
 	if (nullptr != UIManager)
 	{
-		UIManager->PushByKeyName(FName(TEXT("WindowIntro")));
+		UIManager->Push(FName(TEXT("WindowIntro")));
 	}
 }
 
@@ -45,12 +46,12 @@ APlayerController* AGsGameModeLobby::GetLocalPlayerController()
 	return nullptr;
 }
 
-AGsUIManager* AGsGameModeLobby::GetUIManager()
+UGsUIManager* AGsGameModeLobby::GetUIManager()
 {
-	APlayerController* LocalPC = GetLocalPlayerController();
-	if (nullptr != LocalPC)
+	UGsGameInstance* gameInstance = GetGameInstance<UGsGameInstance>();
+	if (nullptr != gameInstance)
 	{
-		return Cast<AGsUIManager>(LocalPC->GetHUD());
+		return gameInstance->GetUIManager();
 	}
 
 	return nullptr;

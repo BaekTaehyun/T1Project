@@ -18,7 +18,6 @@
 #include "GameObject/GsSpawnComponent.h"
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 #include "GSGameInstance.h"
-#include "UI/GsGlobalUIManager.h"
 #include "UI/GsUIManager.h"
 
 #include "../Camera/GsCameraModeManager.h"
@@ -57,7 +56,7 @@ void AGsGameModeWorld::StartPlay()
 	UGsGameInstance* Inst = Cast<UGsGameInstance>(GetWorld()->GetGameInstance());
 	if (nullptr != Inst)
 	{
-		Inst->GetGlobalUI()->ShowLoading(false);
+		Inst->GetUIManager()->HideLoading();
 	}
 
 	AGsGameModeWorld::LoadTrayHud();
@@ -77,15 +76,10 @@ void AGsGameModeWorld::LoadTrayHud()
 			return;
 		}
 
-		AGsUIManager* _cast = Cast<AGsUIManager>(_hud);
-		if (nullptr != _cast)
+		UGsGameInstance* Inst = Cast<UGsGameInstance>(GetWorld()->GetGameInstance());
+		if (nullptr != Inst)
 		{
-			_cast->PushByKeyName(FName(TEXT("MyTrayHud")));
-			UE_LOG(LogTemp, Log, TEXT("LoadTrayHud - PushByKeyName() !!!!!"));
-		}
-		else
-		{
-			UE_LOG(LogTemp, Log, TEXT("LoadTrayHud - _cast is nullptr !!"));
+			Inst->GetUIManager()->Push(FName(TEXT("MyTrayHud")));
 		}
 	}
 	else

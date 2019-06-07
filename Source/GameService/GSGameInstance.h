@@ -45,7 +45,7 @@ public:
 	bool IsImmediateStart() const { return bImmediateStart; }
 
 	UFUNCTION(BlueprintCallable, Category = "Dev")
-	class UGsGlobalUIManager* GetGlobalUI() const { return GlobalUIManager; }
+	class UGsUIManager* GetUIManager() const { return UIManager; }
 
 protected:
 	// 개발모드
@@ -56,7 +56,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Dev")
 	bool bImmediateStart;
 
-	// 레벨 전환에도 파괴되지 않을 UI위젯들 관리
-	UPROPERTY()
-	class UGsGlobalUIManager* GlobalUIManager;
+	// UI매니저
+	UPROPERTY(Transient)
+	class UGsUIManager* UIManager;
 };

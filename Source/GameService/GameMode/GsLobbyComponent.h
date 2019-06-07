@@ -62,7 +62,7 @@ protected:
 	void OnLoadGameScene();
 
 	class AGsGameModeLobby* GetGameModeLobby();
-	class AGsUIManager* GetUIManager();
+	class UGsUIManager* GetUIManager();
 
 	// TEST Begin -------------------------------------------------------------------------
 	// 타이머를 돌려 DownloadRate를 증가

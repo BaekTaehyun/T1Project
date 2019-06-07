@@ -25,7 +25,7 @@ struct FGsTableUIPath : public FTableRowBase
 
 public:
 	FGsTableUIPath()
-		: WidgetClass(nullptr)
+		: WidgetClass(nullptr), bNotDestroy(false)
 	{
 	}
 
@@ -33,4 +33,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSoftClassPtr<class UGsUIWidgetBase> WidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	bool bNotDestroy;
 };

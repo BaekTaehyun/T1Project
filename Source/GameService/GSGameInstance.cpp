@@ -4,7 +4,7 @@
 #include "GameService.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "class/GsSpawn.h"
-#include "UI/GsGlobalUIManager.h"
+#include "UI/GsUIManager.h"
 
 //-------------------------------------------------------------------------------
 // 게임초기화 순서
@@ -41,15 +41,16 @@ void UGsGameInstance::Init()
 
 	GetTimerManager().SetTimer(_manageTickHandle, this, &UGsGameInstance::Update, 0.5f, true, 0.0f);
 
-	if (nullptr == GlobalUIManager)
+	if (nullptr == UIManager)
 	{
-		GlobalUIManager = NewObject<UGsGlobalUIManager>(this);
+		UIManager = NewObject<UGsUIManager>(this);
+		UIManager->Initialize();
 	}
 }
 
 void UGsGameInstance::Shutdown()
 {
-	GlobalUIManager = nullptr;
+	UIManager = nullptr;
 
 	GetTimerManager().ClearTimer(_manageTickHandle);
 

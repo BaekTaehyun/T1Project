@@ -5,6 +5,7 @@
 #include "GsUIParameter.h"
 #include "GameService.h"
 #include "GsUIManager.h"
+#include "GSGameInstance.h"
 
 
 UGsUIWidgetBase::UGsUIWidgetBase(const FObjectInitializer& ObjectInitializer)
@@ -13,6 +14,49 @@ UGsUIWidgetBase::UGsUIWidgetBase(const FObjectInitializer& ObjectInitializer)
 	bStackProcessed = false;
 	bNotUseManagedZOrder = false;
 	AddZOrder = 0;
+	BackupVisibility = Visibility;
+	bNotDestroy = false;
+	bEnableAutoDestroy = false;
+}
+
+void UGsUIWidgetBase::NativeOnInitialized()
+{
+	// 블루프린트에서 입력된 값으로 가져온다
+	SetEnableAutoDestroy(!bNotDestroy);
+
+	Super::NativeOnInitialized();
+}
+
+void UGsUIWidgetBase::BeginDestroy()
+{
+	Super::BeginDestroy();
+	GSLOG(Warning, TEXT("--------BeginDestroy"));
+}
+
+void UGsUIWidgetBase::RemoveFromParent()
+{
+	if (bEnableAutoDestroy)
+	{
+		Super::RemoveFromParent();
+	}
+}
+
+void UGsUIWidgetBase::SetEnableAutoDestroy(bool bInEnableAutoDestroy)
+{
+	bEnableAutoDestroy = bInEnableAutoDestroy;
+
+	// GC방지
+	// RF_MarkAsRootSet : Object will be marked as root set on construction and not be garbage collected, 
+	// even if unreferenced (DO NOT USE THIS FLAG in HasAnyFlags() etc)
+	int32 CurrentFlags = (int32)(GetFlags());
+	if (bEnableAutoDestroy)
+	{
+		SetFlags((EObjectFlags)(CurrentFlags | RF_MarkAsRootSet));
+	}
+	else
+	{
+		SetFlags((EObjectFlags)(CurrentFlags ^ RF_MarkAsRootSet));
+	}
 }
 
 void UGsUIWidgetBase::OnPush_Implementation(UGsUIParameter* InParam)
@@ -27,16 +71,23 @@ void UGsUIWidgetBase::OnMessage_Implementation(FName InKey, UGsUIParameter* InPa
 
 void UGsUIWidgetBase::Close()
 {
-	AGsUIManager* UIManager = GetUIManager();
+	UGsUIManager* UIManager = GetUIManager();
 	if (nullptr != UIManager)
 	{
 		UIManager->Pop(this);
 	}
 }
 
-AGsUIManager* UGsUIWidgetBase::GetUIManager()
+UFUNCTION(BlueprintCallable, Category = "GsManaged")
+UGsUIManager* UGsUIWidgetBase::GetUIManager()
 {
-	return AGsUIManager::GetUIManager(GetOwningPlayer());
+	UGsGameInstance* gameInstance = GetGameInstance<UGsGameInstance>();
+	if (nullptr != gameInstance)
+	{
+		return gameInstance->GetUIManager();
+	}
+
+	return nullptr;
 }
 
 int32 UGsUIWidgetBase::GetManagedZOrder() const
@@ -44,13 +95,18 @@ int32 UGsUIWidgetBase::GetManagedZOrder() const
 	return (bNotUseManagedZOrder) ? AddZOrder : GetManagedDefaultZOrder() + AddZOrder;
 }
 
-/*
-void UGsUIWidgetBase::NativeOnInitialized()
+void UGsUIWidgetBase::Hide()
 {
-	Super::NativeOnInitialized();
-
-	GSLOG(Warning, TEXT("--------NativeOnInitialized"));
+	BackupVisibility = Visibility;
+	SetVisibility(ESlateVisibility::Hidden);
 }
+
+void UGsUIWidgetBase::Unhide()
+{
+	SetVisibility(BackupVisibility);
+}
+
+/*
 void UGsUIWidgetBase::NativePreConstruct()
 {
 	Super::NativePreConstruct();

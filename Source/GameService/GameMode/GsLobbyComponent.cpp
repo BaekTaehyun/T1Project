@@ -7,7 +7,6 @@
 #include "Message/GsMessageLobby.h"
 #include "GsGameModeLobby.h"
 #include "UI/GsUIManager.h"
-#include "UI/GsGlobalUIManager.h"
 #include "GameService.h"
 #include "GSGameInstance.h"
 
@@ -63,10 +62,10 @@ void UGsLobbyComponent::OnEnterAssetDownloadStage()
 		}
 	}
 
-	AGsUIManager* UIManager = GetUIManager();
-	if (nullptr != UIManager)
+	UGsUIManager* uiManager = GetUIManager();
+	if (nullptr != uiManager)
 	{
-		WindowAssetDownload = UIManager->PushByKeyName(FName(TEXT("WindowAssetDownload")));
+		WindowAssetDownload = uiManager->PushAndGetWidget(FName(TEXT("WindowAssetDownload")));
 
 #pragma todo("yjchoung: Test Code")
 		// TEST: 다운로드 시작
@@ -76,19 +75,19 @@ void UGsLobbyComponent::OnEnterAssetDownloadStage()
 
 void UGsLobbyComponent::OnEnterServerSelectStage()
 {
-	AGsUIManager* UIManager = GetUIManager();
-	if (nullptr != UIManager)
+	UGsUIManager* uiManager = GetUIManager();
+	if (nullptr != uiManager)
 	{
-		WindowServerSelect = UIManager->PushByKeyName(FName(TEXT("WindowServerSelect")));
+		WindowServerSelect = uiManager->PushAndGetWidget(FName(TEXT("WindowServerSelect")));
 	}
 }
 
 void UGsLobbyComponent::OnEnterCharacterSelectStage()
 {
-	AGsUIManager* UIManager = GetUIManager();
-	if (nullptr != UIManager)
+	UGsUIManager* uiManager = GetUIManager();
+	if (nullptr != uiManager)
 	{
-		UIManager->PushByKeyName(FName(TEXT("WindowCharacterSelect")));
+		uiManager->Push(FName(TEXT("WindowCharacterSelect")));
 	}
 }
 
@@ -105,7 +104,7 @@ void UGsLobbyComponent::OnLoadGameScene()
 	UGsGameInstance* Inst = Cast<UGsGameInstance>(GetWorld()->GetGameInstance());
 	if (nullptr != Inst)
 	{
-		Inst->GetGlobalUI()->ShowLoading(true);
+		Inst->GetUIManager()->OnChangeLevel();
 	}
 
 	AGsGameModeLobby* GameMode = GetGameModeLobby();
@@ -187,12 +186,12 @@ AGsGameModeLobby* UGsLobbyComponent::GetGameModeLobby()
 	return nullptr;
 }
 
-AGsUIManager* UGsLobbyComponent::GetUIManager()
+UGsUIManager* UGsLobbyComponent::GetUIManager()
 {
-	AGsGameModeLobby* GameMode = GetGameModeLobby();
-	if (nullptr != GameMode)
+	UGsGameInstance* gameInstance = Cast<UGsGameInstance>(GetWorld()->GetGameInstance());
+	if (nullptr != gameInstance)
 	{
-		return GameMode->GetUIManager();
+		return gameInstance->GetUIManager();
 	}
 
 	return nullptr;

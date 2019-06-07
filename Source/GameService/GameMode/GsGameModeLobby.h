@@ -22,7 +22,7 @@ public:
 
 	// 로컬 플레이어 컨트롤러 얻어오기
 	class APlayerController* GetLocalPlayerController();
-	class AGsUIManager* GetUIManager();
+	class UGsUIManager* GetUIManager();
 
 protected:
 	// 로비 관련 로직 컴포넌트
