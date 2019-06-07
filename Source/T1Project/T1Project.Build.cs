@@ -11,18 +11,9 @@ public class T1Project : ModuleRules
         //모듈의 *.build.cs 파일을 열어 PCHUsage 를 PCHUsageMode.UseExplicitOrSharedPCHs 로 설정하면 됩니다.
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] {
-            "Core",
-            "CoreUObject",
-            "Engine",
-            "InputCore",
-            "UMG",
-            
-        });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG"});
 
-		PrivateDependencyModuleNames.AddRange(new string[] {
-            "GameService",
-        });
+		PrivateDependencyModuleNames.AddRange(new string[] { "GameService", "T1ProjectEditor"});
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

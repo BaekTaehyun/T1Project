@@ -4303,7 +4303,7 @@ declare class ChunkPartData {
 }
 
 declare class FileManifestData { 
-	FileName: string;
+	Filename: string;
 	FileHash: SHAHashData;
 	FileChunkParts: ChunkPartData[];
 	InstallTags: string[];
@@ -5077,7 +5077,7 @@ declare class DatasmithImportOptions extends UObject {
 	BaseOptions: DatasmithImportBaseOptions;
 	TessellationOptions: DatasmithTessellationOptions;
 	ReimportOptions: DatasmithReimportOptions;
-	FileName: string;
+	Filename: string;
 	FilePath: string;
 	static Load(ResourceName: string): DatasmithImportOptions;
 	static Find(Outer: UObject, ResourceName: string): DatasmithImportOptions;
@@ -6433,7 +6433,7 @@ declare class AutomationBlueprintFunctionLibrary extends BlueprintFunctionLibrar
 	static Find(Outer: UObject, ResourceName: string): AutomationBlueprintFunctionLibrary;
 	static GetDefaultObject(): AutomationBlueprintFunctionLibrary;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): AutomationBlueprintFunctionLibrary;
-	static TakeHighResScreenshot(ResX: number,ResY: number,FileName: string,Camera: CameraActor,bMaskEnabled: boolean,bCaptureHDR: boolean): boolean;
+	static TakeHighResScreenshot(ResX: number,ResY: number,Filename: string,Camera: CameraActor,bMaskEnabled: boolean,bCaptureHDR: boolean): boolean;
 	static TakeAutomationScreenshotOfUI(WorldContextObject: UObject,LatentInfo: LatentActionInfo,Name: string,Options: AutomationScreenshotOptions): void;
 	static TakeAutomationScreenshotAtCamera(WorldContextObject: UObject,LatentInfo: LatentActionInfo,Camera: CameraActor,NameOverride: string,Notes: string,Options: AutomationScreenshotOptions): void;
 	static TakeAutomationScreenshot(WorldContextObject: UObject,LatentInfo: LatentActionInfo,Name: string,Notes: string,Options: AutomationScreenshotOptions): void;
@@ -8100,7 +8100,7 @@ declare class PixelInspectorView extends UObject {
 	SubsurfaceColor: LinearColor;
 	SubsurfaceProfile: Vector;
 	Opacity: number;
-	Clearcoat: number;
+	ClearCoat: number;
 	ClearCoatRoughness: number;
 	WorldNormal: Vector;
 	BackLit: number;
@@ -8539,14 +8539,12 @@ declare class JavascriptContext extends UObject {
 	WriteDTS(Target: string,bIncludingTooltip: boolean): boolean;
 	WriteAliases(Target: string): boolean;
 	SetContextId(Name: string): void;
-	SetAsDebugContext(InPort: number): void;
 	RunScript(Script: string,bOutput: boolean): string;
-	RunFile(FileName: string): void;
-	ResetAsDebugContext(): void;
+	RunFile(Filename: string): void;
 	RequestV8GarbageCollection(): void;
-	ReadScriptFile(FileName: string): string;
+	ReadScriptFile(Filename: string): string;
 	IsDebugContext(): boolean;
-	GetScriptFileFullPath(FileName: string): string;
+	GetScriptFileFullPath(Filename: string): string;
 	FindPathFile(TargetRootPath: string,TargetFileName: string,OutFiles?: string[]): {OutFiles: string[]};
 	Expose(Name: string,UObject: UObject): void;
 	DestroyInspector(): void;
@@ -8756,10 +8754,10 @@ declare class JavascriptLogCategory {
 	static C(Other: UObject | any): JavascriptLogCategory;
 	GetCategoryName(): string;
 	IsSuppressed(Verbosity: ELogVerbosity_JS): boolean;
-	Log(Verbosity: ELogVerbosity_JS,Message: string,FileName: string,LineNumber: number): void;
+	Log(Verbosity: ELogVerbosity_JS,Message: string,Filename: string,LineNumber: number): void;
 	static GetCategoryName(Category: JavascriptLogCategory): string;
 	static IsSuppressed(Category: JavascriptLogCategory,Verbosity: ELogVerbosity_JS): boolean;
-	static Log(Category: JavascriptLogCategory,Verbosity: ELogVerbosity_JS,Message: string,FileName: string,LineNumber: number): void;
+	static Log(Category: JavascriptLogCategory,Verbosity: ELogVerbosity_JS,Message: string,Filename: string,LineNumber: number): void;
 	static CreateLogCategory(CategoryName: string,InDefaultVerbosity: ELogVerbosity_JS): JavascriptLogCategory;
 }
 
@@ -8810,8 +8808,8 @@ declare class JavascriptLibrary extends BlueprintFunctionLibrary {
 	static Find(Outer: UObject, ResourceName: string): JavascriptLibrary;
 	static GetDefaultObject(): JavascriptLibrary;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): JavascriptLibrary;
-	static WriteStringToFile(UObject: UObject,FileName: string,Data: string,EncodingOptions: EJavascriptEncodingOptions): boolean;
-	static WriteFile(UObject: UObject,FileName: string): boolean;
+	static WriteStringToFile(UObject: UObject,Filename: string,Data: string,EncodingOptions: EJavascriptEncodingOptions): boolean;
+	static WriteFile(UObject: UObject,Filename: string): boolean;
 	static V8_SetIdleTaskBudget(BudgetInSeconds: number): void;
 	static V8_SetFlagsFromString(V8Flags: string): void;
 	static UnregisterComponent(ActorComponent: ActorComponent): void;
@@ -8833,13 +8831,13 @@ declare class JavascriptLibrary extends BlueprintFunctionLibrary {
 	static ReregisterAllComponents(Actor: Actor): void;
 	static RequestAsyncLoad(Manager: JavascriptStreamableManager,TargetsToStream: SoftObjectPath[],DelegateToCall: JavascriptFunction,Priority: number): void;
 	static RegisterComponent(ActorComponent: ActorComponent): void;
-	static ReadStringFromFile(UObject: UObject,FileName: string): string;
-	static ReadFile(UObject: UObject,FileName: string): boolean;
+	static ReadStringFromFile(UObject: UObject,Filename: string): string;
+	static ReadFile(UObject: UObject,Filename: string): boolean;
 	static ReadDirectory(UObject: UObject,Directory: string,OutItems?: DirectoryItem[]): {OutItems: DirectoryItem[], $: boolean};
 	static NewStat(InStatName: string,InStatDesc: string,InGroupName: string,InGroupCategory: string,InGroupDesc: string,bDefaultEnable: boolean,bShouldClearEveryFrame: boolean,InStatType: EJavascriptStatDataType,bCycleStat: boolean,bSortByName: boolean): JavascriptStat;
 	static MarkRenderStateDirty(Component: ActorComponent): void;
 	static MakeDirectory(Path: string,Tree: boolean): boolean;
-	static Log(Category: JavascriptLogCategory,Verbosity: ELogVerbosity_JS,Message: string,FileName: string,LineNumber: number): void;
+	static Log(Category: JavascriptLogCategory,Verbosity: ELogVerbosity_JS,Message: string,Filename: string,LineNumber: number): void;
 	static LoadPackage(InOuter: Package,PackageName: string): Package;
 	static IsSuppressed(Category: JavascriptLogCategory,Verbosity: ELogVerbosity_JS): boolean;
 	static IsRegistered(ActorComponent: ActorComponent): boolean;
@@ -8875,7 +8873,7 @@ declare class JavascriptLibrary extends BlueprintFunctionLibrary {
 	static GetHitCount(UNode: JavascriptProfileNode): number;
 	static GetFunctionParmsSize(UFunction: UFunction): number;
 	static GetFunctionName(UNode: JavascriptProfileNode): string;
-	static GetFileSize(UObject: UObject,FileName: string): number;
+	static GetFileSize(UObject: UObject,Filename: string): number;
 	static GetFields(UObject: UObject,bIncludeSuper: boolean): Field[];
 	static GetDynamicBinding(Outer: UnrealEngineClass,BindingObjectClass: UnrealEngineClass): DynamicBlueprintBinding;
 	static GetDir(UObject: UObject,WhichDir: string): string;
@@ -8898,10 +8896,10 @@ declare class JavascriptLibrary extends BlueprintFunctionLibrary {
 	static GenerateNavigation(InWorld: World,NavData: RecastNavMesh): void;
 	static FindPackage(InOuter: UObject,PackageName: string): Package;
 	static FindObjectWithOuter(Outer: UObject,ClassToLookFor: UnrealEngineClass,NameToLookFor: string): UObject;
-	static FileExists(FileName: string): boolean;
+	static FileExists(Filename: string): boolean;
 	static Duplicate(UObject: UObject,Outer: UObject,Name: string): UObject;
 	static DirectoryExists(InDirectory: string): boolean;
-	static DeleteFile(FileName: string,ReadOnly: boolean): boolean;
+	static DeleteFile(Filename: string,ReadOnly: boolean): boolean;
 	static DeleteDirectory(Path: string,RequireExists: boolean,Tree: boolean): boolean;
 	static CreateStreamableManager(): JavascriptStreamableManager;
 	static CreateSocket(SocketType: string,Description: string,bForceUDP: boolean): JavascriptSocket;
@@ -8949,7 +8947,7 @@ declare class JavascriptOutputDevice extends UObject {
 	static GetDefaultObject(): JavascriptOutputDevice;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): JavascriptOutputDevice;
 	OnMessage(Message: string,Verbosity: ELogVerbosity_JS,Category: string): void;
-	static Log(Category: string,Verbosity: ELogVerbosity_JS,FileName: string,LineNumber: number,Message: string): void;
+	static Log(Category: string,Verbosity: ELogVerbosity_JS,Filename: string,LineNumber: number,Message: string): void;
 	Kill(): void;
 	static C(Other: UObject | any): JavascriptOutputDevice;
 }
@@ -8983,15 +8981,20 @@ declare class JavascriptProcess extends UObject {
 	static C(Other: UObject | any): JavascriptProcess;
 }
 
+declare class JavascriptCpuProfiler { 
+	clone() : JavascriptCpuProfiler;
+	static C(Other: UObject | any): JavascriptCpuProfiler;
+}
+
 declare class JavascriptProfile extends UObject { 
 	static Load(ResourceName: string): JavascriptProfile;
 	static Find(Outer: UObject, ResourceName: string): JavascriptProfile;
 	static GetDefaultObject(): JavascriptProfile;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): JavascriptProfile;
-	static Stop(Title: string): JavascriptProfile;
-	static Start(Title: string,bRecordSamples: boolean): void;
-	static SetSamplingInterval(us: number): void;
-	static SetIdle(is_idle: boolean): void;
+	static Stop(Profiler: JavascriptCpuProfiler,Title: string): JavascriptProfile;
+	static Start(Title: string,bRecordSamples: boolean): JavascriptCpuProfiler;
+	static SetSamplingInterval(Profiler: JavascriptCpuProfiler,us: number): void;
+	static SetIdle(Profiler: JavascriptCpuProfiler,is_idle: boolean): void;
 	GetTopDownRoot(): JavascriptProfileNode;
 	GetSampleTimestamp(index: number): number;
 	GetSamplesCount(): number;
@@ -10227,378 +10230,10 @@ declare class AnimGraphNode_WheelHandler extends AnimGraphNode_SkeletalControlBa
 	static C(Other: UObject | any): AnimGraphNode_WheelHandler;
 }
 
-declare class SQLTable { 
-	Header: string;
-	ColumnTypes: string[];
-	Columns: string[];
-	Footer: string;
-	Lock: boolean;
-	clone() : SQLTable;
-	static C(Other: UObject | any): SQLTable;
-}
-
-declare type ESQLRuntimeMode = 'SynchronousTask' | 'BackgroundTask' | 'ESQLRuntimeMode_MAX';
-declare var ESQLRuntimeMode : { SynchronousTask:'SynchronousTask',BackgroundTask:'BackgroundTask',ESQLRuntimeMode_MAX:'ESQLRuntimeMode_MAX', };
-declare class SQLVersion { 
-	CurrentVersion: string;
-	TargetVersions: string[];
-	clone() : SQLVersion;
-	static C(Other: UObject | any): SQLVersion;
-}
-
-declare type ESQLoadScreenMode = 'BackgroundBlur' | 'SplashScreen' | 'MoviePlayer' | 'NoLoadScreen' | 'ESQLoadScreenMode_MAX';
-declare var ESQLoadScreenMode : { BackgroundBlur:'BackgroundBlur',SplashScreen:'SplashScreen',MoviePlayer:'MoviePlayer',NoLoadScreen:'NoLoadScreen',ESQLoadScreenMode_MAX:'ESQLoadScreenMode_MAX', };
-declare type ESQLType = 'Unknown' | 'Integer' | 'Text' | 'Float' | 'ESQLType_MAX';
-declare var ESQLType : { Unknown:'Unknown',Integer:'Integer',Text:'Text',Float:'Float',ESQLType_MAX:'ESQLType_MAX', };
-declare type ESQLReadMode = 'Map' | 'Set' | 'Array' | 'Boolean' | 'Integer' | 'Float' | 'Enum' | 'Name' | 'Text' | 'String' | 'Struct' | 'Vector2D' | 'Vector3D' | 'Rotator' | 'Color' | 'FloatCurve' | 'TimeStamp' | 'ObjectPtr' | 'ESQLReadMode_MAX';
-declare var ESQLReadMode : { Map:'Map',Set:'Set',Array:'Array',Boolean:'Boolean',Integer:'Integer',Float:'Float',Enum:'Enum',Name:'Name',Text:'Text',String:'String',Struct:'Struct',Vector2D:'Vector2D',Vector3D:'Vector3D',Rotator:'Rotator',Color:'Color',FloatCurve:'FloatCurve',TimeStamp:'TimeStamp',ObjectPtr:'ObjectPtr',ESQLReadMode_MAX:'ESQLReadMode_MAX', };
-declare class SQLField { 
-	Name: string;
-	Type: ESQLType;
-	Cast: ESQLReadMode;
-	float: any;
-	text: string;
-	Integer: any;
-	Data: number[];
-	clone() : SQLField;
-	static C(Other: UObject | any): SQLField;
-}
-
-declare class SQLRow { 
-	DB: string;
-	ID: string;
-	Values: SQLField[];
-	PreviewValues: string[];
-	PreviewTypes: string[];
-	clone() : SQLRow;
-	static C(Other: UObject | any): SQLRow;
-}
-
-declare class SQLPreview { 
-	Rows: SQLRow[];
-	clone() : SQLPreview;
-	static C(Other: UObject | any): SQLPreview;
-}
-
-declare type ESQLThreadSafety = 'IsCurrentlyThreadSafe' | 'IsPreparingToSaveOrLoad' | 'AsynchronousLoading' | 'AsynchronousSaving' | 'ESQLThreadSafety_MAX';
-declare var ESQLThreadSafety : { IsCurrentlyThreadSafe:'IsCurrentlyThreadSafe',IsPreparingToSaveOrLoad:'IsPreparingToSaveOrLoad',AsynchronousLoading:'AsynchronousLoading',AsynchronousSaving:'AsynchronousSaving',ESQLThreadSafety_MAX:'ESQLThreadSafety_MAX', };
-declare type ESQLResult = 'OK' | 'ERROR' | 'INTERNAL' | 'PERM' | 'ABORT' | 'BUSY' | 'LOCKED' | 'NOMEM' | 'READONLY' | 'INTERRUPT' | 'IOERR' | 'CORRUPT' | 'NOTFOUND' | 'FULL' | 'CANTOPEN' | 'PROTOCOL' | 'EMPTY' | 'SCHEMA' | 'TOOBIG' | 'CONSTRAINT' | 'MISMATCH' | 'MISUSE' | 'NOLFS' | 'AUTH' | 'FORMAT' | 'RANGE' | 'NOTADB' | 'NOTICE' | 'WARNING' | 'ROW' | 'DONE' | 'QUEUED' | 'ESQLResult_MAX';
-declare var ESQLResult : { OK:'OK',ERROR:'ERROR',INTERNAL:'INTERNAL',PERM:'PERM',ABORT:'ABORT',BUSY:'BUSY',LOCKED:'LOCKED',NOMEM:'NOMEM',READONLY:'READONLY',INTERRUPT:'INTERRUPT',IOERR:'IOERR',CORRUPT:'CORRUPT',NOTFOUND:'NOTFOUND',FULL:'FULL',CANTOPEN:'CANTOPEN',PROTOCOL:'PROTOCOL',EMPTY:'EMPTY',SCHEMA:'SCHEMA',TOOBIG:'TOOBIG',CONSTRAINT:'CONSTRAINT',MISMATCH:'MISMATCH',MISUSE:'MISUSE',NOLFS:'NOLFS',AUTH:'AUTH',FORMAT:'FORMAT',RANGE:'RANGE',NOTADB:'NOTADB',NOTICE:'NOTICE',WARNING:'WARNING',ROW:'ROW',DONE:'DONE',QUEUED:'QUEUED',ESQLResult_MAX:'ESQLResult_MAX', };
-declare type ESQLSaveMode = 'Insert' | 'Update' | 'ESQLSaveMode_MAX';
-declare var ESQLSaveMode : { Insert:'Insert',Update:'Update',ESQLSaveMode_MAX:'ESQLSaveMode_MAX', };
-declare class SQLite extends UObject { 
-	DB_TABLE: SQLTable;
-	DB_MODE: ESQLRuntimeMode;
-	DB_FILE: string;
-	DBS_UpdateCondition: string;
-	DBL_SelectCondition: string;
-	Debug: boolean;
-	DBS_QUEUE: any;
-	DBL_QUEUE: any;
-	DB_VERSION: SQLVersion;
-	DB_VERSIONS: any;
-	DB_REDIRECTORS: any;
-	LoadScreenMode: ESQLoadScreenMode;
-	FeedbackSAVE: string;
-	FeedbackLOAD: string;
-	BackBlurPower: number;
-	SplashImage: SoftObjectPath;
-	SplashMovie: SoftObjectPath;
-	ProgressBarOnMovie: boolean;
-	PauseGameOnLoad: boolean;
-	ProgressBarTint: LinearColor;
-	SplashStretch: EStretch;
-	FeedbackFont: SlateFontInfo;
-	DB_DataPreview: SQLPreview;
-	EVENT_OnBeginDataSAVE: UnrealEngineMulticastDelegate<(Database: SQLite) => void>;
-	EVENT_OnProgressDataSAVE: UnrealEngineMulticastDelegate<(Database: SQLite, Progress: number) => void>;
-	EVENT_OnFinishDataSAVE: UnrealEngineMulticastDelegate<(Database: SQLite, Success: boolean) => void>;
-	EVENT_OnBeginDataLOAD: UnrealEngineMulticastDelegate<(Database: SQLite) => void>;
-	EVENT_OnProgressDataLOAD: UnrealEngineMulticastDelegate<(Database: SQLite, Progress: number, Data: SQLRow) => void>;
-	EVENT_OnFinishDataLOAD: UnrealEngineMulticastDelegate<(Database: SQLite, Success: boolean) => void>;
-	ThreadChangedDelegate: UnrealEngineDelegate<(ThreadState: ESQLThreadSafety) => void>;
-	static Load(ResourceName: string): SQLite;
-	static Find(Outer: UObject, ResourceName: string): SQLite;
-	static GetDefaultObject(): SQLite;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLite;
-	DB_UPDATE_Vector3D_Array(RowID: string,ColumnName: string,Values: Vector[]): ESQLResult;
-	DB_UPDATE_Vector3D(RowID: string,ColumnName: string,Value: Vector): ESQLResult;
-	DB_UPDATE_Vector2D_Array(RowID: string,ColumnName: string,Values: Vector2D[]): ESQLResult;
-	DB_UPDATE_Vector2D(RowID: string,ColumnName: string,Value: Vector2D): ESQLResult;
-	DB_UPDATE_Text_Array(RowID: string,ColumnName: string,Values: string[]): ESQLResult;
-	DB_UPDATE_Text(RowID: string,ColumnName: string,Value: string): ESQLResult;
-	DB_UPDATE_String_Array(RowID: string,ColumnName: string,Values: string[]): ESQLResult;
-	DB_UPDATE_String(RowID: string,ColumnName: string,Value: string): ESQLResult;
-	DB_UPDATE_Rotator_Array(RowID: string,ColumnName: string,Values: Rotator[]): ESQLResult;
-	DB_UPDATE_Rotator(RowID: string,ColumnName: string,Value: Rotator): ESQLResult;
-	DB_UPDATE_Object_Array(RowID: string,ColumnName: string,Values: UObject[]): ESQLResult;
-	DB_UPDATE_Object(RowID: string,ColumnName: string,Obj: UObject): ESQLResult;
-	DB_UPDATE_Name_Array(RowID: string,ColumnName: string,Values: string[]): ESQLResult;
-	DB_UPDATE_Name(RowID: string,ColumnName: string,Value: string): ESQLResult;
-	DB_UPDATE_Integer_Array(RowID: string,ColumnName: string,Values: number[]): ESQLResult;
-	DB_UPDATE_Integer(RowID: string,ColumnName: string,Value: number): ESQLResult;
-	DB_UPDATE_Float_Array(RowID: string,ColumnName: string,Values: number[]): ESQLResult;
-	DB_UPDATE_Float(RowID: string,ColumnName: string,Value: number): ESQLResult;
-	DB_UPDATE_Date(RowID: string,ColumnName: string,Value: DateTime): ESQLResult;
-	DB_UPDATE_Color(RowID: string,ColumnName: string,Value: Color): ESQLResult;
-	DB_UPDATE_Byte_Array(RowID: string,ColumnName: string,Values: number[]): ESQLResult;
-	DB_UPDATE_Byte(RowID: string,ColumnName: string,Value: number): ESQLResult;
-	DB_UPDATE_Boolean_Array(RowID: string,ColumnName: string,Values: boolean[]): ESQLResult;
-	DB_UPDATE_Boolean(RowID: string,ColumnName: string,Value: boolean): ESQLResult;
-	DB_UnpackObjectDATA(UObject: UObject,Data: SQLRow,Log: boolean): void;
-	DB_UnpackComponentDATA(Component: ActorComponent,Data: SQLRow,Log: boolean): void;
-	DB_UnpackActorDATA(Actor: Actor,Data: SQLRow,Log: boolean): void;
-	DB_SELECT_Vector3Ds(ColumnName: string): Vector[];
-	DB_SELECT_Vector3D_Array(RowID: string,ColumnName: string): Vector[];
-	DB_SELECT_Vector3D(RowID: string,ColumnName: string): Vector;
-	DB_SELECT_Vector2Ds(ColumnName: string): Vector2D[];
-	DB_SELECT_Vector2D_Array(RowID: string,ColumnName: string): Vector2D[];
-	DB_SELECT_Vector2D(RowID: string,ColumnName: string): Vector2D;
-	DB_SELECT_Texts(ColumnName: string): string[];
-	DB_SELECT_Text_Array(RowID: string,ColumnName: string): string[];
-	DB_SELECT_Text(RowID: string,ColumnName: string): string;
-	DB_SELECT_Strings(ColumnName: string): string[];
-	DB_SELECT_String_Array(RowID: string,ColumnName: string): string[];
-	DB_SELECT_String(RowID: string,ColumnName: string): string;
-	DB_SELECT_Row(RowID: string): SQLRow;
-	DB_SELECT_Rotators(ColumnName: string): Rotator[];
-	DB_SELECT_Rotator_Array(RowID: string,ColumnName: string): Rotator[];
-	DB_SELECT_Rotator(RowID: string,ColumnName: string): Rotator;
-	DB_SELECT_Objects(Context: UObject,ColumnName: string): UObject[];
-	DB_SELECT_Object_Array(Context: UObject,RowID: string,ColumnName: string): UObject[];
-	DB_SELECT_Object(Context: UObject,RowID: string,ColumnName: string): UObject;
-	DB_SELECT_Names(ColumnName: string): string[];
-	DB_SELECT_Name_Array(RowID: string,ColumnName: string): string[];
-	DB_SELECT_Name(RowID: string,ColumnName: string): string;
-	DB_SELECT_Integers(ColumnName: string): number[];
-	DB_SELECT_Integer_Array(RowID: string,ColumnName: string): number[];
-	DB_SELECT_Integer(RowID: string,ColumnName: string): number;
-	DB_SELECT_IDs(): string[];
-	DB_SELECT_Floats(ColumnName: string): number[];
-	DB_SELECT_Float_Array(RowID: string,ColumnName: string): number[];
-	DB_SELECT_Float(RowID: string,ColumnName: string): number;
-	DB_SELECT_Dates(ColumnName: string): DateTime[];
-	DB_SELECT_Date(RowID: string,ColumnName: string): DateTime;
-	DB_SELECT_Colors(ColumnName: string): Color[];
-	DB_SELECT_Color(RowID: string,ColumnName: string): Color;
-	DB_SELECT_Bytes(ColumnName: string): number[];
-	DB_SELECT_Byte_Array(RowID: string,ColumnName: string): number[];
-	DB_SELECT_Byte(RowID: string,ColumnName: string): number;
-	DB_SELECT_Booleans(ColumnName: string): boolean[];
-	DB_SELECT_Boolean_Array(RowID: string,ColumnName: string): boolean[];
-	DB_SELECT_Boolean(RowID: string,ColumnName: string): boolean;
-	DB_Save(Context: UObject,Mode: ESQLSaveMode): void;
-	DB_PrepareToSave(Database: SQLite,Mode: ESQLSaveMode): void;
-	DB_PrepareToLoad(Database: SQLite): void;
-	DB_OnProgressSave__Threaded(Database: SQLite,Progress: number): void;
-	DB_OnProgressSave(Database: SQLite,Progress: number): void;
-	DB_OnProgressLoad__Threaded(Database: SQLite,Data: SQLRow,Progress: number): void;
-	DB_OnProgressLoad(Database: SQLite,Progress: number,Data: SQLRow): void;
-	DB_OnGlobalSaveProgressReport__Threaded(Progress: number): void;
-	DB_OnGlobalLoadProgressReport__Threaded(Progress: number): void;
-	DB_OnFinishSave__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishSave(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad(Database: SQLite,Success: boolean): void;
-	DB_OnBeginSave(Database: SQLite): void;
-	DB_OnBeginLoad(Database: SQLite): void;
-	DB_OBJ_ImmediateSAVE(UObject: UObject): void;
-	DB_OBJ_ImmediateLOAD(UObject: UObject): void;
-	DB_Load(Context: UObject): void;
-	DB_GetVersion(): string;
-	DB_GenerateSQL_Object_UPDATE(UObject: UObject): string;
-	DB_GenerateSQL_Object_SELECT(UObject: UObject): string;
-	DB_GenerateSQL_Object_INSERT(UObject: UObject): string;
-	DB_GenerateSQL_Object_DELETE(UObject: UObject): string;
-	DB_GenerateSQL_Component_UPDATE(Component: ActorComponent): string;
-	DB_GenerateSQL_Component_SELECT(Component: ActorComponent): string;
-	DB_GenerateSQL_Component_INSERT(Component: ActorComponent): string;
-	DB_GenerateSQL_Component_DELETE(Component: ActorComponent): string;
-	DB_GenerateSQL_Actor_UPDATE(Actor: Actor): string;
-	DB_GenerateSQL_Actor_SELECT(Actor: Actor): string;
-	DB_GenerateSQL_Actor_INSERT(Actor: Actor): string;
-	DB_GenerateSQL_Actor_DELETE(Actor: Actor): string;
-	DB_ExecuteCommand(SQL: string): ESQLResult;
-	DB_EnqueueSAVE(SQL: string): void;
-	DB_EnqueueLOAD(SQL: string): void;
-	DB_DoSaveProgressReport(Database: SQLite,Progress: number): void;
-	DB_DoLoadProgressReport(Database: SQLite,Progress: number): void;
-	DB_DELETE_Row(RowID: string): ESQLResult;
-	DB_CMP_ImmediateSAVE(Component: ActorComponent): void;
-	DB_CMP_ImmediateLOAD(Component: ActorComponent): void;
-	DB_ACT_ImmediateSAVE(Actor: Actor): void;
-	DB_ACT_ImmediateLOAD(Actor: Actor): void;
-	static C(Other: UObject | any): SQLite;
-}
-
-declare class SQLiteData extends Interface { 
-	static Load(ResourceName: string): SQLiteData;
-	static Find(Outer: UObject, ResourceName: string): SQLiteData;
-	static GetDefaultObject(): SQLiteData;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLiteData;
-	DB_PrepareToSave(Database: SQLite,Mode: ESQLSaveMode): void;
-	DB_PrepareToLoad(Database: SQLite): void;
-	DB_OnProgressSave__Threaded(Database: SQLite,Progress: number): void;
-	DB_OnProgressSave(Database: SQLite,Progress: number): void;
-	DB_OnProgressLoad__Threaded(Database: SQLite,Data: SQLRow,Progress: number): void;
-	DB_OnProgressLoad(Database: SQLite,Progress: number,Data: SQLRow): void;
-	DB_OnGlobalSaveProgressReport__Threaded(Progress: number): void;
-	DB_OnGlobalLoadProgressReport__Threaded(Progress: number): void;
-	DB_OnFinishSave__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishSave(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad(Database: SQLite,Success: boolean): void;
-	DB_OnBeginSave(Database: SQLite): void;
-	DB_OnBeginLoad(Database: SQLite): void;
-	static C(Other: UObject | any): SQLiteData;
-}
-
-declare class SQLiteDriver extends SQLiteData { 
-	static Load(ResourceName: string): SQLiteDriver;
-	static Find(Outer: UObject, ResourceName: string): SQLiteDriver;
-	static GetDefaultObject(): SQLiteDriver;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLiteDriver;
-	DB_Save(Context: UObject,Mode: ESQLSaveMode): void;
-	DB_Load(Context: UObject): void;
-	static C(Other: UObject | any): SQLiteDriver;
-}
-
-declare class SQLReflector extends UObject { 
-	static Load(ResourceName: string): SQLReflector;
-	static Find(Outer: UObject, ResourceName: string): SQLReflector;
-	static GetDefaultObject(): SQLReflector;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLReflector;
-	static NewONamedbjectInstance(Context: UObject,Class: UnrealEngineClass,Name: string): UObject;
-	static NewObjectInstance(Context: UObject,Class: UnrealEngineClass): UObject;
-	static GetClassDefaultObject(Class: UnrealEngineClass): UObject;
-	static C(Other: UObject | any): SQLReflector;
-}
-
-declare class SQL extends SQLReflector { 
-	static Load(ResourceName: string): SQL;
-	static Find(Outer: UObject, ResourceName: string): SQL;
-	static GetDefaultObject(): SQL;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQL;
-	static StringToMD5(string: string): string;
-	static SanitizeString(string: string): string;
-	static MakeObjectDBID(Obj: UObject): string;
-	static MakeComponentDBID(CMP: ActorComponent): string;
-	static MakeActorDBID(Actor: Actor): string;
-	static GetThreadSafety(): ESQLThreadSafety;
-	static GetSavesDone(): number;
-	static GetSaveProgress(): number;
-	static GetPlayerNetworkID(PlayerController: PlayerController,ID?: string,AppendPort?: boolean): {ID: string, $: boolean};
-	static GetLoadsDone(): number;
-	static GetLoadProgress(): number;
-	static C(Other: UObject | any): SQL;
-}
-
-declare class SQL_CheckThreadSafety extends BlueprintAsyncActionBase { 
-	Callback: UnrealEngineDelegate<(ThreadState: ESQLThreadSafety) => void>;
-	TimerHandle: TimerHandle;
-	Target: SQLite;
-	World: World;
-	Timer: number;
-	Repeat: boolean;
-	ThreadSafe: UnrealEngineMulticastDelegate<() => void>;
-	AsyncLoading: UnrealEngineMulticastDelegate<() => void>;
-	AsyncSaving: UnrealEngineMulticastDelegate<() => void>;
-	static Load(ResourceName: string): SQL_CheckThreadSafety;
-	static Find(Outer: UObject, ResourceName: string): SQL_CheckThreadSafety;
-	static GetDefaultObject(): SQL_CheckThreadSafety;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQL_CheckThreadSafety;
-	Execute(): void;
-	static C(Other: UObject | any): SQL_CheckThreadSafety;
-}
-
-declare class SQLite_Settings extends UObject { 
-	DeepLogs: boolean;
-	static Load(ResourceName: string): SQLite_Settings;
-	static Find(Outer: UObject, ResourceName: string): SQLite_Settings;
-	static GetDefaultObject(): SQLite_Settings;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLite_Settings;
-	static C(Other: UObject | any): SQLite_Settings;
-}
-
-declare class SQLSerializable_OBJ extends UObject { 
-	Debug: boolean;
-	static Load(ResourceName: string): SQLSerializable_OBJ;
-	static Find(Outer: UObject, ResourceName: string): SQLSerializable_OBJ;
-	static GetDefaultObject(): SQLSerializable_OBJ;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLSerializable_OBJ;
-	DB_PrepareToSave(Database: SQLite,Mode: ESQLSaveMode): void;
-	DB_PrepareToLoad(Database: SQLite): void;
-	DB_OnProgressSave__Threaded(Database: SQLite,Progress: number): void;
-	DB_OnProgressSave(Database: SQLite,Progress: number): void;
-	DB_OnProgressLoad__Threaded(Database: SQLite,Data: SQLRow,Progress: number): void;
-	DB_OnProgressLoad(Database: SQLite,Progress: number,Data: SQLRow): void;
-	DB_OnGlobalSaveProgressReport__Threaded(Progress: number): void;
-	DB_OnGlobalLoadProgressReport__Threaded(Progress: number): void;
-	DB_OnFinishSave__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishSave(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad(Database: SQLite,Success: boolean): void;
-	DB_OnBeginSave(Database: SQLite): void;
-	DB_OnBeginLoad(Database: SQLite): void;
-	static C(Other: UObject | any): SQLSerializable_OBJ;
-}
-
-declare class SQLSerializable_CMP extends ActorComponent { 
-	Debug: boolean;
-	static Load(ResourceName: string): SQLSerializable_CMP;
-	static Find(Outer: UObject, ResourceName: string): SQLSerializable_CMP;
-	static GetDefaultObject(): SQLSerializable_CMP;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLSerializable_CMP;
-	DB_PrepareToSave(Database: SQLite,Mode: ESQLSaveMode): void;
-	DB_PrepareToLoad(Database: SQLite): void;
-	DB_OnProgressSave__Threaded(Database: SQLite,Progress: number): void;
-	DB_OnProgressSave(Database: SQLite,Progress: number): void;
-	DB_OnProgressLoad__Threaded(Database: SQLite,Data: SQLRow,Progress: number): void;
-	DB_OnProgressLoad(Database: SQLite,Progress: number,Data: SQLRow): void;
-	DB_OnGlobalSaveProgressReport__Threaded(Progress: number): void;
-	DB_OnGlobalLoadProgressReport__Threaded(Progress: number): void;
-	DB_OnFinishSave__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishSave(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad(Database: SQLite,Success: boolean): void;
-	DB_OnBeginSave(Database: SQLite): void;
-	DB_OnBeginLoad(Database: SQLite): void;
-	static C(Other: UObject | any): SQLSerializable_CMP;
-}
-
-declare class SQLSerializable extends Actor { 
-	Debug: boolean;
-	static GetDefaultObject(): SQLSerializable;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLSerializable;
-	DB_PrepareToSave(Database: SQLite,Mode: ESQLSaveMode): void;
-	DB_PrepareToLoad(Database: SQLite): void;
-	DB_OnProgressSave__Threaded(Database: SQLite,Progress: number): void;
-	DB_OnProgressSave(Database: SQLite,Progress: number): void;
-	DB_OnProgressLoad__Threaded(Database: SQLite,Data: SQLRow,Progress: number): void;
-	DB_OnProgressLoad(Database: SQLite,Progress: number,Data: SQLRow): void;
-	DB_OnGlobalSaveProgressReport__Threaded(Progress: number): void;
-	DB_OnGlobalLoadProgressReport__Threaded(Progress: number): void;
-	DB_OnFinishSave__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishSave(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad__Threaded(Database: SQLite,Success: boolean): void;
-	DB_OnFinishLoad(Database: SQLite,Success: boolean): void;
-	DB_OnBeginSave(Database: SQLite): void;
-	DB_OnBeginLoad(Database: SQLite): void;
-	static C(Other: UObject | any): SQLSerializable;
-}
-
-declare class SQLoadScreenHUD extends HUD { 
-	OnBeginLoadScreen: UnrealEngineMulticastDelegate<() => void>;
-	OnFinishLoadScreen: UnrealEngineMulticastDelegate<() => void>;
-	static GetDefaultObject(): SQLoadScreenHUD;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): SQLoadScreenHUD;
-	static C(Other: UObject | any): SQLoadScreenHUD;
-}
-
 declare type ETaskEvent = 'START_DOWNLOAD' | 'DOWNLOAD_UPDATE' | 'STOP' | 'DOWNLOAD_COMPLETED' | 'ERROR_OCCUR' | 'ETaskEvent_MAX';
 declare var ETaskEvent : { START_DOWNLOAD:'START_DOWNLOAD',DOWNLOAD_UPDATE:'DOWNLOAD_UPDATE',STOP:'STOP',DOWNLOAD_COMPLETED:'DOWNLOAD_COMPLETED',ERROR_OCCUR:'ERROR_OCCUR',ETaskEvent_MAX:'ETaskEvent_MAX', };
 declare class TaskInformation { 
-	FileName: string;
+	Filename: string;
 	DestDirectory: string;
 	SourceUrl: string;
 	ETag: string;
@@ -10634,8 +10269,8 @@ declare class FileDownloadManager extends UObject {
 
 declare type EGsStateUpperBase = 'None' | 'Idle' | 'Attack' | 'UpperBaseMax' | 'EGsStateUpperBase_MAX';
 declare var EGsStateUpperBase : { None:'None',Idle:'Idle',Attack:'Attack',UpperBaseMax:'UpperBaseMax',EGsStateUpperBase_MAX:'EGsStateUpperBase_MAX', };
-declare type EGsStateBase = 'None' | 'Spawn' | 'Idle' | 'ForwardWalk' | 'BackwardWalk' | 'SideWalk' | 'Run' | 'Beaten' | 'Die' | 'BaseMax' | 'EGsStateBase_MAX';
-declare var EGsStateBase : { None:'None',Spawn:'Spawn',Idle:'Idle',ForwardWalk:'ForwardWalk',BackwardWalk:'BackwardWalk',SideWalk:'SideWalk',Run:'Run',Beaten:'Beaten',Die:'Die',BaseMax:'BaseMax',EGsStateBase_MAX:'EGsStateBase_MAX', };
+declare type EGsStateBase = 'None' | 'Spawn' | 'Idle' | 'ForwardWalk' | 'BackwardWalk' | 'SideWalk' | 'Run' | 'Ride' | 'Beaten' | 'Die' | 'BaseMax' | 'EGsStateBase_MAX';
+declare var EGsStateBase : { None:'None',Spawn:'Spawn',Idle:'Idle',ForwardWalk:'ForwardWalk',BackwardWalk:'BackwardWalk',SideWalk:'SideWalk',Run:'Run',Ride:'Ride',Beaten:'Beaten',Die:'Die',BaseMax:'BaseMax',EGsStateBase_MAX:'EGsStateBase_MAX', };
 declare class GsAnimInstanceState extends AnimInstance { 
 	static Load(ResourceName: string): GsAnimInstanceState;
 	static Find(Outer: UObject, ResourceName: string): GsAnimInstanceState;
@@ -10696,48 +10331,120 @@ declare class GsCheatManager extends CheatManager {
 	static GetDefaultObject(): GsCheatManager;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsCheatManager;
 	TeleportPlayer(in_tag: string): void;
+	SpawnGameObject(Type: EGsGameObjectType,ActorClass: UnrealEngineClass,SpawnCount: number,StartPos: Vector): void;
 	static C(Other: UObject | any): GsCheatManager;
 }
 
+declare class GsUIParameter extends UObject { 
+	static Load(ResourceName: string): GsUIParameter;
+	static Find(Outer: UObject, ResourceName: string): GsUIParameter;
+	static GetDefaultObject(): GsUIParameter;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIParameter;
+	static C(Other: UObject | any): GsUIParameter;
+}
+
+declare class GsUIWidgetBase extends UserWidget { 
+	bNotUseManagedZOrder: boolean;
+	AddZOrder: number;
+	bNotDestroy: boolean;
+	bCanMultipleInstance: boolean;
+	static Load(ResourceName: string): GsUIWidgetBase;
+	static Find(Outer: UObject, ResourceName: string): GsUIWidgetBase;
+	static GetDefaultObject(): GsUIWidgetBase;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIWidgetBase;
+	OnPush(InParam: GsUIParameter): void;
+	OnMessage(InKey: string,InParam: GsUIParameter): void;
+	GetUIManager(): GsUIManager;
+	Close(): void;
+	static C(Other: UObject | any): GsUIWidgetBase;
+}
+
+declare class GsUIController extends UObject { 
+	UsingWidgetArray: GsUIWidgetBase[];
+	CachedWidgetMap: any;
+	StackableArray: GsUIWidgetBase[];
+	static Load(ResourceName: string): GsUIController;
+	static Find(Outer: UObject, ResourceName: string): GsUIController;
+	static GetDefaultObject(): GsUIController;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIController;
+	static C(Other: UObject | any): GsUIController;
+}
+
+declare class GsUIControllerNotDestroy extends GsUIController { 
+	static Load(ResourceName: string): GsUIControllerNotDestroy;
+	static Find(Outer: UObject, ResourceName: string): GsUIControllerNotDestroy;
+	static GetDefaultObject(): GsUIControllerNotDestroy;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIControllerNotDestroy;
+	static C(Other: UObject | any): GsUIControllerNotDestroy;
+}
+
+declare class GsUIManager extends UObject { 
+	WidgetClassTable: DataTable;
+	UIControllerNormal: GsUIController;
+	UIControllerNotDestroy: GsUIControllerNotDestroy;
+	static Load(ResourceName: string): GsUIManager;
+	static Find(Outer: UObject, ResourceName: string): GsUIManager;
+	static GetDefaultObject(): GsUIManager;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIManager;
+	TestGC(): void;
+	Push(InKey: string,InParam: GsUIParameter): void;
+	PopByKeyName(InKey: string): void;
+	Pop(InWidget: GsUIWidgetBase): void;
+	static C(Other: UObject | any): GsUIManager;
+}
+
 declare class GsGameInstance extends GameInstance { 
+	bIsDevMode: boolean;
+	bImmediateStart: boolean;
+	UIManager: GsUIManager;
 	static Load(ResourceName: string): GsGameInstance;
 	static Find(Outer: UObject, ResourceName: string): GsGameInstance;
 	static GetDefaultObject(): GsGameInstance;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameInstance;
+	IsImmediateStart(): boolean;
+	IsDevMode(): boolean;
+	GetUIManager(): GsUIManager;
 	static C(Other: UObject | any): GsGameInstance;
 }
 
-declare class GsGameObjectManager extends Actor { 
+declare class GsSpawnComponent extends ActorComponent { 
 	Spawns: GsGameObjectBase[];
-	static GetDefaultObject(): GsGameObjectManager;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectManager;
+	static Load(ResourceName: string): GsSpawnComponent;
+	static Find(Outer: UObject, ResourceName: string): GsSpawnComponent;
+	static GetDefaultObject(): GsSpawnComponent;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsSpawnComponent;
 	CallbackCompHit(HitComponent: PrimitiveComponent,OtherActor: Actor,OtherComp: PrimitiveComponent,NormalImpulse: Vector,Hit: HitResult): void;
 	CallbackActorDeSpawn(Despawn: Actor): void;
-	static C(Other: UObject | any): GsGameObjectManager;
+	static C(Other: UObject | any): GsSpawnComponent;
 }
 
 declare class GsGameModeBase extends GameModeBase { 
-	_gameObjManager: GsGameObjectManager;
+	_SpawnComponent: GsSpawnComponent;
 	static GetDefaultObject(): GsGameModeBase;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameModeBase;
 	static C(Other: UObject | any): GsGameModeBase;
 }
 
-declare class GsGameModeLobby extends GsGameModeBase { 
-	bIsDevMode: boolean;
-	bIsAccountLoginComplete: boolean;
-	SelectedServerID: number;
-	static GetDefaultObject(): GsGameModeLobby;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameModeLobby;
+declare class GsLobbyComponent extends ActorComponent { 
+	static Load(ResourceName: string): GsLobbyComponent;
+	static Find(Outer: UObject, ResourceName: string): GsLobbyComponent;
+	static GetDefaultObject(): GsLobbyComponent;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsLobbyComponent;
 	TrySelectServer(InServerID: number): void;
 	TryGameLogin(): void;
 	TryDevAccountLogin(InName: string,InPassword: string): void;
 	TryAccountLogin(): void;
 	SetSelectedServer(InServerID: number): void;
 	SetAccountLogin(InComplete: boolean): void;
-	IsDevMode(): boolean;
 	IsAccountLoginComplete(): boolean;
 	GetSelectedServer(): number;
+	static C(Other: UObject | any): GsLobbyComponent;
+}
+
+declare class GsGameModeLobby extends GsGameModeBase { 
+	LobbyComponent: GsLobbyComponent;
+	static GetDefaultObject(): GsGameModeLobby;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameModeLobby;
 	static C(Other: UObject | any): GsGameModeLobby;
 }
 
@@ -10755,6 +10462,7 @@ declare class GsGameObjectBlueprintLibrary extends BlueprintFunctionLibrary {
 	static Find(Outer: UObject, ResourceName: string): GsGameObjectBlueprintLibrary;
 	static GetDefaultObject(): GsGameObjectBlueprintLibrary;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectBlueprintLibrary;
+	static SpawnVehicle(ActorClass: UnrealEngineClass,StartPos: Vector,Offset: Vector): Actor;
 	static SpawnPlayer(ActorClass: UnrealEngineClass,StartPos: Vector,Offset: Vector): void;
 	static SpawnOnGround(ActorClass: UnrealEngineClass,StartPos: Vector,Offset: Vector): Actor;
 	static FindGameObjects(WorldContextObject: UObject,ObjectType: EGsGameObjectType): GsGameObjectBase[];
@@ -10778,6 +10486,14 @@ declare class GsGameObjectPlayer extends GsGameObjectDynamic {
 	static C(Other: UObject | any): GsGameObjectPlayer;
 }
 
+declare class GsLocalCharacter extends Character { 
+	CameraBoom: SpringArmComponent;
+	FollowCamera: CameraComponent;
+	static GetDefaultObject(): GsLocalCharacter;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsLocalCharacter;
+	static C(Other: UObject | any): GsLocalCharacter;
+}
+
 declare class GsInputBindingBase extends UObject { 
 	static Load(ResourceName: string): GsInputBindingBase;
 	static Find(Outer: UObject, ResourceName: string): GsInputBindingBase;
@@ -10794,22 +10510,14 @@ declare class GsInputBindingLocalPlayer extends GsInputBindingBase {
 	static C(Other: UObject | any): GsInputBindingLocalPlayer;
 }
 
-declare class GsLocalCharacter extends Character { 
-	CameraBoom: SpringArmComponent;
-	FollowCamera: CameraComponent;
-	InputBinder: GsInputBindingLocalPlayer;
-	static GetDefaultObject(): GsLocalCharacter;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsLocalCharacter;
-	static C(Other: UObject | any): GsLocalCharacter;
-}
-
 declare class GsGameObjectLocal extends GsGameObjectPlayer { 
 	Actor: GsLocalCharacter;
+	InputBinder: GsInputBindingLocalPlayer;
 	static Load(ResourceName: string): GsGameObjectLocal;
 	static Find(Outer: UObject, ResourceName: string): GsGameObjectLocal;
 	static GetDefaultObject(): GsGameObjectLocal;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectLocal;
-	GetLocal(): GsLocalCharacter;
+	GetLocalCharacter(): GsLocalCharacter;
 	static C(Other: UObject | any): GsGameObjectLocal;
 }
 
@@ -10828,7 +10536,7 @@ declare class GsGameObjectNonPlayer extends GsGameObjectDynamic {
 	static Find(Outer: UObject, ResourceName: string): GsGameObjectNonPlayer;
 	static GetDefaultObject(): GsGameObjectNonPlayer;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectNonPlayer;
-	GetNpc(): GsNpcPawn;
+	GetNpcPawn(): GsNpcPawn;
 	static C(Other: UObject | any): GsGameObjectNonPlayer;
 }
 
@@ -10845,6 +10553,33 @@ declare class GsGameObjectProjectile extends GsGameObjectBase {
 	static GetDefaultObject(): GsGameObjectProjectile;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectProjectile;
 	static C(Other: UObject | any): GsGameObjectProjectile;
+}
+
+declare class GsWheelVehicle extends WheeledVehicle { 
+	SpringArm: SpringArmComponent;
+	Camera: CameraComponent;
+	static GetDefaultObject(): GsWheelVehicle;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsWheelVehicle;
+	static C(Other: UObject | any): GsWheelVehicle;
+}
+
+declare class GsInputBindingVehicle extends GsInputBindingBase { 
+	static Load(ResourceName: string): GsInputBindingVehicle;
+	static Find(Outer: UObject, ResourceName: string): GsInputBindingVehicle;
+	static GetDefaultObject(): GsInputBindingVehicle;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsInputBindingVehicle;
+	static C(Other: UObject | any): GsInputBindingVehicle;
+}
+
+declare class GsGameObjectWheelVehicle extends GsGameObjectBase { 
+	Actor: GsWheelVehicle;
+	InputBinder: GsInputBindingVehicle;
+	static Load(ResourceName: string): GsGameObjectWheelVehicle;
+	static Find(Outer: UObject, ResourceName: string): GsGameObjectWheelVehicle;
+	static GetDefaultObject(): GsGameObjectWheelVehicle;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsGameObjectWheelVehicle;
+	GetWhellVehicle(): GsWheelVehicle;
+	static C(Other: UObject | any): GsGameObjectWheelVehicle;
 }
 
 declare class GsLevelScriptActor extends LevelScriptActor { 
@@ -10894,7 +10629,7 @@ declare type EGsPartsType = 'HAIR' | 'FACE' | 'HEAD' | 'BODY' | 'SHOULDER' | 'GL
 declare var EGsPartsType : { HAIR:'HAIR',FACE:'FACE',HEAD:'HEAD',BODY:'BODY',SHOULDER:'SHOULDER',GLOVE:'GLOVE',LEG:'LEG',FOOT:'FOOT',EGsPartsType_MAX:'EGsPartsType_MAX', };
 declare class GsPartsDataBase { 
 	Type: EGsPartsType;
-	Mesh: SkeletalMesh;
+	Path: SoftObjectPath;
 	clone() : GsPartsDataBase;
 	static C(Other: UObject | any): GsPartsDataBase;
 }
@@ -10948,6 +10683,12 @@ declare class GsTargetPoint extends TargetPoint {
 	static C(Other: UObject | any): GsTargetPoint;
 }
 
+declare class GsTestGameMode extends GameModeBase { 
+	static GetDefaultObject(): GsTestGameMode;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsTestGameMode;
+	static C(Other: UObject | any): GsTestGameMode;
+}
+
 declare class GsUIEventInterface extends Interface { 
 	static Load(ResourceName: string): GsUIEventInterface;
 	static Find(Outer: UObject, ResourceName: string): GsUIEventInterface;
@@ -10957,40 +10698,6 @@ declare class GsUIEventInterface extends Interface {
 	UIEvent_ChangeDownloadRate(InRate: number): void;
 	UIEvent_AccountLoginComplete(): void;
 	static C(Other: UObject | any): GsUIEventInterface;
-}
-
-declare class GsUIParameter extends UObject { 
-	static Load(ResourceName: string): GsUIParameter;
-	static Find(Outer: UObject, ResourceName: string): GsUIParameter;
-	static GetDefaultObject(): GsUIParameter;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIParameter;
-	static C(Other: UObject | any): GsUIParameter;
-}
-
-declare class GsUIWidgetBase extends UserWidget { 
-	static Load(ResourceName: string): GsUIWidgetBase;
-	static Find(Outer: UObject, ResourceName: string): GsUIWidgetBase;
-	static GetDefaultObject(): GsUIWidgetBase;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIWidgetBase;
-	OnPush(InParam: GsUIParameter): void;
-	OnMessage(InKey: string,InParam: GsUIParameter): void;
-	GetUIManager(): GsUIManager;
-	Close(): void;
-	static C(Other: UObject | any): GsUIWidgetBase;
-}
-
-declare class GsUIManager extends HUD { 
-	CachedWidgets: any;
-	WidgetClassTable: DataTable;
-	static GetDefaultObject(): GsUIManager;
-	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUIManager;
-	StackPeek(): GsUIWidgetBase;
-	RemoveAll(): void;
-	PushByKeyName(InKey: string,InParam: GsUIParameter): void;
-	Push(InClass: UnrealEngineClass,InParam: GsUIParameter): void;
-	Pop(InWidget: GsUIWidgetBase): void;
-	GetCachedWidget(InPathName: string): GsUIWidgetBase;
-	static C(Other: UObject | any): GsUIManager;
 }
 
 declare class GsUIParameterInt extends GsUIParameter { 
@@ -11032,6 +10739,7 @@ declare class GsUITray extends GsUIWidgetBase {
 	static Find(Outer: UObject, ResourceName: string): GsUITray;
 	static GetDefaultObject(): GsUITray;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsUITray;
+	OnClickImage(): void;
 	static C(Other: UObject | any): GsUITray;
 }
 
@@ -11079,7 +10787,7 @@ declare class T1AIController extends AIController {
 }
 
 declare class T1AWeapon extends Actor { 
-	WEAPON: SkeletalMeshComponent;
+	Weapon: SkeletalMeshComponent;
 	static GetDefaultObject(): T1AWeapon;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1AWeapon;
 	static C(Other: UObject | any): T1AWeapon;
@@ -11088,7 +10796,7 @@ declare class T1AWeapon extends Actor {
 declare class T1AItemBox extends Actor { 
 	Trigger: BoxComponent;
 	Box: StaticMeshComponent;
-	EFFECT: ParticleSystemComponent;
+	Effect: ParticleSystemComponent;
 	WeaponItemClass: UnrealEngineClass;
 	static GetDefaultObject(): T1AItemBox;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1AItemBox;
@@ -11138,11 +10846,11 @@ declare class T1PlayerStatComponent extends ActorComponent {
 
 declare class T1Player extends GsPlayer { 
 	CurrentWeapon: T1AWeapon;
-	PLAYERSTAT: T1PlayerStatComponent;
-	WEAPON: SkeletalMeshComponent;
-	SPRINGARM: SpringArmComponent;
+	PlayerStat: T1PlayerStatComponent;
+	Weapon: SkeletalMeshComponent;
+	SpringArm: SpringArmComponent;
 	Camera: CameraComponent;
-	HPBARWIDGET: WidgetComponent;
+	HPBarWidget: WidgetComponent;
 	AttackRange: number;
 	AttackRadius: number;
 	IsAttacking: boolean;
@@ -11176,6 +10884,68 @@ declare class T1WorldSetting extends WorldSettings {
 	static GetDefaultObject(): T1WorldSetting;
 	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): T1WorldSetting;
 	static C(Other: UObject | any): T1WorldSetting;
+}
+
+declare class TestUserWidget extends UserWidget { 
+	static Load(ResourceName: string): TestUserWidget;
+	static Find(Outer: UObject, ResourceName: string): TestUserWidget;
+	static GetDefaultObject(): TestUserWidget;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): TestUserWidget;
+	static C(Other: UObject | any): TestUserWidget;
+}
+
+declare class GsEditorTerrainPillarComp extends ProceduralMeshComponent { 
+	_Parent: GsEditorBaseTerrain;
+	static Load(ResourceName: string): GsEditorTerrainPillarComp;
+	static Find(Outer: UObject, ResourceName: string): GsEditorTerrainPillarComp;
+	static GetDefaultObject(): GsEditorTerrainPillarComp;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsEditorTerrainPillarComp;
+	static C(Other: UObject | any): GsEditorTerrainPillarComp;
+}
+
+declare class GsEditorTerrainPlaneComp extends ProceduralMeshComponent { 
+	_Parent: GsEditorBaseTerrain;
+	_Start: GsEditorTerrainPillarComp;
+	_End: GsEditorTerrainPillarComp;
+	static Load(ResourceName: string): GsEditorTerrainPlaneComp;
+	static Find(Outer: UObject, ResourceName: string): GsEditorTerrainPlaneComp;
+	static GetDefaultObject(): GsEditorTerrainPlaneComp;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsEditorTerrainPlaneComp;
+	static C(Other: UObject | any): GsEditorTerrainPlaneComp;
+}
+
+declare class GsEditorTerrainWidget extends UserWidget { 
+	_ContentsText: TextBlock;
+	static Load(ResourceName: string): GsEditorTerrainWidget;
+	static Find(Outer: UObject, ResourceName: string): GsEditorTerrainWidget;
+	static GetDefaultObject(): GsEditorTerrainWidget;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsEditorTerrainWidget;
+	static C(Other: UObject | any): GsEditorTerrainWidget;
+}
+
+declare class GsEditorBaseTerrain extends Actor { 
+	_Height: number;
+	_WidgetHeight: number;
+	_PillarColor: Color;
+	_PlaneOuterColor: Color;
+	_PlaneInsideColor: Color;
+	_Material: Material;
+	_Tag: string;
+	_PointArray: Vector[];
+	_PillarArray: GsEditorTerrainPillarComp[];
+	_PlaneArray: GsEditorTerrainPlaneComp[];
+	_WidgetClass: GsEditorTerrainWidget;
+	_Root: SceneComponent;
+	_Spline: SplineComponent;
+	_Widget: WidgetComponent;
+	static GetDefaultObject(): GsEditorBaseTerrain;
+	static CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): GsEditorBaseTerrain;
+	RegisterPlane(in_plane: GsEditorTerrainPlaneComp): void;
+	RegisterPillar(in_pillar: GsEditorTerrainPillarComp,in_index: number): void;
+	InitPoints(): void;
+	Draw(): void;
+	DestoryAllComponents(): void;
+	static C(Other: UObject | any): GsEditorBaseTerrain;
 }
 
 declare type EMeshPaintColorViewMode = 'Normal' | 'RGB' | 'Alpha' | 'Red' | 'Green' | 'Blue' | 'EMeshPaintColorViewMode_MAX';
@@ -13289,7 +13059,7 @@ declare class EditableMesh extends UObject {
 	SetAllowCompact(bInAllowCompact: boolean): void;
 	SearchSpatialDatabaseForPolygonsPotentiallyIntersectingPlane(InPlane: Plane,OutPolygons?: PolygonID[]): {OutPolygons: PolygonID[]};
 	SearchSpatialDatabaseForPolygonsPotentiallyIntersectingLineSegment(LineSegmentStart: Vector,LineSegmentEnd: Vector,OutPolygons?: PolygonID[]): {OutPolygons: PolygonID[]};
-	SearchSpatialDatabaseForPolygonsInVolume(planes: Plane[],OutPolygons?: PolygonID[]): {OutPolygons: PolygonID[]};
+	SearchSpatialDatabaseForPolygonsInVolume(Planes: Plane[],OutPolygons?: PolygonID[]): {OutPolygons: PolygonID[]};
 	RevertInstance(): EditableMesh;
 	Revert(): void;
 	RemovePolygonPerimeterVertices(PolygonID: PolygonID,FirstVertexNumberToRemove: number,NumVerticesToRemove: number,bDeleteOrphanedVertexInstances: boolean): void;
@@ -14026,7 +13796,7 @@ declare class JavascriptEditorGlobalDelegates extends UObject {
 	OnObjectReimported(UObject: UObject): void;
 	OnNewAssetCreated(InFactory: Factory): void;
 	OnNewActorsDropped(DroppedObjects: UObject[],OutNewActors: Actor[]): void;
-	OnMapOpened(FileName: string,bAsTemplate: boolean): void;
+	OnMapOpened(Filename: string,bAsTemplate: boolean): void;
 	OnLightingBuildStarted(): void;
 	OnLightingBuildKept(): void;
 	OnInMemoryAssetDeleted(InObject: UObject): void;
@@ -14205,7 +13975,7 @@ declare class JavascriptEditorLibrary extends BlueprintFunctionLibrary {
 	static SetAlphamapDataFromMemory(LandscapeInfo: LandscapeInfo,LayerInfo: LandscapeLayerInfoObject,MinX: number,MinY: number,MaxX: number,MaxY: number,PaintingRestriction: ELandscapeLayerPaintingRestriction): void;
 	static SetActorLabel(Actor: Actor,NewActorLabel: string,bMarkDirty: boolean): void;
 	static Select(USelection: USelection,InObject: UObject): void;
-	static SavePackage(Package: Package,FileName: string): boolean;
+	static SavePackage(Package: Package,Filename: string): boolean;
 	static RequestEndPlayMapInPIE(): void;
 	static ReplaceAnimNotifyClass(Sequence: AnimSequenceBase,NotifyName: string,NewNotifyName: string,NewNotifyClass: UObject): number;
 	static RemoveLevelInstance(World: World): void;

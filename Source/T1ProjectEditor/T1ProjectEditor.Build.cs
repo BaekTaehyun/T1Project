@@ -10,24 +10,26 @@ public class T1ProjectEditor : ModuleRules
 
 		PublicDependencyModuleNames.AddRange(
 			new string[]
-			{				
-				"Core",
-				"CoreUObject",				
-				"SlateCore",
-				"Slate",
-				"UnrealEd",
-				"LevelEditor",
-				"T1Project",
-				"InputCore",
-				"Engine",
+            {
+                "Core",
+                "CoreUObject",
+                "SlateCore",
+                "Slate",
+                "UnrealEd",
+                "LevelEditor",
+                "T1Project",
+                "InputCore",
+                "Engine",
                 "AdvancedPreviewScene",
                 "EditorStyle",
-				"PropertyEditor",
-				"Json",
-				"AppFramework",
+                "PropertyEditor",
+                "Json",
+                "AppFramework",
 				//"T1ContentBrowserEditor",
-                "GameService"
-			}
+                "GameService",
+                "ProceduralMeshComponent",
+                "UMG"
+            }
 		);
 
 		

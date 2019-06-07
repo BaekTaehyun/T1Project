@@ -8,7 +8,7 @@ public class T1ProjectTarget : TargetRules
 	public T1ProjectTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
-        ExtraModuleNames.AddRange( new string[] { "T1Project", "GameService" } );
+        ExtraModuleNames.AddRange( new string[] { "T1Project", "GameService", "T1ProjectEditor" } );
     }
  
 }
