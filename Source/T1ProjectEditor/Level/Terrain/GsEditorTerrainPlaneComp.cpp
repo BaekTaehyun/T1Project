@@ -13,9 +13,6 @@ UGsEditorTerrainPlaneComp::UGsEditorTerrainPlaneComp()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
-
-	// ...
-	bWantsOnUpdateTransform = true;
 }
 
 void UGsEditorTerrainPlaneComp::Draw(UGsEditorTerrainPillarComp* in_start, UGsEditorTerrainPillarComp* in_end, float in_height, FColor in_outerColor, FColor in_insideColor)
@@ -46,7 +43,7 @@ void UGsEditorTerrainPlaneComp::Draw(UGsEditorTerrainPillarComp* in_start, UGsEd
 	}	
 }
 
-void UGsEditorTerrainPlaneComp::DrawPlane(int in_section, FVector in_v1, FVector in_v2, FVector in_v3, FVector in_v4, bool in_clockOrient, FColor in_color)
+void UGsEditorTerrainPlaneComp::DrawPlane(int32 in_section, FVector in_v1, FVector in_v2, FVector in_v3, FVector in_v4, bool in_clockOrient, FColor in_color)
 {
 	//vertex;
 	TArray<FVector> vertexs;
@@ -126,7 +123,7 @@ void UGsEditorTerrainPlaneComp::SetNoCollision()
 	SetCastShadow(true);
 }
 
-void UGsEditorTerrainPlaneComp::SetPlaneMaterial(FColor in_color, int in_section)
+void UGsEditorTerrainPlaneComp::SetPlaneMaterial(FColor in_color, int32 in_section)
 {
 	if (_Parent)
 	{
@@ -136,13 +133,5 @@ void UGsEditorTerrainPlaneComp::SetPlaneMaterial(FColor in_color, int in_section
 			instanceMaterial->SetVectorParameterValue(FName("Color"), FLinearColor(in_color));
 			Super::SetMaterial(in_section, instanceMaterial);
 		}
-	}
-}
-
-void UGsEditorTerrainPlaneComp::OnUpdateTransform(EUpdateTransformFlags UpdateTransfo, ETeleportType Teleport)
-{
-	if (_Parent)
-	{
-		_Parent->Draw();
 	}
 }

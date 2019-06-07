@@ -6,6 +6,19 @@
 #include "GameFramework/Actor.h"
 #include "GsEditorBaseTerrain.generated.h"
 
+UENUM(BlueprintType)
+enum class ETerrainShapeType : uint8
+{
+	Polygon,
+	Circle,
+	Line,
+};
+
+const int32 DEFAULT_CIRCLE_POINT_NUM = 8;
+const int32 DEFAULT_LINE_POINT_NUM = 2;
+const int32 DEFAULT_POLYGON_POINT_NUM = 3;
+const float DEFAULT_TERRAIN_DISTANCE = 100.0f;
+
 class UGsEditorTerrainPillarComp;
 class UGsEditorTerrainPlaneComp;
 class UMaterial;
@@ -25,9 +38,17 @@ class T1PROJECTEDITOR_API AGsEditorBaseTerrain : public AActor
 public:
 	//Setting
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
+		ETerrainShapeType _ShapeType;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
+		FString _Tag = "Terrain info";
+
+	//Widget
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		float _Height = 100.0f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		float _WidgetHeight = 25.0f;
+
+	//View 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		FColor _PillarColor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
@@ -35,11 +56,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		FColor _PlaneInsideColor;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
-		UMaterial* _Material;
+		UMaterial* _Material;	
 
-	//Info
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
-		FString _Tag = "Terrain info";
+	//Info	
 	UPROPERTY(BlueprintReadOnly, Category = "GsEditorBaseTerrain")
 		TArray<FVector> _PointArray;
 	UPROPERTY()
@@ -55,7 +74,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GsEditorBaseTerrain")
 		USplineComponent* _Spline;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GsEditorBaseTerrain")
-		UWidgetComponent* _Widget;
+		UWidgetComponent* _Widget;	
 
 public:
 	// Sets default values for this actor's properties
@@ -68,7 +87,7 @@ protected:
 
 	// Called when the game starts or when spawned
 	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
-		void InitPoints();
+		void InitPoints();	
 	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
 		void DestoryAllComponents();	
 	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
@@ -84,9 +103,21 @@ protected:
 #endif
 
 private:	
-	void DrawPlane();
+	//Initialize 
+	void InitPolygon();
+	void InitCircle();
+	void InitLine();
+	void InitPointArray();
+
+	//Draw
+	void DrawPolygon();
+	void DrawCircle();
+	void DawLine();
+	void DrawPlanes(bool in_close = true);
 	void DrawPlillar();
-	void SetWidgetHegiht();
+
+	//Wiget
+	void SetWidgetPosition();
 	void SetWidgetText();
 
 

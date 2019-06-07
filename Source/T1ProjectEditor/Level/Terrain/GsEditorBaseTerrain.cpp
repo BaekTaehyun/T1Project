@@ -74,28 +74,19 @@ void AGsEditorBaseTerrain::Tick(float in_delta)
 
 void AGsEditorBaseTerrain::InitPoints()
 {
-	if (_Spline)
+	switch (_ShapeType)
 	{
-		int num = _Spline->GetNumberOfSplinePoints();
-
-		if (num < 3)
-		{
-			FVector origin = GetActorLocation();
-
-			_Spline->ClearSplinePoints();
-
-			_Spline->AddSplinePoint(origin, ESplineCoordinateSpace::World);
-			_Spline->AddSplinePoint(origin + FVector(100, 0, 0), ESplineCoordinateSpace::World);
-			_Spline->AddSplinePoint(origin + FVector(0, 100, 0), ESplineCoordinateSpace::World);
-		}
-
-		_PointArray.Empty();
-		num = _Spline->GetNumberOfSplinePoints();
-
-		for (int i = 0; i < num; ++i)
-		{
-			_PointArray.Add(_Spline->GetLocationAtSplinePoint(i, ESplineCoordinateSpace::World));
-		}
+	case ETerrainShapeType::Polygon:
+		InitPolygon();
+		break;
+	case ETerrainShapeType::Circle:
+		InitCircle();
+		break;
+	case ETerrainShapeType::Line:
+		InitLine();
+		break;
+	default:
+		break;
 	}
 }
 
@@ -130,10 +121,41 @@ void AGsEditorBaseTerrain::DestoryAllComponents()
 
 void AGsEditorBaseTerrain::Draw()
 {
-	DrawPlillar();
-	DrawPlane();
-	SetWidgetHegiht();
+	switch (_ShapeType)
+	{
+	case ETerrainShapeType::Polygon:
+		DrawPolygon();
+		break;
+	case ETerrainShapeType::Circle:
+		DrawCircle();
+		break;
+	case ETerrainShapeType::Line:
+		DawLine();
+		break;
+	default:
+		break;
+	}
+	
+	SetWidgetPosition();
 	SetWidgetText();
+}
+
+void AGsEditorBaseTerrain::DrawPolygon()
+{
+	DrawPlillar();
+	DrawPlanes();
+}
+
+void AGsEditorBaseTerrain::DrawCircle()
+{
+	DrawPlillar();
+	DrawPlanes();
+}
+
+void AGsEditorBaseTerrain::DawLine()
+{
+	DrawPlillar();
+	DrawPlanes(false);
 }
 
 void AGsEditorBaseTerrain::RegisterPillar(UGsEditorTerrainPillarComp* in_pillar, int32 in_index)
@@ -168,7 +190,7 @@ FVector AGsEditorBaseTerrain::GetCenterBetweenPoints(int32 in_start, int32 in_en
 	return FVector::ZeroVector;
 }
 
-void AGsEditorBaseTerrain::DrawPlane()
+void AGsEditorBaseTerrain::DrawPlanes(bool in_close)
 {
 	int num = _PillarArray.Num();
 	int last = num - 1;
@@ -180,13 +202,16 @@ void AGsEditorBaseTerrain::DrawPlane()
 		{
 			if (i == last)
 			{
-				if (_PlaneArray[last])
+				if (in_close)
 				{
-					if (_PillarArray[last] && _PillarArray[0])
+					if (_PlaneArray[last])
 					{
-						_PlaneArray[last]->Draw(_PillarArray[last], _PillarArray[0], _Height, _PlaneOuterColor, _PlaneInsideColor);
+						if (_PillarArray[last] && _PillarArray[0])
+						{
+							_PlaneArray[last]->Draw(_PillarArray[last], _PillarArray[0], _Height, _PlaneOuterColor, _PlaneInsideColor);
+						}
 					}
-				}
+				}				
 			}
 			else
 			{
@@ -219,12 +244,41 @@ void AGsEditorBaseTerrain::DrawPlillar()
 	}
 }
 
-void AGsEditorBaseTerrain::SetWidgetHegiht()
+void AGsEditorBaseTerrain::SetWidgetPosition()
 {
 	if (_Widget)
 	{
-		FVector pos = GetActorLocation() + FVector(0, 0, _Height + _WidgetHeight);
-		_Widget->SetWorldLocation(pos);
+		int32 num = _PointArray.Num();
+		FVector pos;
+
+		if (num > 0)
+		{
+			float x = 0;
+			float y = 0;
+			float z = MIN_int32;
+
+			for (FVector& iter : _PointArray)
+			{
+				x += iter.X;
+				y += iter.Y;
+
+				if (iter.Z > z)
+				{
+					z = iter.Z;
+				}
+			}
+
+			x /= num;
+			y /= num;
+
+			pos = FVector::FVector(x, y, z + _Height + _WidgetHeight);
+			_Widget->SetWorldLocation(pos);
+		}
+		else
+		{
+			pos = GetActorLocation() + FVector(0, 0, _Height + _WidgetHeight);
+			_Widget->SetWorldLocation(pos);
+		}	
 	}
 }
 
@@ -272,3 +326,117 @@ void AGsEditorBaseTerrain::OnUnSelectCallback()
 	}	
 }
 #endif
+
+void AGsEditorBaseTerrain::InitPolygon()
+{
+	if (_Spline)
+	{
+		_Spline->SetClosedLoop(true);
+	}
+
+	if (_Spline)
+	{
+		int num = _Spline->GetNumberOfSplinePoints();
+
+		if (num < DEFAULT_POLYGON_POINT_NUM)
+		{
+			FVector origin = GetActorLocation();
+
+			_Spline->ClearSplinePoints();
+
+			_Spline->AddSplinePoint(origin, ESplineCoordinateSpace::World);
+			_Spline->AddSplinePoint(origin + FVector(100, 0, 0), ESplineCoordinateSpace::World);
+			_Spline->AddSplinePoint(origin + FVector(0, 100, 0), ESplineCoordinateSpace::World);
+		}
+
+		InitPointArray();
+	}
+}
+
+void AGsEditorBaseTerrain::InitCircle()
+{
+	if (_Spline)
+	{
+		_Spline->SetClosedLoop(true);
+	}
+
+	FVector origin = GetActorLocation();	
+
+	if (_Spline)
+	{		
+		float maxDistance = 0;
+		float distance = 0;
+		int num = _Spline->GetNumberOfSplinePoints();
+		FVector location;
+
+		for (int i = 0; i < num; ++i)
+		{
+			location = _Spline->GetWorldLocationAtSplinePoint(i);		
+			distance = FVector::Distance(origin, location);
+
+			if (maxDistance < distance)
+			{
+				maxDistance = distance;
+			}			
+		}
+
+		maxDistance = (maxDistance > 0 ? maxDistance : DEFAULT_TERRAIN_DISTANCE);
+
+		num = (num < DEFAULT_CIRCLE_POINT_NUM ? DEFAULT_CIRCLE_POINT_NUM : num);
+
+		_Spline->ClearSplinePoints();
+		
+		if (num > 0)
+		{
+			float gap = 360.0f / num;
+			float degree = 0;
+			FVector direction;
+
+			for (int i = 0; i < num; ++i)
+			{
+				degree = gap * i;
+				direction = FVector::ForwardVector.RotateAngleAxis(degree, FVector::UpVector) * maxDistance;
+
+				_Spline->AddSplinePoint(origin + direction, ESplineCoordinateSpace::World);
+			}
+		}		
+	}
+
+	InitPointArray();
+}
+
+void AGsEditorBaseTerrain::InitLine()
+{
+	if (_Spline)
+	{
+		_Spline->SetClosedLoop(false);
+	}
+
+	if (_Spline)
+	{
+		int num = _Spline->GetNumberOfSplinePoints();
+
+		if (num < DEFAULT_LINE_POINT_NUM)
+		{
+			FVector origin = GetActorLocation();
+
+			_Spline->ClearSplinePoints();
+
+			_Spline->AddSplinePoint(origin, ESplineCoordinateSpace::World);
+			_Spline->AddSplinePoint(origin + FVector(100, 0, 0), ESplineCoordinateSpace::World);		
+		}
+
+		InitPointArray();
+	}
+}
+
+void AGsEditorBaseTerrain::InitPointArray()
+{
+	_PointArray.Empty();
+	int num = _Spline->GetNumberOfSplinePoints();
+
+	for (int i = 0; i < num; ++i)
+	{
+		_PointArray.Add(_Spline->GetLocationAtSplinePoint(i, ESplineCoordinateSpace::World));
+	}
+}

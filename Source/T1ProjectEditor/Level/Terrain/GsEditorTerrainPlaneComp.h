@@ -31,11 +31,10 @@ public:
 	// Sets default values for this component's properties
 	UGsEditorTerrainPlaneComp();
 	void Draw(UGsEditorTerrainPillarComp* in_start, UGsEditorTerrainPillarComp* in_end, float in_height, FColor in_outerColor, FColor in_insdieColor);
-	virtual void OnUpdateTransform(EUpdateTransformFlags UpdateTransfo, ETeleportType Teleport) override;
 
 private:
-	void DrawPlane(int in_section, FVector in_v1, FVector in_v2, FVector in_v3, FVector in_v4, bool in_clockOrient, FColor in_color);
-	void SetPlaneMaterial(FColor in_color, int in_section);
+	void DrawPlane(int32 in_section, FVector in_v1, FVector in_v2, FVector in_v3, FVector in_v4, bool in_clockOrient, FColor in_color);
+	void SetPlaneMaterial(FColor in_color, int32 in_section);
 	void SetNoCollision();
 
 };
