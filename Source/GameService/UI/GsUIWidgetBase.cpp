@@ -30,7 +30,7 @@ void UGsUIWidgetBase::NativeOnInitialized()
 void UGsUIWidgetBase::BeginDestroy()
 {
 	Super::BeginDestroy();
-	GSLOG(Warning, TEXT("--------BeginDestroy"));
+	//GSLOG(Warning, TEXT("--------BeginDestroy"));
 }
 
 void UGsUIWidgetBase::RemoveFromParent()

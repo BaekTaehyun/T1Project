@@ -7,7 +7,7 @@
 #include "GsUIControllerNotDestroy.generated.h"
 
 /**
- * 
+ * 레벨전환 시 파괴되지 않을 위젯 관리
  */
 UCLASS()
 class GAMESERVICE_API UGsUIControllerNotDestroy : public UGsUIController
@@ -20,6 +20,5 @@ public:
 
 protected:
 	virtual void AddToViewport(UGsUIWidgetBase* InWidget) override;
-	virtual void RemoveUsingWidget(UGsUIWidgetBase* InWidget) override;
-	
+	virtual void RemoveUsingWidget(UGsUIWidgetBase* InWidget) override;	
 };
