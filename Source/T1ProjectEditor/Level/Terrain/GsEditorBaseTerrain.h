@@ -18,6 +18,7 @@ const int32 DEFAULT_CIRCLE_POINT_NUM = 8;
 const int32 DEFAULT_LINE_POINT_NUM = 2;
 const int32 DEFAULT_POLYGON_POINT_NUM = 3;
 const float DEFAULT_TERRAIN_DISTANCE = 100.0f;
+const int32 INVALIDE_INDEX = -1;
 
 class UGsEditorTerrainPillarComp;
 class UGsEditorTerrainPlaneComp;
@@ -108,6 +109,7 @@ private:
 	void InitCircle();
 	void InitLine();
 	void InitPointArray();
+	bool TryGetSelectedIndexInSpline(int32& out_index);
 
 	//Draw
 	void DrawPolygon();

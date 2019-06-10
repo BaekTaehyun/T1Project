@@ -28,7 +28,8 @@ public class T1ProjectEditor : ModuleRules
 				//"T1ContentBrowserEditor",
                 "GameService",
                 "ProceduralMeshComponent",
-                "UMG"
+                "UMG",
+                "ComponentVisualizers"                
             }
 		);
 

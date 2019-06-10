@@ -2,21 +2,26 @@
 
 
 #include "GsEditorBaseTerrain.h"
-#include "./GsEditorTerrainPillarComp.h"
-#include "./GsEditorTerrainPlaneComp.h"
+#include <EngineGlobals.h>
+#include "Engine/Engine.h"
 #include "Runtime/Engine/Classes/Components/SceneComponent.h"
 #include "Runtime/CoreUObject/Public/UObject/UObjectGlobals.h"
 #include "Runtime/Engine/Classes/Components/SplineComponent.h"
 #include "Runtime/UMG/Public/Components/WidgetComponent.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
-#include "Editor/UnrealEd/Classes/Editor/EditorEngine.h"
 #include "Runtime/Engine/Public/UnrealClient.h"
-#include "T1ProjectEditor/Widget/GsEditorTerrainWidget.h"
 #include "Runtime/UMG/Public/Components/TextBlock.h"
 #include "Runtime/Engine/Classes/Engine/Selection.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "Runtime/Core/Public/Templates/SharedPointer.h"
 #include "Editor/UnrealEd/Classes/Editor/EditorEngine.h"
 #include "Editor/UnrealEd/Public/LevelEditorViewport.h"
+#include "Editor/UnrealEd/Public/UnrealEdGlobals.h"
+#include "Editor/ComponentVisualizers/Public/SplineComponentVisualizer.h"
+#include "Editor/UnrealEd/Classes/Editor/UnrealEdEngine.h"
+#include "T1ProjectEditor/Widget/GsEditorTerrainWidget.h"
+#include "T1ProjectEditor/Level/Terrain/GsEditorTerrainPillarComp.h"
+#include "T1ProjectEditor/Level/Terrain/GsEditorTerrainPlaneComp.h"
 
 // Sets default values
 AGsEditorBaseTerrain::AGsEditorBaseTerrain()
@@ -135,7 +140,7 @@ void AGsEditorBaseTerrain::Draw()
 	default:
 		break;
 	}
-	
+
 	SetWidgetPosition();
 	SetWidgetText();
 }
@@ -211,7 +216,7 @@ void AGsEditorBaseTerrain::DrawPlanes(bool in_close)
 							_PlaneArray[last]->Draw(_PillarArray[last], _PillarArray[0], _Height, _PlaneOuterColor, _PlaneInsideColor);
 						}
 					}
-				}				
+				}
 			}
 			else
 			{
@@ -278,7 +283,7 @@ void AGsEditorBaseTerrain::SetWidgetPosition()
 		{
 			pos = GetActorLocation() + FVector(0, 0, _Height + _WidgetHeight);
 			_Widget->SetWorldLocation(pos);
-		}	
+		}
 	}
 }
 
@@ -323,7 +328,7 @@ void AGsEditorBaseTerrain::OnUnSelectCallback()
 	if (_Widget)
 	{
 		_Widget->SetVisibility(false, true);
-	}	
+	}
 }
 #endif
 
@@ -355,51 +360,66 @@ void AGsEditorBaseTerrain::InitPolygon()
 
 void AGsEditorBaseTerrain::InitCircle()
 {
-	if (_Spline)
+	if (nullptr == _Spline)
 	{
-		_Spline->SetClosedLoop(true);
+		return;
 	}
 
-	FVector origin = GetActorLocation();	
+	_Spline->SetClosedLoop(true);
 
-	if (_Spline)
+	FVector origin = GetActorLocation();	
+	float distance = 0;
+	int num = _Spline->GetNumberOfSplinePoints();
+	FVector location;
+	int32 out_selectIndex;
+
+	if (TryGetSelectedIndexInSpline(out_selectIndex))
 	{		
-		float maxDistance = 0;
-		float distance = 0;
-		int num = _Spline->GetNumberOfSplinePoints();
-		FVector location;
+		if (_Spline->GetNumberOfSplinePoints() >= out_selectIndex)
+		{
+			location = _Spline->GetWorldLocationAtSplinePoint(out_selectIndex);
+			distance = FVector::Distance(origin, location);
+		}		
+
+		UE_LOG(LogTemp, Log, TEXT("Selected spline index : %d"), out_selectIndex);
+	}
+	else
+	{		
+		float accum = 0;
+
+		if (_PointArray.Num() > 0)
+		{
+			for (FVector& iter : _PointArray)
+			{
+				accum += FVector::Distance(origin, iter);
+			}
+
+			distance = accum / _PointArray.Num();
+		}
+		else
+		{
+			distance = DEFAULT_TERRAIN_DISTANCE;
+		}		
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Spline distance : %f"), distance);
+
+	num = (num < DEFAULT_CIRCLE_POINT_NUM ? DEFAULT_CIRCLE_POINT_NUM : num);
+
+	_Spline->ClearSplinePoints();
+
+	if (num > 0)
+	{
+		float gap = 360.0f / num;
+		float degree = 0;
+		FVector direction;
 
 		for (int i = 0; i < num; ++i)
 		{
-			location = _Spline->GetWorldLocationAtSplinePoint(i);		
-			distance = FVector::Distance(origin, location);
-
-			if (maxDistance < distance)
-			{
-				maxDistance = distance;
-			}			
+			degree = gap * i;
+			direction = FVector::ForwardVector.RotateAngleAxis(degree, FVector::UpVector) * distance;
+			_Spline->AddSplinePoint(origin + direction, ESplineCoordinateSpace::World);
 		}
-
-		maxDistance = (maxDistance > 0 ? maxDistance : DEFAULT_TERRAIN_DISTANCE);
-
-		num = (num < DEFAULT_CIRCLE_POINT_NUM ? DEFAULT_CIRCLE_POINT_NUM : num);
-
-		_Spline->ClearSplinePoints();
-		
-		if (num > 0)
-		{
-			float gap = 360.0f / num;
-			float degree = 0;
-			FVector direction;
-
-			for (int i = 0; i < num; ++i)
-			{
-				degree = gap * i;
-				direction = FVector::ForwardVector.RotateAngleAxis(degree, FVector::UpVector) * maxDistance;
-
-				_Spline->AddSplinePoint(origin + direction, ESplineCoordinateSpace::World);
-			}
-		}		
 	}
 
 	InitPointArray();
@@ -423,7 +443,7 @@ void AGsEditorBaseTerrain::InitLine()
 			_Spline->ClearSplinePoints();
 
 			_Spline->AddSplinePoint(origin, ESplineCoordinateSpace::World);
-			_Spline->AddSplinePoint(origin + FVector(100, 0, 0), ESplineCoordinateSpace::World);		
+			_Spline->AddSplinePoint(origin + FVector(100, 0, 0), ESplineCoordinateSpace::World);
 		}
 
 		InitPointArray();
@@ -439,4 +459,31 @@ void AGsEditorBaseTerrain::InitPointArray()
 	{
 		_PointArray.Add(_Spline->GetLocationAtSplinePoint(i, ESplineCoordinateSpace::World));
 	}
+}
+
+bool AGsEditorBaseTerrain::TryGetSelectedIndexInSpline(int32& out_index)
+{
+	out_index = INVALIDE_INDEX;
+
+	if (nullptr == GUnrealEd)
+	{
+		return false;
+	}
+
+	TSharedPtr<FSplineComponentVisualizer> splineVisualiser = StaticCastSharedPtr<FSplineComponentVisualizer>(GUnrealEd->FindComponentVisualizer(USplineComponent::StaticClass()));
+
+	if (false == splineVisualiser.IsValid())
+	{
+		return false;
+	}
+
+	const TSet<int32>& indexArray = splineVisualiser.Get()->GetSelectedKeys();	
+
+	if (indexArray.Num() > 0)
+	{
+		out_index = indexArray.Array()[0];
+		return true;
+	}
+
+	return false;
 }
