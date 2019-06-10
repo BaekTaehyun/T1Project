@@ -117,34 +117,52 @@ void UGsInputBindingLocalPlayer::OnMoveStop()
 
 void UGsInputBindingLocalPlayer::OnMoveForward(float Value)
 {
+#ifdef OLD_FUNCTION
 	if (FunctionMoveForward != nullptr)
 	{
 		FunctionMoveForward(Value);
 	}
+#else
+	if (FunctionMoveForwardBackward != nullptr)
+	{
+		FunctionMoveForwardBackward(Value);
+	}
+#endif
 }
 
 void UGsInputBindingLocalPlayer::OnMoveBackward(float Value)
 {
+#ifdef OLD_FUNCTION
 	if (FunctionMoveBackward != nullptr)
 	{
 		FunctionMoveBackward(Value);
 	}
+#endif
 }
 
 void UGsInputBindingLocalPlayer::OnMoveLeft(float Value)
 {
+#ifdef OLD_FUNCTION
 	if (FunctionMoveLeft != nullptr)
 	{
 		FunctionMoveLeft(Value);
 	}
+#endif
 }
 
 void UGsInputBindingLocalPlayer::OnMoveRight(float Value)
 {
+#ifdef OLD_FUNCTION
 	if (FunctionMoveRight != nullptr)
 	{
 		FunctionMoveRight(Value);
 	}
+#else
+	if (FunctionMoveLeftRight != nullptr)
+	{
+		FunctionMoveLeftRight(Value);
+	}
+#endif
 }
 
 void UGsInputBindingLocalPlayer::OnMoveRotate(float Value)
@@ -155,12 +173,26 @@ void UGsInputBindingLocalPlayer::OnMoveRotate(float Value)
 
 void UGsInputBindingLocalPlayer::OnMoveRotateYaw(float Value)
 {
+#ifdef OLD_FUNCTION
 	Target->GetLocalCharacter()->AddControllerYawInput(Value);
+#else
+	if (FunctionTurn != nullptr)
+	{
+		FunctionTurn(Value);
+	}
+#endif
 }
 
 void UGsInputBindingLocalPlayer::OnMoveRotatePitch(float Value)
 {
+#ifdef OLD_FUNCTION
 	Target->GetLocalCharacter()->AddControllerPitchInput(Value);
+#else
+	if (FunctionLookUp != nullptr)
+	{
+		FunctionLookUp(Value);
+	}
+#endif
 }
 
 // 터치 시작(pc는 좌클릭)

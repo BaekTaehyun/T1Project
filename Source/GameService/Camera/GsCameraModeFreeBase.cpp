@@ -61,10 +61,15 @@ void GsCameraModeFreeBase::Enter(UGsGameObjectLocal* In_char, GsCameraModeManage
 	// 람다 캡쳐를 레퍼런스(&)로 하고 포인터 받으면 다른주소를 넘겨줘서
 	// 실제 호출시 이상 상황 발생함....
 	// 포인터는 복사(=)로 캡쳐해야함....
+#ifdef OLD_FUNCTION
 	inputBinding->FunctionMoveForward = [=](float val) {MoveForward(val, In_char); };
 	inputBinding->FunctionMoveBackward = [=](float val) {MoveBackward(val, In_char); };
 	inputBinding->FunctionMoveLeft = [=](float val) {MoveLeft(val, In_char); };
 	inputBinding->FunctionMoveRight = [=](float val) {MoveRight(val, In_char); };
+#else
+	inputBinding->FunctionMoveForwardBackward = [=](float val) {UpDown(val, In_char); };
+	inputBinding->FunctionMoveLeftRight = [=](float val) {LeftRight(val, In_char); };
+#endif
 
 	inputBinding->FunctionLookUp = [=](float val) {LookUp(val, In_char); };
 	inputBinding->FunctionTurn = [=](float val) {Turn(val, In_char); };
@@ -110,10 +115,15 @@ void GsCameraModeFreeBase::Exit(UGsGameObjectLocal* In_char)
 	}
 
 	// 바인딩 해제
+#ifdef OLD_FUNCTION
 	inputBinding->FunctionMoveForward = nullptr;
 	inputBinding->FunctionMoveBackward = nullptr;
 	inputBinding->FunctionMoveLeft = nullptr;
 	inputBinding->FunctionMoveRight = nullptr;
+#else
+	inputBinding->FunctionMoveForwardBackward = nullptr;
+	inputBinding->FunctionMoveLeftRight = nullptr;
+#endif
 	inputBinding->FunctionLookUp = nullptr;
 	inputBinding->FunctionTurn = nullptr;
 
@@ -130,7 +140,16 @@ void GsCameraModeFreeBase::Update(UGsGameObjectLocal* In_char, float In_deltaTim
 // 위,아래 이동 처리
 void GsCameraModeFreeBase::UpDown(float NewAxisValue, UGsGameObjectLocal* In_char)
 {
+	if (In_char == nullptr)
+	{
+		return;
+	}
 
+	if (auto movement = In_char->GetMovement())
+	{
+		FVector dir = FRotationMatrix(In_char->GetLocalCharacter()->Controller->GetControlRotation()).GetUnitAxis(EAxis::X);
+		movement->Move(dir, NewAxisValue);
+	}
 
 
 	//GSLOG(Warning, TEXT("UpDown axisVal: %f"), NewAxisValue);
@@ -138,7 +157,15 @@ void GsCameraModeFreeBase::UpDown(float NewAxisValue, UGsGameObjectLocal* In_cha
 // 좌,우 이동 처리
 void GsCameraModeFreeBase::LeftRight(float NewAxisValue, UGsGameObjectLocal* In_char)
 {
-
+	if (In_char == nullptr)
+	{
+		return;
+	}
+	if (auto movement = In_char->GetMovement())
+	{
+		FVector dir = FRotationMatrix(In_char->GetLocalCharacter()->Controller->GetControlRotation()).GetUnitAxis(EAxis::Y);	
+		movement->Move(dir, NewAxisValue);
+	}
 	//GSLOG(Warning, TEXT("LeftRight axisVal: %f"), NewAxisValue);
 }
 

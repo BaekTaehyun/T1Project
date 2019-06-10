@@ -67,10 +67,12 @@ void GsCameraModeFix::Enter(UGsGameObjectLocal* In_char, GsCameraModeManager* In
 	// 람다 캡쳐를 레퍼런스(&)로 하고 포인터 받으면 다른주소를 넘겨줘서
 	// 실제 호출시 이상 상황 발생함....
 	// 포인터는 복사(=)로 캡쳐해야함....
+#ifdef OLD_FUNCTION
 	inputBinding->FunctionMoveForward = [=](float val) {MoveForward(val, In_char); };
 	inputBinding->FunctionMoveBackward = [=](float val) {MoveBackward(val, In_char); };
 	inputBinding->FunctionMoveLeft = [=](float val) {MoveLeft(val, In_char); };
 	inputBinding->FunctionMoveRight = [=](float val) {MoveRight(val, In_char); };
+#endif
 
 	inputBinding->FunctionLookUp = [=](float val) {LookUp(val, In_char); };
 	inputBinding->FunctionTurn = [=](float val) {Turn(val, In_char); };
@@ -115,11 +117,13 @@ void GsCameraModeFix::Exit(UGsGameObjectLocal* In_char)
 		GSLOG(Error, TEXT("inputBinding == nullptr"));
 		return;
 	}
+#ifdef OLD_FUNCTION
 	// 바인딩 해제
 	inputBinding->FunctionMoveForward = nullptr;
 	inputBinding->FunctionMoveBackward = nullptr;
 	inputBinding->FunctionMoveLeft = nullptr;
 	inputBinding->FunctionMoveRight = nullptr;
+#endif
 	inputBinding->FunctionLookUp = nullptr;
 	inputBinding->FunctionTurn = nullptr;
 
