@@ -5,15 +5,19 @@
 #include "CoreMinimal.h"
 #include "Data/GsSkillDataBase.h"
 
+class UGsGameObjectBase;
+class UGsSkillDataContainerBase;
+
 /**
  * 
  */
 class GAMESERVICE_API FGsSkillBase
 {
 public:
+	FGsSkillBase();
 	virtual ~FGsSkillBase();
 
-	virtual void Initialize(class UGsGameObjectBase* Owner);
+	virtual void Initialize(UGsGameObjectBase* Owner);
 	virtual void Finalize();
     virtual void Update(float Delta);
 
@@ -31,7 +35,7 @@ public:
 
 protected:
 	UGsGameObjectBase* Owner;
-	class UGsSkillDataContainerBase* SkillFactory;
+	UGsSkillDataContainerBase* SkillFactory;
 };
 
 //발동 스킬(액션) 구조체

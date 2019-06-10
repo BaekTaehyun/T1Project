@@ -31,6 +31,9 @@ class GAMESERVICE_API UGsInputBindingBase : public UObject
 	GENERATED_BODY()
 	
 public:
+	UGsInputBindingBase();
+	virtual ~UGsInputBindingBase();
+
 	virtual void Initialize();
 	virtual void Finalize();
 

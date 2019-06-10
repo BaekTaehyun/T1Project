@@ -22,7 +22,6 @@ public:
 	FORCEINLINE IGsStateBase* PrevState() const		{ return Prev; }
 	bool IsState(uint8 StateID) const;
 	bool IsState(EGsStateBase StateType) const;
-	bool IsState(EGsStateUpperBase StateType) const;
 
 	template <class tState>//시작 State정의
 	void Initialize(UGsGameObjectBase* owner)

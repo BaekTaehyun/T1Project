@@ -21,11 +21,6 @@ bool FGsFSMManager::IsState(EGsStateBase StateType) const
 	return (nullptr != Current && Current->GetStateID() == static_cast<uint8>(StateType));
 }
 
-bool FGsFSMManager::IsState(EGsStateUpperBase StateType) const
-{
-	return (nullptr != Current && Current->GetStateID() == static_cast<uint8>(StateType));
-}
-
 void FGsFSMManager::Update(UGsGameObjectBase* owner, float Delta)
 {
 	if (Current)
@@ -46,9 +41,7 @@ void FGsFSMManager::ProcessEvent(uint8 StateID, FGsStateChangeFailed const& Fail
 			}
 #if WITH_EDITOR
 			//스테이트 전환 실패 로그 메세지
-			FString stateName = (StateID > static_cast<uint8>(EGsStateUpperBase::None)) ?
-				EnumToString(EGsStateUpperBase, static_cast<EGsStateUpperBase>(StateID)) :
-				EnumToString(EGsStateBase, static_cast<EGsStateBase>(StateID));
+			FString stateName = EnumToString(EGsStateBase, static_cast<EGsStateBase>(StateID));
 			UE_LOG(LogTemp, Warning, TEXT("[%s] State Changed failed!  Current State : [%s]"), *stateName, *Current->Name());
 #endif
 		}

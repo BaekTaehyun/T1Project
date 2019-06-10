@@ -7,6 +7,14 @@
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 #include "GameObject/ActorExtend/GsLocalCharacter.h"
 
+FGsPartsLocal::FGsPartsLocal()
+{
+}
+
+FGsPartsLocal::~FGsPartsLocal()
+{
+}
+
 void FGsPartsLocal::Initialize(UGsGameObjectBase* owner)
 {
 	Super::Initialize(owner);
@@ -37,6 +45,15 @@ void FGsPartsLocal::Detached()
 	{
 		USkeletalMeshComponent* MeshComponent = Local->GetLocalCharacter()->GetMesh();
 		MeshComponent->SetSkeletalMesh(mesh);
+	}
+}
+
+void FGsPartsLocal::MasterPose(USkeletalMeshComponent* SkeletaMesh)
+{
+	if (Parts.Num() > 1)
+	{
+		auto meshComponent = Parts[0].Get()->Mesh;
+
 	}
 }
 

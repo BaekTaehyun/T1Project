@@ -15,11 +15,17 @@ class GAMESERVICE_API FGsMovementLocal : public FGsMovementBase
 	typedef FGsMovementBase Super;
 
 public:
+	FGsMovementLocal();
+	virtual ~FGsMovementLocal();
+
     virtual void Initialize(UGsGameObjectBase* Owner) override;
 	virtual void Finalize() override;
     virtual void Update(float Delta) override;
 
 public:
+	virtual bool IsMove() override;
+	float GetRateAccelerator();
+
     inline UCharacterMovementComponent* GetCharMovement() const { return CharMovement; }
 
 protected:
@@ -29,4 +35,6 @@ protected:
 protected:
     UGsGameObjectLocal* Local;
     UCharacterMovementComponent* CharMovement;
+
+	float RateAccelerator;
 };

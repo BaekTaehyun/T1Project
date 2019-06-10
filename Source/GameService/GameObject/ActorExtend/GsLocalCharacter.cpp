@@ -64,6 +64,7 @@ void AGsLocalCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	}
 }
 
+#pragma todo("by: CapsuleComponent 비활성 방식 R&D 필요")
 void AGsLocalCharacter::EnableCollision()
 {
 	GetCapsuleComponent()->SetCollisionEnabled(RestoreCollisionType);

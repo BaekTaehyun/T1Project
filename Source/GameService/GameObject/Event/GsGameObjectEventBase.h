@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "SampleParam/GsGameObjectEventParamBase.h"
 
+class UGsGameObjectBase;
+
 /**
  * 오브젝트 이벤트 처리 담당 클래스
  * 현재는 따로 구분 두지 않고 Local클래스에만 정의해둠..
@@ -30,7 +32,7 @@ protected:
 	virtual GsGameObjectEventParamBase* CreateParam(MessageGameObject::Action Type);
 
 protected:
-	class UGsGameObjectBase* Owner;
+	UGsGameObjectBase* Owner;
 
 	//EventParam데이터 캐싱
 	TMap<MessageGameObject::Action, GsGameObjectEventParamBase*> EventParams;

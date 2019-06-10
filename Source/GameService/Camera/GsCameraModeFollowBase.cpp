@@ -152,33 +152,33 @@ void GsCameraModeFollowBase::LeftRight(float NewAxisValue, UGsGameObjectLocal* I
 	_currentXInput = NewAxisValue;
 }
 // 앞 이동 처리
-void GsCameraModeFollowBase::MoveForward(UGsGameObjectLocal* In_char)
+void GsCameraModeFollowBase::MoveForward(float NewAxisValue, UGsGameObjectLocal* In_char)
 {
-	GsCameraModeFreeBase::MoveForward(In_char);
+	GsCameraModeFreeBase::MoveForward(NewAxisValue, In_char);
 	
 	// y입력 저장
 	_currentYInput = 1.0f;
 }
 // 뒤 이동 처리
-void GsCameraModeFollowBase::MoveBackward(UGsGameObjectLocal* In_char)
+void GsCameraModeFollowBase::MoveBackward(float NewAxisValue, UGsGameObjectLocal* In_char)
 {
-	GsCameraModeFreeBase::MoveBackward(In_char);
+	GsCameraModeFreeBase::MoveBackward(NewAxisValue, In_char);
 
 	// y입력 저장
 	_currentYInput = -1.0f;
 }
 // 좌 이동 처리
-void GsCameraModeFollowBase::MoveLeft(UGsGameObjectLocal* In_char)
+void GsCameraModeFollowBase::MoveLeft(float NewAxisValue, UGsGameObjectLocal* In_char)
 {
-	GsCameraModeFreeBase::MoveLeft(In_char);
+	GsCameraModeFreeBase::MoveLeft(NewAxisValue, In_char);
 
 	// x입력 저장
 	_currentXInput = -1.0f;
 }
 // 우 이동 처리
-void GsCameraModeFollowBase::MoveRight(UGsGameObjectLocal* In_char)
+void GsCameraModeFollowBase::MoveRight(float NewAxisValue, UGsGameObjectLocal* In_char)
 {
-	GsCameraModeFreeBase::MoveRight(In_char);
+	GsCameraModeFreeBase::MoveRight(NewAxisValue, In_char);
 
 	// x입력 저장
 	_currentXInput = 1.0f;

@@ -2,6 +2,14 @@
 
 #include "GsInputBindingBase.h"
 
+UGsInputBindingBase::UGsInputBindingBase()
+{
+}
+
+UGsInputBindingBase::~UGsInputBindingBase()
+{
+}
+
 void UGsInputBindingBase::Initialize()
 {
 }

@@ -41,11 +41,11 @@ void UGsInputBindingLocalPlayer::SetBinding(UInputComponent* input)
 	input->BindAction("LocalAction", IE_Released, this, &UGsInputBindingLocalPlayer::OnAction);
 
 	//Movement
-	input->BindAction("LocalMoveForward", IE_Pressed, this, &UGsInputBindingLocalPlayer::OnMoveForward);
-	input->BindAction("LocalMoveBackward", IE_Pressed, this, &UGsInputBindingLocalPlayer::OnMoveBackward);
-	input->BindAction("LocalMoveLeft", IE_Pressed, this, &UGsInputBindingLocalPlayer::OnMoveLeft);
-	input->BindAction("LocalMoveRight", IE_Pressed, this, &UGsInputBindingLocalPlayer::OnMoveRight);
-	input->BindAction("LocalMoveStop", IE_Released, this, &UGsInputBindingLocalPlayer::OnMoveStop);
+	input->BindAxis("LocalMoveForward", this, &UGsInputBindingLocalPlayer::OnMoveForward);
+	//input->BindAxis("LocalMoveBackward",this, &UGsInputBindingLocalPlayer::OnMoveBackward);
+	//input->BindAxis("LocalMoveLeft", this, &UGsInputBindingLocalPlayer::OnMoveLeft);
+	input->BindAxis("LocalMoveRight", this, &UGsInputBindingLocalPlayer::OnMoveRight);
+	//input->BindAxis("LocalMoveStop", IE_Released, this, &UGsInputBindingLocalPlayer::OnMoveStop);
 
 	input->BindAxis("LocalMoveRotate", this, &UGsInputBindingLocalPlayer::OnMoveRotateYaw);
 	input->BindAxis("LocalTurn", this, &UGsInputBindingLocalPlayer::OnMoveRotateYaw);
@@ -115,36 +115,35 @@ void UGsInputBindingLocalPlayer::OnMoveStop()
 	}
 }
 
-void UGsInputBindingLocalPlayer::OnMoveForward()
+void UGsInputBindingLocalPlayer::OnMoveForward(float Value)
 {
-	GSLOG(Warning, TEXT("OnMoveForward"));
 	if (FunctionMoveForward != nullptr)
 	{
-		FunctionMoveForward();
+		FunctionMoveForward(Value);
 	}
 }
 
-void UGsInputBindingLocalPlayer::OnMoveBackward()
+void UGsInputBindingLocalPlayer::OnMoveBackward(float Value)
 {
 	if (FunctionMoveBackward != nullptr)
 	{
-		FunctionMoveBackward();
+		FunctionMoveBackward(Value);
 	}
 }
 
-void UGsInputBindingLocalPlayer::OnMoveLeft()
+void UGsInputBindingLocalPlayer::OnMoveLeft(float Value)
 {
 	if (FunctionMoveLeft != nullptr)
 	{
-		FunctionMoveLeft();
+		FunctionMoveLeft(Value);
 	}
 }
 
-void UGsInputBindingLocalPlayer::OnMoveRight()
+void UGsInputBindingLocalPlayer::OnMoveRight(float Value)
 {
 	if (FunctionMoveRight != nullptr)
 	{
-		FunctionMoveRight();
+		FunctionMoveRight(Value);
 	}
 }
 

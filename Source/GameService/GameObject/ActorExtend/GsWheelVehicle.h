@@ -11,7 +11,9 @@ class USpringArmComponent;
 
 /**
  * 기계형 탈것 처리(바퀴가 있는..)
- * 생물형 탈것도 AWheeledVehicle 클래스를 상속받아야 할것인가는 추후 고민해볼것
+ * 생물형 탈것은 R&D 필요해 보임
+ * AWheeledVehicle 클래스를 상속받아야 할것인가는 추후 고민해볼것
+ * 조작 제어를 위해 UGsInputBindingBase를 설정하게 구성
  */
 UCLASS()
 class GAMESERVICE_API AGsWheelVehicle : public AWheeledVehicle
@@ -33,6 +35,7 @@ public:
 
 public:
 	AGsWheelVehicle();
+	virtual ~AGsWheelVehicle();
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

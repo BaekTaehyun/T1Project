@@ -11,6 +11,10 @@ FGsFSMManager*    UGsGameObjectDynamic::GetBaseFSM() const  	{ return Fsm; }
 FGsPartsBase*     UGsGameObjectDynamic::GetParts() const		{ return Parts; }
 FGsMovementBase*  UGsGameObjectDynamic::GetMovement() const     { return Movement; }
 
+UGsGameObjectDynamic::~UGsGameObjectDynamic()
+{
+}
+
 void UGsGameObjectDynamic::Initialize()
 {
 	Super::Initialize();

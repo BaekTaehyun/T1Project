@@ -12,6 +12,7 @@
 * 언리얼 엔진 로직 담당 Local캐릭터 전용 클래스
 * 로컬 BP제작시 이 클래스를 기반으로 제작
 * ACharacter 클래스를 상속받은 커스텀 ACharacter 클래스
+* 조작 제어를 위해 UGsInputBindingBase를 설정하게 구성
 */
 UCLASS()
 class GAMESERVICE_API AGsLocalCharacter : public ACharacter
@@ -44,7 +45,6 @@ public:
     // Called to bind functionality to input
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-#pragma todo("by: CapsuleComponent 비활성 방식 R&D 필요")
 	void EnableCollision();
 	void DisableCollision();
 

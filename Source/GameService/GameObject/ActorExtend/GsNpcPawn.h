@@ -11,6 +11,9 @@ class UCapsuleComponent;
 
 /**
 * APawn을 상속받은 NoneCharacter
+* 이클래스는 USkeletalMeshComponent, UPawnMovementComponent의 동작을 하는 APawn클래스
+* 외형및, 운동능력 장착 가능
+* 이런 형태의 NPC객체들은 ACharacter를 상속 받은 클래스로 처리할지 고민이 필요해 보임
 */
 UCLASS()
 class GAMESERVICE_API AGsNpcPawn : public APawn
@@ -33,6 +36,8 @@ public:
 public:
 	// Sets default values for this pawn's properties
 	AGsNpcPawn();
+	virtual ~AGsNpcPawn();
+
     // Called every frame
     virtual void Tick(float DeltaTime) override;
     // Called to bind functionality to input

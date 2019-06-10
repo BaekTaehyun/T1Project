@@ -6,6 +6,9 @@
 #include "GameObject/Input/GsInputBindingBase.h"
 #include "GsInputBindingVehicle.generated.h"
 
+class UGsGameObjectWheelVehicle;
+class UWheeledVehicleMovementComponent;
+
 /**
  * 
  */
@@ -15,8 +18,11 @@ class GAMESERVICE_API UGsInputBindingVehicle : public UGsInputBindingBase
 	GENERATED_BODY()
 	
 public:
+	UGsInputBindingVehicle();
+	virtual ~UGsInputBindingVehicle();
+
 	virtual void Initialize() override;
-	virtual void Initialize(class UGsGameObjectWheelVehicle* target);
+	virtual void Initialize(UGsGameObjectWheelVehicle* target);
 	virtual void SetBinding(UInputComponent* input) override;
 
 protected:
@@ -26,7 +32,6 @@ protected:
 	void OnAction();
 
 protected:
-	class UGsGameObjectWheelVehicle* Target;
-	class UWheeledVehicleMovementComponent* MovementComponent;
-	
+	UGsGameObjectWheelVehicle* Target;
+	UWheeledVehicleMovementComponent* MovementComponent;
 };

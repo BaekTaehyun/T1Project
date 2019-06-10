@@ -28,7 +28,7 @@ public:
 	virtual void UninitializeComponent() override;
 
     UGsGameObjectBase* FindObject(EGsGameObjectType Type);
-	UGsGameObjectBase* FindObject(class AActor*, EGsGameObjectType type = EGsGameObjectType::Base);
+	UGsGameObjectBase* FindObject(AActor*, EGsGameObjectType type = EGsGameObjectType::Base);
 	TArray<UGsGameObjectBase*> FindObjectArray(EGsGameObjectType Type);
 
 	UGsGameObjectBase* SpawnObject(EGsGameObjectType Type, UClass* Uclass, const FVector& Pos, const FRotator& Rot);

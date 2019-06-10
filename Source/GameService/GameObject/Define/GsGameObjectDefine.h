@@ -49,7 +49,7 @@ static const EGsGameObjectType EGsGameObjectTypeALL[] =
 static const int EGsGameObjectTypeALLCount = int(sizeof(EGsGameObjectTypeALL) / sizeof(*EGsGameObjectTypeALL));
 
 /**
-* Lowwer State Define
+* StateType
 */
 UENUM()
 enum class EGsStateBase : uint8
@@ -62,33 +62,43 @@ enum class EGsStateBase : uint8
 	SideWalk,
 	Run,
 
-	Ride,
-
+	Attack,
 	Beaten,
 	Die,
 
-	BaseMax,
-};
+	Ride,
 
+	StateBaseMax,
+};
 
 /**
-* Upper State Define
+* Player 타입 State
+* State타입을 분리하는게 맞는지 고민이 필요...
+* 타입별로 나눈다면 BP에 전달할 통합된 Enum 정의 필요,(@see : 주석처리된 EBPAnimState  Enum타입 확인)
+*  각 타입에 대응되는 uin8형 상수변수 정의 필요 (ex( const uint8 RIDE = (uint8)EGsStatePlayer::Ride;)
 */
+/*
 UENUM()
-enum class  EGsStateUpperBase : uint8
+enum class EGsStatePlayer : uint8
 {
-	None = 100,
-	Idle,
-	Attack,
-
-	UpperBaseMax,
+	Start = static_cast<uint8>(EGsStateBase::StateBaseMax),
+	Ride,
+	StatePlayerMax,
 };
 
+UENUM()
+enum class EGsStatePlayerLocal : uint8
+{
+	Start = static_cast<uint8>(EGsStatePlayer::StatePlayerMax),
+	StatePlayerLocalMax,
+};
+*/
 
 /**
 * 이동 관련 타입 설정
 * None : 정지를 의미한다.
 */
+/*
 UENUM(BlueprintType, meta = (Bitflags))
 enum class EGsGameObjectMoveType : uint8
 {
@@ -98,6 +108,7 @@ enum class EGsGameObjectMoveType : uint8
     Interpolation   = 0x04,      //추후 이동 동기화 관련 필요성이 있을지도...
     Jump            = 0x08,      //미사용 가능성이 있음
 };
+*/
 
 /**
 * 이동 스타일 타입

@@ -6,6 +6,8 @@
 #include "GsGameObjectBase.h"
 #include "GsGameObjectProjectile.generated.h"
 
+class AGsProjectileActor;
+
 /**
  * 발사체 클래스
  */
@@ -15,6 +17,8 @@ class GAMESERVICE_API UGsGameObjectProjectile : public UGsGameObjectBase
 	GENERATED_BODY()
 	
 public:
+	virtual ~UGsGameObjectProjectile();
+
 	virtual void Initialize() override;
 	virtual void Finalize() override;
 
@@ -26,5 +30,5 @@ public:
 
 protected:
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = GameObject, Meta = (AllowPrivateAccess = true))
-	class AGsProjectileActor* Actor;
+	AGsProjectileActor* Actor;
 };

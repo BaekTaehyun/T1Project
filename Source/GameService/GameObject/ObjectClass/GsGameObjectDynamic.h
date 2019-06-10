@@ -4,8 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GsGameObjectBase.h"
-//#include "GameObject/State/FSMManager.h" //헤더 선언으로 error 02143발생  추후 확인해볼것
 #include "GsGameObjectDynamic.generated.h"
+
+class FGsPartsBase;
+class FGsFSMManager;
+class FGsMovementBase;
 
 /**
  * 운동 능력이 있는 오브젝트 Base클래스
@@ -17,6 +20,8 @@ class GAMESERVICE_API UGsGameObjectDynamic : public UGsGameObjectBase
 	GENERATED_BODY()
 	
 public:
+	virtual ~UGsGameObjectDynamic();
+
 	virtual void Initialize() override;
 	virtual void Finalize() override;
     virtual void Update(float Delta) override;
@@ -25,12 +30,12 @@ public:
 	virtual AActor* GetActor() const override;
 
 public:	
-	virtual class FGsPartsBase* GetParts() const;
-	virtual class FGsFSMManager* GetBaseFSM() const;
-    virtual class FGsMovementBase* GetMovement() const;
+	virtual FGsPartsBase* GetParts() const;
+	virtual FGsFSMManager* GetBaseFSM() const;
+    virtual FGsMovementBase* GetMovement() const;
 
 protected:
-	class FGsFSMManager* Fsm;
-	class FGsPartsBase* Parts;
-    class FGsMovementBase* Movement;
+	FGsFSMManager* Fsm;
+	FGsPartsBase* Parts;
+    FGsMovementBase* Movement;
 };

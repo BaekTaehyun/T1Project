@@ -17,6 +17,8 @@ class GAMESERVICE_API AGsNpcCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AGsNpcCharacter();
+	virtual ~AGsNpcCharacter();
+
     // Called every frame
     virtual void Tick(float DeltaTime) override;
     // Called to bind functionality to input

@@ -15,6 +15,8 @@ class GAMESERVICE_API UGsGameObjectNonPlayer : public UGsGameObjectDynamic
 	GENERATED_BODY()
 	
 public:
+	virtual ~UGsGameObjectNonPlayer();
+
 	virtual void Initialize() override;
 	virtual void Finalize() override;
 

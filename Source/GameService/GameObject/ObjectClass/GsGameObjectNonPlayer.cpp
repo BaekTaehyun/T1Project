@@ -12,6 +12,10 @@ EGsGameObjectType	UGsGameObjectNonPlayer::GetObjectType() const   { return EGsGa
 AActor*				UGsGameObjectNonPlayer::GetActor() const        { return GetNpcPawn(); }
 AGsNpcPawn*			UGsGameObjectNonPlayer::GetNpcPawn() const		{ return (Actor->IsValidLowLevel()) ? Actor : NULL; }
 
+UGsGameObjectNonPlayer::~UGsGameObjectNonPlayer()
+{
+}
+
 void UGsGameObjectNonPlayer::Initialize()
 {
 	Super::Initialize();

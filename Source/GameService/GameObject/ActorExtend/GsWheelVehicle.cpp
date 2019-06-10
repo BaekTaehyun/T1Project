@@ -27,6 +27,10 @@ AGsWheelVehicle::AGsWheelVehicle()
 	Camera->FieldOfView = 90.f;
 }
 
+AGsWheelVehicle::~AGsWheelVehicle()
+{
+}
+
 void AGsWheelVehicle::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);

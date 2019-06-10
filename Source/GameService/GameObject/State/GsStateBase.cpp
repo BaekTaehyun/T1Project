@@ -17,7 +17,7 @@ IGsStateBase::~IGsStateBase()
 	return !IsSameState(StateID);
 }*/
 
-bool IGsStateBase::IsSameState(int StateID)
+bool IGsStateBase::IsSameState(uint8 StateID)
 {
 	return (GetStateID() == StateID);
 }

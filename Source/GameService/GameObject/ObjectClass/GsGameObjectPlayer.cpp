@@ -10,8 +10,12 @@ AActor*		      UGsGameObjectPlayer::GetActor() const		    { return NULL; }
 FGsFSMManager*    UGsGameObjectPlayer::GetUpperFSM() const	    { return UpperFsm; }
 FGsSkillBase*     UGsGameObjectPlayer::GetSkill() const		    { return Skill; }
 UGsGameObjectWheelVehicle* UGsGameObjectPlayer::GetVehicle() const { return Vehicle; }
-
+	
 void UGsGameObjectPlayer::SetVehicle(class UGsGameObjectWheelVehicle* vehicle) { Vehicle = vehicle; }
+
+UGsGameObjectPlayer::~UGsGameObjectPlayer()
+{
+}
 
 void UGsGameObjectPlayer::Initialize()
 {

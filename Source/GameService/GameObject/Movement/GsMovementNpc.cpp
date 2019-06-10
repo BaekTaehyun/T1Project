@@ -8,6 +8,14 @@
 #include "GameObject/State/GsFSMManager.h"
 #include "GameObject/State/GsStateNPC.h"
 
+FGsMovementNpc::FGsMovementNpc()
+{
+}
+
+FGsMovementNpc::~FGsMovementNpc()
+{
+}
+
 void FGsMovementNpc::Initialize(UGsGameObjectBase* owner)
 {
     Super::Initialize(owner);
