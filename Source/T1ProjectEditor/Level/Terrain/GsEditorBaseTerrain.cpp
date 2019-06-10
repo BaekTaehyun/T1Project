@@ -79,6 +79,8 @@ void AGsEditorBaseTerrain::Tick(float in_delta)
 
 void AGsEditorBaseTerrain::InitPoints()
 {
+	_bCircle = (ETerrainShapeType::Circle == _ShapeType);
+
 	switch (_ShapeType)
 	{
 	case ETerrainShapeType::Polygon:
@@ -379,19 +381,19 @@ void AGsEditorBaseTerrain::InitCircle()
 		if (_Spline->GetNumberOfSplinePoints() >= out_selectIndex)
 		{
 			location = _Spline->GetWorldLocationAtSplinePoint(out_selectIndex);
-			_Distance = FVector::Distance(origin, location);
+			_CircleDistance = FVector::Distance(origin, location);
 		}		
 
 		UE_LOG(LogTemp, Log, TEXT("Selected spline index : %d"), out_selectIndex);
 	}
 #endif	
 
-	if (_Distance == 0)
+	if (_CircleDistance == 0)
 	{
-		_Distance = DEFAULT_TERRAIN_DISTANCE;
+		_CircleDistance = DEFAULT_TERRAIN_DISTANCE;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("Spline distance : %f"), _Distance);
+	UE_LOG(LogTemp, Log, TEXT("Spline distance : %f"), _CircleDistance);
 
 	num = (num < DEFAULT_CIRCLE_POINT_NUM ? DEFAULT_CIRCLE_POINT_NUM : num);
 
@@ -406,7 +408,7 @@ void AGsEditorBaseTerrain::InitCircle()
 		for (int i = 0; i < num; ++i)
 		{
 			degree = gap * i;
-			direction = FVector::ForwardVector.RotateAngleAxis(degree, FVector::UpVector) * _Distance;
+			direction = FVector::ForwardVector.RotateAngleAxis(degree, FVector::UpVector) * _CircleDistance;
 			_Spline->AddSplinePoint(origin + direction, ESplineCoordinateSpace::World);
 		}
 	}

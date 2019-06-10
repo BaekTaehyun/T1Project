@@ -42,8 +42,8 @@ public:
 		ETerrainShapeType _ShapeType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		FString _Tag = "Terrain info";
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
-		float _Distance = DEFAULT_TERRAIN_DISTANCE;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain", meta=(EditCondition="_bCircle"))
+		float _CircleDistance = DEFAULT_TERRAIN_DISTANCE;
 
 	//Widget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
@@ -78,6 +78,9 @@ public:
 		USplineComponent* _Spline;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GsEditorBaseTerrain")
 		UWidgetComponent* _Widget;	
+
+private:
+	bool _bCircle;
 
 public:
 	// Sets default values for this actor's properties
