@@ -373,36 +373,25 @@ void AGsEditorBaseTerrain::InitCircle()
 	FVector location;
 	int32 out_selectIndex;
 
+#if WITH_EDITOR
 	if (TryGetSelectedIndexInSpline(out_selectIndex))
 	{		
 		if (_Spline->GetNumberOfSplinePoints() >= out_selectIndex)
 		{
 			location = _Spline->GetWorldLocationAtSplinePoint(out_selectIndex);
-			distance = FVector::Distance(origin, location);
+			_Distance = FVector::Distance(origin, location);
 		}		
 
 		UE_LOG(LogTemp, Log, TEXT("Selected spline index : %d"), out_selectIndex);
 	}
-	else
-	{		
-		float accum = 0;
+#endif	
 
-		if (_PointArray.Num() > 0)
-		{
-			for (FVector& iter : _PointArray)
-			{
-				accum += FVector::Distance(origin, iter);
-			}
-
-			distance = accum / _PointArray.Num();
-		}
-		else
-		{
-			distance = DEFAULT_TERRAIN_DISTANCE;
-		}		
+	if (_Distance == 0)
+	{
+		_Distance = DEFAULT_TERRAIN_DISTANCE;
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("Spline distance : %f"), distance);
+	UE_LOG(LogTemp, Log, TEXT("Spline distance : %f"), _Distance);
 
 	num = (num < DEFAULT_CIRCLE_POINT_NUM ? DEFAULT_CIRCLE_POINT_NUM : num);
 
@@ -417,7 +406,7 @@ void AGsEditorBaseTerrain::InitCircle()
 		for (int i = 0; i < num; ++i)
 		{
 			degree = gap * i;
-			direction = FVector::ForwardVector.RotateAngleAxis(degree, FVector::UpVector) * distance;
+			direction = FVector::ForwardVector.RotateAngleAxis(degree, FVector::UpVector) * _Distance;
 			_Spline->AddSplinePoint(origin + direction, ESplineCoordinateSpace::World);
 		}
 	}
@@ -461,6 +450,7 @@ void AGsEditorBaseTerrain::InitPointArray()
 	}
 }
 
+#if WITH_EDITOR
 bool AGsEditorBaseTerrain::TryGetSelectedIndexInSpline(int32& out_index)
 {
 	out_index = INVALIDE_INDEX;
@@ -486,4 +476,10 @@ bool AGsEditorBaseTerrain::TryGetSelectedIndexInSpline(int32& out_index)
 	}
 
 	return false;
+}
+#endif
+
+bool AGsEditorBaseTerrain::IsLineType()
+{
+	return (_ShapeType == ETerrainShapeType::Line);
 }

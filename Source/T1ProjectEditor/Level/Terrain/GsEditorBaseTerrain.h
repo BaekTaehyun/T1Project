@@ -42,6 +42,8 @@ public:
 		ETerrainShapeType _ShapeType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		FString _Tag = "Terrain info";
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
+		float _Distance = DEFAULT_TERRAIN_DISTANCE;
 
 	//Widget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
@@ -83,6 +85,9 @@ public:
 	virtual void Tick(float in_delta) override;
 	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
 		virtual void Draw();	
+	UFUNCTION(BlueprintCallable, Category = "GsEditorBaseTerrain")
+	bool IsLineType();
+
 protected:
 	//OnConstruction에서 컴포넌트를 생성하면 정상적으로 컴포넌트가 붙지 않는 문제가 있다. Construction Script에서 컴포넌트 생성할 것
 
@@ -109,7 +114,9 @@ private:
 	void InitCircle();
 	void InitLine();
 	void InitPointArray();
+#if WITH_EDITOR
 	bool TryGetSelectedIndexInSpline(int32& out_index);
+#endif
 
 	//Draw
 	void DrawPolygon();
