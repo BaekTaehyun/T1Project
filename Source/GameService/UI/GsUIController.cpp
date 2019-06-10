@@ -1,6 +1,4 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "GsUIController.h"
 #include "GsUIWidgetBase.h"
 #include "GameService.h"
@@ -16,10 +14,12 @@ UGsUIWidgetBase* UGsUIController::CreateOrFind(UWorld* InOwner, TSubclassOf<UGsU
 {
 	FName Key = FName(*InClass.Get()->GetName());
 
+	UGsUIWidgetBase** widget = CachedWidgetMap.Find(Key);
 	UGsUIWidgetBase* outWidget = nullptr;
-	if (CachedWidgetMap.Contains(Key))
+
+	if (nullptr != widget)
 	{
-		outWidget = *CachedWidgetMap.Find(Key);
+		outWidget = *widget;
 
 		// 사용 중이고
 		if (UsingWidgetArray.Contains(outWidget))
@@ -119,15 +119,11 @@ void UGsUIController::RemoveWidget(UGsUIWidgetBase* InWidget)
 }
 
 void UGsUIController::RemoveWidget(FName InKey)
-{	
-	// FIX: Find에서 null 리턴시 assert 안나게 해서 고칠 것.
-	if (CachedWidgetMap.Contains(InKey))
+{
+	UGsUIWidgetBase** widget = CachedWidgetMap.Find(InKey);
+	if (nullptr != widget)
 	{
-		UGsUIWidgetBase* widget = *CachedWidgetMap.Find(InKey);
-		if (nullptr != widget)
-		{
-			RemoveWidget(widget);
-		}
+		RemoveWidget(*widget);
 	}
 }
 

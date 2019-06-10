@@ -1,6 +1,4 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "GsUIControllerNotDestroy.h"
 
 
@@ -8,10 +6,11 @@ UGsUIWidgetBase* UGsUIControllerNotDestroy::CreateOrFind(UGameInstance* InOwner,
 {
 	FName Key = FName(*InClass.Get()->GetName());
 
+	UGsUIWidgetBase** widget = CachedWidgetMap.Find(Key);
 	UGsUIWidgetBase* outWidget = nullptr;
-	if (CachedWidgetMap.Contains(Key))
+	if (nullptr != widget)
 	{
-		outWidget = *CachedWidgetMap.Find(Key);
+		outWidget = *widget;
 
 		// 사용 중이고
 		if (UsingWidgetArray.Contains(outWidget))
