@@ -75,7 +75,7 @@ enum class EGsStateBase : uint8
 * Player 타입 State
 * State타입을 분리하는게 맞는지 고민이 필요...
 * 타입별로 나눈다면 BP에 전달할 통합된 Enum 정의 필요,(@see : 주석처리된 EBPAnimState  Enum타입 확인)
-*  각 타입에 대응되는 uin8형 상수변수 정의 필요 (ex( const uint8 RIDE = (uint8)EGsStatePlayer::Ride;)
+* 각 타입에 대응되는 uin8형 상수변수 정의 필요 (ex( const uint8 RIDE = (uint8)EGsStatePlayer::Ride;)
 */
 /*
 UENUM()

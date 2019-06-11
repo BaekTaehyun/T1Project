@@ -9,7 +9,8 @@ class UGsGameObjectBase;
 class UGsSkillDataContainerBase;
 
 /**
- * 
+ * Object 스킬 처리 담당 Base 클래스
+ * UGsGameObjectPlayer 클래스 하위 타입으로만 임의 제한
  */
 class GAMESERVICE_API FGsSkillBase
 {
@@ -36,23 +37,36 @@ public:
 protected:
 	UGsGameObjectBase* Owner;
 	UGsSkillDataContainerBase* SkillFactory;
+
+	//Montage 리소스 관리용
+	//이부분에 대한 구조는 개선이 필요함
+	TMap<FString, TSharedPtr<UAnimMontage>> MapAnimation;
 };
 
 //발동 스킬(액션) 구조체
 struct FGsRunSKillInfo
 {
-	const FGsSkillDataBase* Data;
+	FGsSkillDataBase* Data;
+	UAnimMontage* Animation;
 	float Timer;
 
-	FGsRunSKillInfo(const FGsSkillDataBase* SkillData)
+	~FGsRunSKillInfo()
 	{
-		Data = SkillData;
-		Timer = 0.f;
+		Data = NULL;
+		//Animation = NULL;
 	}
 
+	FGsRunSKillInfo(FGsSkillDataBase* SkillData, UAnimMontage* Ani)
+	{
+		Data = SkillData;
+		Animation = Ani;
+		Timer = 0.f;
+
+	}
+	
 	UAnimMontage* GetAni()
 	{
-		return Data->ResAni.Get();
+		return Animation;
 	}
 
 	bool IsEnd()

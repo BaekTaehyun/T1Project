@@ -18,17 +18,17 @@ void FGsGameObjectEventBase::RegistEvent()
 
 GsGameObjectEventParamBase* FGsGameObjectEventBase::GetParam(MessageGameObject::Action Type)
 {
-	auto findParam = EventParams.Find(Type);
+	auto findParam = MapEventParams.Find(Type);
 	if (NULL == findParam)
 	{
-		findParam = &EventParams.Emplace(Type, CreateParam(Type));
+		findParam = &MapEventParams.Emplace(Type, CreateParam(Type));
 	}
 	return (*findParam);
 }
 
 void FGsGameObjectEventBase::ClearParam(MessageGameObject::Action Type)
 {
-	if (auto findParam = EventParams.Find(Type))
+	if (auto findParam = MapEventParams.Find(Type))
 	{
 		(*findParam)->Clear();
 	}

@@ -35,5 +35,5 @@ protected:
 	UGsGameObjectBase* Owner;
 
 	//EventParam데이터 캐싱
-	TMap<MessageGameObject::Action, GsGameObjectEventParamBase*> EventParams;
+	TMap<MessageGameObject::Action, GsGameObjectEventParamBase*> MapEventParams;
 };

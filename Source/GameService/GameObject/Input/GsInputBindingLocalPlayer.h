@@ -8,7 +8,7 @@
 #include "GsInputBindingLocalPlayer.generated.h"
 
 /**
- * 
+ * 내 Player 키입력 관련 바인딩 클래스
  */
 #define CAM_MODE
 
@@ -25,6 +25,7 @@ public:
 	virtual void Initialize(class UGsGameObjectLocal* target);
 	virtual void SetBinding(UInputComponent* input) override;
 
+#ifdef OLD_FUNCTION
 	// forward 에서 호출할 tfunction(모드에 따라 변경)
 	TFunction<void(float In_newAxisValue)> FunctionMoveForward;
 	// backward 에서 호출할 tfunction(모드에 따라 변경)
@@ -33,6 +34,12 @@ public:
 	TFunction<void(float In_newAxisValue)> FunctionMoveLeft;
 	// Right 에서 호출할 tfunction(모드에 따라 변경)
 	TFunction<void(float In_newAxisValue)> FunctionMoveRight;
+#else
+	// forward/backward 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void(float In_newAxisValue)> FunctionMoveForwardBackward;
+	// left/right 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void(float In_newAxisValue)> FunctionMoveLeftRight;
+#endif
 	// stop 에서 호출할 tfunction(모드에 따라 변경)
 	TFunction<void()> FunctionMoveStop;
 	// LookUp 에서 호출할 tfunction(모드에 따라 변경)

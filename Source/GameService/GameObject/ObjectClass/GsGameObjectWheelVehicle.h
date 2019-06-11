@@ -10,7 +10,8 @@ class UGsGameObjectPlayer;
 class UGsInputBindingVehicle;
 
 /**
- * 
+ * 탈것 클래스
+ * 탑승자는 UGsGameObjectPlayer 타입으로 임의 제한둠 @see : TArray<UGsGameObjectPlayer*> ListPassengers;
  */
 UCLASS()
 class GAMESERVICE_API UGsGameObjectWheelVehicle : public UGsGameObjectBase
@@ -42,5 +43,5 @@ protected:
 	UGsInputBindingVehicle* InputBinder;
 
 	//탑승자 정보
-	TArray<UGsGameObjectPlayer*> Passengers;
+	TArray<UGsGameObjectPlayer*> ListPassengers;
 };

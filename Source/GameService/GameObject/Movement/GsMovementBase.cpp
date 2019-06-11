@@ -53,28 +53,6 @@ void FGsMovementBase::Move(FVector Dir, float Speed)
 	Move();
 }
 
-/*
-void FGsMovementBase::Move(EGsGameObjectMoveDirType Type)
-{
-	SetMoveDirType(Type);
-	Move();
-}
-
-void FGsMovementBase::Move(FVector Dir, EGsGameObjectMoveDirType Type)
-{
-    SetDirection(Dir);
-    SetMoveDirType(Type);
-    Move();
-}
-
-void FGsMovementBase::Move(FVector Dir, EGsGameObjectMoveDirType Type, float Speed)
-{
-    SetDirection(Dir);
-    SetMoveDirType(Type);
-    SetMoveSpeed(Speed);
-    Move();
-}*/
-
 void FGsMovementBase::OnStop()
 {
 }

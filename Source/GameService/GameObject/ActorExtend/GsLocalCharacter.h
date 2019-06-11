@@ -8,6 +8,10 @@
 #include "GameService.h"
 #include "GsLocalCharacter.generated.h"
 
+class UCameraComponent;
+class USpringArmComponent;
+class UGsInputBindingBase;
+
 /**
 * 언리얼 엔진 로직 담당 Local캐릭터 전용 클래스
 * 로컬 BP제작시 이 클래스를 기반으로 제작
@@ -21,11 +25,11 @@ class GAMESERVICE_API AGsLocalCharacter : public ACharacter
 
 	//캐릭터 따라가기 카메라
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
+	USpringArmComponent* CameraBoom;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* FollowCamera;
+	UCameraComponent* FollowCamera;
 	//InputBinder
-	class UGsInputBindingBase* InputBinder;
+	UGsInputBindingBase* InputBinder;
 	//Anim
 	UGsAnimInstanceState* Animation;
 
