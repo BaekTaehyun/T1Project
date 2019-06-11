@@ -69,5 +69,4 @@ void UGsGameObjectBase::ActorSpawned(AActor* Spawn)
 
 void UGsGameObjectBase::RegistEvent()
 {
-
 }

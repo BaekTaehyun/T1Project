@@ -10,7 +10,8 @@ class UGsGameObjectBase;
 class UGsPartsDataContainerBase;
 
 /**
- * 
+ * Object 파츠처리 담당 Base클래스
+ * 파츠 데이터 ASync 로드 처리
  */
 class GAMESERVICE_API FGsPartsBase
 {
@@ -53,7 +54,7 @@ protected:
 	UGsGameObjectBase* Owner;
 	
 	UGsPartsDataContainerBase* PartsFctory;
-	TArray<TSharedPtr<FGsCPartsData>> Parts;
+	TArray<TSharedPtr<FGsCPartsData>> ListParts;
 };
 
 template<typename T, typename... T2>

@@ -8,7 +8,7 @@
 #include "GsInputBindingLocalPlayer.generated.h"
 
 /**
- * 
+ * 내 Player 키입력 관련 바인딩 클래스
  */
 #define CAM_MODE
 

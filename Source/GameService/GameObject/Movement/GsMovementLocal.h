@@ -8,7 +8,7 @@
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 
 /**
- * 
+ * 내 Player 이동 처리 클래스
  */
 class GAMESERVICE_API FGsMovementLocal : public FGsMovementBase
 {
@@ -36,5 +36,6 @@ protected:
     UGsGameObjectLocal* Local;
     UCharacterMovementComponent* CharMovement;
 
+	//Run처리 관련 임시 생성 변수(테스트용)
 	float RateAccelerator;
 };

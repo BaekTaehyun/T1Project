@@ -8,6 +8,7 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class UGsInputBindingBase;
 
 /**
  * 기계형 탈것 처리(바퀴가 있는..)
@@ -27,7 +28,7 @@ class GAMESERVICE_API AGsWheelVehicle : public AWheeledVehicle
 	UPROPERTY(Category = Camera, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* Camera;
 	//InputBinder
-	class UGsInputBindingBase* InputBinder;
+	UGsInputBindingBase* InputBinder;
 
 public:
 	FORCEINLINE UGsInputBindingBase* GetInputBinder() const			{ return InputBinder; }

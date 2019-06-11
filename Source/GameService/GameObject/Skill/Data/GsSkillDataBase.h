@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameObject/Define/GsGameObjectDefine.h"
 #include "GsSkillDataBase.generated.h"
 
 /**
@@ -12,7 +13,7 @@ struct GAMESERVICE_API FGsSkillActionDataBase
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	int Type;
+	SkillActionType Type;
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	float Rate;	//실행 타이밍 정보
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
@@ -34,9 +35,10 @@ public:
 	int ID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SKill")
 	float Duration;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SKill")
-	TSoftObjectPtr<UAnimMontage> ResAni;
+
+	UPROPERTY(EditAnywhere, meta = (AllowedClasses = "AnimMontage"))
+	FSoftObjectPath AniPath;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SKill")
-	TArray<FGsSkillActionDataBase> SkillAction;
+	TArray<FGsSkillActionDataBase> ListSkillAction;
 };

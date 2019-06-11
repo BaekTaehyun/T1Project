@@ -12,7 +12,7 @@ class FGsMovementBase;
 
 /**
  * 운동 능력이 있는 오브젝트 Base클래스
- * FSM, Parts, Movment 등의 기본 기능 처리
+ * FSM, Parts, Movment 등의 기능 탑제
  */
 UCLASS()
 class GAMESERVICE_API UGsGameObjectDynamic : public UGsGameObjectBase

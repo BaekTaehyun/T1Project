@@ -78,7 +78,6 @@ void FGsMovementLocal::OnMove()
 		FGsFSMManager* fsm = Local->GetBaseFSM();
 		if (RateAccelerator >= 2.f)
 		{
-			FGsFSMManager* fsm = Local->GetBaseFSM();
 			fsm->ProcessEvent(EGsStateBase::Run);
 		}
 		else

@@ -12,7 +12,8 @@ class UGsGameObjectWheelVehicle;
 
 /**
  * Player류에 해당 하는 base클래스
- * SKill, FSM의 상태는 두단계이상으로 분류
+ * SKill 기능 추가, FSM의 상태는 두단계이상으로 분류 가능
+ * 탈것 타입은 이 클래스를 상속받은 클래스들로만 구성(임의) @see : UGsGameObjectWheelVehicle* Vehicle;
  */
 UCLASS()
 class GAMESERVICE_API UGsGameObjectPlayer : public UGsGameObjectDynamic

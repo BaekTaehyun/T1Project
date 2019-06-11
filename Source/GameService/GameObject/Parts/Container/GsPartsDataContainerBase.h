@@ -12,11 +12,11 @@ class GAMESERVICE_API UGsPartsDataContainerBase : public UDataAsset
 	GENERATED_BODY()
 
 public:
-	FORCEINLINE const TArray<FGsPartsDataBase>& GetPartsData() { return Parts; }
+	FORCEINLINE const TArray<FGsPartsDataBase>& GetPartsData() { return ListParts; }
 
 	UPROPERTY(EditAnywhere)
 	FSkeletalMeshMergeParams Params;
 
 	UPROPERTY(EditAnywhere)
-	TArray<FGsPartsDataBase> Parts;
+	TArray<FGsPartsDataBase> ListParts;
 };

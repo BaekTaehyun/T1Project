@@ -48,11 +48,11 @@ void FGsGameObjectEventLocal::OnVehicleRide(GsGameObjectEventParamBase& Param)
 	}
 
 	//Attach
-	auto passengerGo = Cast<UGsGameObjectPlayer>(cast->Passenger);
-	auto vehicleGo = Cast<UGsGameObjectWheelVehicle>(cast->Target);
+	auto passengerGo	= Cast<UGsGameObjectPlayer>(cast->Passenger);
+	auto vehicleGo		= Cast<UGsGameObjectWheelVehicle>(cast->Target);
 	auto fsm = passengerGo->GetBaseFSM();
 	auto passengerActor = passengerGo->GetActor();
-	auto vehicleActor = vehicleGo->GetWhellVehicle();
+	auto vehicleActor	= vehicleGo->GetWhellVehicle();
 
 	//상태전환 : 추후 탑승과 하차를 분리하는게 좋아 보임
 	if (fsm->IsState((int)EGsStateBase::Ride))
@@ -70,8 +70,8 @@ void FGsGameObjectEventLocal::OnVehicleRide(GsGameObjectEventParamBase& Param)
 		fsm->ProcessEvent(EGsStateBase::Ride);
 		
 		//임시 슬롯 정보 사용
-		passengerActor->AttachToActor(vehicleActor, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("WheelVehicleSlot01"));
+		static FName vehicleAttachSlotName(TEXT("WheelVehicleSlot01"));
+		passengerActor->AttachToActor(vehicleActor, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), vehicleAttachSlotName);
 	}
-	
 }
 

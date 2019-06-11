@@ -16,7 +16,7 @@ public:
 public:
 	float GetRate();
 
-	virtual void Process(class UGsGameObjectBase* Owner) {}
+	virtual void Process(class UGsGameObjectBase* Owner);
 	virtual void Action(class UGsGameObjectBase* Owner) {}
 
 	//생명 주기 관장

@@ -32,39 +32,36 @@ void UGsSpawnComponent::InitializeComponent()
 	Super::InitializeComponent();
 	UGsSpawnerSingle::InitInstance(this);
 
-	Spawns.Empty();
-	AddSpawns.Empty();
-	RemoveSpawns.Empty();
-	TypeSpawns.Empty(EGsGameObjectTypeALLCount);
+	ListSpawns.Empty();
+	ListAddSpawns.Empty();
+	ListRemoveSpawns.Empty();
+	MapTypeSpawns.Empty(EGsGameObjectTypeALLCount);
 
 	//타입별 빈공간 생성
 	for (auto el : EGsGameObjectTypeALL)
 	{
-		TypeSpawns.Emplace(el);
+		MapTypeSpawns.Emplace(el);
 	}
-
 	
 	PrimaryComponentTick.SetTickFunctionEnable(true);
 }
 
-
 void UGsSpawnComponent::UninitializeComponent()
 {
-	for (auto el : Spawns)
+	for (auto el : ListSpawns)
 	{
 		el->Finalize();
 	}
 
-	TypeSpawns.Empty();
-	AddSpawns.Empty();
-	RemoveSpawns.Empty();
-	Spawns.Empty();
+	MapTypeSpawns.Empty();
+	ListAddSpawns.Empty();
+	ListRemoveSpawns.Empty();
+	ListSpawns.Empty();
 
 	PrimaryComponentTick.SetTickFunctionEnable(false);
 
 	UGsSpawnerSingle::RemoveInstance();
 }
-
 
 void UGsSpawnComponent::TickComponent(float DeltaTime, enum ELevelTick TickType,
 	FActorComponentTickFunction* ThisTickFunction)
@@ -77,7 +74,7 @@ void UGsSpawnComponent::TickComponent(float DeltaTime, enum ELevelTick TickType,
 
 	//위 함수가 제거되면 기존 Update로직으로 이동
 	//스폰 오브젝트 업데이트
-	for (auto el : Spawns)
+	for (auto el : ListSpawns)
 	{
 		el->Update(DeltaTime);
 	}
@@ -87,9 +84,9 @@ UGsGameObjectBase* UGsSpawnComponent::FindObject(AActor* Actor, EGsGameObjectTyp
 {
 	if (Type == EGsGameObjectType::Base)
 	{
-		if (auto findobj = Spawns.FindByPredicate([=](UGsGameObjectBase* el)
+		if (auto findobj = ListSpawns.FindByPredicate([=](UGsGameObjectBase* el)
 		{
-			AActor* a = el->GetActor();
+			auto a = el->GetActor();
 			return NULL != a && a == Actor;
 		}))
 		{
@@ -98,10 +95,10 @@ UGsGameObjectBase* UGsSpawnComponent::FindObject(AActor* Actor, EGsGameObjectTyp
 	}
 	else
 	{
-		auto list = TypeSpawns[Type];
+		auto list = MapTypeSpawns[Type];
 		if (auto findobj = list.FindByPredicate([=](UGsGameObjectBase* el)
 		{
-			AActor* a = el->GetActor();
+			auto a = el->GetActor();
 			return NULL != a && a == Actor;
 		}))
 		{
@@ -112,16 +109,14 @@ UGsGameObjectBase* UGsSpawnComponent::FindObject(AActor* Actor, EGsGameObjectTyp
 	return NULL;
 }
 
-
 UGsGameObjectBase* UGsSpawnComponent::FindObject(EGsGameObjectType Type)
 {
-    return TypeSpawns[Type].Num() > 0 ? TypeSpawns[Type].Top() : NULL;
+    return MapTypeSpawns[Type].Num() > 0 ? MapTypeSpawns[Type].Top() : NULL;
 }
-
 
 TArray<UGsGameObjectBase*> UGsSpawnComponent::FindObjectArray(EGsGameObjectType Type)
 {
-	return TypeSpawns[Type];
+	return MapTypeSpawns[Type];
 }
 
 UGsGameObjectBase* UGsSpawnComponent::SpawnObject(EGsGameObjectType Type, UClass* Uclass, const FVector& Pos,  const FRotator& Rot)
@@ -154,64 +149,59 @@ UGsGameObjectProjectile* UGsSpawnComponent::SpawnObject(UClass* Uclass, const FV
 	return NULL;
 }
 
-
 void UGsSpawnComponent::DespawnObject(UGsGameObjectBase* Despawn)
 {
-	if (Spawns.Contains(Despawn))
+	if (ListSpawns.Contains(Despawn))
 	{
 		//액터 소멸
 		GetWorld()->DestroyActor(Despawn->GetActor());
 
 		//액터 소멸시 일단 관리대상 에서 제거
-		RemoveSpawns.Emplace(Despawn);
+		ListRemoveSpawns.Emplace(Despawn);
 	}
 }
-
 
 void UGsSpawnComponent::UpdateAddGameObject()
 {
 	//대상 추가
-	if (0 < AddSpawns.Num())
+	if (0 < ListAddSpawns.Num())
 	{
-		for (auto el : AddSpawns)
+		for (auto el : ListAddSpawns)
 		{
 			uint8 key = el->GetObjectTypeMask();
 			for (auto el2 : EGsGameObjectTypeALL)
 			{
 				if (CHECK_FLAG_TYPE(key, el2))
 				{
-					TypeSpawns[el2].Emplace(el);
+					MapTypeSpawns[el2].Emplace(el);
 				}
 			}
-			Spawns.Emplace(el);
+			ListSpawns.Emplace(el);
 		}
-		AddSpawns.Empty();
+		ListAddSpawns.Empty();
 	}
 }
-
-
 
 void UGsSpawnComponent::UpdateRemoveGameObject()
 {
-	if (0 < RemoveSpawns.Num())
+	if (0 < ListRemoveSpawns.Num())
 	{
-		for (auto el : RemoveSpawns)
+		for (auto el : ListRemoveSpawns)
 		{
 			uint8 key = el->GetObjectTypeMask();
 			for (auto el2 : EGsGameObjectTypeALL)
 			{
 				if (CHECK_FLAG_TYPE(key, el2))
 				{
-					TypeSpawns[el2].RemoveSwap(el);
+					MapTypeSpawns[el2].RemoveSwap(el);
 				}
 			}
 
-			Spawns.RemoveSwap(el);
+			ListSpawns.RemoveSwap(el);
 		}
-		RemoveSpawns.Empty();
+		ListRemoveSpawns.Empty();
 	}
 }
-
 
 FVector UGsSpawnComponent::CalcOnGround(UClass* Uclass, const FVector& Pos)
 {
@@ -242,6 +232,7 @@ FVector UGsSpawnComponent::CalcOnGround(UClass* Uclass, const FVector& Pos)
 	}
 	return Pos;
 }
+
 void UGsSpawnComponent::CallbackCompHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
@@ -268,7 +259,7 @@ void UGsSpawnComponent::CallbackActorDeSpawn(AActor* Despawn)
 	//관리 대상인가 찾음
 	if (auto findObj = FindObject(Despawn))
 	{
-		RemoveSpawns.Emplace(findObj);
+		ListRemoveSpawns.Emplace(findObj);
 	}
 }
 

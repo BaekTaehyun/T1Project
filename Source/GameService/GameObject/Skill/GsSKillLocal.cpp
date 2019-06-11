@@ -20,6 +20,20 @@ void FGsSKillLocal::Initialize(UGsGameObjectBase* owner)
 	Super::Initialize(owner);
 }
 
+void FGsSKillLocal::Finalize()
+{
+	Super::Finalize();
+
+	for (auto pair : MapSkillNodes)
+	{
+		for (auto el : pair.Value)
+		{
+			delete el;
+		}
+	}
+	MapSkillNodes.Reset();
+}
+
 TArray<FGsSkillActionNodeBase*>* FGsSKillLocal::GetSKillNodes(int ID)
 {
 	return MapSkillNodes.Find(ID);
@@ -46,14 +60,13 @@ void FGsSKillLocal::LoadSKillNode()
 	MapSkillNodes.Empty();
 	for (auto el : SkillFactory->GetSkillData())
 	{
-		for (auto el2 : el.SkillAction)
+		for (auto el2 : el.ListSkillAction)
 		{
 			FGsSkillActionNodeBase* NodeData = CreateSkillNode(el2);
 			if (NodeData)
 			{
 				NodeData->Process(Owner);
-				TArray<FGsSkillActionNodeBase*>* findList = MapSkillNodes.Find(el.ID);
-				if (findList)
+				if (auto findList = MapSkillNodes.Find(el.ID))
 				{
 					findList->Push(NodeData);
 				}
@@ -73,7 +86,7 @@ FGsSkillActionNodeBase* FGsSKillLocal::CreateSkillNode(const FGsSkillActionDataB
 	//임시
 	switch (Data.Type)
 	{
-	case 1:
+	case SkillActionType::CreateProjectile:
 		return new FGsSKillActionNodeProjectile(Data);
 	}
 
@@ -86,8 +99,8 @@ void FGsSKillLocal::OnSKillNode()
 
 	if (CurrentSkillData)
 	{
-		RunSkillNodes.Empty();
-		RunSkillNodes.Append(*GetSKillNodes(CurrentSkillData->Data->ID));
+		ListRunSkillNodes.Empty();
+		ListRunSkillNodes.Append(*GetSKillNodes(CurrentSkillData->Data->ID));
 	}
 }
 
@@ -96,7 +109,7 @@ void FGsSKillLocal::RunSkillNode(float DeltaTime)
 	Super::RunSkillNode(DeltaTime);
 
 	//실행할 노드 찾기
-	for (auto el : RunSkillNodes)
+	for (auto el : ListRunSkillNodes)
 	{
 		if (el->GetRate() < CurrentSkillData->GetRate())
 		{
@@ -104,16 +117,16 @@ void FGsSKillLocal::RunSkillNode(float DeltaTime)
 
 			el->Action(Owner);
 			//사용 스킬로 이전
-			UseSkillNodes.Add(el);
+			ListUseSkillNodes.Add(el);
 			//실행 스킬에서 제거
-			RunSkillNodes.Remove(el);
+			ListRunSkillNodes.Remove(el);
 			break; //계속 검사해야된다면 iterator로 처리
 		}
 	}
 
 	//사용 스킬 감시/제거
 	UGsGameObjectBase* param = Owner;
-	UseSkillNodes.RemoveAll([param](FGsSkillActionNodeBase* el)
+	ListUseSkillNodes.RemoveAll([param](FGsSkillActionNodeBase* el)
 	{
 		return el->Update(param);
 	});

@@ -64,7 +64,7 @@ public:
 
 /**
 * Local 무브 관련 베이스 상태 클래스
-* 캐릭터는 전방, 측면, 후방이동으로 분류
+* 캐릭터는 전방, 측면, 후방이동으로 분류(임의)
 */
 template<class tState>
 class GAMESERVICE_API FGsStateLocalMoveBase : public FGsStateBaseSingleLocal<tState>
@@ -134,6 +134,9 @@ public:
 	virtual bool ProcessEvent(UGsGameObjectBase* Owner, uint8 StateID) override;
 };
 
+/**
+* 탑승 상태 클래스
+*/
 class GAMESERVICE_API FGsStateLocalRide : public FGsStateBaseSingleLocal<FGsStateLocalRide>
 {
 	typedef FGsStateBaseSingleLocal<FGsStateLocalRide> Super;

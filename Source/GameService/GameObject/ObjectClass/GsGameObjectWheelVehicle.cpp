@@ -8,7 +8,7 @@
 EGsGameObjectType UGsGameObjectWheelVehicle::GetObjectType() const			{ return EGsGameObjectType::Vehicle; }
 AActor* UGsGameObjectWheelVehicle::GetActor() const							{ return GetWhellVehicle(); }
 AGsWheelVehicle* UGsGameObjectWheelVehicle::GetWhellVehicle() const			{ return (Actor->IsValidLowLevel()) ? Actor : NULL; }
-TArray<UGsGameObjectPlayer*> UGsGameObjectWheelVehicle::GetPassengers() const { return Passengers; }
+TArray<UGsGameObjectPlayer*> UGsGameObjectWheelVehicle::GetPassengers() const { return ListPassengers; }
 
 UGsGameObjectWheelVehicle::~UGsGameObjectWheelVehicle()
 {
@@ -16,12 +16,12 @@ UGsGameObjectWheelVehicle::~UGsGameObjectWheelVehicle()
 
 void UGsGameObjectWheelVehicle::SetPassenger(UGsGameObjectPlayer* Passenger)
 {
-	Passengers.AddUnique(Passenger);
+	ListPassengers.AddUnique(Passenger);
 }
 
 void UGsGameObjectWheelVehicle::RemovePassenger(UGsGameObjectPlayer* Passenger)
 {
-	Passengers.Remove(Passenger);
+	ListPassengers.Remove(Passenger);
 }
 
 void UGsGameObjectWheelVehicle::Initialize()
@@ -35,7 +35,7 @@ void UGsGameObjectWheelVehicle::Finalize()
 {
 	Super::Finalize();
 
-	Passengers.Reset();
+	ListPassengers.Reset();
 }
 
 void UGsGameObjectWheelVehicle::ActorSpawned(AActor* Spawn)

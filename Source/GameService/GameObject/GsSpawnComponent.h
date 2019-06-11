@@ -12,6 +12,14 @@
 class UGsGameObjectBase;
 class UGsGameObjectProjectile;
 
+/**
+* Object Spawn / Despawn 관련 처리 클래스
+* 생성시 클래스 타입별 설정된 BitFlag값을 기준으로 그룹화된 List를 가지고 있음 
+*   @see : TMap<EGsGameObjectType, TArray<UGsGameObjectBase*>> TypeSpawns
+* 특정 타입의 Object를 얻어오고 싶을때 검색 비용 0
+* ex) FindObject(EGsGameObjectType::Player) -> Player 이하의 모든 객체를 던짐..
+*   이후 sort및 특정 기준으로 Itoration을 실행 하더라도 검색비용측면에서 유리
+*/
 UCLASS()
 class GAMESERVICE_API UGsSpawnComponent : 
 	public UActorComponent,
@@ -28,7 +36,7 @@ public:
 	virtual void UninitializeComponent() override;
 
     UGsGameObjectBase* FindObject(EGsGameObjectType Type);
-	UGsGameObjectBase* FindObject(AActor*, EGsGameObjectType type = EGsGameObjectType::Base);
+	UGsGameObjectBase* FindObject(AActor* Actor, EGsGameObjectType type = EGsGameObjectType::Base);
 	TArray<UGsGameObjectBase*> FindObjectArray(EGsGameObjectType Type);
 
 	UGsGameObjectBase* SpawnObject(EGsGameObjectType Type, UClass* Uclass, const FVector& Pos, const FRotator& Rot);
@@ -43,8 +51,6 @@ public:
 		}
 		return NULL;
 	}
-
-	
 
 	void DespawnObject(UGsGameObjectBase* Despawn);
 
@@ -61,7 +67,7 @@ protected:
 		}
 		if (auto actor = TGsSpawn::BPClass(GetWorld(), Uclass, spawnPos, Rot))
 		{
-			AddSpawns.Emplace(Instance);
+			ListAddSpawns.Emplace(Instance);
 			Instance->ActorSpawned(actor);
 			actor->OnDestroyed.AddDynamic(this, &UGsSpawnComponent::CallbackActorDeSpawn);
 		}
@@ -83,14 +89,14 @@ private:
 	//액터 객체 관리
 	//전체 대상 시리얼라이즈 포함
 	UPROPERTY(Transient, VisibleInstanceOnly, Meta = (AllowPrivateAccess = true))
-	TArray<UGsGameObjectBase*> Spawns;
+	TArray<UGsGameObjectBase*> ListSpawns;
 
 	//빠른 검색정보
-	TMap<EGsGameObjectType, TArray<UGsGameObjectBase*>> TypeSpawns;
+	TMap<EGsGameObjectType, TArray<UGsGameObjectBase*>> MapTypeSpawns;
 
 	//추가/삭제 대상 관리
-	TArray<UGsGameObjectBase*> AddSpawns;
-	TArray<UGsGameObjectBase*> RemoveSpawns;
+	TArray<UGsGameObjectBase*> ListAddSpawns;
+	TArray<UGsGameObjectBase*> ListRemoveSpawns;
 };
 
 //bak1210 : template 특수화의 경우 일반적으로 cpp에서 처리해도 무방하나 언리얼 유니티 빌드의 문제로 같은 함수가 다른 obj에 묶여
