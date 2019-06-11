@@ -7,6 +7,7 @@
 
 class UGsGameObjectBase;
 class UGsSkillDataContainerBase;
+struct FGsRunSKillInfo;
 
 /**
  * Object 스킬 처리 담당 Base 클래스
@@ -32,7 +33,7 @@ public:
 	virtual void EndSKillNode();
 
 	const FGsSkillDataBase* GetSkillData(int ID);
-	struct FGsRunSKillInfo* CurrentSkillData = nullptr;
+	FGsRunSKillInfo* CurrentSkillData = nullptr;
 
 protected:
 	UGsGameObjectBase* Owner;
@@ -46,7 +47,7 @@ protected:
 //발동 스킬(액션) 구조체
 struct FGsRunSKillInfo
 {
-	FGsSkillDataBase* Data;
+	const FGsSkillDataBase* Data;
 	UAnimMontage* Animation;
 	float Timer;
 
@@ -56,7 +57,7 @@ struct FGsRunSKillInfo
 		//Animation = NULL;
 	}
 
-	FGsRunSKillInfo(FGsSkillDataBase* SkillData, UAnimMontage* Ani)
+	FGsRunSKillInfo(const FGsSkillDataBase* SkillData, UAnimMontage* Ani)
 	{
 		Data = SkillData;
 		Animation = Ani;
