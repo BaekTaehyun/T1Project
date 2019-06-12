@@ -4,15 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameService/Level/Terrain/TerrainData.h"
 #include "GsEditorBaseTerrain.generated.h"
-
-UENUM(BlueprintType)
-enum class ETerrainShapeType : uint8
-{
-	Polygon,
-	Circle,
-	Line,
-};
 
 const int32 DEFAULT_CIRCLE_POINT_NUM = 8;
 const int32 DEFAULT_LINE_POINT_NUM = 2;
