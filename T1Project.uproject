@@ -22,7 +22,8 @@
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"Engine",
-				"UMG"
+				"UMG",
+				"ProceduralMeshComponent"
 			]
 		},
 		{
@@ -30,8 +31,7 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
-				"Engine",
-				"ProceduralMeshComponent"
+				"Engine"			
 			]
 		}
 	],
