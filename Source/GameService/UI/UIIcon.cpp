@@ -3,8 +3,9 @@
 
 #include "UIIcon.h"
 #include "Components/WidgetComponent.h"
+#include "Overlay.h"
 
-
+// ItemIcon 에 이미지, Name, 수량 , Grade 등등 Display 하는 오브젝트 관리
 UUIIcon::UUIIcon(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
@@ -12,12 +13,15 @@ UUIIcon::UUIIcon(const FObjectInitializer& ObjectInitializer)
 
 void UUIIcon::ConstructEventCall()
 {
-
+	
 }
 
 void UUIIcon::OnClickItemIconEvent()
 {
 	UE_LOG(LogTemp, Log, TEXT("OnClickItemIconEvent Call !!!"));
+	//UOverlay* overlay;
+	//overlay->AddChild(childWidget);
+
 }
 
 void UUIIcon::NativeOnInitialized()

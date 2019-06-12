@@ -2,8 +2,9 @@
 
 
 #include "CItem.h"
+#include "UIIcon.h"
 
-
+// ItemData 甫 积己 棺 积己等 Data Update 柳青.
 UCItem::UCItem(const int64 In_ItemTID)
 {
 	
@@ -12,7 +13,6 @@ UCItem::UCItem(const int64 In_ItemTID)
 
 void UCItem::UpdateItemData(const int64  In_ItemID)
 {
-	
 	UE_LOG(LogTemp, Log, TEXT("UpdateItemData : %d"), In_ItemID);
 }
 
@@ -49,5 +49,3 @@ UCItem* UCItem::CreateItem(const int64 In_ItemTID, int32 In_ItemStackCount)
 	return newItem;
 
 }
-
-

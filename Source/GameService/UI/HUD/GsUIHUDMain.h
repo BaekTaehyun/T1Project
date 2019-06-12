@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UI/GsUIHUD.h"
+#include "GsUIHUDConsumable.h"
 #include "GsUIHUDMain.generated.h"
 
 /**
@@ -20,11 +21,15 @@ public:
 
 	void SetPlayerName(const FString& InPlayerName);
 
+
 private:
 
 	// 예시용
 	class UTextBlock* LabelPlayerName;
 	class UGsUIHUDMainMenu* MainMenu;
+
+	// 하단 소모품류 아이템 class
+	class UGsUIHUDConsumable* ConsumableMenu;
 
 	// UserWidget 상속받은 위젯들을 각각 구현해서 여기에 연결하여 사용하자.
 	// MainMenuUI

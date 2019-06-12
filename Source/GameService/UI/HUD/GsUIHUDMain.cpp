@@ -16,6 +16,11 @@ void UGsUIHUDMain::NativeConstruct()
 
 	LabelPlayerName = Cast<UTextBlock>(GetWidgetFromName(TEXT("TEXT_PlayerName")));
 	MainMenu = Cast<UGsUIHUDMainMenu>(GetWidgetFromName(TEXT("HUDMainMenu")));
+	ConsumableMenu = Cast<UGsUIHUDConsumable>(GetWidgetFromName(TEXT("HUDConsumable")));
+	if (nullptr != ConsumableMenu)
+	{
+		ConsumableMenu->CreateConsumeItem();
+	}
 
 	//SetPlayerName(TEXT("ASDF"));
 }
