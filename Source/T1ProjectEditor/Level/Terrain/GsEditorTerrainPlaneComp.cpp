@@ -3,7 +3,7 @@
 
 #include "GsEditorTerrainPlaneComp.h"
 #include "./GsEditorTerrainPillarComp.h"
-#include "./GsEditorBaseTerrain.h"
+#include "./GsEditorTerrainShape.h"
 #include "Runtime/Engine/Classes/Materials/Material.h"
 #include "Runtime/Engine/Classes/Materials/MaterialInstanceDynamic.h"
 

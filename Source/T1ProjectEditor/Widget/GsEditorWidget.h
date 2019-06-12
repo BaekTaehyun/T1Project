@@ -4,25 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "GsEditorTerrainWidget.generated.h"
+#include "GsEditorWidget.generated.h"
 
-/**
- * 
- */
 class UTextBlock;
+//----------------------------------------------------------------
+// 에디터 모드일때 레벨 뷰포트에서 액터의 설명을 위해 사용한다. 
+//----------------------------------------------------------------
 
-//----------------------------------------------------------------
-// AGsEditorBaseTerrain의 태그 정보 표현
-//----------------------------------------------------------------
 UCLASS()
-class T1PROJECTEDITOR_API UGsEditorTerrainWidget : public UUserWidget
+class T1PROJECTEDITOR_API UGsEditorWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
+	
 public:
 	UPROPERTY(meta = (BindWidget))
-		UTextBlock* _ContentsText;
-
-public:
-	virtual void NativeTick(const FGeometry& in_geometry, float in_delta) override;
+		UTextBlock* _DescriptionText;
 };

@@ -2,7 +2,7 @@
 
 
 #include "GsEditorTerrainPillarComp.h"
-#include "./GsEditorBaseTerrain.h"
+#include "./GsEditorTerrainShape.h"
 #include "Runtime/Engine/Classes/Materials/Material.h"
 #include "Runtime/Engine/Classes/Materials/MaterialInstanceDynamic.h"
 
@@ -141,7 +141,7 @@ void UGsEditorTerrainPillarComp::OnUpdateTransform(EUpdateTransformFlags UpdateT
 		UE_LOG(LogTemp, Log, TEXT("Component location : %s"), *GetComponentLocation().ToString());
 #endif
 
-		_Parent->Draw();
+		_Parent->DrawShape();
 	}
 }
 

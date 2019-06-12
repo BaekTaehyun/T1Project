@@ -6,7 +6,7 @@
 #include "ProceduralMeshComponent.h"
 #include "GsEditorTerrainPillarComp.generated.h"
 
-class AGsEditorBaseTerrain;
+class AGsEditorTerrainShape;
 
 //----------------------------------------------------------------
 // AGsEditorBaseTerrain의 포인트 좌표를 위한 펜스
@@ -19,7 +19,7 @@ class T1PROJECTEDITOR_API UGsEditorTerrainPillarComp : public UProceduralMeshCom
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorPillarComp")
-		AGsEditorBaseTerrain* _Parent;
+		AGsEditorTerrainShape* _Parent;
 
 public:	
 	// Sets default values for this component's properties

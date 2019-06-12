@@ -6,7 +6,7 @@
 #include "ProceduralMeshComponent.h"
 #include "GsEditorTerrainPlaneComp.generated.h"
 
-class AGsEditorBaseTerrain;
+class AGsEditorTerrainShape;
 class UGsEditorTerrainPillarComp;
 
 //----------------------------------------------------------------
@@ -19,7 +19,7 @@ class T1PROJECTEDITOR_API UGsEditorTerrainPlaneComp : public UProceduralMeshComp
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorPillarComp")
-		AGsEditorBaseTerrain* _Parent;
+		AGsEditorTerrainShape* _Parent;
 
 private:
 	UPROPERTY()
