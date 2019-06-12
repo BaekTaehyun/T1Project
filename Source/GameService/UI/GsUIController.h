@@ -20,21 +20,24 @@ public:
 	virtual void BeginDestroy() override;
 
 	// 생성, 캐싱
-	UGsUIWidgetBase* CreateOrFind(class UWorld* InOwner, TSubclassOf<UGsUIWidgetBase> InClass);
-	virtual UGsUIWidgetBase* CreateOrFind(class UGameInstance* InOwner, TSubclassOf<UGsUIWidgetBase> InClass);
+	UGsUIWidgetBase* CreateOrFind(class UWorld* InOwner, TSubclassOf<UGsUIWidgetBase> InClass, const FName& InKey);
+	virtual UGsUIWidgetBase* CreateOrFind(class UGameInstance* InOwner, TSubclassOf<UGsUIWidgetBase> InClass, const FName& InKey);
 
 	// 위젯 화면에 추가
 	void AddWidget(UGsUIWidgetBase* InWidget, UGsUIParameter* InParameters = nullptr);	
 	
 	// 위젯 화면에서 삭제 
 	void RemoveWidget(UGsUIWidgetBase* InWidget);
-	void RemoveWidget(FName InKey);
+	void RemoveWidget(const FName& InKey);
 
 	// 안드로이드 백키처리를 위한 인터페이스
 	void Back();
 
 	// 캐시된 항목까지 전부 삭제
 	virtual void RemoveAll();
+
+	// 캐시된 UI 가져오기. 현재 사용여부 체크 파라미터.
+	UGsUIWidgetBase* GetCachedWidgetByName(FName InKey, bool InActiveCheck);
 
 protected:
 	void PushStack(UGsUIWidgetBase* InWidget, UGsUIParameter* InParameters = nullptr);

@@ -2,11 +2,9 @@
 #include "GsUIControllerNotDestroy.h"
 
 
-UGsUIWidgetBase* UGsUIControllerNotDestroy::CreateOrFind(UGameInstance* InOwner, TSubclassOf<UGsUIWidgetBase> InClass)
+UGsUIWidgetBase* UGsUIControllerNotDestroy::CreateOrFind(UGameInstance* InOwner, TSubclassOf<UGsUIWidgetBase> InClass, const FName& InKey)
 {
-	FName Key = FName(*InClass.Get()->GetName());
-
-	UGsUIWidgetBase** widget = CachedWidgetMap.Find(Key);
+	UGsUIWidgetBase** widget = CachedWidgetMap.Find(InKey);
 	UGsUIWidgetBase* outWidget = nullptr;
 	if (nullptr != widget)
 	{
@@ -33,7 +31,7 @@ UGsUIWidgetBase* UGsUIControllerNotDestroy::CreateOrFind(UGameInstance* InOwner,
 		if (nullptr != outWidget)
 		{
 			outWidget->bIsCachedWidget = true;
-			CachedWidgetMap.Add(Key, outWidget);
+			CachedWidgetMap.Add(InKey, outWidget);
 			UsingWidgetArray.Add(outWidget);
 		}
 	}
@@ -70,8 +68,9 @@ void UGsUIControllerNotDestroy::AddToViewport(UGsUIWidgetBase* InWidget)
 {
 	// 지우지 않는 대신에 보여준다
 	if (InWidget->IsInViewport())
-	{
+	{		
 		InWidget->SetVisibility(ESlateVisibility::Visible);
+		//InWidget->SetIsEnabled(true);
 	}
 	else
 	{
@@ -87,6 +86,7 @@ void UGsUIControllerNotDestroy::RemoveUsingWidget(UGsUIWidgetBase* InWidget)
 		// 캐시된 항목은 지우지 않는다. 
 		// RemoveFromParent가 호출 안되게 처리되었으므로 Hide 만 진행한다
 		InWidget->SetVisibility(ESlateVisibility::Hidden);
+		//InWidget->SetIsEnabled(false);
 	}
 	else
 	{

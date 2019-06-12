@@ -4,7 +4,8 @@
 #include "GsUITray.h"
 
 
-void UGsUITray::OnClickImage()
+UGsUITray::UGsUITray(const FObjectInitializer& ObjectInitializer)
+	:Super(ObjectInitializer)
 {
-	UE_LOG(LogTemp, Log, TEXT("Call OnClickImage() !!! "));
+	bCanMultipleInstance = false;
 }
