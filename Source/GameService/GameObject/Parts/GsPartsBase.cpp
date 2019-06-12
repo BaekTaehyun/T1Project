@@ -20,11 +20,11 @@ void FGsPartsBase::Initialize(UGsGameObjectBase* owner)
 
 void FGsPartsBase::Finalize()
 {	
-	for (auto el : Parts)
+	for (auto el : ListParts)
 	{
 		el.Get()->Mesh = NULL;
 	}
-	Parts.Reset();
+	ListParts.Reset();
 }
 
 void FGsPartsBase::LoadData(const TCHAR * Path)
@@ -46,7 +46,7 @@ const FGsPartsDataBase* FGsPartsBase::GetParts(EGsPartsType Type)
 
 bool FGsPartsBase::IsEquip(EGsPartsType Type)
 {
-	return Parts.ContainsByPredicate([=](auto data)
+	return ListParts.ContainsByPredicate([=](auto data)
 	{
 		return data.Get()->Type == Type;
 	});
@@ -74,7 +74,7 @@ void FGsPartsBase::AddParts(EGsPartsType Type)
 	if (NULL == data) { return; }
 
 	//장착 데이터 검사
-	if (Parts.ContainsByPredicate([=](auto data)
+	if (ListParts.ContainsByPredicate([=](auto data)
 		{
 			return Type == data.Get()->Type;
 		}))
@@ -83,12 +83,12 @@ void FGsPartsBase::AddParts(EGsPartsType Type)
 	}
 
 	//Set처리 인터페이스 필요
-	auto partsData = Parts.Emplace_GetRef(MakeShareable(new FGsCPartsData(Type, data->Path)));
+	auto partsData = ListParts.Emplace_GetRef(MakeShareable(new FGsCPartsData(Type, data->Path)));
 }
 
 void FGsPartsBase::RemoveParts(EGsPartsType Type)
 {
-	if (auto findParts = Parts.FindByPredicate([=](auto data)
+	if (auto findParts = ListParts.FindByPredicate([=](auto data)
 		{
 			return Type == data.Get()->Type;
 		}))
@@ -103,12 +103,13 @@ void FGsPartsBase::Attach()
 {
 #pragma	message("[TODO] LBY : convet해주는 유틸 함수 있는지 확인")
 	TArray<FSoftObjectPath> Streams;
-	for (auto el : Parts) { Streams.Emplace(el.Get()->Path); }
+	for (auto el : ListParts) { Streams.Emplace(el.Get()->Path); }
 
 	UAssetManager::GetStreamableManager().RequestAsyncLoad(
 		Streams, [&]() {
-			//이부분 개선 필요..
-			for (auto el : Parts)
+			//로딩 완료가 콜되기전에 내부 Parts 관련 데이터가 삭제되면 크래쉬가 나는것 같다.
+			//이부분은 확인이 필요
+			for (auto el : ListParts)
 			{
 				if (auto mesh = el.Get()->Path.ResolveObject())
 				{

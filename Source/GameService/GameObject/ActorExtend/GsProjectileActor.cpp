@@ -11,6 +11,10 @@ AGsProjectileActor::AGsProjectileActor()
 	//ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 }
 
+AGsProjectileActor::~AGsProjectileActor()
+{
+}
+
 //[Todo]
 //현재는 임시 프로퍼티값 설정
 //추후 타입에 맞는 데이터 구조체를 드리븐 받아 설정하든 에디터에서 설정하든 정해야될듯

@@ -19,7 +19,7 @@ public:
 	IGsStateBase();
 	virtual ~IGsStateBase();
 
-	virtual uint8 GetStateID() { return 0; }
+	virtual uint8 GetStateID()		{ return 0; }
 	virtual FString Name() = 0;
 
 	//애니메이션 랜덤 값 관련 처리이지만 테스트용 프로퍼티에 가깝다.(삭제될 메서드)
@@ -28,7 +28,7 @@ public:
 	//체인지 가능 or 불가능(Black List | White List) 상태 정의
 	//ProcessEvent에서 처리로 변경하여 삭제
 	//virtual bool IsChange(int StateID);
-	virtual bool IsSameState(int StateID);
+	virtual bool IsSameState(uint8 StateID);		
 
 	//State의 전환은 이 메서드를 통해서만 전환
 	virtual bool ProcessEvent(UGsGameObjectBase* Owner, uint8 StateID) { return false; }

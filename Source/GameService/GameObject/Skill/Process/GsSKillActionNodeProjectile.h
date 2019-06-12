@@ -6,6 +6,7 @@
 #include "GsSkillActionNodeBase.h"
 
 /**
+ * 프로젝타일 타입 Action처리 클래스
  * 
  */
 class GAMESERVICE_API FGsSKillActionNodeProjectile : public FGsSkillActionNodeBase

@@ -8,6 +8,25 @@
 #include "GameObject/State/GsFSMManager.h"
 #include "GameObject/State/GsStateLocal.h"
 
+bool FGsMovementLocal::IsMove()
+{
+	return CharMovement->Velocity != FVector::ZeroVector;
+}
+
+float FGsMovementLocal::GetRateAccelerator()
+{
+	return RateAccelerator;
+}
+
+FGsMovementLocal::FGsMovementLocal()
+{
+	RateAccelerator = 1.f;
+}
+
+FGsMovementLocal::~FGsMovementLocal()
+{
+}
+
 void FGsMovementLocal::Initialize(UGsGameObjectBase* owner)
 {
 	Super::Initialize(owner);
@@ -28,36 +47,21 @@ void FGsMovementLocal::Update(float Delta)
 {
 	Super::Update(Delta);
 
-    if (false == IsStop())
+    if (IsMove())
     {
-        //임시 이동 구현 코드들...
-        //내캐릭터 이동방향은 컨트롤러의 회전에 따라 동적 변경
-        Direction = FRotationMatrix(Local->GetLocalCharacter()->
-			Controller->GetControlRotation()).GetScaledAxis(MoveDirType == EGsGameObjectMoveDirType::SideStep ? EAxis::Y : EAxis::X);
-        Local->GetLocalCharacter()->AddMovementInput(Direction, MoveSpeed);
-
-        if (MoveDirType == EGsGameObjectMoveDirType::Forward && CHECK_FLAG_TYPE(MoveType, EGsGameObjectMoveType::Walk))
-        {
-            //전방 뛰기시 임시 가속 처리
-            MoveSpeed += 3.f * Delta;
-
-            float walkSpeed = FVector::DotProduct(CharMovement->Velocity, Local->GetLocalCharacter()->GetActorRotation().Vector());
-            if (walkSpeed > CharMovement->MaxWalkSpeed)
-            {
-                SetMoveType(EGsGameObjectMoveType::Run);
-				Local->GetBaseFSM()->ProcessEvent(EGsStateBase::Run);
-            }
-        }
-    }
+		RateAccelerator = FMath::Min(RateAccelerator + Delta, 2.f);
+	}
+	else
+	{
+		Stop();
+	}
 }
 
 void FGsMovementLocal::OnStop()
 {
 	Super::OnStop();
 
-    SetMoveType(EGsGameObjectMoveType::None);
-    CharMovement->SetMovementMode(MOVE_None);
-
+	RateAccelerator = 1.f;
 	Local->GetBaseFSM()->ProcessEvent(EGsStateBase::Idle);
 }
 
@@ -65,21 +69,20 @@ void FGsMovementLocal::OnMove()
 {
 	Super::OnMove();
 
-    SetMoveType(EGsGameObjectMoveType::Walk);
-    CharMovement->SetMovementMode(MOVE_Walking);
+	//임시 이동 구현 코드들...
+	Local->GetLocalCharacter()->AddMovementInput(Direction, MoveSpeed * RateAccelerator);
 
     //상태 전환
-    FGsFSMManager* fsm = Local->GetBaseFSM();
-    switch (MoveDirType)
-    {
-    case EGsGameObjectMoveDirType::Forward:
-		Local->GetBaseFSM()->ProcessEvent(EGsStateBase::ForwardWalk);
-        break;
-    case EGsGameObjectMoveDirType::SideStep:
-		Local->GetBaseFSM()->ProcessEvent(EGsStateBase::SideWalk);
-        break;
-    case EGsGameObjectMoveDirType::Backward:
-		Local->GetBaseFSM()->ProcessEvent(EGsStateBase::BackwardWalk);
-        break;
-    }
+	if (IsMove())
+	{
+		FGsFSMManager* fsm = Local->GetBaseFSM();
+		if (RateAccelerator >= 2.f)
+		{
+			fsm->ProcessEvent(EGsStateBase::Run);
+		}
+		else
+		{
+			fsm->ProcessEvent(EGsStateBase::ForwardWalk);
+		}
+	}
 }

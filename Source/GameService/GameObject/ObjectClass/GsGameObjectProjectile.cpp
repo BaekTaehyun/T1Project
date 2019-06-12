@@ -7,6 +7,10 @@
 EGsGameObjectType	UGsGameObjectProjectile::GetObjectType() const  { return EGsGameObjectType::Projectile; }
 AActor*				UGsGameObjectProjectile::GetActor() const       { return (Actor->IsValidLowLevel()) ? Actor : NULL; }
 
+UGsGameObjectProjectile::~UGsGameObjectProjectile()
+{
+}
+
 void UGsGameObjectProjectile::Initialize()
 {
 	Super::Initialize();

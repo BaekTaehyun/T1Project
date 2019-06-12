@@ -6,8 +6,12 @@
 #include "GameObject/ObjectClass/GsGameObjectBase.h"
 #include "GsGameObjectWheelVehicle.generated.h"
 
+class UGsGameObjectPlayer;
+class UGsInputBindingVehicle;
+
 /**
- * 
+ * 탈것 클래스
+ * 탑승자는 UGsGameObjectPlayer 타입으로 임의 제한둠 @see : TArray<UGsGameObjectPlayer*> ListPassengers;
  */
 UCLASS()
 class GAMESERVICE_API UGsGameObjectWheelVehicle : public UGsGameObjectBase
@@ -15,6 +19,8 @@ class GAMESERVICE_API UGsGameObjectWheelVehicle : public UGsGameObjectBase
 	GENERATED_BODY()
 	
 public:
+	virtual ~UGsGameObjectWheelVehicle();
+
 	virtual void Initialize() override;
 	virtual void Finalize() override;
 
@@ -23,7 +29,7 @@ public:
 	virtual AActor* GetActor() const override;
 	UFUNCTION(BlueprintCallable, Category = "GameObject")
 	virtual AGsWheelVehicle* GetWhellVehicle() const;
-	TArray<class UGsGameObjectPlayer*> GetPassengers() const;
+	TArray<UGsGameObjectPlayer*> GetPassengers() const;
 	void SetPassenger(UGsGameObjectPlayer* Passenger);
 	void RemovePassenger(UGsGameObjectPlayer* Passenger);
 
@@ -34,8 +40,8 @@ protected:
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = GameObject, Meta = (AllowPrivateAccess = true))
 	AGsWheelVehicle* Actor;
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = GameObject, Meta = (AllowPrivateAccess = true))
-	class UGsInputBindingVehicle* InputBinder;
+	UGsInputBindingVehicle* InputBinder;
 
 	//탑승자 정보
-	TArray<class UGsGameObjectPlayer*> Passengers;
+	TArray<UGsGameObjectPlayer*> ListPassengers;
 };

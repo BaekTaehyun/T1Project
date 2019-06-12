@@ -44,10 +44,15 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Dev")
 	bool IsImmediateStart() const { return bImmediateStart; }
 
+	// 9월 시연 모드인가
+	UFUNCTION(BlueprintPure, Category = "Dev")
+	bool IsDemoMode() const { return bIsDemoMode; }
+
 	UFUNCTION(BlueprintCallable, Category = "Dev")
 	class UGsUIManager* GetUIManager() const { return UIManager; }
 
 protected:
+
 	// 개발모드
 	UPROPERTY(EditDefaultsOnly, Category = "Dev")
 	bool bIsDevMode;
@@ -55,6 +60,10 @@ protected:
 	// 즉시시작
 	UPROPERTY(EditDefaultsOnly, Category = "Dev")
 	bool bImmediateStart;
+
+	// 9월 시연 모드
+	UPROPERTY(EditDefaultsOnly, Category = "Dev")
+	bool bIsDemoMode;
 
 	// UI매니저
 	UPROPERTY(Transient)

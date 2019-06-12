@@ -57,13 +57,13 @@ public:
 	virtual void LeftRight(float NewAxisValue, UGsGameObjectLocal* In_char) override;
 
 	// 앞 이동 처리
-	virtual void MoveForward(UGsGameObjectLocal* In_char) override;
+	virtual void MoveForward(float NewAxisValue, UGsGameObjectLocal* In_char) override;
 	// 뒤 이동 처리
-	virtual void MoveBackward(UGsGameObjectLocal* In_char) override;
+	virtual void MoveBackward(float NewAxisValue, UGsGameObjectLocal* In_char) override;
 	// 좌 이동 처리
-	virtual void MoveLeft(UGsGameObjectLocal* In_char) override;
+	virtual void MoveLeft(float NewAxisValue, UGsGameObjectLocal* In_char) override;
 	// 우 이동 처리
-	virtual void MoveRight(UGsGameObjectLocal* In_char) override;
+	virtual void MoveRight(float NewAxisValue, UGsGameObjectLocal* In_char) override;
 
 	// 이동 정지
 	virtual void MoveStop(UGsGameObjectLocal* In_char) override;

@@ -9,6 +9,10 @@ AGsNpcCharacter::AGsNpcCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
+AGsNpcCharacter::~AGsNpcCharacter()
+{
+}
+
 // Called when the game starts or when spawned
 void AGsNpcCharacter::BeginPlay()
 {

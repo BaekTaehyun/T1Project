@@ -6,6 +6,8 @@
 #include "GameObject/Movement/GsMovementBase.h"
 #include "GameFramework/PawnMovementComponent.h"
 
+class UGsGameObjectNonPlayer;
+
 /**
  * 
  */
@@ -14,7 +16,10 @@ class GAMESERVICE_API FGsMovementNpc : public FGsMovementBase
 	typedef FGsMovementBase Super;
 
 public:
-    virtual void Initialize(class UGsGameObjectBase* Owner) override;
+	FGsMovementNpc();
+	virtual ~FGsMovementNpc();
+
+    virtual void Initialize(UGsGameObjectBase* Owner) override;
 	virtual void Finalize() override;
     virtual void Update(float Delta) override;
 
@@ -26,7 +31,7 @@ private:
     void CallbackFinish(FAIRequestID ID, const FPathFollowingResult& Result);
 
 protected:
-    class UGsGameObjectNonPlayer* Npc;
+    UGsGameObjectNonPlayer* Npc;
     UPawnMovementComponent* PawnMovement;
     
     //이동 상태 동기화 관리 변수

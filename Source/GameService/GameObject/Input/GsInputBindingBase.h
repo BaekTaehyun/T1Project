@@ -23,7 +23,8 @@ struct FGsInputParams
  * 키입력 관련 바인딩 클래스
  * [Todo]
  * 현재는 단순히 클래스만 따로둔 형태이지만
- * 추후 바인딩 관련 구조체를 설정해게 만들어 바인딩 시키는 구조로 수정이 필요해 보임
+ * 추후 바인딩 관련 구조체를 설정하게 만들어 바인딩 시키는 구조로 수정이 필요해 보임
+ * UGameObject 스폰 -> Actor에 InputBinder 설정 -> Actor의 SetupPlayerInputComponent() 호출로 SetBinding() 실행
  */
 UCLASS()
 class GAMESERVICE_API UGsInputBindingBase : public UObject
@@ -31,12 +32,14 @@ class GAMESERVICE_API UGsInputBindingBase : public UObject
 	GENERATED_BODY()
 	
 public:
+	UGsInputBindingBase();
+	virtual ~UGsInputBindingBase();
+
 	virtual void Initialize();
 	virtual void Finalize();
 
 	virtual void SetBinding(UInputComponent* input);
 
 protected:
-	//TArray<FInputParams> Params;
 	UInputComponent* InputComponent;
 };

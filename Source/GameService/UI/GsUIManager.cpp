@@ -12,6 +12,7 @@
 #include "Engine/StreamableManager.h"
 #include "Engine/AssetManager.h"
 #include "GSGameInstance.h"
+#include "HUD/GsUIHUDMain.h"
 
 
 UGsUIManager::UGsUIManager(const FObjectInitializer& ObjectInitializer)
@@ -58,7 +59,7 @@ void UGsUIManager::RemoveAll()
 	}
 }
 
-TWeakObjectPtr<UGsUIWidgetBase> UGsUIManager::PushAndGetWidget(FName InKey, UGsUIParameter* InParam)
+TWeakObjectPtr<UGsUIWidgetBase> UGsUIManager::PushAndGetWidget(const FName& InKey, UGsUIParameter* InParam)
 {
 	return PushInter(InKey, InParam);
 }
@@ -80,7 +81,7 @@ void UGsUIManager::Pop(UGsUIWidgetBase* InWidget)
 	}
 }
 
-void UGsUIManager::PopByKeyName(FName InKey)
+void UGsUIManager::PopByKeyName(const FName& InKey)
 {
 	FGsTableUIPath* tableRow = GetTableRow(InKey);
 	if (nullptr == tableRow)
@@ -88,16 +89,15 @@ void UGsUIManager::PopByKeyName(FName InKey)
 		return;
 	}
 
-	FName keyName = FName(*tableRow->WidgetClass.Get()->GetName());
 	if (tableRow->bNotDestroy)
 	{
-		UIControllerNotDestroy->RemoveWidget(keyName);
+		UIControllerNotDestroy->RemoveWidget(InKey);
 	}
 
-	UIControllerNormal->RemoveWidget(keyName);
+	UIControllerNormal->RemoveWidget(InKey);
 }
 
-UGsUIWidgetBase* UGsUIManager::PushInter(FName InKey, UGsUIParameter* InParam)
+UGsUIWidgetBase* UGsUIManager::PushInter(const FName& InKey, UGsUIParameter* InParam)
 {
 	FGsTableUIPath* tableRow = GetTableRow(InKey);
 	if (nullptr == tableRow)
@@ -111,32 +111,32 @@ UGsUIWidgetBase* UGsUIManager::PushInter(FName InKey, UGsUIParameter* InParam)
 		return nullptr;
 	}
 
-	return CreateOrFind(tableRow->WidgetClass.Get(), tableRow->bNotDestroy, InParam);
+	return CreateOrFind(tableRow->WidgetClass.Get(), tableRow->bNotDestroy, InKey, InParam);
 }
 
-UGsUIWidgetBase* UGsUIManager::CreateOrFind(TSubclassOf<UGsUIWidgetBase> InClass, bool bNotDestroy, UGsUIParameter* InParam)
-{
+UGsUIWidgetBase* UGsUIManager::CreateOrFind(TSubclassOf<UGsUIWidgetBase> InClass, bool bNotDestroy, const FName& InKey, UGsUIParameter* InParam)
+{	
 	UGsUIWidgetBase* widget = nullptr;
 
 	if (bNotDestroy)
 	{
 		UGsGameInstance* gameInstance = Cast<UGsGameInstance>(GetOuter());
 
-		widget = UIControllerNotDestroy->CreateOrFind(gameInstance, InClass);
+		widget = UIControllerNotDestroy->CreateOrFind(gameInstance, InClass, InKey);
 		UIControllerNotDestroy->AddWidget(widget, InParam);
 	}
 	else
 	{
-		UWorld* world = GetWorld(); // 이게 오너여
+		UWorld* world = GetWorld();
 
-		widget = UIControllerNormal->CreateOrFind(world, InClass);
+		widget = UIControllerNormal->CreateOrFind(world, InClass, InKey);
 		UIControllerNormal->AddWidget(widget, InParam);
 	}
 
 	return widget;
 }
 
-FGsTableUIPath* UGsUIManager::GetTableRow(FName InKey)
+FGsTableUIPath* UGsUIManager::GetTableRow(const FName& InKey)
 {
 	if (nullptr != WidgetClassTable)
 	{
@@ -190,6 +190,44 @@ void UGsUIManager::HideLoading()
 		LoadingWidget.Get()->OnMessage(FName(TEXT("FadeOut")));
 	}
 }
+
+void UGsUIManager::ChangeHUD(const FName& InKey)
+{
+	// 이전항목 삭제
+	if (CurrentHUDWidget.IsValid())
+	{
+		TWeakObjectPtr<UGsUIWidgetBase> widget = GetCachedWidget(InKey, false);
+		if (CurrentHUDWidget.Get() == widget.Get())
+		{
+			return;
+		}
+		else
+		{
+			// 다르면 이전 것을 제거
+			Pop(CurrentHUDWidget.Get());
+			CurrentHUDWidget = nullptr;
+		}
+	}
+
+	CurrentHUDWidget = PushAndGetWidget(InKey);
+}
+
+TWeakObjectPtr<UGsUIWidgetBase> UGsUIManager::GetCachedWidget(const FName& InKey, bool InActiveCheck)
+{
+	FGsTableUIPath* tableRow = GetTableRow(InKey);
+	if (nullptr == tableRow)
+	{
+		return nullptr;
+	}
+
+	if (tableRow->bNotDestroy)
+	{
+		return UIControllerNotDestroy->GetCachedWidgetByName(InKey, InActiveCheck);
+	}
+
+	return UIControllerNormal->GetCachedWidgetByName(InKey, InActiveCheck);
+}
+
 /*
 void UGsUIManager::TestGC()
 {

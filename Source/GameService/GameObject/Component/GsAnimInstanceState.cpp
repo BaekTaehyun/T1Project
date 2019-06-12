@@ -2,16 +2,26 @@
 
 #include "GsAnimInstanceState.h"
 
+UGsAnimInstanceState::UGsAnimInstanceState()
+{
+
+}
+
+UGsAnimInstanceState::~UGsAnimInstanceState()
+{
+}
+
 bool UGsAnimInstanceState::IsState(EGsStateBase State)
 {
-	return BaseStateType == State;
+	return StateType == State;
 }
 
 bool UGsAnimInstanceState::IsStates(const TArray<EGsStateBase>& States)
 {
+	//개선 필요
 	for (auto el : States)
 	{
-		if (el == BaseStateType)
+		if (el == StateType)
 		{
 			return true;
 		}
@@ -24,11 +34,6 @@ bool UGsAnimInstanceState::IsStates(const TArray<EGsStateBase>& States)
 	});*/
 }
 
-bool UGsAnimInstanceState::IsUpperState(EGsStateUpperBase State)
-{
-	return UpperStateType == State;
-}
-
 bool UGsAnimInstanceState::IsUpperBlend()
 {
 	return IsMoveState();
@@ -36,10 +41,7 @@ bool UGsAnimInstanceState::IsUpperBlend()
 
 bool UGsAnimInstanceState::IsMoveState()
 {
-	return BaseStateType == EGsStateBase::ForwardWalk ||
-		BaseStateType == EGsStateBase::BackwardWalk ||
-		BaseStateType == EGsStateBase::SideWalk ||
-		BaseStateType == EGsStateBase::Run;
+	return Moving;
 }
 
 int UGsAnimInstanceState::GetRandomIndex()
@@ -49,26 +51,14 @@ int UGsAnimInstanceState::GetRandomIndex()
 
 void UGsAnimInstanceState::ChangeState(uint8 State, int Min, int Max)
 {
-	if (State >= (uint8)EGsStateUpperBase::None)
+	auto changeState = static_cast<EGsStateBase>(State);
+	if (StateType != changeState)
 	{
-		EGsStateUpperBase changeState = static_cast<EGsStateUpperBase>(State);
-		if (UpperStateType != changeState)
-		{
-			UpperTimer = FApp::GetCurrentTime();
-		}
-		UpperStateType = changeState;
+		Timer = FApp::GetCurrentTime();
 	}
-	else
-	{
-		EGsStateBase changeState = static_cast<EGsStateBase>(State);
-		if (BaseStateType != changeState)
-		{
-			Timer = FApp::GetCurrentTime();
-		}
-		BaseStateType = changeState;
-	}
+	StateType = changeState;
 
-	//랜덤 인덱스 생성
+	//랜덤 인덱스 생성 (테스트 용)
 	if (Max - Min > 0)
 	{
 		RandomIndex = FMath::RandRange(Min, Max);
@@ -78,7 +68,12 @@ void UGsAnimInstanceState::ChangeState(uint8 State, int Min, int Max)
 		RandomIndex = 0;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("UAnimInstanceLocal ChangeState Lowwer : %d  Upper : %d"), (int)BaseStateType, (int)UpperStateType);
+	UE_LOG(LogTemp, Warning, TEXT("UAnimInstanceLocal ChangeState : %d"), (uint8)StateType);
+}
+
+void UGsAnimInstanceState::SetMoving(bool IsMove)
+{
+	Moving = IsMove;
 }
 
 void UGsAnimInstanceState::PlayUpperAni(UAnimMontage* Res)

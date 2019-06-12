@@ -8,7 +8,7 @@
 #include "GsInputBindingLocalPlayer.generated.h"
 
 /**
- * 
+ * 내 Player 키입력 관련 바인딩 클래스
  */
 #define CAM_MODE
 
@@ -25,14 +25,21 @@ public:
 	virtual void Initialize(class UGsGameObjectLocal* target);
 	virtual void SetBinding(UInputComponent* input) override;
 
+#ifdef OLD_FUNCTION
 	// forward 에서 호출할 tfunction(모드에 따라 변경)
-	TFunction<void()> FunctionMoveForward;
+	TFunction<void(float In_newAxisValue)> FunctionMoveForward;
 	// backward 에서 호출할 tfunction(모드에 따라 변경)
-	TFunction<void()> FunctionMoveBackward;
+	TFunction<void(float In_newAxisValue)> FunctionMoveBackward;
 	// Left 에서 호출할 tfunction(모드에 따라 변경)
-	TFunction<void()> FunctionMoveLeft;
+	TFunction<void(float In_newAxisValue)> FunctionMoveLeft;
 	// Right 에서 호출할 tfunction(모드에 따라 변경)
-	TFunction<void()> FunctionMoveRight;
+	TFunction<void(float In_newAxisValue)> FunctionMoveRight;
+#else
+	// forward/backward 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void(float In_newAxisValue)> FunctionMoveForwardBackward;
+	// left/right 에서 호출할 tfunction(모드에 따라 변경)
+	TFunction<void(float In_newAxisValue)> FunctionMoveLeftRight;
+#endif
 	// stop 에서 호출할 tfunction(모드에 따라 변경)
 	TFunction<void()> FunctionMoveStop;
 	// LookUp 에서 호출할 tfunction(모드에 따라 변경)
@@ -53,11 +60,11 @@ protected:
 	void OnAttachParts(EGsPartsType Type);
 	void OnAttack1(int32 slot);
 	void OnAction();
-	void OnMoveForward();
-	void OnMoveBackward();
-	void OnMoveLeft();
-	void OnMoveRight();
 	void OnMoveStop();
+	void OnMoveForward(float Value);
+	void OnMoveBackward(float Value);
+	void OnMoveLeft(float Value);
+	void OnMoveRight(float Value);
 	void OnMoveRotate(float Value);
 	void OnMoveRotateYaw(float Value);
 	void OnMoveRotatePitch(float Value);

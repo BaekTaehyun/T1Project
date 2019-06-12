@@ -67,10 +67,12 @@ void GsCameraModeFix::Enter(UGsGameObjectLocal* In_char, GsCameraModeManager* In
 	// 람다 캡쳐를 레퍼런스(&)로 하고 포인터 받으면 다른주소를 넘겨줘서
 	// 실제 호출시 이상 상황 발생함....
 	// 포인터는 복사(=)로 캡쳐해야함....
-	inputBinding->FunctionMoveForward = [=]() {MoveForward(In_char); };
-	inputBinding->FunctionMoveBackward = [=]() {MoveBackward(In_char); };
-	inputBinding->FunctionMoveLeft = [=]() {MoveLeft(In_char); };
-	inputBinding->FunctionMoveRight = [=]() {MoveRight(In_char); };
+#ifdef OLD_FUNCTION
+	inputBinding->FunctionMoveForward = [=](float val) {MoveForward(val, In_char); };
+	inputBinding->FunctionMoveBackward = [=](float val) {MoveBackward(val, In_char); };
+	inputBinding->FunctionMoveLeft = [=](float val) {MoveLeft(val, In_char); };
+	inputBinding->FunctionMoveRight = [=](float val) {MoveRight(val, In_char); };
+#endif
 
 	inputBinding->FunctionLookUp = [=](float val) {LookUp(val, In_char); };
 	inputBinding->FunctionTurn = [=](float val) {Turn(val, In_char); };
@@ -115,11 +117,13 @@ void GsCameraModeFix::Exit(UGsGameObjectLocal* In_char)
 		GSLOG(Error, TEXT("inputBinding == nullptr"));
 		return;
 	}
+#ifdef OLD_FUNCTION
 	// 바인딩 해제
 	inputBinding->FunctionMoveForward = nullptr;
 	inputBinding->FunctionMoveBackward = nullptr;
 	inputBinding->FunctionMoveLeft = nullptr;
 	inputBinding->FunctionMoveRight = nullptr;
+#endif
 	inputBinding->FunctionLookUp = nullptr;
 	inputBinding->FunctionTurn = nullptr;
 
@@ -155,7 +159,7 @@ void GsCameraModeFix::Update(UGsGameObjectLocal* In_char, float In_deltaTime, Gs
 
 		if (auto movement = In_char->GetMovement())
 		{
-			movement->Move(_directionToMove, EGsGameObjectMoveDirType::Forward, 10.0f);
+			movement->Move(_directionToMove, 10.0f);
 		}
 	}
 
@@ -183,7 +187,7 @@ void GsCameraModeFix::LeftRight(float NewAxisValue, UGsGameObjectLocal* In_char)
 }
 
 // 앞 이동 처리
-void GsCameraModeFix::MoveForward(UGsGameObjectLocal* In_char)
+void GsCameraModeFix::MoveForward(float NewAxisValue, UGsGameObjectLocal* In_char)
 {
 	if (In_char == nullptr)
 	{
@@ -192,7 +196,7 @@ void GsCameraModeFix::MoveForward(UGsGameObjectLocal* In_char)
 	_directionToMove.X = 10.0f;
 }
 // 뒤 이동 처리
-void GsCameraModeFix::MoveBackward(UGsGameObjectLocal* In_char)
+void GsCameraModeFix::MoveBackward(float NewAxisValue, UGsGameObjectLocal* In_char)
 {
 	if (In_char == nullptr)
 	{
@@ -201,7 +205,7 @@ void GsCameraModeFix::MoveBackward(UGsGameObjectLocal* In_char)
 	_directionToMove.X = -5.0f;
 }
 // 좌 이동 처리
-void GsCameraModeFix::MoveLeft(UGsGameObjectLocal* In_char)
+void GsCameraModeFix::MoveLeft(float NewAxisValue, UGsGameObjectLocal* In_char)
 {
 	if (In_char == nullptr)
 	{
@@ -210,7 +214,7 @@ void GsCameraModeFix::MoveLeft(UGsGameObjectLocal* In_char)
 	_directionToMove.Y = -5.0f;
 }
 // 우 이동 처리
-void GsCameraModeFix::MoveRight(UGsGameObjectLocal* In_char)
+void GsCameraModeFix::MoveRight(float NewAxisValue, UGsGameObjectLocal* In_char)
 {
 	if (In_char == nullptr)
 	{

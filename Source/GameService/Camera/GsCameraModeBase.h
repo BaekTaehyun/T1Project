@@ -34,13 +34,13 @@ public :
 	// 좌,우 이동 처리
 	virtual void LeftRight(float NewAxisValue, UGsGameObjectLocal* In_char) {}
 	// 앞 이동 처리
-	virtual void MoveForward(UGsGameObjectLocal* In_char) {}
+	virtual void MoveForward(float NewAxisValue, UGsGameObjectLocal* In_char) {}
 	// 뒤 이동 처리
-	virtual void MoveBackward(UGsGameObjectLocal* In_char) {}
+	virtual void MoveBackward(float NewAxisValue, UGsGameObjectLocal* In_char) {}
 	// 좌 이동 처리
-	virtual void MoveLeft(UGsGameObjectLocal* In_char) {}
+	virtual void MoveLeft(float NewAxisValue, UGsGameObjectLocal* In_char) {}
 	// 우 이동 처리
-	virtual void MoveRight(UGsGameObjectLocal* In_char) {}
+	virtual void MoveRight(float NewAxisValue, UGsGameObjectLocal* In_char) {}
 	// 이동 정지
 	virtual void MoveStop(UGsGameObjectLocal* In_char);
 	// 위, 아래 카메라 회전

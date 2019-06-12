@@ -4,6 +4,7 @@
 #include "GameObject/Skill/GsSKillLocal.h"
 #include "GameObject/Parts/GsPartsLocal.h"
 #include "GameObject/State/GsStateLocal.h"
+#include "GameObject/State/GsStateLocalUpper.h"
 #include "GameObject/Movement/GsMovementLocal.h"
 #include "GameObject/Input/GsInputBindingLocalPlayer.h"
 #include "GameObject/Event/GsGameObjectEventLocal.h"
@@ -24,6 +25,10 @@ FGsSkillBase*		UGsGameObjectLocal::GetSkill() const			{ return Skill; }
 FGsPartsBase*		UGsGameObjectLocal::GetParts() const			{ return Parts; }
 FGsGameObjectEventBase* UGsGameObjectLocal::GetEvent() const		{ return Event; }
 //
+
+UGsGameObjectLocal::~UGsGameObjectLocal()
+{
+}
 
 void UGsGameObjectLocal::Initialize()
 {

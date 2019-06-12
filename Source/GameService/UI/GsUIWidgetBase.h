@@ -23,7 +23,6 @@ public:
 
 	virtual void NativeOnInitialized() override;
 	virtual void RemoveFromParent() override;
-	virtual void BeginDestroy() override;
 
 	// 스택 관리되는 UI인가
 	virtual bool IsStackUI() const { return false; }
@@ -34,8 +33,8 @@ public:
 	// 레벨 로드 시 파괴되지 않는 UI인가
 	virtual bool IsNondestructiveWidget() const { return bNotDestroy; }
 
-	// 중복 생성이 가능한 위젯
-	virtual bool CanMultipleInstance() const { return bCanMultipleInstance; }
+	// 중복 생성이 가능한 위젯(Popup과 Tray에만 허용한다)
+	virtual bool CanMultipleInstance() const { return false; }
 
 	// UIController에서 캐싱하고 있는 위젯 
 	bool IsCachedWidget() const { return bIsCachedWidget; }
@@ -51,16 +50,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "GsManaged")
 	class UGsUIManager* GetUIManager();
 
+	// Window < Popup < Tray 뎁스 보장을 위한 값. 자손 클래스에서 값 부여(Window: 10, Popup: 100, Tray: 500)
+	virtual int32 GetManagedDefaultZOrder() const { return 0; }
+	virtual int32 GetManagedZOrder() const;
+
 protected:
 	//스택에 푸쉬할 때 부르며, 초기화 데이터를 넘길 수 있음.
 	//주의: OnInitialized 뒤에 불리지만 Construct 보다 전에 불리므로 Slate 세팅과 관련된 처리를 여기서 하면 안됨.
 	UFUNCTION(BlueprintNativeEvent, Category = "GsManaged", meta = (DisplayName = "OnPush"))
 	void OnPush(UGsUIParameter* InParam = nullptr);
 	virtual void OnPush_Implementation(UGsUIParameter* InParam = nullptr);
-
-	// Window < Popup < Tray 뎁스 보장을 위한 값. 자손 클래스에서 값 부여(Window: 10, Popup: 100, Tray: 500)
-	virtual int32 GetManagedDefaultZOrder() const { return 0; }
-	virtual int32 GetManagedZOrder() const;
 
 	// 현재 Visibility 상태를 백업 후 Hidden 상태로 전환
 	virtual void Hide();
@@ -84,9 +83,6 @@ protected:
 	// 레벨 전환 시 파괴할 오브젝트인가
 	UPROPERTY(EditDefaultsOnly, Category = "GsManaged")
 	bool bNotDestroy;
-
-	UPROPERTY(EditDefaultsOnly, Category = "GsManaged")
-	bool bCanMultipleInstance;
 
 private:
 	// 스택 중복 처리를 막는다

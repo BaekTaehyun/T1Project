@@ -47,10 +47,21 @@ void UGsLobbyComponent::OnEnterAssetDownloadStage()
 		UGsGameInstance* GameInstance = Cast<UGsGameInstance>(GameMode->GetGameInstance());
 		if (nullptr != GameInstance)
 		{
+			// 9월 시연 버젼일 경우 다운로드 끝났다고 처리하고 넘긴다
+			if (GameInstance->IsDemoMode())
+			{
+				bIsAccountLoginComplete = true;
+				SelectedServerID = 1;
+
+				GMessage()->GetStage().SendMessage(MessageLobby::Stage::ASSETDOWN_COMPLETE);
+				return;
+			}
+
 			// 즉시시작 플래그가 켜져있으면 바로 인게임으로 보낸다
 			if (GameInstance->IsImmediateStart())
 			{
 				GMessage()->GetStage().SendMessage(MessageLobby::Stage::ENTER_INGAME);
+				return;
 			}
 
 			// DevMode면 다운로드 끝났다고 처리하고 넘긴다
@@ -101,7 +112,7 @@ void UGsLobbyComponent::OnLoadGameScene()
 {
 	GSLOG(Warning, TEXT("AGsGameModeLobby : OnLoadGameScene"));
 
-	UGsGameInstance* Inst = Cast<UGsGameInstance>(GetWorld()->GetGameInstance());
+	UGsGameInstance* Inst = GetWorld()->GetGameInstance<UGsGameInstance>();
 	if (nullptr != Inst)
 	{
 		Inst->GetUIManager()->OnChangeLevel();

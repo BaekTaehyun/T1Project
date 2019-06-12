@@ -6,6 +6,10 @@
 #include "GsGameObjectPlayer.h"
 #include "GsGameObjectLocal.generated.h"
 
+class FGsGameObjectEventBase;
+class FGsSkillBase;
+class UGsInputBindingLocalPlayer;
+
 /**
  * 내플레이어
  */
@@ -15,6 +19,8 @@ class GAMESERVICE_API UGsGameObjectLocal : public UGsGameObjectPlayer
 	GENERATED_BODY()
 	
 public:
+	virtual ~UGsGameObjectLocal();
+
 	virtual void Initialize() override;
 	virtual void Finalize() override;
     virtual void Update(float Delta) override;
@@ -25,11 +31,11 @@ public:
     UFUNCTION(BlueprintCallable, Category = "GameObject")
 	AGsLocalCharacter* GetLocalCharacter() const;
 
-	virtual class FGsFSMManager* GetBaseFSM() const override;
-	virtual class FGsFSMManager* GetUpperFSM() const override;
-	virtual class FGsSkillBase* GetSkill()  const override;
-	virtual class FGsPartsBase* GetParts() const override;
-	class FGsGameObjectEventBase* GetEvent() const;
+	virtual FGsFSMManager* GetBaseFSM() const override;
+	virtual FGsFSMManager* GetUpperFSM() const override;
+	virtual FGsSkillBase* GetSkill()  const override;
+	virtual FGsPartsBase* GetParts() const override;
+	FGsGameObjectEventBase* GetEvent() const;
 
 public:
 	virtual void ActorSpawned(AActor* Spawn) override;
@@ -42,7 +48,7 @@ private:
  	AGsLocalCharacter* Actor;
 
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = GameObject, Meta = (AllowPrivateAccess = true))
-	class UGsInputBindingLocalPlayer* InputBinder;
+	UGsInputBindingLocalPlayer* InputBinder;
 
 	FGsGameObjectEventBase* Event;
 };

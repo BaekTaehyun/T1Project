@@ -27,12 +27,6 @@ void UGsUIWidgetBase::NativeOnInitialized()
 	Super::NativeOnInitialized();
 }
 
-void UGsUIWidgetBase::BeginDestroy()
-{
-	Super::BeginDestroy();
-	//GSLOG(Warning, TEXT("--------BeginDestroy"));
-}
-
 void UGsUIWidgetBase::RemoveFromParent()
 {
 	if (bEnableAutoDestroy)

@@ -18,6 +18,7 @@ public:
 	virtual ~FGsSKillLocal();
 
 	virtual void Initialize(UGsGameObjectBase* Owner) override;
+	virtual void Finalize() override;
 
 	virtual void LoadData(const TCHAR * Path) override;
 	virtual void UseSKill(int ID) override;
@@ -34,6 +35,6 @@ private:
 private:
 	//스킬 액션 정보들
 	TMap<int, TArray<FGsSkillActionNodeBase*>> MapSkillNodes;
-	TArray<FGsSkillActionNodeBase*> RunSkillNodes;
-	TArray<FGsSkillActionNodeBase*> UseSkillNodes;
+	TArray<FGsSkillActionNodeBase*> ListRunSkillNodes;
+	TArray<FGsSkillActionNodeBase*> ListUseSkillNodes;
 };

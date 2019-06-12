@@ -38,6 +38,10 @@ AGsNpcPawn::AGsNpcPawn()
     MovementComponent->UpdatedComponent = CapsuleComponent;
 }
 
+AGsNpcPawn::~AGsNpcPawn()
+{
+}
+
 // Called when the game starts or when spawned
 void AGsNpcPawn::BeginPlay()
 {

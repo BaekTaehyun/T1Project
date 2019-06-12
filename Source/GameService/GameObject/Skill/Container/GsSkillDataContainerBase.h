@@ -17,10 +17,10 @@ class GAMESERVICE_API UGsSkillDataContainerBase : public UDataAsset
 	GENERATED_BODY()
 
 public:
-	FORCEINLINE const TArray<FGsSkillDataBase>& GetSkillData() { return Skills; }
+	FORCEINLINE const TArray<FGsSkillDataBase>& GetSkillData() { return ListSkills; }
 
 	const FGsSkillDataBase* FindData(int ID);
 
 	UPROPERTY(EditAnywhere)
-	TArray<FGsSkillDataBase> Skills;
+	TArray<FGsSkillDataBase> ListSkills;
 };

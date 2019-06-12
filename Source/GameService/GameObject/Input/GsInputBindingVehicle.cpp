@@ -9,6 +9,14 @@
 #include "GameObject/ActorExtend/GsWheelVehicle.h"
 #include "PhysXVehicles/Public/WheeledVehicleMovementComponent.h"
 
+UGsInputBindingVehicle::UGsInputBindingVehicle()
+{
+}
+
+UGsInputBindingVehicle::~UGsInputBindingVehicle()
+{
+}
+
 void UGsInputBindingVehicle::Initialize()
 {
 	//error

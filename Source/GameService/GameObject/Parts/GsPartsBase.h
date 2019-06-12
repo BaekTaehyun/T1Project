@@ -6,16 +6,20 @@
 #include "Public/SkeletalMeshMerge.h"
 #include "Data/GsPartsDataBase.h"
 
+class UGsGameObjectBase;
+class UGsPartsDataContainerBase;
+
 /**
- * 
+ * Object 파츠처리 담당 Base클래스
+ * 파츠 데이터 ASync 로드 처리
  */
 class GAMESERVICE_API FGsPartsBase
 {
-public:
-	FGsPartsBase();
+public:	
+	FGsPartsBase();	
 	virtual ~FGsPartsBase();
 
-	virtual void Initialize(class UGsGameObjectBase* Owner);
+	virtual void Initialize(UGsGameObjectBase* Owner);
 	virtual void Finalize();
 	virtual void LoadData(const TCHAR * Path);
 
@@ -47,10 +51,10 @@ protected:
 	virtual void Detached();
 
 protected:
-	class UGsGameObjectBase* Owner;
+	UGsGameObjectBase* Owner;
 	
-	class UGsPartsDataContainerBase* PartsFctory;
-	TArray<TSharedPtr<FGsCPartsData>> Parts;
+	UGsPartsDataContainerBase* PartsFctory;
+	TArray<TSharedPtr<FGsCPartsData>> ListParts;
 };
 
 template<typename T, typename... T2>

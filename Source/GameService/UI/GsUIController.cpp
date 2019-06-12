@@ -1,6 +1,4 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "GsUIController.h"
 #include "GsUIWidgetBase.h"
 #include "GameService.h"
@@ -12,14 +10,14 @@ void UGsUIController::BeginDestroy()
 	Super::BeginDestroy();
 }
 
-UGsUIWidgetBase* UGsUIController::CreateOrFind(UWorld* InOwner, TSubclassOf<UGsUIWidgetBase> InClass)
+UGsUIWidgetBase* UGsUIController::CreateOrFind(UWorld* InOwner, TSubclassOf<UGsUIWidgetBase> InClass, const FName& InKey)
 {
-	FName Key = FName(*InClass.Get()->GetName());
-
+	UGsUIWidgetBase** widget = CachedWidgetMap.Find(InKey);
 	UGsUIWidgetBase* outWidget = nullptr;
-	if (CachedWidgetMap.Contains(Key))
+
+	if (nullptr != widget)
 	{
-		outWidget = *CachedWidgetMap.Find(Key);
+		outWidget = *widget;
 
 		// 사용 중이고
 		if (UsingWidgetArray.Contains(outWidget))
@@ -42,7 +40,7 @@ UGsUIWidgetBase* UGsUIController::CreateOrFind(UWorld* InOwner, TSubclassOf<UGsU
 		if (nullptr != outWidget)
 		{
 			outWidget->bIsCachedWidget = true;
-			CachedWidgetMap.Add(Key, outWidget);
+			CachedWidgetMap.Add(InKey, outWidget);
 			UsingWidgetArray.Add(outWidget);
 		}
 	}
@@ -50,7 +48,7 @@ UGsUIWidgetBase* UGsUIController::CreateOrFind(UWorld* InOwner, TSubclassOf<UGsU
 	return outWidget;
 }
 
-UGsUIWidgetBase* UGsUIController::CreateOrFind(UGameInstance* InOwner, TSubclassOf<UGsUIWidgetBase> InClass)
+UGsUIWidgetBase* UGsUIController::CreateOrFind(UGameInstance* InOwner, TSubclassOf<UGsUIWidgetBase> InClass, const FName& InKey)
 {
 	// 상속 클래스(UGsUIControllerNotDestroy)에서 구현
 	return nullptr;
@@ -118,16 +116,12 @@ void UGsUIController::RemoveWidget(UGsUIWidgetBase* InWidget)
 	}
 }
 
-void UGsUIController::RemoveWidget(FName InKey)
-{	
-	// FIX: Find에서 null 리턴시 assert 안나게 해서 고칠 것.
-	if (CachedWidgetMap.Contains(InKey))
+void UGsUIController::RemoveWidget(const FName& InKey)
+{
+	UGsUIWidgetBase** widget = CachedWidgetMap.Find(InKey);
+	if (nullptr != widget)
 	{
-		UGsUIWidgetBase* widget = *CachedWidgetMap.Find(InKey);
-		if (nullptr != widget)
-		{
-			RemoveWidget(widget);
-		}
+		RemoveWidget(*widget);
 	}
 }
 
@@ -230,4 +224,23 @@ UGsUIWidgetBase* UGsUIController::StackPeek()
 	}
 
 	return StackableArray.Last();
+}
+
+UGsUIWidgetBase* UGsUIController::GetCachedWidgetByName(FName InKey, bool InActiveCheck)
+{
+	UGsUIWidgetBase** widget = CachedWidgetMap.Find(InKey);
+	if (nullptr == widget)
+	{
+		return nullptr;
+	}
+
+	if (InActiveCheck)
+	{		
+		if (false == (*widget)->GetIsVisible())
+		{
+			return false;
+		}
+	}
+
+	return *widget;
 }

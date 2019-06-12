@@ -7,6 +7,14 @@
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 #include "GameObject/ActorExtend/GsLocalCharacter.h"
 
+FGsPartsLocal::FGsPartsLocal()
+{
+}
+
+FGsPartsLocal::~FGsPartsLocal()
+{
+}
+
 void FGsPartsLocal::Initialize(UGsGameObjectBase* owner)
 {
 	Super::Initialize(owner);
@@ -15,18 +23,67 @@ void FGsPartsLocal::Initialize(UGsGameObjectBase* owner)
     if (Local)
     {
         ActorComponent = Local->GetLocalCharacter()->FindComponentByClass<UActorComponent>();
+
+		for (uint8 i = (uint8)EGsPartsType::HAIR; i < (uint8)EGsPartsType::FOOT + 1; ++i)
+		{
+			auto newMeshComponent = NewObject<USkeletalMeshComponent>(ActorComponent);
+			InitSkeletalMeshComponent(newMeshComponent);
+			MapMeshComponent.Emplace((EGsPartsType)i, newMeshComponent);
+		}
     }
+}
+
+void FGsPartsLocal::Finalize()
+{
+	Super::Finalize();
+	
+	/*for (auto pair : MapMeshComponent)
+	{
+	}*/
+	MapMeshComponent.Reset();
+}
+
+void FGsPartsLocal::InitSkeletalMeshComponent(USkeletalMeshComponent* Mesh)
+{
+	Mesh->AlwaysLoadOnClient = true;
+	Mesh->bOwnerNoSee = false;
+	//스킨 메쉬 애니메이션 Update 옵션
+	Mesh->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::OnlyTickPoseWhenRendered;
+	//primitive 쉐도우 연산 관련 플레그
+	Mesh->bCastDynamicShadow = true;
+	//primitive 라이트 연산 관련 플레그
+	Mesh->bAffectDynamicIndirectLighting = true;
+	//컴퍼넌트의 Tick 간격 설정 : http://api.unrealengine.com/KOR/Programming/UnrealArchitecture/Actors/Ticking/index.html#%ED%8B%B1%EA%B7%B8%EB%A3%B9
+	Mesh->PrimaryComponentTick.TickGroup = TG_PrePhysics;
+
+	static FName CollisionProfileName(TEXT("CharacterMesh"));
+	//콜리 전 오브젝트 유형 설정
+	Mesh->SetCollisionObjectType(ECC_Pawn);
+	Mesh->SetCollisionProfileName(CollisionProfileName);
+
+	//컴퍼넌트 붙이기 작업
+	auto actor = Local->GetLocalCharacter();
+	//기준이 되는 SkeletalMeshComponent
+	if (USkeletalMeshComponent* MeshComponent = actor->GetMesh())
+	{
+		Mesh->AttachToComponent(MeshComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+		Mesh->RegisterComponent();
+		Mesh->SetMasterPoseComponent(MeshComponent);
+		Mesh->bUseBoundsFromMasterPoseComponent = true;
+	}
 }
 
 void FGsPartsLocal::Attached()
 {
 	Super::Attached();
 
-	if (USkeletalMesh* mesh = MergeParts())
+	auto MeshComponent = Local->GetLocalCharacter()->GetMesh();
+	MasterPose();
+
+	/*if (USkeletalMesh* mesh = MergeParts())
 	{
-		USkeletalMeshComponent* MeshComponent = Local->GetLocalCharacter()->GetMesh();
 		MeshComponent->SetSkeletalMesh(mesh);
-	}
+	}*/
 }
 
 void FGsPartsLocal::Detached()
@@ -40,14 +97,29 @@ void FGsPartsLocal::Detached()
 	}
 }
 
+void FGsPartsLocal::MasterPose()
+{
+	if (ListParts.Num() > 0)
+	{
+		for (auto el : ListParts)
+		{
+			if (auto meshComponent = MapMeshComponent.Find(el.Get()->Type))
+			{
+				(*meshComponent)->SetSkeletalMesh(el.Get()->Mesh);
+				//(*meshComponent)->SetMasterPoseComponent(SkeletaMesh);
+			}
+		}
+	}
+}
+
 USkeletalMesh* FGsPartsLocal::MergeParts() const
 {
-	if (Parts.Num() > 0)
+	if (ListParts.Num() > 0)
 	{
 		TArray<USkeletalMesh*> mergeMeshes;
-		mergeMeshes.Empty(Parts.Num());
+		mergeMeshes.Empty(ListParts.Num());
 
-		for (auto el : Parts)
+		for (auto el : ListParts)
 		{
 			mergeMeshes.Add(el.Get()->Mesh);
 		}
