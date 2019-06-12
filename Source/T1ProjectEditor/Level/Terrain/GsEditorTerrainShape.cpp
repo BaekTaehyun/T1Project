@@ -11,14 +11,6 @@
 
 AGsEditorTerrainShape::AGsEditorTerrainShape()
 {
-	_Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-
-	if (_Root)
-	{
-		RootComponent = _Root;
-		_Root->SetRelativeLocation(FVector::ZeroVector);		
-	}	
-
 	_Spline = CreateDefaultSubobject<USplineComponent>(TEXT("Spline"));
 
 	if (_Spline)
@@ -84,8 +76,8 @@ void AGsEditorTerrainShape::OnConstruction(const FTransform& Transform)
 	}
 
 	DrawShape();
-	SetWidgetPosition();
-	SetWidgetText();
+	InvalideWidgetPosition();
+	InvalideWidgetText();
 }
 
 void AGsEditorTerrainShape::DestroyAllComponents()
@@ -216,7 +208,7 @@ void AGsEditorTerrainShape::DrawPlillar()
 	}
 }
 
-void AGsEditorTerrainShape::SetWidgetPosition()
+void AGsEditorTerrainShape::InvalideWidgetPosition()
 {
 	if (_Widget)
 	{
@@ -250,24 +242,6 @@ void AGsEditorTerrainShape::SetWidgetPosition()
 		{
 			pos = GetActorLocation() + FVector(0, 0, _Height + _WidgetHeight);
 			_Widget->SetWorldLocation(pos);
-		}
-	}
-}
-
-void AGsEditorTerrainShape::SetWidgetText()
-{
-	UUserWidget* widgetObj = _Widget->GetUserWidgetObject();
-
-	if (widgetObj)
-	{
-		UGsEditorWidget* widget = Cast<UGsEditorWidget>(widgetObj);
-
-		if (widget)
-		{
-			if (widget->_DescriptionText)
-			{
-				widget->_DescriptionText->SetText(FText::FromString(_Tag));
-			}
 		}
 	}
 }

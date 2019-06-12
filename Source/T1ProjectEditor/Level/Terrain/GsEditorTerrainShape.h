@@ -23,14 +23,10 @@ class T1PROJECTEDITOR_API AGsEditorTerrainShape : public AGsEditorActor
 
 public:
 	//Setting
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
-		FString _Tag = "Terrain info";
 
 	//Widget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
 		float _Height = 100.0f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
-		float _WidgetHeight = 25.0f;
 
 	//View 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
@@ -50,9 +46,6 @@ public:
 	UPROPERTY()
 		TArray<UGsEditorTerrainPlaneComp*> _PlaneArray;
 
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "GsEditorBaseTerrain")
-		USceneComponent* _Root;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GsEditorBaseTerrain")
 		USplineComponent* _Spline;
 
@@ -74,9 +67,6 @@ protected:
 
 	//Draw
 	void DrawPlanes(bool in_close = true);
-	void DrawPlillar();
-
-	//Wiget
-	void SetWidgetPosition();
-	void SetWidgetText();
+	void DrawPlillar();	
+	virtual void InvalideWidgetPosition() override;
 };
