@@ -59,19 +59,6 @@ void AGsGameModeWorld::StartPlay()
 		Inst->GetUIManager()->HideLoading();
 		Inst->GetUIManager()->ChangeHUD(FName(TEXT("HUDMain")));
 	}
-
-	//AGsGameModeWorld::LoadTrayHud();
-}
-
-void AGsGameModeWorld::LoadTrayHud()
-{
-	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
-
-	UGsGameInstance* Inst = GetWorld()->GetGameInstance<UGsGameInstance>();
-	if (nullptr != Inst)
-	{
-		Inst->GetUIManager()->Push(FName(TEXT("MyTrayHud")));
-	}
 }
 
 void AGsGameModeWorld::TeleportPlayer(FString in_tag, bool in_waitAllLoad)
