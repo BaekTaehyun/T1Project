@@ -17,6 +17,6 @@ class T1PROJECTEDITOR_API UGsEditorWidget : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, Category = "GsEditorWidget", meta = (BindWidget))
 		UTextBlock* _DescriptionText;
 };
