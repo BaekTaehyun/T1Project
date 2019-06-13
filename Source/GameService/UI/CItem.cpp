@@ -1,27 +1,30 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "CItem.h"
 #include "UIIcon.h"
 
-// ItemData ¸¦ »ı¼º ¹× »ı¼ºµÈ Data Update ÁøÇà.
 UCItem::UCItem(const int64 In_ItemTID)
 {
-	
 }
 
-
-void UCItem::UpdateItemData(const int64  In_ItemID)
+void UCItem::UpdateItemData(int64  In_ItemID)
 {
-	UE_LOG(LogTemp, Log, TEXT("UpdateItemData : %d"), In_ItemID);
-}
+	//UE_LOG(LogTemp, Log, TEXT("UpdateItemData : %d"), In_ItemID);
+	UE_LOG(LogTemp, Log, TEXT("Call UpdateItemData()"));
 
+	// ì•„ì§ table data ê°€ ì—†ìœ¼ë¯€ë¡œ, ë¬¼ì•½ data í•˜ë“œì½”ë”© (ì„ì‹œ).
+	ItemTID = In_ItemID;
+	ItemGUID = 101;
+	ItemName = TEXT("ì²´ë ¥íšŒë³µ ë¬¼ì•½");
+	ItemBPpath = TEXT("/Game/UI/Texture/icon_potion_01.icon_potion_01");
+}
 
 UCItem* UCItem::CreateItem(const int64 In_ItemTID, int32 In_ItemStackCount)
 {
-	// ÀÎÀÚ·Î ¹ŞÀº id ¸¦ Åä´ë·Î Å×ÀÌºí¿¡¼­ ÀĞ¾î¿Í¼­ Find ¹× Set 
-	// CreateItem Àº ¿©·¯°¡Áö ÀÎÀÚ Å¸ÀÔÀÌ »ı±æ ¿©Áö°¡ ÀÖÀ½. (¿À¹ö·Îµù »ç¿ë
-	// ·Îºí²¨ °¡Á®¿È(ÀÓ½Ã)
+	// ì¸ìë¡œ ë°›ì€ id ë¥¼ í† ëŒ€ë¡œ í…Œì´ë¸”ì—ì„œ ì½ì–´ì™€ì„œ Find ë° Set 
+	// CreateItem ì€ ì—¬ëŸ¬ê°€ì§€ ì¸ì íƒ€ì…ì´ ìƒê¸¸ ì—¬ì§€ê°€ ìˆìŒ. (ì˜¤ë²„ë¡œë”© ì‚¬ìš©
+	// ë¡œë¸”êº¼ ê°€ì ¸ì˜´(ì„ì‹œ)
 	/* 
 	Item tableData = ItemDic.Instance.Find(In_itemID);
 	if (tableData == null)
@@ -38,14 +41,40 @@ UCItem* UCItem::CreateItem(const int64 In_ItemTID, int32 In_ItemStackCount)
 		newItem->ItemStackCount = In_ItemStackCount;
 	}
 
-	// ÀåÂø·ù ¾ÆÀÌÅÛ
+	// ì¥ì°©ë¥˜ ì•„ì´í…œ
 
-	// Àåºñ¿¡ ¹Ú´Â º¸¼®·ù?
+	// ì¥ë¹„ì— ë°•ëŠ” ë³´ì„ë¥˜?
 
-	// ±âÅ¸ ¾ÆÀÌÅÛµé
+	// ê¸°íƒ€ ì•„ì´í…œë“¤
 	
 
 	
 	return newItem;
 
+}
+
+int64 UCItem::GetItemTID()
+{
+	return ItemTID;
+}
+
+int64 UCItem::GetItemGUID()
+{
+	return ItemGUID;
+}
+
+
+int32 UCItem::GetItemStackCount()
+{
+	return ItemStackCount;
+}
+
+FString UCItem::GetItemName()
+{
+	return ItemName;
+}
+
+FString UCItem::GetItemBPpath()
+{
+	return ItemBPpath;
 }

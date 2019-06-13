@@ -5,16 +5,19 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Overlay.h"
+#include "../ItemIconSelector.h"
 #include "GsUIHUDConsumable.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class GAMESERVICE_API UGsUIHUDConsumable : public UUserWidget
 {
 	GENERATED_BODY()
 
+protected:
+	virtual void NativeOnInitialized();
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -22,4 +25,7 @@ public:
 
 public:
 	void CreateConsumeItem();
+
+private:
+	UItemIconSelector* ItemIconSelector;
 };
