@@ -238,7 +238,7 @@ UGsUIWidgetBase* UGsUIController::GetCachedWidgetByName(FName InKey, bool InActi
 	{		
 		if (false == (*widget)->GetIsVisible())
 		{
-			return false;
+			return nullptr;
 		}
 	}
 

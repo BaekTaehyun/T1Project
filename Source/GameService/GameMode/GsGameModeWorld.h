@@ -39,6 +39,8 @@ private:
 	void SetPlayerUnspawnedState();
 	void SetPlayerSpawendState();
 	ULevelStreaming* GetClosestLevel();
+	void StartCheckAllVisibleLevelsLoadTimer();
+	void StartCheckClosestVisibleLevelLoadTimer();
 
 	void SpawnPlayer();
 };
