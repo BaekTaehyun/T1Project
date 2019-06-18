@@ -2,7 +2,7 @@
 
 
 #include "CItem.h"
-#include "UIIcon.h"
+#include "../../UI/GsUIIcon.h"
 
 UCItem::UCItem(const int64 In_ItemTID)
 {
@@ -25,7 +25,7 @@ UCItem* UCItem::CreateItem(const int64 In_ItemTID, int32 In_ItemStackCount)
 	// 인자로 받은 id 를 토대로 테이블에서 읽어와서 Find 및 Set 
 	// CreateItem 은 여러가지 인자 타입이 생길 여지가 있음. (오버로딩 사용
 	// 로블꺼 가져옴(임시)
-	/* 
+	/*
 	Item tableData = ItemDic.Instance.Find(In_itemID);
 	if (tableData == null)
 	{
@@ -46,9 +46,9 @@ UCItem* UCItem::CreateItem(const int64 In_ItemTID, int32 In_ItemStackCount)
 	// 장비에 박는 보석류?
 
 	// 기타 아이템들
-	
 
-	
+
+
 	return newItem;
 
 }

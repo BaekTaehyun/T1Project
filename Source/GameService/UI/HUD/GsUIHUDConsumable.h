@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Overlay.h"
-#include "../ItemIconSelector.h"
+#include "../../GameObject/Item/ItemIconSelector.h"
 #include "GsUIHUDConsumable.generated.h"
 
 /**

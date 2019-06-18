@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "UIIcon.h"
+#include "../../UI/GsUIIcon.h"
 #include "CItem.h"
 #include "ItemIconSelector.generated.h"
 
@@ -27,14 +27,14 @@ public:
 	};
 
 public:
-	UUIIcon* CreateItemIcon(eItemIconSize In_eIconSize, UPanelWidget* In_parentWidget , const UWorld* In_worldObj);
+	UGsUIIcon* CreateItemIcon(eItemIconSize In_eIconSize, UPanelWidget* In_parentWidget, const UWorld* In_worldObj);
 
-	UUIIcon* SetItemIcon(UCItem* In_CItem);
+	UGsUIIcon* SetItemIcon(UCItem* In_CItem);
 private:
 	const FString GetPathbyIconSize(eItemIconSize In_eSize);
 
 private:
 	eItemIconSize eIconSize = eItemIconSize::Large;
-	UUIIcon* UIIcon;
+	UGsUIIcon* UIIcon;
 
 };

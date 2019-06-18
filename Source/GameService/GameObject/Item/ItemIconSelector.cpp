@@ -6,7 +6,7 @@
 
 
 //UBlueprintGeneratedClass* _isLoaded = LoadObject<UBlueprintGeneratedClass>(nullptr, TEXT("/Game/UI/Item/ItemIconL.ItemIconL_C"));
-UUIIcon* UItemIconSelector::CreateItemIcon(eItemIconSize In_eIconSize, UPanelWidget* In_parentWidget, const UWorld* In_worldObj)
+UGsUIIcon* UItemIconSelector::CreateItemIcon(eItemIconSize In_eIconSize, UPanelWidget* In_parentWidget, const UWorld* In_worldObj)
 {
 	UE_LOG(LogTemp, Log, TEXT("CreateItemIcon() Call  !!"));
 
@@ -16,7 +16,7 @@ UUIIcon* UItemIconSelector::CreateItemIcon(eItemIconSize In_eIconSize, UPanelWid
 	if (nullptr != UIIcon)
 	{
 		return UIIcon;
-	}	
+	}
 
 	// size 에 따른 블프 경로 table 로 빼야함.
 	const FString path = GetPathbyIconSize(In_eIconSize);
@@ -30,7 +30,7 @@ UUIIcon* UItemIconSelector::CreateItemIcon(eItemIconSize In_eIconSize, UPanelWid
 			return nullptr;
 		}
 
-		UUIIcon* uiIcon = Cast<UUIIcon>(createWidget);
+		UGsUIIcon* uiIcon = Cast<UGsUIIcon>(createWidget);
 		if (nullptr == uiIcon)
 		{
 			UE_LOG(LogTemp, Log, TEXT("uiIcon is nullptr !!"));
@@ -73,7 +73,7 @@ const FString UItemIconSelector::GetPathbyIconSize(eItemIconSize In_eSize)
 	return path;
 }
 
-UUIIcon* UItemIconSelector::SetItemIcon(UCItem* In_CItem)
+UGsUIIcon* UItemIconSelector::SetItemIcon(UCItem* In_CItem)
 {
 	/*
 	if (nullptr == In_CItem || nullptr == UIIcon)

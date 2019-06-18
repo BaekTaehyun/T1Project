@@ -7,7 +7,7 @@
 #include "CItem.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class GAMESERVICE_API UCItem : public UObject
@@ -28,7 +28,7 @@ public:
 	int32 GetItemStackCount();
 	FString GetItemName();
 	FString GetItemBPpath();
-	
+
 protected:
 	int64 ItemTID = 0;
 	int64 ItemGUID = 0;
@@ -39,8 +39,8 @@ protected:
 public:
 	static UCItem* CreateItem(const int64 In_ItemTID, int32 In_ItemStackCount = 0);
 
-public :
+public:
 	void UpdateItemData(int64 In_ItemID);
 
-	
+
 };

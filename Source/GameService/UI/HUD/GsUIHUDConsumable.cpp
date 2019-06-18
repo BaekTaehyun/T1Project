@@ -2,7 +2,7 @@
 
 
 #include "GsUIHUDConsumable.h"
-#include "../CItem.h"
+#include "../../GameObject/Item/Citem.h"
 
 void UGsUIHUDConsumable::CreateConsumeItem()
 {

@@ -1,20 +1,39 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "UIIcon.h"
+#include "GsUIIcon.h"
 #include "Components/WidgetComponent.h"
 #include "Overlay.h"
+#include "Message/GsMessageManager.h"
+
 
 // ItemIcon 에 이미지, Name, 수량 , Grade 등등 Display 하는 오브젝트 관리
 
-void UUIIcon::SetDefaultItemImg()
+void UGsUIIcon::SetDefaultItemImg()
 {
 
 }
 
-void UUIIcon::SetItem(UCItem* In_CItem)
+void UGsUIIcon::NativeConstruct()
+{
+	
+	Super::NativeConstruct();
+
+
+	ItemImage = Cast<UImage>(GetWidgetFromName(TEXT("ItemImg")));
+}
+
+void UGsUIIcon::OnClickItemIconEvent()
+{
+	UE_LOG(LogTemp, Log, TEXT("OnClickItemIconEvent Call !!!"));
+	//MessageItem::
+	//GMessage()->GetStage().AddRaw(Messageitem::Stage::INTRO_COMPLETE, this, &FGsGameFlowLobby::OnIntroComplete);
+}
+
+void UGsUIIcon::SetItem(UCItem* In_CItem)
 {
 	UE_LOG(LogTemp, Log, TEXT("Call SetItemImg !!"));
+
 
 	if (nullptr == In_CItem)
 	{
@@ -38,21 +57,25 @@ void UUIIcon::SetItem(UCItem* In_CItem)
 	}
 	else
 	{
-		ItemImg->SetBrushFromTexture(tmpTexture);
+		if (nullptr != ItemImage)
+		{
+			ItemImage->SetBrushFromTexture(tmpTexture);
+		}
 	}
 
 	SetItemCount(count);
+
 }
 
-void UUIIcon::SetItemCount(int32 In_count)
+void UGsUIIcon::SetItemCount(int32 In_count)
 {
 	if (nullptr != Item_CountText)
-	{	
+	{
 		Item_CountText->SetText(FText::AsNumber(In_count));
 	}
 }
 
-UTexture2D* UUIIcon::LoadTextureFromPath(const FString& Path)
+UTexture2D* UGsUIIcon::LoadTextureFromPath(const FString& Path)
 {
 	if (Path.IsEmpty())
 	{
@@ -62,19 +85,14 @@ UTexture2D* UUIIcon::LoadTextureFromPath(const FString& Path)
 	return Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), NULL, *(Path)));
 }
 
+/*
 void UUIIcon::ConstructEventCall()
 {
 
 }
+*/
 
-void UUIIcon::OnClickItemIconEvent()
-{
-	UE_LOG(LogTemp, Log, TEXT("OnClickItemIconEvent Call !!!"));
-
-}
-
-
-void UUIIcon::TestLoadImgToTexture2D()
+void UGsUIIcon::TestLoadImgToTexture2D()
 {
 	/*
 	const FString FullFilePath; //로드할 파일의 경로입니다.
