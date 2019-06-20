@@ -10,13 +10,9 @@
 
 UGsUIWidgetBase::UGsUIWidgetBase(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
+	, BackupVisibility(Visibility)
 {
-	bStackProcessed = false;
-	bNotUseManagedZOrder = false;
-	AddZOrder = 0;
-	BackupVisibility = Visibility;
-	bNotDestroy = false;
-	bEnableAutoDestroy = false;
+
 }
 
 void UGsUIWidgetBase::NativeOnInitialized()
@@ -25,6 +21,23 @@ void UGsUIWidgetBase::NativeOnInitialized()
 	SetEnableAutoDestroy(!bNotDestroy);
 
 	Super::NativeOnInitialized();
+}
+
+void UGsUIWidgetBase::NativeConstruct()
+{
+	BackupVisibility = Visibility;
+	GetUIManager()->OnToggleHideUnhide.AddDynamic(this, &UGsUIWidgetBase::ToggleHideUnhide);
+
+	Super::NativeConstruct();
+	//GSLOG(Warning, TEXT("--------NativeConstruct"));
+}
+
+void UGsUIWidgetBase::NativeDestruct()
+{
+	GetUIManager()->OnToggleHideUnhide.RemoveDynamic(this, &UGsUIWidgetBase::ToggleHideUnhide);
+
+	Super::NativeDestruct();
+	//GSLOG(Warning, TEXT("--------NativeDestruct"));
 }
 
 void UGsUIWidgetBase::RemoveFromParent()
@@ -55,7 +68,7 @@ void UGsUIWidgetBase::SetEnableAutoDestroy(bool bInEnableAutoDestroy)
 
 void UGsUIWidgetBase::OnPush_Implementation(UGsUIParameter* InParam)
 {
-	//GSLOG(Warning, TEXT("--------Push"));
+	
 }
 
 void UGsUIWidgetBase::OnMessage_Implementation(FName InKey, UGsUIParameter* InParam)
@@ -72,7 +85,6 @@ void UGsUIWidgetBase::Close()
 	}
 }
 
-UFUNCTION(BlueprintCallable, Category = "GsManaged")
 UGsUIManager* UGsUIWidgetBase::GetUIManager()
 {
 	UGsGameInstance* gameInstance = GetGameInstance<UGsGameInstance>();
@@ -89,36 +101,15 @@ int32 UGsUIWidgetBase::GetManagedZOrder() const
 	return (bNotUseManagedZOrder) ? AddZOrder : GetManagedDefaultZOrder() + AddZOrder;
 }
 
-void UGsUIWidgetBase::Hide()
+void UGsUIWidgetBase::ToggleHideUnhide(bool InHide)
 {
-	BackupVisibility = Visibility;
-	SetVisibility(ESlateVisibility::Hidden);
+	if (InHide)
+	{
+		BackupVisibility = Visibility;
+		SetVisibility(ESlateVisibility::Hidden);
+	}
+	else
+	{
+		SetVisibility(BackupVisibility);
+	}
 }
-
-void UGsUIWidgetBase::Unhide()
-{
-	SetVisibility(BackupVisibility);
-}
-
-/*
-void UGsUIWidgetBase::NativePreConstruct()
-{
-	Super::NativePreConstruct();
-	GSLOG(Warning, TEXT("--------NativePreConstruct"));
-}
-void UGsUIWidgetBase::NativeConstruct()
-{
-	Super::NativeConstruct();
-	GSLOG(Warning, TEXT("--------NativeConstruct"));
-}
-void UGsUIWidgetBase::NativeDestruct()
-{
-	Super::NativeDestruct();
-	GSLOG(Warning, TEXT("--------NativeDestruct"));
-}
-void UGsUIWidgetBase::BeginDestroy()
-{
-	Super::BeginDestroy();
-	GSLOG(Warning, TEXT("--------BeginDestroy"));
-}
-*/

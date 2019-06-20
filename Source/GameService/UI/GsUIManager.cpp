@@ -59,6 +59,19 @@ void UGsUIManager::RemoveAll()
 	}
 }
 
+void UGsUIManager::ClearStack()
+{
+	if (nullptr != UIControllerNormal)
+	{
+		UIControllerNormal->ClearStack();
+	}
+
+	if (nullptr != UIControllerNotDestroy)
+	{
+		UIControllerNotDestroy->ClearStack();
+	}
+}
+
 TWeakObjectPtr<UGsUIWidgetBase> UGsUIManager::PushAndGetWidget(const FName& InKey, UGsUIParameter* InParam)
 {
 	return PushInter(InKey, InParam);
@@ -111,26 +124,20 @@ UGsUIWidgetBase* UGsUIManager::PushInter(const FName& InKey, UGsUIParameter* InP
 		return nullptr;
 	}
 
-	return CreateOrFind(tableRow->WidgetClass.Get(), tableRow->bNotDestroy, InKey, InParam);
-}
-
-UGsUIWidgetBase* UGsUIManager::CreateOrFind(TSubclassOf<UGsUIWidgetBase> InClass, bool bNotDestroy, const FName& InKey, UGsUIParameter* InParam)
-{	
 	UGsUIWidgetBase* widget = nullptr;
-
-	if (bNotDestroy)
+	UGsGameInstance* gameInstance = Cast<UGsGameInstance>(GetOuter());
+	if (nullptr != gameInstance)
 	{
-		UGsGameInstance* gameInstance = Cast<UGsGameInstance>(GetOuter());
-
-		widget = UIControllerNotDestroy->CreateOrFind(gameInstance, InClass, InKey);
-		UIControllerNotDestroy->AddWidget(widget, InParam);
-	}
-	else
-	{
-		UWorld* world = GetWorld();
-
-		widget = UIControllerNormal->CreateOrFind(world, InClass, InKey);
-		UIControllerNormal->AddWidget(widget, InParam);
+		if (tableRow->bNotDestroy)
+		{
+			widget = UIControllerNotDestroy->CreateOrFind(gameInstance, tableRow->WidgetClass.Get(), InKey);
+			UIControllerNotDestroy->AddWidget(widget, InParam);
+		}
+		else
+		{
+			widget = UIControllerNormal->CreateOrFind(gameInstance, tableRow->WidgetClass.Get(), InKey);
+			UIControllerNormal->AddWidget(widget, InParam);
+		}
 	}
 
 	return widget;
@@ -228,9 +235,44 @@ TWeakObjectPtr<UGsUIWidgetBase> UGsUIManager::GetCachedWidget(const FName& InKey
 	return UIControllerNormal->GetCachedWidgetByName(InKey, InActiveCheck);
 }
 
+void UGsUIManager::HideAll()
+{
+	if (false == bIsHide)
+	{
+		bIsHide = true;
+		OnToggleHideUnhide.Broadcast(bIsHide);
+	}
+}
+
+void UGsUIManager::UnhideAll()
+{
+	if (bIsHide)
+	{
+		bIsHide = false;
+		OnToggleHideUnhide.Broadcast(bIsHide);
+	}
+}
+
 /*
 void UGsUIManager::TestGC()
 {
 	GEngine->ForceGarbageCollection();
+}
+
+void UGsUIManager::RemoveNormal()
+{
+	UIControllerNormal->RemoveAll();
+}
+
+void UGsUIManager::Back()
+{
+	bool isSuccess = UIControllerNotDestroy->Back();
+
+	if (false == isSuccess)
+	{
+		UIControllerNormal->Back();
+	}
+
+	// 스텍 테스트
 }
 */
