@@ -3,6 +3,7 @@
 
 #include "GsUIHUDConsumable.h"
 #include "../../GameObject/Item/Citem.h"
+#include "../../GameObject/Item/ItemManager.h"
 
 void UGsUIHUDConsumable::CreateConsumeItem()
 {
@@ -12,10 +13,13 @@ void UGsUIHUDConsumable::CreateConsumeItem()
 	if (nullptr != ItemIconSelector)
 	{
 		// 현재 DataSheet 가 없기에 임시 Create.
-		UCItem* createItem = UCItem::CreateItem(1000001, 500);
+		//GItemManager()->FindItem(123123);
+		//UCItem* createItem = UCItem::CreateItem();
+
+		UCItem* items = GItemManager()->AddItem(1, ItemStorageType::Consumable, 1);
 		UWorld* world = GetWorld();
-		ItemIconSelector->CreateItemIcon(UItemIconSelector::eItemIconSize::Large, ItemImgRoot , world);
-		ItemIconSelector->SetItemIcon(createItem);
+		ItemIconSelector->CreateItemIcon(UItemIconSelector::eItemIconSize::Large, ItemImgRoot, world);
+		ItemIconSelector->SetItemIcon(items);
 	}
 	else
 	{
@@ -27,4 +31,5 @@ void UGsUIHUDConsumable::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 	ItemIconSelector = NewObject<UItemIconSelector>();
+
 }

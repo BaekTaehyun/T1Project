@@ -8,6 +8,7 @@
 #include "GameFlow/GsGameFlowManager.h"
 #include "Message/GsMessageManager.h"
 #include "Net/GsNetManager.h"
+#include "GameObject/Item/ItemManager.h"
 
 
 #include "GsGameInstance.generated.h"

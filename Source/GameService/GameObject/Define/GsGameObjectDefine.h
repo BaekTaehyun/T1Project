@@ -155,4 +155,13 @@ enum class EGsSkillCollisionType : uint8
 	Concave,	// 3개 이상의 꼭지점을 가지는 다각형
 };
 
-
+/**
+* 아이템 슬롯 타입
+*/
+UENUM()
+enum class ItemStorageType : uint8
+{
+	Gear = 0,
+	Consumable,
+	Max,
+};
