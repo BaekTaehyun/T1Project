@@ -33,6 +33,8 @@ void UGsGameInstance::Init()
 	_manage.InsertInstance(new FGsMessageManager());
 	_manage.InsertInstance(new FGsGameFlowManager());
 	_manage.InsertInstance(new FGsNetManager());
+	_manage.InsertInstance(new FItemManager());
+	
 
 	for(auto& mng : _manage.Get())
 	{

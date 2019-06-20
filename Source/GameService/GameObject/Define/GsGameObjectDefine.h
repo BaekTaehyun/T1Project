@@ -146,5 +146,14 @@ enum class SkillActionType : uint8
 	CreateProjectile = 1,
 };
 
-
+/**
+* 아이템 슬롯 타입
+*/
+UENUM()
+enum class ItemStorageType : uint8
+{
+	Gear = 0,
+	Consumable,
+	Max,
+};
 

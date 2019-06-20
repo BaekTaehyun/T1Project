@@ -7,6 +7,8 @@
 #include "GameObject/GsSpawnComponent.h"
 #include "GameObject/ObjectClass/GsGameObjectWheelVehicle.h"
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
+#include "GameObject/Item/ItemManager.h"
+
 
 void UGsCheatManager::TeleportPlayer(FString in_tag)
 {	
@@ -48,4 +50,13 @@ void UGsCheatManager::SpawnGameObject(EGsGameObjectType Type, TSubclassOf<AActor
 		offset.X = FMath::FRandRange(1.f, 1000.f);
 		offset.Y = FMath::FRandRange(1.f, 1000.f);
 	}
+}
+
+
+void UGsCheatManager::AddItem(FString in_tag)
+{
+	UE_LOG(LogTemp, Log, TEXT("Call AddItem() !!! : %s"), *in_tag);
+
+	int32 _count = FCString::Atoi(*in_tag);
+	GItemManager()->AddItem(1, ItemStorageType::Consumable, _count);
 }

@@ -24,4 +24,7 @@ public:
 	UFUNCTION(Exec, BlueprintCallable, Category = "Cheat ManagerEx")
 	void SpawnGameObject(EGsGameObjectType Type, TSubclassOf<AActor> ActorClass, int SpawnCount = 1, const FVector& StartPos = FVector::ZeroVector);
 	
+	UFUNCTION(Exec, Category = ExecFunctions)
+		void AddItem(FString in_tag);
 };
+
