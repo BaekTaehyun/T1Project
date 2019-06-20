@@ -3,9 +3,11 @@
 #include "GsSKillLocal.h"
 #include "Container/GsSkillDataContainerBase.h"
 #include "Process/GsSKillActionNodeProjectile.h"
+#include "Process/GsSkillActionNodeCollision.h"
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 #include "GameObject/State/GsFSMManager.h"
 #include "GameObject/State/GsStateLocal.h"
+#include "GameObject/GsGameObjectDataCenter.h"
 
 FGsSKillLocal::FGsSKillLocal()
 {
@@ -18,6 +20,8 @@ FGsSKillLocal::~FGsSKillLocal()
 void FGsSKillLocal::Initialize(UGsGameObjectBase* owner)
 {
 	Super::Initialize(owner);
+
+	LoadSKillNode();
 }
 
 void FGsSKillLocal::Finalize()
@@ -39,12 +43,6 @@ TArray<FGsSkillActionNodeBase*>* FGsSKillLocal::GetSKillNodes(int ID)
 	return MapSkillNodes.Find(ID);
 }
 
-void FGsSKillLocal::LoadData(const TCHAR * Path)
-{
-	Super::LoadData(Path);
-	LoadSKillNode();
-}
-
 void FGsSKillLocal::UseSKill(int ID)
 {
 	Super::UseSKill(ID);
@@ -58,7 +56,9 @@ void FGsSKillLocal::UseSKill(int ID)
 void FGsSKillLocal::LoadSKillNode()
 {
 	MapSkillNodes.Empty();
-	for (auto el : SkillFactory->GetSkillData())
+
+	auto dataContainer = GGameObjectData()->Get<UGsSkillDataContainerBase>(EGameObjectDataType::Skill);
+	for (auto el : dataContainer->GetSkillData())
 	{
 		for (auto el2 : el.ListSkillAction)
 		{
@@ -88,6 +88,8 @@ FGsSkillActionNodeBase* FGsSKillLocal::CreateSkillNode(const FGsSkillActionDataB
 	{
 	case SkillActionType::CreateProjectile:
 		return new FGsSKillActionNodeProjectile(Data);
+	case SkillActionType::Collision:
+		return new FGsSkillActionNodeCollision(Data);
 	}
 
 	return nullptr;

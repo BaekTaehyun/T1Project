@@ -7,7 +7,7 @@
 #include "GameObject/GsSpawnComponent.h"
 
 FGsSKillActionNodeProjectile::FGsSKillActionNodeProjectile(const FGsSkillActionDataBase& Data) :
-	FGsSkillActionNodeBase(Data)
+	Super(Data)
 {
 }
 

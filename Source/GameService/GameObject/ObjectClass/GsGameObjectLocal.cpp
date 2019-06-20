@@ -76,14 +76,10 @@ void UGsGameObjectLocal::ActorSpawned(AActor* Spawn)
 		//스킬 핸들러 생성
 		Skill = new FGsSKillLocal();
 		Skill->Initialize(this);
-		//임시 데이터 적용
-		Skill->LoadData(TEXT("GsSkillDataContainerBase'/Game/Resource/DataAsset/LocalSkill.LocalSkill'"));
 
 		//파츠 핸들러 생성
         Parts = new FGsPartsLocal();
         Parts->Initialize(this);
-        //임시 데이터 적용
-        Parts->LoadData(TEXT("GsPartsDataContainerBase'/Game/Resource/DataAsset/LocalParts.LocalParts'"));
 
 		//FSM생성
 		Fsm = new FGsFSMManager();

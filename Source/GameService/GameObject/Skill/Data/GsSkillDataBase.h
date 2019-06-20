@@ -36,7 +36,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SKill")
 	float Duration;
 
-	UPROPERTY(EditAnywhere, meta = (AllowedClasses = "AnimMontage"))
+	UPROPERTY(EditAnywhere, meta = (AllowedClasses = "AnimMontage"), Category = "SKill")
 	FSoftObjectPath AniPath;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SKill")

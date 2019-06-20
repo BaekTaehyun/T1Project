@@ -4,6 +4,7 @@
 #include "Engine/AssetManager.h"
 #include "Container/GsPartsDataContainerBase.h"
 #include "Data/GsPartsDataBase.h"
+#include "GameObject/GsGameObjectDataCenter.h"
 
 FGsPartsBase::FGsPartsBase()
 {
@@ -27,18 +28,10 @@ void FGsPartsBase::Finalize()
 	ListParts.Reset();
 }
 
-void FGsPartsBase::LoadData(const TCHAR * Path)
-{
-	PartsFctory = LoadObject<UGsPartsDataContainerBase>(NULL, Path, NULL, LOAD_None, NULL);
-	if (!PartsFctory)
-	{
-		UE_LOG(LogTemp, Error, TEXT("파츠 데이터 로드에 실패하였습니다."));
-	}
-}
-
 const FGsPartsDataBase* FGsPartsBase::GetParts(EGsPartsType Type)
 {
-	return PartsFctory->GetPartsData().FindByPredicate([=](const FGsPartsDataBase& el)
+	auto dataContainer = GGameObjectData()->Get<UGsPartsDataContainerBase>(EGameObjectDataType::Parts);
+	return dataContainer->GetPartsData().FindByPredicate([=](const FGsPartsDataBase& el)
 	{
 		return el.Type == Type;
 	});

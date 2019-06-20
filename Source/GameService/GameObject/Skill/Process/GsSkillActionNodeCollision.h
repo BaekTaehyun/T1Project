@@ -6,15 +6,18 @@
 #include "GsSkillActionNodeBase.h"
 
 /**
- * 프로젝타일 타입 Action처리 클래스
  * 
  */
-class GAMESERVICE_API FGsSKillActionNodeProjectile : public FGsSkillActionNodeBase
+class GAMESERVICE_API FGsSkillActionNodeCollision : public FGsSkillActionNodeBase
 {
 	using Super = FGsSkillActionNodeBase;
 
+private:
+	int CollistionID;
+
 public:
-	FGsSKillActionNodeProjectile(const FGsSkillActionDataBase& Data);
+	FGsSkillActionNodeCollision(const FGsSkillActionDataBase& Data);
+	virtual ~FGsSkillActionNodeCollision();
 
 public:
 	virtual void Process(UGsGameObjectBase* Owner) override;

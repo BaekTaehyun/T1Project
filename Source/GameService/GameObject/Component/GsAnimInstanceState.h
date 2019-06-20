@@ -53,31 +53,17 @@ class GAMESERVICE_API UGsAnimInstanceState : public UAnimInstance
 protected:
 	//상태 정보
 	//FSMManager에서 직접 참조 하고 싶은데 나이스한 방법을 아직 잘모르겠음 ㅠ
-	EGsStateBase		StateType;
-	bool				Moving;
+	EGsStateBase StateType;
 
+protected:
+	bool Moving;
 	//랜덤값 사용 캐시 정보
 	//추후EStateBase(Enum) 타입과 함께 구조체로 만들어 사용해야할듯...
 	int RandomIndex;
-
 	//변환뒤 지속 시간 체크
 	float Timer, UpperTimer;
 
 public:
-	UGsAnimInstanceState();
-	virtual ~UGsAnimInstanceState();
-
-    //[Todo]
-	//FSMManager 애님 블루프린트 FSM 파라미터 동기화
-	//FSMManager에서 직접 참조하고 싶지만.. 아직 잘모르겠음..
-	//문제점1. AMyCharacter 객체 참조를 하려해도 에디터상 문제가 생김(CDO)
-	//문제점2. 애님 블루프린트 상태 파라미터 검사시 쓰레드 세이프 하지 않음(AMyCharacter 형변환 노드 사용시)
-	void ChangeState(uint8 State, int Min = 0, int Max = 0);
-	void SetMoving(bool IsMove);
-
-	void PlayUpperAni(UAnimMontage* Res);
-	void StopUpperAni(UAnimMontage* Res);
-
 	//애님 플루프린트 FSM동기화 참조 함수
 	UFUNCTION(BlueprintPure, Category = "MyAnimation", meta = (BlueprintThreadSafe))
 	bool IsState(EGsStateBase State);
@@ -93,4 +79,19 @@ public:
 	float GetTimer();
 	UFUNCTION(BlueprintPure, Category = "MyAnimation", meta = (BlueprintThreadSafe))
 	float GetUpperTimer();
+
+public:
+	UGsAnimInstanceState();
+	virtual ~UGsAnimInstanceState();
+
+    //[Todo]
+	//FSMManager 애님 블루프린트 FSM 파라미터 동기화
+	//FSMManager에서 직접 참조하고 싶지만.. 아직 잘모르겠음..
+	//문제점1. AMyCharacter 객체 참조를 하려해도 에디터상 문제가 생김(CDO)
+	//문제점2. 애님 블루프린트 상태 파라미터 검사시 쓰레드 세이프 하지 않음(AMyCharacter 형변환 노드 사용시)
+	void ChangeState(uint8 State, int Min = 0, int Max = 0);
+	void SetMoving(bool IsMove);
+
+	void PlayUpperAni(UAnimMontage* Res);
+	void StopUpperAni(UAnimMontage* Res);
 };

@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Public/SkeletalMeshMerge.h"
-#include "Data/GsPartsDataBase.h"
+#include "GameObject/Define/GsGameObjectDefine.h"
+#include "GameObject/Parts/Data/GsPartsDataBase.h"
 
 class UGsGameObjectBase;
-class UGsPartsDataContainerBase;
 
 /**
  * Object 파츠처리 담당 Base클래스
@@ -15,46 +15,46 @@ class UGsPartsDataContainerBase;
  */
 class GAMESERVICE_API FGsPartsBase
 {
+protected:
+	UGsGameObjectBase* Owner;
+
+	TArray<TSharedPtr<FGsCPartsData>> ListParts;
+
 public:	
 	FGsPartsBase();	
 	virtual ~FGsPartsBase();
 
+public:
 	virtual void Initialize(UGsGameObjectBase* Owner);
 	virtual void Finalize();
-	virtual void LoadData(const TCHAR * Path);
 
+protected:
+	virtual void AddParts(EGsPartsType Type);
+	virtual void RemoveParts(EGsPartsType Type);
+
+	virtual void Attached();
+	virtual void Detached();
+
+public:
 	//가변 템플릿 사용
 	//관련 참고 링크 정보 : 
 	//https://lusain.tistory.com/3
 	//https://docs.microsoft.com/en-us/cpp/cpp/ellipses-and-variadic-templates?view=vs-2019
 	template<typename T = EGsPartsType, typename... T2>
 	void Attach(const T& Type, const T2&... Types);
+	//template<typename T = EGsPartsType, typename... T2> 후처리용
+	void Attach();
 	
 	template<typename T = EGsPartsType, typename... T2>
 	void Detach(const T& Type, const T2&... Types);
-
-	void AttachAll();
-
-	const FGsPartsDataBase* GetParts(EGsPartsType Type);		//추후 리소스 Load로 수정
-	bool IsEquip(EGsPartsType Type);
-
-protected:
-	virtual void AddParts(EGsPartsType Type);
-	virtual void RemoveParts(EGsPartsType Type);
-
-	//template<typename T = EGsPartsType, typename... T2> 후처리용
-	void Attach();
 	//template<typename T = EGsPartsType, typename... T2> 후처리용
 	void Detach();
 
-	virtual void Attached();
-	virtual void Detached();
+	void AttachAll();
 
-protected:
-	UGsGameObjectBase* Owner;
-	
-	UGsPartsDataContainerBase* PartsFctory;
-	TArray<TSharedPtr<FGsCPartsData>> ListParts;
+public:
+	const FGsPartsDataBase* GetParts(EGsPartsType Type);		//추후 리소스 Load로 수정
+	bool IsEquip(EGsPartsType Type);
 };
 
 template<typename T, typename... T2>

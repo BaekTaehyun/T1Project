@@ -144,7 +144,15 @@ UENUM()
 enum class SkillActionType : uint8
 {
 	CreateProjectile = 1,
+	Collision,
 };
 
+UENUM(BlueprintType)
+enum class ESkillCollisionType : uint8
+{
+	Circle,		// 기본 원형
+	Fan,		// 기본 원형 + 각도
+	Concave,	// 3개 이상의 꼭지점을 가지는 다각형
+};
 
 

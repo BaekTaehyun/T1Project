@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Data/GsSkillDataBase.h"
+#include "GameObject/Skill/Data/GsSkillDataBase.h"
 
 class UGsGameObjectBase;
 class UGsSkillDataContainerBase;
@@ -16,32 +16,34 @@ struct FGsRunSKillInfo;
 class GAMESERVICE_API FGsSkillBase
 {
 public:
+	FGsRunSKillInfo* CurrentSkillData = nullptr;
+
+protected:
+	UGsGameObjectBase* Owner = nullptr;
+	//Montage 리소스 관리용
+	//이부분에 대한 구조는 개선이 필요함
+	TMap<FString, UAnimMontage*> MapAnimation;
+
+public:
 	FGsSkillBase();
 	virtual ~FGsSkillBase();
 
+public:
 	virtual void Initialize(UGsGameObjectBase* Owner);
 	virtual void Finalize();
     virtual void Update(float Delta);
 
-	virtual void LoadData(const TCHAR * Path);
 	virtual void UseSKill(int ID);
 
+public:
 	//CurrentSkillData 구조체 기반으로 스킬 실행 활성화
 	//스킬 노드 제어기가 따로 필요할수있다.
 	virtual void OnSKillNode();
 	virtual void RunSkillNode(float DeltaTime);
 	virtual void EndSKillNode();
 
+public:
 	const FGsSkillDataBase* GetSkillData(int ID);
-	FGsRunSKillInfo* CurrentSkillData = nullptr;
-
-protected:
-	UGsGameObjectBase* Owner;
-	UGsSkillDataContainerBase* SkillFactory;
-
-	//Montage 리소스 관리용
-	//이부분에 대한 구조는 개선이 필요함
-	TMap<FString, TSharedPtr<UAnimMontage>> MapAnimation;
 };
 
 //발동 스킬(액션) 구조체
@@ -62,7 +64,6 @@ struct FGsRunSKillInfo
 		Data = SkillData;
 		Animation = Ani;
 		Timer = 0.f;
-
 	}
 	
 	UAnimMontage* GetAni()

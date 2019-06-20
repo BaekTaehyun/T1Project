@@ -4,9 +4,9 @@
 #include "Engine/AssetManager.h"
 #include "GameObject/Skill/Data/GsSkillDataBase.h"
 
-FGsSkillActionNodeBase::FGsSkillActionNodeBase(const FGsSkillActionDataBase& Data)
+FGsSkillActionNodeBase::FGsSkillActionNodeBase(const FGsSkillActionDataBase& Data) :
+	Rate(Data.Rate)
 {
-	Rate = Data.Rate;	
 }
 
 FGsSkillActionNodeBase::~FGsSkillActionNodeBase()
