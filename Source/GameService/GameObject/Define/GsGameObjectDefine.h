@@ -141,14 +141,14 @@ enum class EGsPartsType : uint8
 * 스킬 액션 타입
 */
 UENUM()
-enum class SkillActionType : uint8
+enum class EGsSkillNotifyType : uint8
 {
 	CreateProjectile = 1,
 	Collision,
 };
 
 UENUM(BlueprintType)
-enum class ESkillCollisionType : uint8
+enum class EGsSkillCollisionType : uint8
 {
 	Circle,		// 기본 원형
 	Fan,		// 기본 원형 + 각도

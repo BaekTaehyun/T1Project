@@ -6,10 +6,10 @@
 #include "Components/SceneComponent.h"
 #include "GameObject/Define/GsGameObjectDefine.h"
 #include "GameObject/Skill/Data/GsSkillNotifyCollisionData.h"
-#include "SkillCollisionComponent.generated.h"
+#include "GsSkillCollisionComponent.generated.h"
 
 USTRUCT(BlueprintType)
-struct FSkillCollisionCircle
+struct FGsSkillCollisionCircle
 {
 	GENERATED_USTRUCT_BODY()
 	
@@ -18,7 +18,7 @@ struct FSkillCollisionCircle
 };
 
 USTRUCT(BlueprintType)
-struct FSkillCollisionFan
+struct FGsSkillCollisionFan
 {
 	GENERATED_USTRUCT_BODY()
 
@@ -29,7 +29,7 @@ struct FSkillCollisionFan
 };
 
 USTRUCT(BlueprintType)
-struct FSkillCollisionConcave
+struct FGsSkillCollisionConcave
 {
 	GENERATED_USTRUCT_BODY()
 	
@@ -43,20 +43,20 @@ struct FSkillCollisionConcave
 * Set() 함수를 통해 정보를 설정한뒤 InSideCheck() 함수로 판정 처리를 진행
 */
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class GAMESERVICE_API USkillCollisionComponent : public USceneComponent
+class GAMESERVICE_API UGsSkillCollisionComponent : public USceneComponent
 {
 	GENERATED_BODY()
 	
 protected:
 	UPROPERTY(EditAnywhere)
-	ESkillCollisionType Type;
+	EGsSkillCollisionType Type;
 
 	UPROPERTY(EditAnywhere)
-	FSkillCollisionCircle Circle;
+	FGsSkillCollisionCircle Circle;
 	UPROPERTY(EditAnywhere)
-	FSkillCollisionFan Fan;
+	FGsSkillCollisionFan Fan;
 	UPROPERTY(EditAnywhere)
-	FSkillCollisionConcave Concave;
+	FGsSkillCollisionConcave Concave;
 
 public:
 	UPROPERTY(EditAnywhere)
@@ -64,7 +64,7 @@ public:
 
 public:	
 	// Sets default values for this component's properties
-	USkillCollisionComponent();
+	UGsSkillCollisionComponent();
 
 public:	
 	// Called every frame

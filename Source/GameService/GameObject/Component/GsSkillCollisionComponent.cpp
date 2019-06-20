@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "SkillCollisionComponent.h"
+#include "GsSkillCollisionComponent.h"
 #include "DrawDebugHelpers.h"
 #include "GameFramework/Actor.h"
 #include "Classes/Components/MeshComponent.h"
@@ -9,7 +9,7 @@
 #include "GameObject/ActorExtend/GsNpcPawn.h"
 
 // Sets default values for this component's properties
-USkillCollisionComponent::USkillCollisionComponent()
+UGsSkillCollisionComponent::UGsSkillCollisionComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -22,7 +22,7 @@ USkillCollisionComponent::USkillCollisionComponent()
 }
 
 // Called every frame
-void USkillCollisionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UGsSkillCollisionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	if (GetWorld() && !GetWorld()->IsGameWorld())
@@ -33,18 +33,18 @@ void USkillCollisionComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 	//DrawDebugDirectionalArrow(GetWorld(), GetComponentLocation(), dest, 20.f, FColor::Black);
 }
 
-void USkillCollisionComponent::Set(const FGsSkillNotifyCollisionData* Data)
+void UGsSkillCollisionComponent::Set(const FGsSkillNotifyCollisionData* Data)
 {
 	Type = Data->Type;
 	switch (Type)
 	{
-	case ESkillCollisionType::Circle:
+	case EGsSkillCollisionType::Circle:
 		SetCircle(Data);
 		break;
-	case ESkillCollisionType::Fan:
+	case EGsSkillCollisionType::Fan:
 		SetFan(Data);
 		break;
-	case ESkillCollisionType::Concave:
+	case EGsSkillCollisionType::Concave:
 		SetConcave(Data);
 		break;
 	}
@@ -55,49 +55,49 @@ void USkillCollisionComponent::Set(const FGsSkillNotifyCollisionData* Data)
 	}
 }
 
-void USkillCollisionComponent::Set(FTransform Tm, const FGsSkillNotifyCollisionData* Data)
+void UGsSkillCollisionComponent::Set(FTransform Tm, const FGsSkillNotifyCollisionData* Data)
 {
 	SetWorldTransform(Tm);
 	Set(Data);
 }
 
-void USkillCollisionComponent::SetCircle(const FGsSkillNotifyCollisionData* Data)
+void UGsSkillCollisionComponent::SetCircle(const FGsSkillNotifyCollisionData* Data)
 {
 	Circle.Radius = Data->Radius;
 }
 
-void USkillCollisionComponent::SetFan(const FGsSkillNotifyCollisionData* Data)
+void UGsSkillCollisionComponent::SetFan(const FGsSkillNotifyCollisionData* Data)
 {
 	Fan.Radius = Data->Radius;
 	Fan.DegAngle = Data->DegAngle;
 }
 
-void USkillCollisionComponent::SetConcave(const FGsSkillNotifyCollisionData* Data)
+void UGsSkillCollisionComponent::SetConcave(const FGsSkillNotifyCollisionData* Data)
 {
 	Concave.ListLine = Data->ListPoint;
 }
 
-bool USkillCollisionComponent::InSideCheck(FVector Point)
+bool UGsSkillCollisionComponent::InSideCheck(FVector Point)
 {
 	switch (Type)
 	{
-	case ESkillCollisionType::Circle:
+	case EGsSkillCollisionType::Circle:
 		return InSideCircle(Point);
-	case ESkillCollisionType::Fan:
+	case EGsSkillCollisionType::Fan:
 		return InSideFan(Point);
-	case ESkillCollisionType::Concave:
+	case EGsSkillCollisionType::Concave:
 		return InSideConcave(Point);
 	}
 
 	return false;
 }
 
-bool USkillCollisionComponent::InSideConcave(FVector Point)
+bool UGsSkillCollisionComponent::InSideConcave(FVector Point)
 {
 	return InSideConcave(FVector2D(Point.X, Point.Y));
 }
 
-bool USkillCollisionComponent::InSideConcave(FVector2D Point)
+bool UGsSkillCollisionComponent::InSideConcave(FVector2D Point)
 {
 	int ptcount = Concave.ListLine.Num();
 	if (ptcount < 3)
@@ -146,24 +146,24 @@ bool USkillCollisionComponent::InSideConcave(FVector2D Point)
 	return(inside);
 }
 
-bool USkillCollisionComponent::InSideCircle(FVector Point)
+bool UGsSkillCollisionComponent::InSideCircle(FVector Point)
 {
 	return InSideCircle(FVector2D(Point.X, Point.Y));
 }
 
-bool USkillCollisionComponent::InSideCircle(FVector2D Point)
+bool UGsSkillCollisionComponent::InSideCircle(FVector2D Point)
 {
 	auto worldPos = FVector2D(GetComponentLocation().X, GetComponentLocation().Y);
 	auto dir = Point - worldPos;
 	return dir.SizeSquared() <= Circle.Radius * Circle.Radius;
 }
 
-bool USkillCollisionComponent::InSideFan(FVector Point)
+bool UGsSkillCollisionComponent::InSideFan(FVector Point)
 {
 	return InSideFan(FVector2D(Point.X, Point.Y));
 }
 
-bool USkillCollisionComponent::InSideFan(FVector2D Point)
+bool UGsSkillCollisionComponent::InSideFan(FVector2D Point)
 {
 	auto worldPos = FVector2D(GetComponentLocation().X, GetComponentLocation().Y);
 	auto dir = Point - worldPos;
@@ -188,7 +188,7 @@ bool USkillCollisionComponent::InSideFan(FVector2D Point)
 	return false;
 }
 
-void USkillCollisionComponent::TestCollision(AActor* ActorClass)
+void UGsSkillCollisionComponent::TestCollision(AActor* ActorClass)
 {
 	if (ActorClass)
 	{
@@ -198,13 +198,13 @@ void USkillCollisionComponent::TestCollision(AActor* ActorClass)
 			bool inSide = false;
 			switch (Type)
 			{
-			case ESkillCollisionType::Circle:
+			case EGsSkillCollisionType::Circle:
 				inSide = InSideCircle(pos);
 				break;
-			case ESkillCollisionType::Fan:
+			case EGsSkillCollisionType::Fan:
 				inSide = InSideFan(pos);
 				break;
-			case ESkillCollisionType::Concave:
+			case EGsSkillCollisionType::Concave:
 				inSide = InSideConcave(pos);
 				break;
 			default:
@@ -226,30 +226,30 @@ void USkillCollisionComponent::TestCollision(AActor* ActorClass)
 }
 
 #if WITH_EDITOR
-void USkillCollisionComponent::PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent)
+void UGsSkillCollisionComponent::PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent)
 {
 	Super::PostEditChangeChainProperty(PropertyChangedEvent);
 
 	PrimaryComponentTick.bCanEverTick = UseDebugLine;
 }
 
-void USkillCollisionComponent::DrawCollision()
+void UGsSkillCollisionComponent::DrawCollision()
 {
 	switch (Type)
 	{
-	case ESkillCollisionType::Circle:
+	case EGsSkillCollisionType::Circle:
 		DrawCircle();
 		break;
-	case ESkillCollisionType::Fan:
+	case EGsSkillCollisionType::Fan:
 		DrawFan();
 		break;
-	case ESkillCollisionType::Concave:
+	case EGsSkillCollisionType::Concave:
 		DrawConcave();
 		break;
 	}
 }
 
-void USkillCollisionComponent::DrawCircle()
+void UGsSkillCollisionComponent::DrawCircle()
 {
 	auto worldPos = GetComponentLocation();
 
@@ -259,7 +259,7 @@ void USkillCollisionComponent::DrawCircle()
 	);
 }
 
-void USkillCollisionComponent::DrawFan()
+void UGsSkillCollisionComponent::DrawFan()
 {
 	auto worldPos = GetComponentLocation();
 	auto dir = GetForwardVector();
@@ -288,7 +288,7 @@ void USkillCollisionComponent::DrawFan()
 	}
 }
 
-void USkillCollisionComponent::DrawConcave()
+void UGsSkillCollisionComponent::DrawConcave()
 {	
 	float zPos = GetComponentLocation().Z;
 	auto startpos = GetComponentTransform().TransformPosition(FVector(Concave.ListLine[0], zPos));

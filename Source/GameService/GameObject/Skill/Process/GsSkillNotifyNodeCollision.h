@@ -3,21 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GsSkillActionNodeBase.h"
+#include "GsSkillNotifyNodeBase.h"
 
 /**
  * 
  */
-class GAMESERVICE_API FGsSkillActionNodeCollision : public FGsSkillActionNodeBase
+class GAMESERVICE_API FGsSkillNotifyNodeCollision : public FGsSkillNotifyNodeBase
 {
-	using Super = FGsSkillActionNodeBase;
+	using Super = FGsSkillNotifyNodeBase;
 
 private:
 	int CollistionID;
 
 public:
-	FGsSkillActionNodeCollision(const FGsSkillActionDataBase& Data);
-	virtual ~FGsSkillActionNodeCollision();
+	FGsSkillNotifyNodeCollision(const FGsSkillNotifyDataBase& Data);
+	virtual ~FGsSkillNotifyNodeCollision();
 
 public:
 	virtual void Process(UGsGameObjectBase* Owner) override;

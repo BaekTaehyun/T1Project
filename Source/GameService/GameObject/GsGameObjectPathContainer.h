@@ -12,6 +12,7 @@ enum class EGameObjectResType : uint8
 	SkillDataContainer,
 	PartsDataContainer,
 	SkillNotifyCollisionDataContainer,
+	TestProjectile,
 };
 
 USTRUCT(BlueprintType)

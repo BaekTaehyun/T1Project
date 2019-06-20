@@ -20,7 +20,7 @@ struct GAMESERVICE_API FGsSkillNotifyCollisionData
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SKillNotify")
 	int ID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SKillNotify")
-	ESkillCollisionType Type;
+	EGsSkillCollisionType Type;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SKillNotify")
 	FTransform Tm;
 

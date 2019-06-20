@@ -8,14 +8,14 @@
 /**
  * FSkillActionDataBase 데이터 기반으로 스킬 액션 처리 담당
  */
-class GAMESERVICE_API FGsSkillActionNodeBase
+class GAMESERVICE_API FGsSkillNotifyNodeBase
 {
 protected:
 	float Rate;
 
 public:
-	FGsSkillActionNodeBase(const FGsSkillActionDataBase& Data);
-	virtual ~FGsSkillActionNodeBase();
+	FGsSkillNotifyNodeBase(const FGsSkillNotifyDataBase& Data);
+	virtual ~FGsSkillNotifyNodeBase();
 
 public:
 	virtual void Process(class UGsGameObjectBase* Owner);

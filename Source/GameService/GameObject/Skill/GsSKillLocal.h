@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GsSkillBase.h"
-#include "Process/GsSkillActionNodeBase.h"
+#include "Process/GsSkillNotifyNodeBase.h"
 
 /**
  * 
@@ -15,9 +15,9 @@ class GAMESERVICE_API FGsSKillLocal : public FGsSkillBase
 
 private:
 	//스킬 액션 정보들
-	TMap<int, TArray<FGsSkillActionNodeBase*>> MapSkillNodes;
-	TArray<FGsSkillActionNodeBase*> ListRunSkillNodes;
-	TArray<FGsSkillActionNodeBase*> ListUseSkillNodes;
+	TMap<int, TArray<FGsSkillNotifyNodeBase*>> MapSkillNodes;
+	TArray<FGsSkillNotifyNodeBase*> ListRunSkillNodes;
+	TArray<FGsSkillNotifyNodeBase*> ListUseSkillNodes;
 
 
 public:
@@ -35,8 +35,8 @@ public:
 
 private:
 	void LoadSKillNode();
-	FGsSkillActionNodeBase* CreateSkillNode(const FGsSkillActionDataBase& Data) const;
+	FGsSkillNotifyNodeBase* CreateSkillNode(const FGsSkillNotifyDataBase& Data) const;
 
 public:
-	TArray<FGsSkillActionNodeBase*>* GetSKillNodes(int ID);
+	TArray<FGsSkillNotifyNodeBase*>* GetSKillNodes(int ID);
 };
