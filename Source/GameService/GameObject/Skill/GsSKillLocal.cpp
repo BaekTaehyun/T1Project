@@ -2,10 +2,12 @@
 
 #include "GsSKillLocal.h"
 #include "Container/GsSkillDataContainerBase.h"
-#include "Process/GsSKillActionNodeProjectile.h"
+#include "Process/GsSKillNotifyNodeProjectile.h"
+#include "Process/GsSkillNotifyNodeCollision.h"
 #include "GameObject/ObjectClass/GsGameObjectLocal.h"
 #include "GameObject/State/GsFSMManager.h"
 #include "GameObject/State/GsStateLocal.h"
+#include "GameObject/GsGameObjectDataCenter.h"
 
 FGsSKillLocal::FGsSKillLocal()
 {
@@ -18,6 +20,8 @@ FGsSKillLocal::~FGsSKillLocal()
 void FGsSKillLocal::Initialize(UGsGameObjectBase* owner)
 {
 	Super::Initialize(owner);
+
+	LoadSKillNode();
 }
 
 void FGsSKillLocal::Finalize()
@@ -34,15 +38,9 @@ void FGsSKillLocal::Finalize()
 	MapSkillNodes.Reset();
 }
 
-TArray<FGsSkillActionNodeBase*>* FGsSKillLocal::GetSKillNodes(int ID)
+TArray<FGsSkillNotifyNodeBase*>* FGsSKillLocal::GetSKillNodes(int ID)
 {
 	return MapSkillNodes.Find(ID);
-}
-
-void FGsSKillLocal::LoadData(const TCHAR * Path)
-{
-	Super::LoadData(Path);
-	LoadSKillNode();
 }
 
 void FGsSKillLocal::UseSKill(int ID)
@@ -58,11 +56,13 @@ void FGsSKillLocal::UseSKill(int ID)
 void FGsSKillLocal::LoadSKillNode()
 {
 	MapSkillNodes.Empty();
-	for (auto el : SkillFactory->GetSkillData())
+
+	auto dataContainer = GGameObjectData()->Get<UGsSkillDataContainerBase>(EGameObjectDataType::Skill);
+	for (auto el : dataContainer->GetSkillData())
 	{
 		for (auto el2 : el.ListSkillAction)
 		{
-			FGsSkillActionNodeBase* NodeData = CreateSkillNode(el2);
+			FGsSkillNotifyNodeBase* NodeData = CreateSkillNode(el2);
 			if (NodeData)
 			{
 				NodeData->Process(Owner);
@@ -72,7 +72,7 @@ void FGsSKillLocal::LoadSKillNode()
 				}
 				else
 				{
-					TArray<FGsSkillActionNodeBase*> nodeList;
+					TArray<FGsSkillNotifyNodeBase*> nodeList;
 					nodeList.Add(NodeData);
 					MapSkillNodes.Add(el.ID, nodeList);
 				}
@@ -81,13 +81,15 @@ void FGsSKillLocal::LoadSKillNode()
 	}
 }
 
-FGsSkillActionNodeBase* FGsSKillLocal::CreateSkillNode(const FGsSkillActionDataBase& Data) const
+FGsSkillNotifyNodeBase* FGsSKillLocal::CreateSkillNode(const FGsSkillNotifyDataBase& Data) const
 {
 	//임시
 	switch (Data.Type)
 	{
-	case SkillActionType::CreateProjectile:
-		return new FGsSKillActionNodeProjectile(Data);
+	case EGsSkillNotifyType::CreateProjectile:
+		return new FGsSKillNotifyNodeProjectile(Data);
+	case EGsSkillNotifyType::Collision:
+		return new FGsSkillNotifyNodeCollision(Data);
 	}
 
 	return nullptr;
@@ -126,7 +128,7 @@ void FGsSKillLocal::RunSkillNode(float DeltaTime)
 
 	//사용 스킬 감시/제거
 	UGsGameObjectBase* param = Owner;
-	ListUseSkillNodes.RemoveAll([param](FGsSkillActionNodeBase* el)
+	ListUseSkillNodes.RemoveAll([param](FGsSkillNotifyNodeBase* el)
 	{
 		return el->Update(param);
 	});

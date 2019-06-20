@@ -8,12 +8,12 @@
  * 스킬 액션 담당 구조체
  */
 USTRUCT(BlueprintType)
-struct GAMESERVICE_API FGsSkillActionDataBase
+struct GAMESERVICE_API FGsSkillNotifyDataBase
 {
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	SkillActionType Type;
+	EGsSkillNotifyType Type;
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	float Rate;	//실행 타이밍 정보
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
@@ -36,9 +36,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SKill")
 	float Duration;
 
-	UPROPERTY(EditAnywhere, meta = (AllowedClasses = "AnimMontage"))
+	UPROPERTY(EditAnywhere, meta = (AllowedClasses = "AnimMontage"), Category = "SKill")
 	FSoftObjectPath AniPath;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SKill")
-	TArray<FGsSkillActionDataBase> ListSkillAction;
+	TArray<FGsSkillNotifyDataBase> ListSkillAction;
 };

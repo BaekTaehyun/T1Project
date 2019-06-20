@@ -13,6 +13,8 @@ UCLASS()
 class GAMESERVICE_API AGsNpcCharacter : public ACharacter
 {
 	GENERATED_BODY()
+	
+	UMaterialInstanceDynamic* DynamicMaterial;
 
 public:
 	// Sets default values for this character's properties
@@ -27,4 +29,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+public:
+	void SetColor(FLinearColor Color);
 };

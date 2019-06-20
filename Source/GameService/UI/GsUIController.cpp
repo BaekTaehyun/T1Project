@@ -10,7 +10,7 @@ void UGsUIController::BeginDestroy()
 	Super::BeginDestroy();
 }
 
-UGsUIWidgetBase* UGsUIController::CreateOrFind(UWorld* InOwner, TSubclassOf<UGsUIWidgetBase> InClass, const FName& InKey)
+UGsUIWidgetBase* UGsUIController::CreateOrFind(UGameInstance* InOwner, TSubclassOf<UGsUIWidgetBase> InClass, const FName& InKey)
 {
 	UGsUIWidgetBase** widget = CachedWidgetMap.Find(InKey);
 	UGsUIWidgetBase* outWidget = nullptr;
@@ -27,6 +27,11 @@ UGsUIWidgetBase* UGsUIController::CreateOrFind(UWorld* InOwner, TSubclassOf<UGsU
 			{
 				outWidget = CreateWidget<UGsUIWidgetBase>(InOwner, InClass);
 				UsingWidgetArray.Add(outWidget); 
+			}
+			else
+			{
+				// 뷰포트에 다시 넣어주기 위해 지운다
+				RemoveFromParent(outWidget);
 			}
 		}
 		else
@@ -48,13 +53,6 @@ UGsUIWidgetBase* UGsUIController::CreateOrFind(UWorld* InOwner, TSubclassOf<UGsU
 	return outWidget;
 }
 
-UGsUIWidgetBase* UGsUIController::CreateOrFind(UGameInstance* InOwner, TSubclassOf<UGsUIWidgetBase> InClass, const FName& InKey)
-{
-	// 상속 클래스(UGsUIControllerNotDestroy)에서 구현
-	return nullptr;
-}
-
-
 void UGsUIController::AddWidget(UGsUIWidgetBase* InWidget, UGsUIParameter* InParameters)
 {	
 	if (InWidget->IsStackUI())
@@ -69,17 +67,23 @@ void UGsUIController::AddWidget(UGsUIWidgetBase* InWidget, UGsUIParameter* InPar
 
 void UGsUIController::PushStack(UGsUIWidgetBase* InWidget, UGsUIParameter* InParameters)
 {
+	// 중복생성 안되는 위젯의 경우, 스택 맨 위의 오브젝트와 같으면 더 쌓지 않음
+	if (false == InWidget->CanMultipleInstance())
+	{
+		if (IsTopInStack(InWidget))
+		{
+			AddToViewport(InWidget);
+			return;
+		}
+	}
+
 	// 화면을 덮는 Window타입 객체면 이전 창들을 모두 Hide
 	if (InWidget->IsWindow())
 	{
 		for (int32 i = StackableArray.Num() - 1; i >= 0; --i)
 		{
 			UGsUIWidgetBase* widget = StackableArray[i];
-			if (nullptr != widget && 
-				widget->IsInViewport())
-			{
-				widget->RemoveFromParent();
-			}
+			RemoveFromParent(widget);
 		}
 	}
 
@@ -96,8 +100,7 @@ void UGsUIController::AddToViewport(UGsUIWidgetBase* InWidget)
 	// 일반 AddToViewport 시 ZOrder + 10된 값이 들어간다. UUserWidget::AddToScreen 참고.
 	// 같은 ZOrder이면 이미 존재하는 것 다음에 Insert 된다. SOverlay::AddSlot 참고.
 	// Window < Popup < Tray 뎁스 보장을 위해 GetManagedZOrder() 를 통해 타입별 기본값을 달리한다.
-	// 기본값: Window: 10, Popup: 100, Tray: 500
-
+	// 기본값: Window: 10, Popup: 100, Tray: 500, HUD: 1
 	if (false == InWidget->IsInViewport())
 	{
 		InWidget->AddToViewport(InWidget->GetManagedZOrder());
@@ -140,51 +143,54 @@ void UGsUIController::PopStack(UGsUIWidgetBase* InWidget)
 
 	RemoveUsingWidget(InWidget);
 
-	// 지워진게 윈도우이면 이전 창들을 열어주는 처리를 한다
-	if (InWidget->IsWindow())
+	// 상단에 그려져야 하는 항목(window가 나올때까지)을 모은다
+	TArray<UGsUIWidgetBase*> topWidgets;
+
+	for (int32 i = StackableArray.Num() - 1; i >= 0; --i)
 	{
-		TArray<UGsUIWidgetBase*> topWidgets;
+		UGsUIWidgetBase* widget = StackableArray[i];
+		topWidgets.Add(widget);
 
-		for (int32 i = StackableArray.Num() - 1; i >= 0; --i)
+		if (widget->IsWindow())
 		{
-			UGsUIWidgetBase* widget = StackableArray[i];
-
-			topWidgets.Add(widget);
-
-			if (widget->IsWindow())
-			{
-				break;
-			}
-		}
-
-		// 순서대로 불러야 Depth 문제가 없으므로 역순으로 다시 불러준다
-		for (int32 i = topWidgets.Num() - 1; i >= 0; --i)
-		{
-			TWeakObjectPtr<UGsUIWidgetBase> widget = topWidgets[i];
-
-			if (false == widget.Get()->IsInViewport())
-			{
-				AddToViewport(widget.Get());
-			}
+			break;
 		}
 	}
-	else
+
+	// 순서대로 불러야 Depth 문제가 없으므로 역순으로 다시 불러준다
+	for (int32 i = topWidgets.Num() - 1; i >= 0; --i)
 	{
-		// 최상단 객체가 닫혀있다면 켜준다. (같은 객체가 스택에 있을 경우 꺼져있을 수 있음)
-		UGsUIWidgetBase* widget = StackPeek();
-		if (nullptr != widget &&
-			false == widget->IsInViewport())
-		{
-			AddToViewport(widget);
-		}
+		UGsUIWidgetBase* widget = topWidgets[i];
+
+		// 같은 객체가 한 틱에서 RemoveFromParent 후 AddToViewport 시 IsInViewport 가 true일 때가 있다.
+		// 발생될 상황은 많지 않을 것이고, 이러한 객체는 중복생성 가능한 타입으로 만들어 해결하자.
+		// 발생빈도가 많으면 RND하여 수정할 것.
+		AddToViewport(widget);
+	}
+}
+
+void UGsUIController::RemoveFromParent(UGsUIWidgetBase* InWidget)
+{
+	if (nullptr != InWidget && InWidget->IsInViewport())
+	{
+		InWidget->RemoveFromParent();
 	}
 }
 
 void UGsUIController::RemoveUsingWidget(UGsUIWidgetBase* InWidget)
 {
-	InWidget->RemoveFromParent();
-
+	RemoveFromParent(InWidget);
 	UsingWidgetArray.Remove(InWidget);
+}
+
+void UGsUIController::ClearStack()
+{
+	for (auto* widget : StackableArray)
+	{
+		RemoveUsingWidget(widget);
+	}
+
+	StackableArray.Empty();
 }
 
 void UGsUIController::RemoveAll()
@@ -207,13 +213,16 @@ void UGsUIController::RemoveAll()
 	CachedWidgetMap.Empty();
 }
 
-void UGsUIController::Back()
+bool UGsUIController::Back()
 {
 	UGsUIWidgetBase* topWidget = StackPeek();
 	if (nullptr != topWidget)
 	{
 		RemoveWidget(topWidget);
+		return true;
 	}
+
+	return false;
 }
 
 UGsUIWidgetBase* UGsUIController::StackPeek()
@@ -238,9 +247,20 @@ UGsUIWidgetBase* UGsUIController::GetCachedWidgetByName(FName InKey, bool InActi
 	{		
 		if (false == (*widget)->GetIsVisible())
 		{
-			return nullptr;
+			return false;
 		}
 	}
 
 	return *widget;
+}
+
+bool UGsUIController::IsTopInStack(UGsUIWidgetBase* InWidget)
+{
+	UGsUIWidgetBase* topWidget = StackPeek();
+	if (InWidget == topWidget)
+	{
+		return true;
+	}
+
+	return false;
 }

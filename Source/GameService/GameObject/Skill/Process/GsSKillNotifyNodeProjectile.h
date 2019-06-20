@@ -3,16 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GsSkillActionNodeBase.h"
+#include "GsSkillNotifyNodeBase.h"
 
 /**
  * 프로젝타일 타입 Action처리 클래스
  * 
  */
-class GAMESERVICE_API FGsSKillActionNodeProjectile : public FGsSkillActionNodeBase
+class GAMESERVICE_API FGsSKillNotifyNodeProjectile : public FGsSkillNotifyNodeBase
 {
+	using Super = FGsSkillNotifyNodeBase;
+
 public:
-	FGsSKillActionNodeProjectile(const FGsSkillActionDataBase& Data);
+	FGsSKillNotifyNodeProjectile(const FGsSkillNotifyDataBase& Data);
 
 public:
 	virtual void Process(UGsGameObjectBase* Owner) override;

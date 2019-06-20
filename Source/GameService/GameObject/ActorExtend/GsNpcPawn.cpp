@@ -5,6 +5,8 @@
 #include "GameFramework/PawnMovementComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "GameObject/Component/GsAnimInstanceState.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Components/SkeletalMeshComponent.h"
 
 // Sets default values
 AGsNpcPawn::AGsNpcPawn()
@@ -46,7 +48,9 @@ AGsNpcPawn::~AGsNpcPawn()
 void AGsNpcPawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	DynamicMaterial = UMaterialInstanceDynamic::Create(Mesh->GetMaterial(0), this);
+	Mesh->SetMaterial(0, DynamicMaterial);
 }
 
 // Called every frame
@@ -71,5 +75,14 @@ void AGsNpcPawn::PostInitializeComponents()
 		Animation = Cast<UGsAnimInstanceState>(Mesh->GetAnimInstance());
 	}
 }
+
+void AGsNpcPawn::SetColor(FLinearColor Color)
+{
+	if (DynamicMaterial)
+	{
+		DynamicMaterial->SetVectorParameterValue("Param", Color);
+	}
+}
+
 
 

@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../Define/GsGameObjectDefine.h"
 #include "UObject/NoExportTypes.h"
 #include "CItem.generated.h"
 
@@ -29,7 +28,6 @@ public:
 	int32 GetItemStackCount();
 	FString GetItemName();
 	FString GetItemBPpath();
-	ItemStorageType GetItemStorageType();
 
 protected:
 	int64 ItemTID = 0;
@@ -37,14 +35,12 @@ protected:
 	int32 ItemStackCount = 0;
 	FString ItemName = "";
 	FString ItemBPpath = "";
-	ItemStorageType StorageType = ItemStorageType::Max;
 
 public:
 	static UCItem* CreateItem(const int64 In_ItemTID, int32 In_ItemStackCount = 0);
 
 public:
 	void UpdateItemData(int64 In_ItemID);
-	void UpdateItemStackCount(int32 In_StackCount);
 
 
 };

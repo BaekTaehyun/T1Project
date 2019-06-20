@@ -4,6 +4,7 @@
 
 #include "Engine.h"
 #include "GameObject/Skill/Data/GsSkillDataBase.h"
+#include "GameObject/Skill/Data/GsSkillNotifyCollisionData.h"
 #include "GsSkillDataContainerBase.generated.h"
 
  /**
@@ -15,12 +16,33 @@ UCLASS()
 class GAMESERVICE_API UGsSkillDataContainerBase : public UDataAsset
 {
 	GENERATED_BODY()
+	
+public:
+	UPROPERTY(EditAnywhere)
+	TArray<FGsSkillDataBase> ListSkills;
 
 public:
 	FORCEINLINE const TArray<FGsSkillDataBase>& GetSkillData() { return ListSkills; }
 
+public:
 	const FGsSkillDataBase* FindData(int ID);
+};
 
+/**
+* SkillActionType::Collision 데이터 저장소 
+*/
+UCLASS()
+class GAMESERVICE_API UGsSkillNotifyCollisionDataContainer : public UDataAsset
+{
+	GENERATED_BODY()
+	
+public:
 	UPROPERTY(EditAnywhere)
-	TArray<FGsSkillDataBase> ListSkills;
+	TArray<FGsSkillNotifyCollisionData> ListCollision;
+
+public:
+	FORCEINLINE const TArray<FGsSkillNotifyCollisionData>& GetCollisionData() { return ListCollision; }
+
+public:
+	const FGsSkillNotifyCollisionData* FindData(int ID);
 };

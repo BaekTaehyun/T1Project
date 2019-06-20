@@ -1,6 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "GsNpcCharacter.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Components/SkeletalMeshComponent.h"
 
 // Sets default values
 AGsNpcCharacter::AGsNpcCharacter()
@@ -17,6 +19,9 @@ AGsNpcCharacter::~AGsNpcCharacter()
 void AGsNpcCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	DynamicMaterial = UMaterialInstanceDynamic::Create(GetMesh()->GetMaterial(0), this);
+	GetMesh()->SetMaterial(0, DynamicMaterial);
 }
 
 // Called every frame
@@ -29,5 +34,13 @@ void AGsNpcCharacter::Tick(float DeltaTime)
 void AGsNpcCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+void AGsNpcCharacter::SetColor(FLinearColor Color)
+{
+	if (DynamicMaterial)
+	{
+		DynamicMaterial->SetVectorParameterValue("Param", Color);
+	}
 }
 

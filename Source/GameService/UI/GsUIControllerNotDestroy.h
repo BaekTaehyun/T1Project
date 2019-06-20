@@ -15,10 +15,9 @@ class GAMESERVICE_API UGsUIControllerNotDestroy : public UGsUIController
 	GENERATED_BODY()
 
 public:
-	virtual UGsUIWidgetBase* CreateOrFind(class UGameInstance* InOwner, TSubclassOf<UGsUIWidgetBase> InClass, const FName& InKey) override;
 	virtual void RemoveAll() override;
 
 protected:
 	virtual void AddToViewport(UGsUIWidgetBase* InWidget) override;
-	virtual void RemoveUsingWidget(UGsUIWidgetBase* InWidget) override;	
+	virtual void RemoveFromParent(UGsUIWidgetBase* InWidget) override;
 };

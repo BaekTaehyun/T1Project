@@ -16,7 +16,7 @@ class GAMESERVICE_API AGsProjectileActor : public AActor
 	GENERATED_BODY()
 	
 	//UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-		//UProjectileMovementComponent* ProjectileMovementComponent;
+	//UProjectileMovementComponent* ProjectileMovementComponent;
 	
 public:	
 	// Sets default values for this actor's properties

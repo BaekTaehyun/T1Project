@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GsSkillBase.h"
-#include "Process/GsSkillActionNodeBase.h"
+#include "Process/GsSkillNotifyNodeBase.h"
 
 /**
  * 
@@ -13,6 +13,13 @@ class GAMESERVICE_API FGsSKillLocal : public FGsSkillBase
 {
 	typedef FGsSkillBase Super;
 
+private:
+	//스킬 액션 정보들
+	TMap<int, TArray<FGsSkillNotifyNodeBase*>> MapSkillNodes;
+	TArray<FGsSkillNotifyNodeBase*> ListRunSkillNodes;
+	TArray<FGsSkillNotifyNodeBase*> ListUseSkillNodes;
+
+
 public:
 	FGsSKillLocal();
 	virtual ~FGsSKillLocal();
@@ -20,21 +27,16 @@ public:
 	virtual void Initialize(UGsGameObjectBase* Owner) override;
 	virtual void Finalize() override;
 
-	virtual void LoadData(const TCHAR * Path) override;
+public:
 	virtual void UseSKill(int ID) override;
 
 	virtual void OnSKillNode() override;
 	virtual void RunSkillNode(float DeltaTime) override;
 
-	TArray<FGsSkillActionNodeBase*>* GetSKillNodes(int ID);
-
 private:
 	void LoadSKillNode();
-	FGsSkillActionNodeBase* CreateSkillNode(const FGsSkillActionDataBase& Data) const;
+	FGsSkillNotifyNodeBase* CreateSkillNode(const FGsSkillNotifyDataBase& Data) const;
 
-private:
-	//스킬 액션 정보들
-	TMap<int, TArray<FGsSkillActionNodeBase*>> MapSkillNodes;
-	TArray<FGsSkillActionNodeBase*> ListRunSkillNodes;
-	TArray<FGsSkillActionNodeBase*> ListUseSkillNodes;
+public:
+	TArray<FGsSkillNotifyNodeBase*>* GetSKillNodes(int ID);
 };

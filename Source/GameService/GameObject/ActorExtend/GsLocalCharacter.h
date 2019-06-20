@@ -23,6 +23,7 @@ class GAMESERVICE_API AGsLocalCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+private:
 	//캐릭터 따라가기 카메라
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;
@@ -32,6 +33,9 @@ class GAMESERVICE_API AGsLocalCharacter : public ACharacter
 	UGsInputBindingBase* InputBinder;
 	//Anim
 	UGsAnimInstanceState* Animation;
+
+private:
+	ECollisionEnabled::Type RestoreCollisionType;
 
 public:
 	FORCEINLINE UGsAnimInstanceState* GetAnim() const				{ return Animation; }
@@ -49,14 +53,12 @@ public:
     // Called to bind functionality to input
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void EnableCollision();
-	void DisableCollision();
-
 protected:
 	virtual void PostInitializeComponents() override;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:
-	ECollisionEnabled::Type RestoreCollisionType;
+public:
+	void EnableCollision();
+	void DisableCollision();
 };

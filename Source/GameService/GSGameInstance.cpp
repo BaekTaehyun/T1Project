@@ -5,6 +5,7 @@
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "class/GsSpawn.h"
 #include "UI/GsUIManager.h"
+#include "GameObject/GsGameObjectDataCenter.h"
 
 //-------------------------------------------------------------------------------
 // 게임초기화 순서
@@ -33,8 +34,7 @@ void UGsGameInstance::Init()
 	_manage.InsertInstance(new FGsMessageManager());
 	_manage.InsertInstance(new FGsGameFlowManager());
 	_manage.InsertInstance(new FGsNetManager());
-	_manage.InsertInstance(new FItemManager());
-	
+	_manage.InsertInstance(new FGsGameObjectDataCenter());
 
 	for(auto& mng : _manage.Get())
 	{

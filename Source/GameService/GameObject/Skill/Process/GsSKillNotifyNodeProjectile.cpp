@@ -1,24 +1,27 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GsSKillActionNodeProjectile.h"
+#include "GsSKillNotifyNodeProjectile.h"
 #include "Engine/World.h"
 #include "GSGameInstance.h"
 #include "GameObject/ObjectClass/GsGameObjectProjectile.h"
 #include "GameObject/GsSpawnComponent.h"
+#include "GameObject/GsGameObjectDataCenter.h"
+#include "GameObject/GsGameObjectPathContainer.h"
 
-FGsSKillActionNodeProjectile::FGsSKillActionNodeProjectile(const FGsSkillActionDataBase& Data) :
-	FGsSkillActionNodeBase(Data)
+FGsSKillNotifyNodeProjectile::FGsSKillNotifyNodeProjectile(const FGsSkillNotifyDataBase& Data) :
+	Super(Data)
 {
 }
 
-void FGsSKillActionNodeProjectile::Process(UGsGameObjectBase* Owner)
+void FGsSKillNotifyNodeProjectile::Process(UGsGameObjectBase* Owner)
 {
 }
 
-void FGsSKillActionNodeProjectile::Action(UGsGameObjectBase* Owner)
+void FGsSKillNotifyNodeProjectile::Action(UGsGameObjectBase* Owner)
 {
 	//임시 데이터 리소스 하드코딩
-	FString path = TEXT("Blueprint'/Game/Blueprint/GameObject/BP_ProjectileActor.BP_ProjectileActor'");
+	auto dataCenter = GGameObjectData()->Get< UGsGameObjectPathContainer>(EGameObjectDataType::Path);
+	FString path = dataCenter->Get(EGameObjectResType::TestProjectile);
 	if (auto loadObject = StaticLoadObject(UObject::StaticClass(), nullptr, *path))
 	{
 	auto actor = Owner->GetActor();

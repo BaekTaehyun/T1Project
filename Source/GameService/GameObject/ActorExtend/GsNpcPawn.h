@@ -28,10 +28,11 @@ class GAMESERVICE_API AGsNpcPawn : public APawn
 	UPawnMovementComponent* MovementComponent;
 	//Anim
 	UGsAnimInstanceState* Animation;
+	UMaterialInstanceDynamic* DynamicMaterial;
 
 public:
-	FORCEINLINE UGsAnimInstanceState* GetAnim() const { return Animation; }
-	FORCEINLINE UPawnMovementComponent* GetPawnMovement() const { return MovementComponent; }
+	FORCEINLINE UGsAnimInstanceState* GetAnim() const				{ return Animation; }
+	FORCEINLINE UPawnMovementComponent* GetPawnMovement() const		{ return MovementComponent; }
 	
 public:
 	// Sets default values for this pawn's properties
@@ -47,4 +48,7 @@ protected:
 	virtual void PostInitializeComponents() override;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+public:
+	void SetColor(FLinearColor Color);
 };

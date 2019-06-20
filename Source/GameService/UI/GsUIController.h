@@ -10,6 +10,10 @@
 /**
  * 위젯 관리 클래스. 
  * 레벨 전환 시 파괴되지 않는 위젯들은 이 클래스를 상속한 UGsUIControllerNotDestroy 이용
+ * 주의: UGsUIControllerNotDestroy 에서 공유하는 Viewport 관련 로직에 주의
+ * - IsInViewport()  
+ * - AddToViewport()
+ * - RemoveFromParent()
  */
 UCLASS()
 class GAMESERVICE_API UGsUIController : public UObject
@@ -19,9 +23,8 @@ class GAMESERVICE_API UGsUIController : public UObject
 public:
 	virtual void BeginDestroy() override;
 
-	// 생성, 캐싱
-	UGsUIWidgetBase* CreateOrFind(class UWorld* InOwner, TSubclassOf<UGsUIWidgetBase> InClass, const FName& InKey);
-	virtual UGsUIWidgetBase* CreateOrFind(class UGameInstance* InOwner, TSubclassOf<UGsUIWidgetBase> InClass, const FName& InKey);
+	// 생성, 캐싱	
+	UGsUIWidgetBase* CreateOrFind(class UGameInstance* InOwner, TSubclassOf<UGsUIWidgetBase> InClass, const FName& InKey);
 
 	// 위젯 화면에 추가
 	void AddWidget(UGsUIWidgetBase* InWidget, UGsUIParameter* InParameters = nullptr);	
@@ -31,7 +34,10 @@ public:
 	void RemoveWidget(const FName& InKey);
 
 	// 안드로이드 백키처리를 위한 인터페이스
-	void Back();
+	bool Back();
+
+	// 스택에 있는 내용 삭제. 캐시된 위젯은 삭제하지 않음
+	void ClearStack();
 
 	// 캐시된 항목까지 전부 삭제
 	virtual void RemoveAll();
@@ -43,9 +49,11 @@ protected:
 	void PushStack(UGsUIWidgetBase* InWidget, UGsUIParameter* InParameters = nullptr);
 	void PopStack(UGsUIWidgetBase* InWidget);
 	UGsUIWidgetBase* StackPeek();
+	void RemoveUsingWidget(UGsUIWidgetBase* InWidget);
+	bool IsTopInStack(UGsUIWidgetBase* InWidget);
 
 	virtual void AddToViewport(UGsUIWidgetBase* InWidget);
-	virtual void RemoveUsingWidget(UGsUIWidgetBase* InWidget);
+	virtual void RemoveFromParent(UGsUIWidgetBase* InWidget);	
 
 protected:
 	// 사용중인 위젯들

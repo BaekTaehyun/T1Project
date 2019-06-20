@@ -13,17 +13,11 @@ void UCItem::UpdateItemData(int64  In_ItemID)
 	//UE_LOG(LogTemp, Log, TEXT("UpdateItemData : %d"), In_ItemID);
 	UE_LOG(LogTemp, Log, TEXT("Call UpdateItemData()"));
 
-	// 물약 데이터 하드코딩 (클라 임시 사용)
+	// 아직 table data 가 없으므로, 물약 data 하드코딩 (임시).
 	ItemTID = In_ItemID;
 	ItemGUID = 101;
 	ItemName = TEXT("체력회복 물약");
 	ItemBPpath = TEXT("/Game/UI/Texture/icon_potion_01.icon_potion_01");
-	StorageType = ItemStorageType::Consumable;
-}
-
-void UCItem::UpdateItemStackCount(int32 In_StackCount)
-{
-	this->ItemStackCount = In_StackCount;
 }
 
 UCItem* UCItem::CreateItem(const int64 In_ItemTID, int32 In_ItemStackCount)
@@ -83,9 +77,4 @@ FString UCItem::GetItemName()
 FString UCItem::GetItemBPpath()
 {
 	return ItemBPpath;
-}
-
-ItemStorageType UCItem::GetItemStorageType()
-{
-	return StorageType;
 }

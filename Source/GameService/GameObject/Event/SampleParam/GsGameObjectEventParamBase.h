@@ -15,14 +15,14 @@
 class GAMESERVICE_API GsGameObjectEventParamBase
 {
 public:
+	MessageGameObject::Action ActionType;
+	UGsGameObjectBase* Target;
+
+public:
 	GsGameObjectEventParamBase();
 	virtual ~GsGameObjectEventParamBase();
 
 	virtual void Clear();
-
-public:
-	MessageGameObject::Action ActionType;
-	UGsGameObjectBase* Target;
 };
 
 //Å»°Í Å¾½Â
@@ -31,11 +31,11 @@ class GAMESERVICE_API GsGameObjectEventParamVehicleRide : public GsGameObjectEve
 	typedef GsGameObjectEventParamBase Super;
 
 public:
+	//Å¾½ÂÀÚ
+	UGsGameObjectBase* Passenger;
+
+public:
 	GsGameObjectEventParamVehicleRide();
 
 	virtual void Clear() override;
-
-public:
-	//Å¾½ÂÀÚ
-	UGsGameObjectBase* Passenger;
 };

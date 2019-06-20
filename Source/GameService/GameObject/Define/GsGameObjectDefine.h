@@ -141,19 +141,18 @@ enum class EGsPartsType : uint8
 * 스킬 액션 타입
 */
 UENUM()
-enum class SkillActionType : uint8
+enum class EGsSkillNotifyType : uint8
 {
 	CreateProjectile = 1,
+	Collision,
 };
 
-/**
-* 아이템 슬롯 타입
-*/
-UENUM()
-enum class ItemStorageType : uint8
+UENUM(BlueprintType)
+enum class EGsSkillCollisionType : uint8
 {
-	Gear = 0,
-	Consumable,
-	Max,
+	Circle,		// 기본 원형
+	Fan,		// 기본 원형 + 각도
+	Concave,	// 3개 이상의 꼭지점을 가지는 다각형
 };
+
 
