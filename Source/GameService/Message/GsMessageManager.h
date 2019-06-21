@@ -9,6 +9,7 @@
 #include "GsMessageSystem.h"
 #include "GsMessageLobby.h"
 #include "GsMessageGame.h"
+#include "GsMessageItem.h"
 #include "GsMessageGameObject.h"
 
 
@@ -20,6 +21,7 @@ class FGsMessageManager :
 	typedef TGsMessageHandler<MessageNet::ID>		MNet;
 	typedef TGsMessageHandler<MessageLobby::Hive>	MHive;
 	typedef TGsMessageHandler<MessageLobby::Stage>	MStage;
+	typedef TGsMessageHandler<MessageItem::ItemAction>	MItem;
 	//테스트 Gameobject 이벤트 처리용 메세지
 	typedef TGsMessageHandlerOneParam<MessageGameObject::Action, class GsGameObjectEventParamBase&> MGameObject;
 	
@@ -28,6 +30,7 @@ class FGsMessageManager :
 	MHive	_hive;
 	MStage  _stage;
 	MGameObject _go;
+	MItem _Item;
 
 public:
 	FGsMessageManager() {};
@@ -43,6 +46,7 @@ public:
 	MHive& GetHive() { return _hive; }
 	MStage& GetStage() { return _stage; }
 	MGameObject& GetGo() { return _go; }
+	MItem& GetItem() { return _Item; }
 };
 
 typedef TGsSingleton<FGsMessageManager>	FGsMessageSingle;

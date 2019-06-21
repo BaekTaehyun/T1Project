@@ -75,15 +75,8 @@ const FString UItemIconSelector::GetPathbyIconSize(eItemIconSize In_eSize)
 
 UGsUIIcon* UItemIconSelector::SetItemIcon(UCItem* In_CItem)
 {
-	/*
 	if (nullptr == In_CItem || nullptr == UIIcon)
-		return nullptr;
-		*/
-	if (nullptr == UIIcon)
-	{
-		UE_LOG(LogTemp, Log, TEXT("UIIcon is null  !!"));
-		return nullptr;
-	}
+		return nullptr;	
 
 	UIIcon->SetItem(In_CItem);
 	return UIIcon;

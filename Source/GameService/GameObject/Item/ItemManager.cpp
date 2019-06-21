@@ -2,6 +2,7 @@
 
 
 #include "ItemManager.h"
+#include "../../Message/GsMessageManager.h"
 
 template<>
 FItemManager* FGsItemMgr::_instance = nullptr;
@@ -52,6 +53,7 @@ UCItem* FItemManager::FindItem(int64 In_ItemGUID)
 // 추후 서버에서 내려주는 패킷클래스로 변경 해야함.
 UCItem* FItemManager::AddItem(UCItem& In_addItem)
 {
+
 	return nullptr;
 }
 
@@ -76,6 +78,8 @@ UCItem* FItemManager::AddItem(int64 In_ItemTID, ItemStorageType In_StorageType, 
 			AddItem(_item);
 		}
 	}
+
+	GMessage()->GetItem().SendMessage(MessageItem::ItemAction::ADDITEM);
 
 	return _item;
 }

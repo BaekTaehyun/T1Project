@@ -25,4 +25,5 @@ void FGsMessageManager::Update()
 	_net.Update();
 	_hive.Update();
 	_stage.Update();
+	_Item.Update();
 }

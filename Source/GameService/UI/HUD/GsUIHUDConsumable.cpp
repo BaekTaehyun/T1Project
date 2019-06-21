@@ -4,6 +4,9 @@
 #include "GsUIHUDConsumable.h"
 #include "../../GameObject/Item/Citem.h"
 #include "../../GameObject/Item/ItemManager.h"
+#include "../../Message/GsMessageItem.h"
+#include "../../Message/GsMessageManager.h"
+
 
 void UGsUIHUDConsumable::CreateConsumeItem()
 {
@@ -31,5 +34,15 @@ void UGsUIHUDConsumable::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 	ItemIconSelector = NewObject<UItemIconSelector>();
+	GMessage()->GetItem().AddUObject(MessageItem::ItemAction::ADDITEM, this, &UGsUIHUDConsumable::UpdateConsumeItem);
+}
 
+void UGsUIHUDConsumable::UpdateConsumeItem()
+{
+	UE_LOG(LogTemp, Log, TEXT("Call UpdateConsumeItem !!! "));
+	UCItem* findItem = GItemManager()->FindItem(1, ItemStorageType::Consumable);
+	if (nullptr != findItem)
+	{
+		ItemIconSelector->SetItemIcon(findItem);
+	}
 }
