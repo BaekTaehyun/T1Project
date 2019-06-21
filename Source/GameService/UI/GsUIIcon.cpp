@@ -15,11 +15,10 @@ void UGsUIIcon::SetDefaultItemImg()
 
 void UGsUIIcon::NativeConstruct()
 {
-	
 	Super::NativeConstruct();
-
-
 	ItemImage = Cast<UImage>(GetWidgetFromName(TEXT("ItemImg")));
+
+
 }
 
 void UGsUIIcon::OnClickItemIconEvent()
@@ -32,7 +31,6 @@ void UGsUIIcon::OnClickItemIconEvent()
 void UGsUIIcon::SetItem(UCItem* In_CItem)
 {
 	UE_LOG(LogTemp, Log, TEXT("Call SetItemImg !!"));
-
 
 	if (nullptr == In_CItem)
 	{

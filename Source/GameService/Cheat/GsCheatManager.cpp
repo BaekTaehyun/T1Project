@@ -52,10 +52,11 @@ void UGsCheatManager::SpawnGameObject(EGsGameObjectType Type, TSubclassOf<AActor
 }
 
 
-void UGsCheatManager::AddItem(FString in_tag)
+void UGsCheatManager::AddPotion(FString in_tag)
 {
 	UE_LOG(LogTemp, Log, TEXT("Call AddItem() !!! : %s"), *in_tag);
 
 	int32 _count = FCString::Atoi(*in_tag);
+	_count = _count > 999999 ? 999999 : _count;
 	GItemManager()->AddItem(1, ItemStorageType::Consumable, _count);
 }
