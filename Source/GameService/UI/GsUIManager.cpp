@@ -13,6 +13,8 @@
 #include "Engine/AssetManager.h"
 #include "GSGameInstance.h"
 #include "HUD/GsUIHUDMain.h"
+#include "UI/GsWidgetPoolManager.h"
+#include "UI/GsDealScrollManager.h"
 
 
 UGsUIManager::UGsUIManager(const FObjectInitializer& ObjectInitializer)
@@ -29,6 +31,8 @@ void UGsUIManager::BeginDestroy()
 	UIControllerNormal = nullptr;
 	UIControllerNotDestroy = nullptr;
 	WidgetClassTable = nullptr;
+	WidgetPoolManager = nullptr;
+	DealScrollManager = nullptr;
 	
 	Super::BeginDestroy();
 }
@@ -43,6 +47,17 @@ void UGsUIManager::Initialize()
 	if (nullptr == UIControllerNotDestroy)
 	{
 		UIControllerNotDestroy = NewObject<UGsUIControllerNotDestroy>(this);
+	}
+
+	if (nullptr == WidgetPoolManager)
+	{
+		WidgetPoolManager = NewObject<UGsWidgetPoolManager>(this);
+		WidgetPoolManager->Initialize();
+	}
+
+	if (nullptr == DealScrollManager)
+	{
+		DealScrollManager = NewObject<UGsDealScrollManager>(this);
 	}
 }
 
@@ -176,6 +191,7 @@ void UGsUIManager::OnChangeLevel()
 	ShowLoading();
 	
 	UIControllerNormal->RemoveAll();
+	WidgetPoolManager->ReleaseAll();
 }
 
 void UGsUIManager::ShowLoading()
@@ -237,19 +253,41 @@ TWeakObjectPtr<UGsUIWidgetBase> UGsUIManager::GetCachedWidget(const FName& InKey
 
 void UGsUIManager::HideAll()
 {
-	if (false == bIsHide)
-	{
-		bIsHide = true;
-		OnToggleHideUnhide.Broadcast(bIsHide);
-	}
+	//SetHideFlags(EGsUIHideFlags::UI_HIDE_WINDOW | EGsUIHideFlags::UI_HIDE_POPUP);
+	SetHideFlags(EGsUIHideFlags::UI_HIDE_ALL);
 }
 
 void UGsUIManager::UnhideAll()
 {
-	if (bIsHide)
+	//ClearHideFlags(EGsUIHideFlags::UI_HIDE_WINDOW | EGsUIHideFlags::UI_HIDE_POPUP);
+	ClearHideFlags(EGsUIHideFlags::UI_HIDE_ALL);
+}
+
+void UGsUIManager::SetHideFlags(EGsUIHideFlags InFlag)
+{
+	// 중첩일 하나라도 없으면 Hide 수행
+	if (false == EnumHasAllFlags(HideFlags, InFlag))
 	{
-		bIsHide = false;
-		OnToggleHideUnhide.Broadcast(bIsHide);
+		HideFlags = HideFlags | InFlag;
+		OnUIHide.Broadcast(static_cast<int32>(HideFlags));
+	}
+}
+
+void UGsUIManager::ClearHideFlags(EGsUIHideFlags InFlag)
+{
+	// 해당 플래그가 있으면 수행
+	if (EnumHasAnyFlags(HideFlags, InFlag))
+	{
+		if (EGsUIHideFlags::UI_HIDE_ALL == InFlag)
+		{
+			HideFlags = EGsUIHideFlags::UI_HIDE_NONE;
+		}
+		else
+		{
+			HideFlags = HideFlags ^ InFlag;
+		}
+
+		OnUIHide.Broadcast(static_cast<int32>(HideFlags));
 	}
 }
 

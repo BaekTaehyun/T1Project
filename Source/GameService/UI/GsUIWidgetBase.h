@@ -8,6 +8,19 @@
 #include "GsUIEventInterface.h"
 #include "GsUIWidgetBase.generated.h"
 
+enum class EGsUIHideFlags : int32
+{
+	UI_HIDE_NONE = 0x00000000,
+
+	UI_HIDE_DEFAULT = 0x00000001,
+	UI_HIDE_HUD = 0x00000002,
+	UI_HIDE_BILLBOARD = 0x00000004,
+	//UI_HIDE_DIALOG = 0x00000008,
+
+	UI_HIDE_ALL = 0x0fffffff,
+};
+
+ENUM_CLASS_FLAGS(EGsUIHideFlags);
 
 /**
  * GsUIManager에서 관리받는 위젯의 기본클래스. GsUIWindow, GsUIPopup, GsUITray 를 사용할 것.
@@ -48,9 +61,6 @@ public:
 	virtual void NativeDestruct() override;
 	virtual void RemoveFromParent() override;
 
-	UFUNCTION()
-	virtual void ToggleHideUnhide(bool InHide);
-
 protected:
 	//스택에 푸쉬할 때 부르며, 초기화 데이터를 넘길 수 있음.
 	//주의: OnInitialized 뒤에 불리지만 Construct 보다 전에 불리므로 Slate 세팅과 관련된 처리를 여기서 하면 안됨.
@@ -60,6 +70,10 @@ protected:
 
 	// 주의: 초기화, 파괴시에만 사용할 것. 초기화 시 bNotDestroy 에 의해 설정. 씬전환 시 파괴처리여부.
 	void SetEnableAutoDestroy(bool bInEnableAutoDestroy);
+
+	// UIManager에 의해 호출되는 부분
+	UFUNCTION()
+	virtual void OnHide(int32 InHideFlags);
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "GsManaged")
@@ -85,6 +99,8 @@ public:
 
 	// UIController에서 캐싱하고 있는 위젯 
 	bool IsCachedWidget() const { return bIsCachedWidget; }
+
+	virtual EGsUIHideFlags GetHideFlagType() const { return EGsUIHideFlags::UI_HIDE_DEFAULT; }
 
 	UFUNCTION(BlueprintCallable, Category = "GsManaged")
 	class UGsUIManager* GetUIManager();

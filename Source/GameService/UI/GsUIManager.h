@@ -9,7 +9,7 @@
 #include "GsUIManager.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnToggleHideUnhideDelegate, bool, InHide);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGsUIHideDelegate, int32, InHideFlags);
 
 /**
  * UGsUIManager
@@ -29,7 +29,8 @@ class GAMESERVICE_API UGsUIManager : public UObject
 
 public:
 	// UI 감추기/복구 이벤트. 추후에 Flag값을 넘겨서 필요한 것만 끄도록 수정해도 좋을 것.
-	FOnToggleHideUnhideDelegate OnToggleHideUnhide;
+	FGsUIHideDelegate OnUIHide;
+	
 
 private:
 	// 위젯 클래스 패스를 가진 테이블
@@ -44,13 +45,19 @@ private:
 	UPROPERTY()
 	class UGsUIControllerNotDestroy* UIControllerNotDestroy;
 
+	UPROPERTY(Transient)
+	class UGsWidgetPoolManager* WidgetPoolManager;
+
+	UPROPERTY(Transient)
+	class UGsDealScrollManager* DealScrollManager;
+
 	// 로딩창. 원본은 UIControllerNotDestroy 에 있음.
 	TWeakObjectPtr<UGsUIWidgetBase> LoadingWidget;
 
 	// 현재 사용중인 HUD. 원본은 UIControllerNormal 에 있음.
 	TWeakObjectPtr<UGsUIWidgetBase> CurrentHUDWidget;
 
-	bool bIsHide = false;
+	EGsUIHideFlags HideFlags = EGsUIHideFlags::UI_HIDE_NONE;
 
 public:
 	UGsUIManager(const FObjectInitializer& ObjectInitializer);
@@ -97,6 +104,8 @@ public:
 private:
 	UGsUIWidgetBase* PushInter(const FName& InKey, class UGsUIParameter* InParam);
 	struct FGsTableUIPath* GetTableRow(const FName& InKey);
+	void SetHideFlags(EGsUIHideFlags InFlag);
+	void ClearHideFlags(EGsUIHideFlags InFlag);
 
 public:
 	template<class T>
@@ -106,6 +115,8 @@ public:
 	}
 
 	TWeakObjectPtr<UGsUIWidgetBase> GetCachedWidget(const FName& InKey, bool InActiveCheck);
+	class UGsWidgetPoolManager* GetWidgetPoolManager() const { return WidgetPoolManager; }
+	class UGsDealScrollManager* GetDealScrollManager() const { return DealScrollManager; }
 
 	/*
 	// TEST

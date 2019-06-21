@@ -16,4 +16,5 @@ class GAMESERVICE_API UGsUIHUD : public UGsUIWidgetBase
 
 public:
 	virtual int32 GetManagedDefaultZOrder() const override { return 1; }
+	virtual EGsUIHideFlags GetHideFlagType() const { return EGsUIHideFlags::UI_HIDE_HUD; }
 };

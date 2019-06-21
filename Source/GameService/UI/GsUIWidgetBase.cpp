@@ -26,7 +26,11 @@ void UGsUIWidgetBase::NativeOnInitialized()
 void UGsUIWidgetBase::NativeConstruct()
 {
 	BackupVisibility = Visibility;
-	GetUIManager()->OnToggleHideUnhide.AddDynamic(this, &UGsUIWidgetBase::ToggleHideUnhide);
+	UGsUIManager* uiManager = GetUIManager();
+	if (nullptr != uiManager)
+	{
+		uiManager->OnUIHide.AddDynamic(this, &UGsUIWidgetBase::OnHide);
+	}
 
 	Super::NativeConstruct();
 	//GSLOG(Warning, TEXT("--------NativeConstruct"));
@@ -34,7 +38,11 @@ void UGsUIWidgetBase::NativeConstruct()
 
 void UGsUIWidgetBase::NativeDestruct()
 {
-	GetUIManager()->OnToggleHideUnhide.RemoveDynamic(this, &UGsUIWidgetBase::ToggleHideUnhide);
+	UGsUIManager* uiManager = GetUIManager();
+	if (nullptr != uiManager)
+	{
+		uiManager->OnUIHide.RemoveDynamic(this, &UGsUIWidgetBase::OnHide);
+	}
 
 	Super::NativeDestruct();
 	//GSLOG(Warning, TEXT("--------NativeDestruct"));
@@ -101,12 +109,18 @@ int32 UGsUIWidgetBase::GetManagedZOrder() const
 	return (bNotUseManagedZOrder) ? AddZOrder : GetManagedDefaultZOrder() + AddZOrder;
 }
 
-void UGsUIWidgetBase::ToggleHideUnhide(bool InHide)
+void UGsUIWidgetBase::OnHide(int32 InHideFlags)
 {
-	if (InHide)
+	EGsUIHideFlags hideFlag = static_cast<EGsUIHideFlags>(InHideFlags);
+
+	if (EnumHasAnyFlags(hideFlag, GetHideFlagType()))
 	{
-		BackupVisibility = Visibility;
-		SetVisibility(ESlateVisibility::Hidden);
+		// 중복 호출 상황 방지
+		if (ESlateVisibility::Hidden != Visibility)
+		{
+			BackupVisibility = Visibility;
+			SetVisibility(ESlateVisibility::Hidden);
+		}
 	}
 	else
 	{
