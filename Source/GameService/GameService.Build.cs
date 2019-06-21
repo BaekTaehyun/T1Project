@@ -28,6 +28,8 @@ public class GameService : ModuleRules
             "OpenSSL",
             "JsonUtilities",
             "Json",
+            "Slate",
+            "SlateCore"
         });
 
 		// Uncomment if you are using Slate UI
