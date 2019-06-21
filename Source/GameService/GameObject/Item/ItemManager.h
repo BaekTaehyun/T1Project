@@ -6,6 +6,7 @@
 #include "../../Class/GsManager.h"
 #include "../../GameObject/Item/CItem.h"
 #include "GameObject/Define/GsGameObjectDefine.h"
+#include "Engine/DataTable.h"
 
 class FCItemBuffers;
 
@@ -37,8 +38,14 @@ public:
 	UCItem* AddItem(UCItem& In_addItem);
 	UCItem* AddItem(int64 In_ItemTID, ItemStorageType In_StorageType, int32 In_StackCount); // юс╫ц
 
+public:
+	FGsItemTables* GetFindTableData(int64 In_ItemTID);
+
 private:
 	void AddItem(UCItem* In_newItem);
+
+private:
+	UDataTable* LoadTableData;
 
 };
 

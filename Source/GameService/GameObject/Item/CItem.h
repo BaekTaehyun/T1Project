@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "../Define/GsGameObjectDefine.h"
 #include "UObject/NoExportTypes.h"
+#include "Data/GsItemTable.h"
 #include "CItem.generated.h"
 
 /**
@@ -16,10 +17,8 @@ class GAMESERVICE_API UCItem : public UObject
 	GENERATED_BODY()
 
 public:
-	UCItem() = default;
+	UCItem();
 
-protected:
-	UCItem(const int64 In_ItemTID);
 	//UCItem(const UCItem&) = delete;
 	//UCItem(UCItem&&) = delete;
 
@@ -38,13 +37,13 @@ protected:
 	FString ItemName = "";
 	FString ItemBPpath = "";
 	ItemStorageType StorageType = ItemStorageType::Max;
+	FGsItemTables* ItemTableData;
 
 public:
 	static UCItem* CreateItem(const int64 In_ItemTID, int32 In_ItemStackCount = 0);
-
+	
 public:
-	void UpdateItemData(int64 In_ItemID);
+	void UpdateItemData(int64 In_ItemID , FGsItemTables* In_TableData);
 	void UpdateItemStackCount(int32 In_StackCount);
-
 
 };

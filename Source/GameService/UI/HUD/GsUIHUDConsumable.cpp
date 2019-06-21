@@ -19,7 +19,7 @@ void UGsUIHUDConsumable::CreateConsumeItem()
 		//GItemManager()->FindItem(123123);
 		//UCItem* createItem = UCItem::CreateItem();
 
-		UCItem* items = GItemManager()->AddItem(1, ItemStorageType::Consumable, 1);
+		UCItem* items = GItemManager()->AddItem(1001 , ItemStorageType::Consumable, 1);
 		UWorld* world = GetWorld();
 		ItemIconSelector->CreateItemIcon(UItemIconSelector::eItemIconSize::Large, ItemImgRoot, world);
 		ItemIconSelector->SetItemIcon(items);
@@ -40,7 +40,7 @@ void UGsUIHUDConsumable::NativeOnInitialized()
 void UGsUIHUDConsumable::UpdateConsumeItem()
 {
 	UE_LOG(LogTemp, Log, TEXT("Call UpdateConsumeItem !!! "));
-	UCItem* findItem = GItemManager()->FindItem(1, ItemStorageType::Consumable);
+	UCItem* findItem = GItemManager()->FindItem(1001, ItemStorageType::Consumable);
 	if (nullptr != findItem)
 	{
 		ItemIconSelector->SetItemIcon(findItem);

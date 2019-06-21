@@ -2,23 +2,24 @@
 
 
 #include "CItem.h"
+#include "ItemManager.h"
 #include "../../UI/GsUIIcon.h"
 
-UCItem::UCItem(const int64 In_ItemTID)
+UCItem::UCItem()
 {
 }
 
-void UCItem::UpdateItemData(int64  In_ItemID)
+void UCItem::UpdateItemData(int64  In_ItemID , FGsItemTables* In_TableData)
 {
-	//UE_LOG(LogTemp, Log, TEXT("UpdateItemData : %d"), In_ItemID);
 	UE_LOG(LogTemp, Log, TEXT("Call UpdateItemData()"));
 
-	// 물약 데이터 하드코딩 (클라 임시 사용)
-	ItemTID = In_ItemID;
-	ItemGUID = 101;
-	ItemName = TEXT("체력회복 물약");
-	ItemBPpath = TEXT("/Game/UI/Texture/icon_potion_01.icon_potion_01");
-	StorageType = ItemStorageType::Consumable;
+	ItemTID = In_TableData->ItemID;
+	ItemGUID = 00001; // 임시ID
+	ItemName = In_TableData->ItemName;
+	//ItemBPpath = TEXT("/Game/UI/Texture/icon_potion_01.icon_potion_01");
+	ItemBPpath = In_TableData->BP_Path;
+	StorageType = In_TableData->ItemType;
+	ItemTableData = In_TableData;
 }
 
 void UCItem::UpdateItemStackCount(int32 In_StackCount)
@@ -35,15 +36,22 @@ UCItem* UCItem::CreateItem(const int64 In_ItemTID, int32 In_ItemStackCount)
 	Item tableData = ItemDic.Instance.Find(In_itemID);
 	if (tableData == null)
 	{
-		var msg = string.Format("Not exist item info in the item table. ItemId:{0}", In_itemID);
-		throw new Exception(msg);
-		return null;
+	var msg = string.Format("Not exist item info in the item table. ItemId:{0}", In_itemID);
+	throw new Exception(msg);
+	return null;
 	}
 	*/
+	FGsItemTables* tableData = GItemManager()->GetFindTableData(In_ItemTID);
+	if (nullptr == tableData)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Not Exist ItemData : %d "), In_ItemTID);
+		return nullptr;
+	}
+
 	UCItem* newItem = NewObject<UCItem>();
 	if (nullptr != newItem)
 	{
-		newItem->UpdateItemData(In_ItemTID);
+		newItem->UpdateItemData(In_ItemTID , tableData);
 		newItem->ItemStackCount = In_ItemStackCount;
 	}
 

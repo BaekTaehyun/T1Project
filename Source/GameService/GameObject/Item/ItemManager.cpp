@@ -2,6 +2,7 @@
 
 
 #include "ItemManager.h"
+#include "UObject/ConstructorHelpers.h"
 #include "../../Message/GsMessageManager.h"
 
 template<>
@@ -10,8 +11,47 @@ FItemManager* FGsItemMgr::_instance = nullptr;
 FItemManager::FItemManager()
 {
 	UE_LOG(LogTemp, Log, TEXT("Call FItemManager() !!!"));
-
 	Items = new FCItemBuffers();
+
+	UDataTable* _tmp = LoadObject<UDataTable>(nullptr, TEXT("DataTable'/Game/Data/ItemDataTable.ItemDataTable'") , nullptr, LOAD_None, nullptr);
+	if (nullptr != _tmp)
+	{
+		LoadTableData = _tmp;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("LoadObject Data Load Failed !!!"));
+	}
+	/*
+	static ConstructorHelpers::FObjectFinder<UDataTable> _tmp(TEXT("DataTable'/Game/Data/ItemDataTable.ItemDataTable'"));
+	if (_tmp.Succeeded())
+	{
+		LoadTableData = _tmp.Object;
+		UE_LOG(LogTemp, Log, TEXT("ItemDataTable Load Succeeded !!!"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("ItemDataTable Load Failed !!!"));
+	}
+	*/
+}
+
+FGsItemTables* FItemManager::GetFindTableData(int64 In_ItemTID)
+{
+	if (nullptr != LoadTableData)
+	{
+		FName _key = FName(*FString::FromInt(In_ItemTID));
+		FGsItemTables* tableRow = LoadTableData->FindRow<FGsItemTables>(_key, TEXT(""));
+		if (nullptr == tableRow)
+		{
+			UE_LOG(LogTemp, Log, TEXT("GetFindTableData() - Not Exist ItemData : %d "), In_ItemTID);
+			return nullptr;
+		}
+		
+		return tableRow;
+	}
+
+	return nullptr;
 }
 
 FItemManager::~FItemManager()

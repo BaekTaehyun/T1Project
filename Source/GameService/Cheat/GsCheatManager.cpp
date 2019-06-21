@@ -58,5 +58,5 @@ void UGsCheatManager::AddPotion(FString in_tag)
 
 	int32 _count = FCString::Atoi(*in_tag);
 	_count = _count > 999999 ? 999999 : _count;
-	GItemManager()->AddItem(1, ItemStorageType::Consumable, _count);
+	GItemManager()->AddItem(1001 , ItemStorageType::Consumable, _count);
 }
