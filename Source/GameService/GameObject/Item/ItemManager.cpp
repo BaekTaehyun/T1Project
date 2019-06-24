@@ -107,6 +107,7 @@ UCItem* FItemManager::AddItem(int64 In_ItemTID, ItemStorageType In_StorageType, 
 		// 이미 보유중이라면 데이터만 Update
 		// 차후 Item Data 가 정해지면 그때 모두 Update 시키는 걸로..
 		_item->UpdateItemStackCount(In_StackCount);
+		GMessage()->GetItem().SendMessage(MessageItem::ItemAction::UPDATEITEM, *_item);
 	}
 	else // new item
 	{
@@ -116,10 +117,11 @@ UCItem* FItemManager::AddItem(int64 In_ItemTID, ItemStorageType In_StorageType, 
 		if (nullptr != _item)
 		{
 			AddItem(_item);
+			GMessage()->GetItem().SendMessage(MessageItem::ItemAction::ADDITEM, *_item);
 		}
 	}
 
-	GMessage()->GetItem().SendMessage(MessageItem::ItemAction::ADDITEM);
+	
 
 	return _item;
 }

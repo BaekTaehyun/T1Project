@@ -34,15 +34,23 @@ void UGsUIHUDConsumable::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 	ItemIconSelector = NewObject<UItemIconSelector>();
+
 	GMessage()->GetItem().AddUObject(MessageItem::ItemAction::ADDITEM, this, &UGsUIHUDConsumable::UpdateConsumeItem);
+	GMessage()->GetItem().AddUObject(MessageItem::ItemAction::UPDATEITEM, this, &UGsUIHUDConsumable::UpdateConsumeItem);
 }
 
-void UGsUIHUDConsumable::UpdateConsumeItem()
+void UGsUIHUDConsumable::UpdateConsumeItem(UCItem& in_Item)
 {
 	UE_LOG(LogTemp, Log, TEXT("Call UpdateConsumeItem !!! "));
-	UCItem* findItem = GItemManager()->FindItem(1001, ItemStorageType::Consumable);
+
+	UE_LOG(LogTemp, Log, TEXT("UpdateConsumeItem - ItemTID : %d"), in_Item.GetItemTID());
+	UCItem* findItem = GItemManager()->FindItem(in_Item.GetItemTID() , in_Item.GetItemStorageType());
 	if (nullptr != findItem)
 	{
 		ItemIconSelector->SetItemIcon(findItem);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("UpdateConsumeItem - Not Exist ItemTID : %d") , in_Item.GetItemTID() );
 	}
 }
