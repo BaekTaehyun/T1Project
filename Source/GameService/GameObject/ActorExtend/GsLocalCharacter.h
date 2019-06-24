@@ -29,6 +29,9 @@ private:
 	USpringArmComponent* CameraBoom;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	class UGsPoolingWidgetComponent* PlayerWidget;
+
 	//InputBinder
 	UGsInputBindingBase* InputBinder;
 	//Anim
