@@ -81,3 +81,9 @@ UGsUIIcon* UItemIconSelector::SetItemIcon(UCItem* In_CItem)
 	UIIcon->SetItem(In_CItem);
 	return UIIcon;
 }
+
+
+void UItemIconSelector::SetOnClickEvent(bool In_Enable)
+{
+
+}

@@ -24,8 +24,9 @@ void UGsUIIcon::NativeConstruct()
 void UGsUIIcon::OnClickItemIconEvent()
 {
 	UE_LOG(LogTemp, Log, TEXT("OnClickItemIconEvent Call !!!"));
-	//MessageItem::
-	//GMessage()->GetStage().AddRaw(Messageitem::Stage::INTRO_COMPLETE, this, &FGsGameFlowLobby::OnIntroComplete);
+
+	//MessageItem
+	GMessage()->GetItem().SendMessage(MessageItem::ItemAction::USEITEM, *Item);
 }
 
 void UGsUIIcon::SetItem(UCItem* In_CItem)
@@ -37,6 +38,7 @@ void UGsUIIcon::SetItem(UCItem* In_CItem)
 		return;
 	}
 
+	Item = In_CItem;
 	FString itemName = In_CItem->GetItemName();
 	FString BPpath = In_CItem->GetItemBPpath();
 	int32 count = In_CItem->GetItemStackCount();

@@ -69,6 +69,17 @@ void FItemManager::Initialize()
 	TGsSingleton::InitInstance(this);
 }
 
+void FItemManager::UseItem(UCItem& In_useItem) const
+{
+	UE_LOG(LogTemp, Log, TEXT("Call UseItem - itemID : %d"), In_useItem.GetItemTID());
+	// Item Check
+
+
+
+	// Send UseItem Packet
+
+}
+
 /////////////// Find Item //////////////////
 UCItem* FItemManager::FindItem(int64 In_ItemTID, ItemStorageType In_StorageType)
 {

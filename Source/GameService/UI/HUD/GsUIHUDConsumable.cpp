@@ -15,11 +15,7 @@ void UGsUIHUDConsumable::CreateConsumeItem()
 	//ItemIconSelector = CreateDefaultSubobject<UItemIconSelector>(TEXT("ItemImgRoot"));	
 	if (nullptr != ItemIconSelector)
 	{
-		// 현재 DataSheet 가 없기에 임시 Create.
-		//GItemManager()->FindItem(123123);
-		//UCItem* createItem = UCItem::CreateItem();
-
-		UCItem* items = GItemManager()->AddItem(1001 , ItemStorageType::Consumable, 1);
+		UCItem* items = GItemManager()->AddItem(1001 , ItemStorageType::Consumable, 0);
 		UWorld* world = GetWorld();
 		ItemIconSelector->CreateItemIcon(UItemIconSelector::eItemIconSize::Large, ItemImgRoot, world);
 		ItemIconSelector->SetItemIcon(items);
@@ -35,14 +31,14 @@ void UGsUIHUDConsumable::NativeOnInitialized()
 	Super::NativeOnInitialized();
 	ItemIconSelector = NewObject<UItemIconSelector>();
 
-	GMessage()->GetItem().AddUObject(MessageItem::ItemAction::ADDITEM, this, &UGsUIHUDConsumable::UpdateConsumeItem);
+	// Event Add
+	//GMessage()->GetItem().AddUObject(MessageItem::ItemAction::ADDITEM, this, &UGsUIHUDConsumable::UpdateConsumeItem);
 	GMessage()->GetItem().AddUObject(MessageItem::ItemAction::UPDATEITEM, this, &UGsUIHUDConsumable::UpdateConsumeItem);
+	GMessage()->GetItem().AddUObject(MessageItem::ItemAction::USEITEM, this, &UGsUIHUDConsumable::OnClickConsumeItem);
 }
 
 void UGsUIHUDConsumable::UpdateConsumeItem(UCItem& in_Item)
 {
-	UE_LOG(LogTemp, Log, TEXT("Call UpdateConsumeItem !!! "));
-
 	UE_LOG(LogTemp, Log, TEXT("UpdateConsumeItem - ItemTID : %d"), in_Item.GetItemTID());
 	UCItem* findItem = GItemManager()->FindItem(in_Item.GetItemTID() , in_Item.GetItemStorageType());
 	if (nullptr != findItem)
@@ -53,4 +49,10 @@ void UGsUIHUDConsumable::UpdateConsumeItem(UCItem& in_Item)
 	{
 		UE_LOG(LogTemp, Log, TEXT("UpdateConsumeItem - Not Exist ItemTID : %d") , in_Item.GetItemTID() );
 	}
+}
+
+void UGsUIHUDConsumable::OnClickConsumeItem(UCItem& in_Item)
+{
+	UE_LOG(LogTemp, Log, TEXT("Call UGsUIHUDConsumable::OnClickConsumeItem() !!! "));
+	GItemManager()->UseItem(in_Item);
 }

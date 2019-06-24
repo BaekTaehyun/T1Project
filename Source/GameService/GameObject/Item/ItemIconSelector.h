@@ -28,8 +28,11 @@ public:
 
 public:
 	UGsUIIcon* CreateItemIcon(eItemIconSize In_eIconSize, UPanelWidget* In_parentWidget, const UWorld* In_worldObj);
-
 	UGsUIIcon* SetItemIcon(UCItem* In_CItem);
+
+public:
+	void SetOnClickEvent(bool In_Enable);
+
 private:
 	const FString GetPathbyIconSize(eItemIconSize In_eSize);
 

@@ -40,6 +40,7 @@ public:
 
 public:
 	FGsItemTables* GetFindTableData(int64 In_ItemTID);
+	void UseItem(UCItem& In_useItem) const;
 
 private:
 	void AddItem(UCItem* In_newItem);
