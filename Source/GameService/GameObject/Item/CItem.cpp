@@ -14,12 +14,13 @@ void UCItem::UpdateItemData(int64  In_ItemID , FGsItemTables* In_TableData)
 	UE_LOG(LogTemp, Log, TEXT("Call UpdateItemData()"));
 
 	ItemTID = In_TableData->ItemID;
-	ItemGUID = 00001; // 임시ID
+	ItemGUID = 00001; // ObjID 현재는 없으므로 임시 설정.
 	ItemName = In_TableData->ItemName;
-	//ItemBPpath = TEXT("/Game/UI/Texture/icon_potion_01.icon_potion_01");
 	ItemBPpath = In_TableData->BP_Path;
 	StorageType = In_TableData->ItemType;
 	ItemTableData = In_TableData;
+
+	//ItemBPpath = TEXT("/Game/UI/Texture/icon_potion_01.icon_potion_01");
 }
 
 void UCItem::UpdateItemStackCount(int32 In_StackCount)
@@ -30,8 +31,7 @@ void UCItem::UpdateItemStackCount(int32 In_StackCount)
 UCItem* UCItem::CreateItem(const int64 In_ItemTID, int32 In_ItemStackCount)
 {
 	// 인자로 받은 id 를 토대로 테이블에서 읽어와서 Find 및 Set 
-	// CreateItem 은 여러가지 인자 타입이 생길 여지가 있음. (오버로딩 사용
-	// 로블꺼 가져옴(임시)
+	// CreateItem 은 여러가지 인자 타입이 생길 여지가 있음. (오버로딩 사용)
 	/*
 	Item tableData = ItemDic.Instance.Find(In_itemID);
 	if (tableData == null)

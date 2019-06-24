@@ -25,7 +25,7 @@ public:
 
 public:
 	void CreateConsumeItem();
-	void UpdateConsumeItem();
+	void UpdateConsumeItem(UCItem& in_Item);
 
 private:
 	UItemIconSelector* ItemIconSelector;

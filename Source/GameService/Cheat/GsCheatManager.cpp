@@ -52,11 +52,21 @@ void UGsCheatManager::SpawnGameObject(EGsGameObjectType Type, TSubclassOf<AActor
 }
 
 
-void UGsCheatManager::AddPotion(FString in_tag)
+void UGsCheatManager::AddItem(FString in_itemID , FString in_Count)
 {
-	UE_LOG(LogTemp, Log, TEXT("Call AddItem() !!! : %s"), *in_tag);
+	UE_LOG(LogTemp, Log, TEXT("Call AddItem() !!! itemID : %s"), *in_itemID);
+	UE_LOG(LogTemp, Log, TEXT("Call AddItem() !!! Count : %s"), *in_Count);
 
-	int32 _count = FCString::Atoi(*in_tag);
+	int64 _itemID = FCString::Atoi(*in_itemID);
+	int32 _count = FCString::Atoi(*in_Count);
 	_count = _count > 999999 ? 999999 : _count;
-	GItemManager()->AddItem(1001 , ItemStorageType::Consumable, _count);
+	FGsItemTables* _tableData = GItemManager()->GetFindTableData(_itemID);
+	if (nullptr != _tableData)
+	{
+		GItemManager()->AddItem(_tableData->ItemID , _tableData->ItemType, _count);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Call AddItem() - Not Exist ItemID : %d"), _itemID);
+	}
 }

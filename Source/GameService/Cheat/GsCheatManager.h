@@ -25,5 +25,5 @@ public:
 	void SpawnGameObject(EGsGameObjectType Type, TSubclassOf<AActor> ActorClass, int SpawnCount = 1, const FVector& StartPos = FVector::ZeroVector);
 	
 	UFUNCTION(Exec, Category = ExecFunctions)
-		void AddPotion(FString in_tag);
+		void AddItem(FString in_itemID, FString in_Count);
 };
