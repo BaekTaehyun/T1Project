@@ -7,6 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameObject/Input/GsInputBindingBase.h"
+#include "UI/Common/GsPoolingWidgetComponent.h"
 
 AGsLocalCharacter::~AGsLocalCharacter()
 {
@@ -30,6 +31,12 @@ AGsLocalCharacter::AGsLocalCharacter()
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	//InputBinder = CreateDefaultSubobject<UGsInputBindingLocalPlayer>(TEXT("CusomInputBinder"));
+
+	PlayerWidget = CreateDefaultSubobject<UGsPoolingWidgetComponent>(TEXT("PlayerWidget"));
+	PlayerWidget->SetupAttachment(GetMesh());
+	PlayerWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
+	PlayerWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	PlayerWidget->SetDrawSize(FVector2D(150.0f, 50.0f));
 }
 
 void AGsLocalCharacter::PostInitializeComponents()
