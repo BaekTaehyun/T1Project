@@ -68,10 +68,18 @@ protected:
 	void OnMoveRotate(float Value);
 	void OnMoveRotateYaw(float Value);
 	void OnMoveRotatePitch(float Value);
+
+#ifdef OLD_TOUCH_INPUT
 	// 터치 시작(pc는 좌클릭)
 	void OnTouchPress();
 	// 터치 끝(pc는 좌클릭)
 	void OnTouchRelease();
+#else //OLD_TOUCH_INPUT
+	// Touch Interaction
+	void OnTouchPress(ETouchIndex::Type FingerIndex, FVector Location); // Location Z == 1
+	void OnTouchRelease(ETouchIndex::Type FingerIndex, FVector Location); // Location Z == 0
+	void OnTouchMove(ETouchIndex::Type FingerIndex, FVector Location); // Location Z == 1
+#endif //OLD_TOUCH_INPUT
 
 	// 줌인
 	void OnZoomIn();
@@ -83,4 +91,9 @@ protected:
 
 protected:
 	class UGsGameObjectLocal* Target;
+
+#ifndef OLD_TOUCH_INPUT
+	FVector PrevTouchLocation = FVector::ZeroVector;
+	float TouchMoveMax = 10.0f; // 터치 이동거리 Max. 값이 클수록 카메라 회전이 무뎌집니다.
+#endif //!OLD_TOUCH_INPUT
 };

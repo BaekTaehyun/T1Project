@@ -65,11 +65,18 @@ void UGsInputBindingLocalPlayer::SetBinding(UInputComponent* input)
 	input->BindAction(TEXT("ViewChange"), EInputEvent::IE_Pressed,
 		this, &UGsInputBindingLocalPlayer::OnViewChange);
 
-	
-	input->BindAction(TEXT("TouchOff"), EInputEvent::IE_Released, this, 
+#ifdef OLD_TOUCH_INPUT
+	// yjchoung : BindTouch 추가하면서 막았습니다. 정리부탁드립니다.
+	// LocalLookUP/LocalTurn의 마우스 X, Y 인풋 삭제했습니다.
+	input->BindAction(TEXT("TouchOff"), EInputEvent::IE_Released, this,
 		&UGsInputBindingLocalPlayer::OnTouchRelease);
 	input->BindAction(TEXT("TouchOn"), EInputEvent::IE_Pressed, this,
 		&UGsInputBindingLocalPlayer::OnTouchPress);
+#else //OLD_TOUCH_INPUT
+	input->BindTouch(EInputEvent::IE_Pressed, this, &UGsInputBindingLocalPlayer::OnTouchPress);
+	input->BindTouch(EInputEvent::IE_Released, this, &UGsInputBindingLocalPlayer::OnTouchRelease);
+	input->BindTouch(EInputEvent::IE_Repeat, this, &UGsInputBindingLocalPlayer::OnTouchMove);	
+#endif //OLD_TOUCH_INPUT
 }
 
 void UGsInputBindingLocalPlayer::OnAttachParts(EGsPartsType Type)
@@ -195,6 +202,7 @@ void UGsInputBindingLocalPlayer::OnMoveRotatePitch(float Value)
 #endif
 }
 
+#ifdef OLD_TOUCH_INPUT
 // 터치 시작(pc는 좌클릭)
 void UGsInputBindingLocalPlayer::OnTouchPress()
 {
@@ -215,6 +223,47 @@ void UGsInputBindingLocalPlayer::OnTouchRelease()
 
 	GSLOG(Error, TEXT("OnTouchRelease"));
 }
+#else //OLD_TOUCH_INPUT
+void UGsInputBindingLocalPlayer::OnTouchPress(ETouchIndex::Type FingerIndex, FVector Location)
+{
+	PrevTouchLocation = Location;
+
+	if (FunctionTouchPress != nullptr)
+	{
+		FunctionTouchPress();
+	}
+}
+
+void UGsInputBindingLocalPlayer::OnTouchRelease(ETouchIndex::Type FingerIndex, FVector Location)
+{
+	PrevTouchLocation = FVector::ZeroVector;
+
+	if (FunctionTouchRelease != nullptr)
+	{
+		FunctionTouchRelease();
+	}
+}
+
+void UGsInputBindingLocalPlayer::OnTouchMove(ETouchIndex::Type FingerIndex, FVector Location)
+{
+	FVector dir = Location - PrevTouchLocation;
+	PrevTouchLocation = Location;
+
+	float yaw = FMath::Clamp(dir.X / TouchMoveMax, -1.0f, 1.0f);
+	float pitch = FMath::Clamp(dir.Y / TouchMoveMax, -1.0f, 1.0f);
+
+	if (FunctionTurn != nullptr)
+	{
+		FunctionTurn(yaw);
+	}
+
+	if (FunctionLookUp != nullptr)
+	{
+		FunctionLookUp(pitch);
+	}
+}
+#endif //OLD_TOUCH_INPUT
+
 // 줌인
 void UGsInputBindingLocalPlayer::OnZoomIn()
 {
